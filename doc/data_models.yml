@@ -1,0 +1,83 @@
+User:
+  first_name: Michael
+  last_name: Whalen
+  birthdate: MM/DD/YYYY
+  bio: Here is my short bio text.
+  registered: <DateTime>
+  gender: Guy / Girl
+  interested_in: Guys / Girls /Both
+  location: <Location>
+  interests: [<Interest>, ...]
+  wingmen: [<User>, ...]
+  actions: [<UserAction>, ...]
+  credits: A calculated aggregate of self.actions.credits calculated on post_save of <UserAction>
+  facebook_access_token: XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+UserPhoto:
+  owner: <User>
+  url: http://static.dbld8.com/photos/userid/hash.jpg
+  uploaded: <DateTime>
+
+
+UserInterest:
+  name: "Running"
+  facebook_id: 109368782422374
+
+
+# This is where we define the value of each action.
+CreditAction:
+  slug: 'activity_create'
+  cost: -10
+
+
+# Hmm. Notifications?
+UserAction:
+  owner: <User>
+  action: <CreditAction>
+  credits: int # this is stored outside the credit action due to the fact that we can chance credit actions down the road
+  created: <DateTime>
+  related: <Activity> | <Purchase> | etc...
+  # Examples of UserAction's
+  #  - purchase_credit +20/+50/etc...
+  #  - activity_create -10
+  #  - profile_add_photo -5
+  #  - activity_reactivate -10
+  #  - activity_upgrade -10
+
+
+Activity:
+  title: Rock Climbing
+  description: My friend and I are looking to get out and explore Joshua Tree! Let's go!
+  when: <RelativeTimeRange>
+  location: <Location>
+  owner: <User>
+  wingman: <User>
+  created: <DateTime>
+  # expires: <DateTime>
+  # Expires should be dynamic?
+  state:
+    0: Created
+    1: Engaged (locked and loaded with a set of wingmen)
+    2: Expired
+    3: Locked
+    4: Reactivated (similar to created)
+
+
+# This occurs when you show interest in an <Activity>
+ActivityInterest:
+  activity: <Activity>
+  sent: <DateTime>
+  sender: <User:Myself>
+  wingman: <User:Marcus>
+  message: "Hey girls! We're really interested in going!"
+
+
+# Location model (geodjango + postgis)
+Location:
+  name: Parkerhouse Drive
+  latitude: float
+  longitude: float
+  foursquare_id: 4b81a6c5f964a52067b530e3
+  facebook_id: 109368782422374
+

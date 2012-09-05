@@ -13,9 +13,6 @@
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
   
     #wrapper
-      / = render 'layouts/header'
-
-      / = render 'layouts/messages'
       
       #main
         = yield
