@@ -18,10 +18,14 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
+    if params[:password]
+      @user.password_confirmation = params[:password]
+    end
+
     if @user.save
-      respond_with @user, status: :created, location: @user
+      respond_with(@user, status: :created, location: @user)
     else
-      respond_with @user.errors, status: :unprocessable_entity
+      respond_with(@user, status: :unprocessable_entity)
     end
   end
 
@@ -32,7 +36,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(params[:user])
       return respond_with head: :no_content
     else
-      return respond_with @user.errors, status: :unprocessable_entity
+      return respond_with(@user, status: :unprocessable_entity)
     end
   end
 

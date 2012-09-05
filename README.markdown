@@ -10,41 +10,41 @@ All URL's should be prefixed with `https://api.dbld8.com`
 
 The `POST` should contain the following:
 
-	{
-		first_name: 'John',
-		last_name: 'Smith',
-		birthday: 'MM/DD/YYYY',
-		status: 'single',
-		interest: 'women',
-		gender: 'male',
-		bio_text: 'I am going to rule the world!'
-		location: 34587,
-		email: 'michael@belluba.com',
-		password: 'abc123'
-	}
+	{ "user": { 
+		"first_name": "Michael", 
+		"last_name": "Whalen", 
+		"birthday": "YYYY-MM-DD", 
+		"single": true, 
+		"interested_in": "girls",
+		"gender": "male",
+		"bio":"I am going to rule the world!",
+		"email":"michael@belluba.com",
+		"password":"music7" 
+	}}
+
+Breakdown of attributes:
+
+* `single` is `true` or `false`
+* `interested_in` can be one of `guys`, `girls`, or `both`
+* `gender` can be simply `male` or `female`
+* `email` is not required
+* `password` is not required
 
 If this is successful, a full user object will be returned along with a `HTTP/1.1 200 OK`
 
 	{
-		user_id: 1
-		photo: None,
-		email: 'michael@belluba.com',
-		first_name: 'John',
-		last_name: 'Smith',
-		birthday: 'MM/DD/YYYY',
-		age: 30,
-		status: 'single',
-		interest: 'women',
-		gender: 'male',
-		bio_text: 'I am going to rule the world!'
-		location: {
-			id: 34587,
-			fb_id: 48575,
-			name: 'Washington, DC',
-			lat: -33.334
-			lng: 7.384
-		},
-		interests: [ empty ]
+	    "birthday": "1989-10-02",
+	    "bio": "I am going to rule the world!",
+	    "last_name": "Whalen",
+	    "id": 2,
+	    "facebook_id": null,
+	    "gender": "male",
+	    "email": "michael@belluba.com",
+	    "age": 22,
+	    "photo": null,
+	    "first_name": "Michael",
+	    "interested_in": "girls",
+	    "single": true
 	}
 
 ### Create a new User with Facebook
@@ -123,6 +123,8 @@ This is not very handy, however. We want to be able to query for interests based
 
 #### GET /interests/?q=<search_parameter>
 
+You can pass a `q` query to `/interests/` to search for interests matching that name. Search is case-insensitive.
+
 	[
 	    {
 	        "name": "Running",
@@ -133,9 +135,28 @@ This is not very handy, however. We want to be able to query for interests based
 
 #### GET /interests/:id/
 
+Pass a single `id` to get the details of that interest.
+
 	{
 	    "name": "Surfing",
 	    "id": 5,
 	    "facebook_id": 111932052156866
 	}
 
+#### POST /interests/
+
+You can POST to this endpoint to create a new interest.
+
+Example POST:
+
+	{ "interest": { "name": "Starbucks" } }
+
+Example response:
+
+	{
+	    "name": "Starbucks",
+	    "id": 12,
+	    "facebook_id": null
+	}
+
+If you try and POST a resource with a name that already exists, a `422 - Unprocessable Entity` response is returned. The name validation is case-insensitive, so posting STARBUCKS will not work if an interest with the name 'Starbucks' exists.

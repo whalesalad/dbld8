@@ -1,10 +1,6 @@
 DoubleDate::Application.routes.draw do
-  resources :interests
-
-  resources :locations
-
-  resources :users
-
+  resources :users, :interests, :locations
+  
   root :to => 'home#index'
 
   # The priority is based upon order of creation:

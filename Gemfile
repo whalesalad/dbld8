@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', :git => 'git://github.com/rails/rails.git', :branch => '3-2-stable'
-gem 'thin'
 
 gem 'pg'
 gem 'bcrypt-ruby', '~> 3.0.0'
@@ -18,15 +17,17 @@ group :assets do
   gem 'bootstrap-sass', '~> 2.0.4.1'
 end
 
+group :production do
+  gem 'unicorn'
+end
+
 group :development, :test do
   gem 'pry-rails'
+  gem 'thin'
 end
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'

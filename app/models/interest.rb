@@ -12,7 +12,7 @@
 class Interest < ActiveRecord::Base
   attr_accessible :facebook_id, :name
 
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :facebook_id, :allow_nil => true
 
   def as_json(options={})
