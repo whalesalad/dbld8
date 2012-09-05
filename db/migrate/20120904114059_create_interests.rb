@@ -6,5 +6,7 @@ class CreateInterests < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :interests, :name, :unique => true
   end
 end

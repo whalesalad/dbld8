@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(:version => 20120904114059) do
     t.datetime "updated_at",               :null => false
   end
 
+  add_index "interests", ["name"], :name => "index_interests_on_name", :unique => true
+
   create_table "locations", :force => true do |t|
     t.string   "name",                                                     :null => false
     t.decimal  "lat",                      :precision => 15, :scale => 10
@@ -29,9 +31,12 @@ ActiveRecord::Schema.define(:version => 20120904114059) do
     t.datetime "updated_at",                                               :null => false
   end
 
+  add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true
+
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password"
+    t.integer  "facebook_id",   :limit => 8
     t.string   "first_name"
     t.string   "last_name"
     t.date     "birthday"
@@ -39,8 +44,8 @@ ActiveRecord::Schema.define(:version => 20120904114059) do
     t.string   "interested_in"
     t.string   "gender"
     t.text     "bio"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

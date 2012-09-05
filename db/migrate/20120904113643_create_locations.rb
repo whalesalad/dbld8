@@ -8,5 +8,7 @@ class CreateLocations < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :locations, :facebook_id, :unique => true
   end
 end
