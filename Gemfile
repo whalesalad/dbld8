@@ -1,11 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', :git => 'git://github.com/rails/rails.git', :branch => '3-2-stable'
-
-gem 'pg'
+gem 'rails', '3.2.8'
 gem 'bcrypt-ruby', '~> 3.0.0'
-gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
-
+gem 'pg'
 gem 'haml'
 
 # Gems used only for assets and not in production
@@ -17,13 +14,11 @@ group :assets do
   gem 'bootstrap-sass', '~> 2.0.4.1'
 end
 
-group :production do
-  gem 'unicorn'
-end
+gem 'thin'
 
 group :development, :test do
-  gem 'pry-rails'
-  gem 'thin'
+  gem 'pry-rails'  
+  gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
 end
 
 # To use Jbuilder templates for JSON
