@@ -11,10 +11,17 @@ class ApplicationController < ActionController::Base
     return render json: { :error => error_message }, :status => 404
   end
 
+  def authenticated_user
+    @authenticated_user || nil
+  end
+
   private
 
   def restrict_access
-    token = AuthToken.find_by_token(params[:token])
-    head :unauthorized unless token
+    authenticate_or_request_with_http_token do |token, options|
+      token = AuthToken.find_by_token(token)
+      return head :unauthorized unless token
+      @authenticated_user = token.user
+    end
   end
 end

@@ -43,16 +43,17 @@ ActiveRecord::Schema.define(:version => 20120906002055) do
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.integer  "facebook_id",     :limit => 8
+    t.integer  "facebook_id",           :limit => 8
+    t.string   "facebook_access_token"
     t.string   "first_name"
     t.string   "last_name"
     t.date     "birthday"
-    t.boolean  "single"
+    t.boolean  "single",                             :default => true
     t.string   "interested_in"
     t.string   "gender"
     t.text     "bio"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

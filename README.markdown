@@ -1,8 +1,10 @@
 # API Documentation
 
-All URL's should be prefixed with `https://api.dbld8.com`
+All URL's should be prefixed with `https://api.dbld8.com` or for the time being, `http://dbld8.herokuapp.com` which is our current development server.
 
-**Registration**  The user will be able to register one of two types of accounts. First, A regular account, which will authorize via email address and password. Second, and preferred, via Facebook.
+## User Creation
+
+The user will be able to register one of two types of accounts. First, A regular account, which will authorize via email address and password. Second, and preferred, via Facebook.
 
 ### Create a new User (without facebook)
 
@@ -75,9 +77,64 @@ To create a new user with Facebook, post their Facebook user ID as `facebook_id`
 		interests: [ empty ]
 	}
 
-Notice that because we were able to externally fetch their Facebook info, a photo is automatically provided.
+#### Bootstrapping 
 
-### User Interests
+Here is an example of bootstrapping a user account by `POST`ing only their `facebook_id` and `access_token` and having the server populate their user profile.
+
+This is a `POST` to `/users/` with the following body:
+
+	{
+	"access_token": "AAACEdEose0cBAE9uKi5ilfYuw9ZCxWsvhJ1MP0yDAiSXZCW7FjLrpeeHUErILJVHYQqBpQXLIr9qKnj3C0pDKQIOJyTqwuqncjqkffwSZABijHaPtGm",
+	"facebook_id": "1452030040"
+	}
+	
+The server will contact facebook, validate the id and auth token work, and then return a `User` object if all is good (`HTTP 201 - Created` response type):
+	
+	{
+	    "birthday": "1989-10-02",
+	    "bio": null,
+	    "last_name": "Whalen",
+	    "id": 1,
+	    "facebook_id": 1452030040,
+	    "gender": "male",
+	    "email": "michael@whalesalad.com",
+	    "age": 22,
+	    "photo": null,
+	    "first_name": "Michael",
+	    "interested_in": "girls",
+	    "single": true
+	}
+
+Notice that because we were able to externally fetch their Facebook info, a photo is automatically provided (this does not work currently but will be filled in).
+
+## User Authentication
+
+#### POST /authenticate/
+
+Now that we have a user object, we'll need to fire one more query to authenticate that user and get a token back. The only call that is unprotected is `POST` to `/users/`, all other calls will require authorization. There are two ways to do this but the URL you use is the same. 
+
+**If the user has a facebook account**, you `POST` their `facebook_id` and `access_token` just like creating a user with Facebook.
+
+**If the user has a regular email/password account**, you `POST` their `email` and `password`.
+
+You'll `POST` this data to `/authenticate/`. In return, you will get the token object that you need for all future calls:
+
+	{
+	    "user_id": 1,
+	    "token": "a8c4d5935ecb6b2fcdd4cf4cc37f86aa6ed79b04"
+	}
+
+For all future calls, you will need to set an HTTP header. In my case, for my user, my header will be:
+	
+	Authorization: Token token=a8c4d5935ecb6b2fcdd4cf4cc37f86aa6ed79b04
+	
+Where `Authorization` is the header key, and `Token token=a8c4d5935ecb6b2fcdd4cf4cc37f86aa6ed79b04` is the value. This is kind of silly (the extra Token token= part) but this is the Rails way :D
+
+#### GET /me/
+
+I introduced a fun/handy new method. You can `GET /me` as an authenticated user to get the currently authenticated users' profile.
+
+## User Interests
 
 Interests are like tags. They are simple strings, meant to be unique. Like a Twitter hashtag. Interests should be shared amongst users. For example, if I enter 'Running' as an interest, it should connect to a database object that other users can choose down the road.
 

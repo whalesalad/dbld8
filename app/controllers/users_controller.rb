@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_filter :restrict_access, :only => [:authenticate, :create]
+  
   respond_to :json
 
   # The authorization method to give a user a token for auth.
@@ -8,7 +9,7 @@ class UsersController < ApplicationController
     is_regular = (params.keys & ['email', 'password']).count == 2
 
     unless is_facebook or is_regular
-      # return go die in a fire
+      return json_error 'You must specify either an email/password or facebook_id/access_token pair to authenticate.'
     end
 
     if is_facebook
@@ -30,18 +31,28 @@ class UsersController < ApplicationController
       unless user
         return json_not_found 'A facebook user does not exist for that facebook_id.'
       end
+      # at this point we have a user.
+    elsif is_regular
+      # Right now, find any user by an email address and just 
+      user = User.find_by_email(params[:email])
 
-      return render json: user
+      unless user
+        return json_not_found 'A user does not exist for the email address specified.'
+      end
 
+      unless user.authenticate(params[:password])
+        return json_error 'The password specified was incorrect.'
+      end
     end
 
-    if is_regular
-      # Find a user with the :email address.
-      # Match the :password with the user.password_digest
-      # return the user 
-    end
+    # At this point we have a user. Let's find or create the auth token and return it.
+    @token = AuthToken.find_or_create_by_user_id(user.id)
 
-    return render json: 'nope'
+    return render json: @token
+  end
+
+  def me
+    return render json: authenticated_user
   end
 
   # GET /
@@ -66,8 +77,9 @@ class UsersController < ApplicationController
     end
 
     # If a facebook_id or access_token exists
-    params[:access_token]
-
+    if params[:access_token]
+      @user.facebook_id = params[:facebook_id]
+      @user.facebook_access_token = params[:access_token]
     end
 
     if @user.save

@@ -1,8 +1,9 @@
 DoubleDate::Application.routes.draw do
   match 'authenticate' => 'users#authenticate'
-
-  resources :users, :interests, :locations
+  match 'me' => 'users#me'
   
+  resources :users, :interests, :locations
+
   root :to => 'home#index'
 
   # The priority is based upon order of creation:

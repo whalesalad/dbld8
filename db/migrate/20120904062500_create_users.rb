@@ -4,10 +4,11 @@ class CreateUsers < ActiveRecord::Migration
       t.string    :email
       t.string    :password_digest
       t.integer   :facebook_id, :limit => 8
+      t.string    :facebook_access_token
       t.string    :first_name
       t.string    :last_name
       t.date      :birthday
-      t.boolean   :single
+      t.boolean   :single, :default => true
       t.string    :interested_in
       t.string    :gender
       t.text      :bio
