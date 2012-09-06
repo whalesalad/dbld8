@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   INTEREST_CHOICES = %w(guys girls both)
 
   validates_uniqueness_of :email
-  validates_presence_of :first_name, :last_name, :birthday, :gender
+  validates_presence_of :first_name, :last_name, :birthday, :gender, :email
 
   validates_inclusion_of :gender, :in => GENDER_CHOICES
   validates_inclusion_of :interested_in, :in => INTEREST_CHOICES
