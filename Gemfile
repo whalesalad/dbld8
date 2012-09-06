@@ -5,6 +5,9 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'pg'
 gem 'haml'
 
+# Facebook
+gem 'koala'
+
 # Gems used only for assets and not in production
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

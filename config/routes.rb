@@ -1,4 +1,6 @@
 DoubleDate::Application.routes.draw do
+  match 'authenticate' => 'users#authenticate'
+
   resources :users, :interests, :locations
   
   root :to => 'home#index'
