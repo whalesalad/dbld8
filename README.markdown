@@ -53,7 +53,7 @@ If this is successful, a full user object will be returned along with a `HTTP/1.
 
 #### POST /users/
 
-To create a new user with Facebook, post their Facebook user ID as `facebook_id` and their Facebook `access_token` provided by authenticating in the iOS app. Their user object will be returned, prepopulated by data from Facebook for your convenience. You can optionally post other details which will override anything returned from Facebook. Anything you do not specify that we can collect from Facebook, will be stored in the user object.
+To create a new user with Facebook, post their Facebook user ID as `facebook_id` and their access token as `facebook_access_token` provided by authenticating in the iOS app. Their user object will be returned, prepopulated by data from Facebook for your convenience. You can optionally post other details which will override anything returned from Facebook. Anything you do not specify that we can collect from Facebook, will be stored in the user object.
 
 	{
 		user_id: 1
@@ -79,14 +79,13 @@ To create a new user with Facebook, post their Facebook user ID as `facebook_id`
 
 #### Bootstrapping 
 
-Here is an example of bootstrapping a user account by `POST`ing only their `facebook_id` and `access_token` and having the server populate their user profile.
+Here is an example of bootstrapping a user account by `POST`ing only their `facebook_id` and `facebook_access_token` and having the server populate their user profile.
 
 This is a `POST` to `/users/` with the following body:
 
-	{
-	"access_token": "AAACEdEose0cBAE9uKi5ilfYuw9ZCxWsvhJ1MP0yDAiSXZCW7FjLrpeeHUErILJVHYQqBpQXLIr9qKnj3C0pDKQIOJyTqwuqncjqkffwSZABijHaPtGm",
+	{ "user": {"facebook_access_token": "AAACEdEose0cBAE9uKi5ilfYuw9ZCxWsvhJ1MP0yDAiSXZCW7FjLrpeeHUErILJVHYQqBpQXLIr9qKnj3C0pDKQIOJyTqwuqncjqkffwSZABijHaPtGm",
 	"facebook_id": "1452030040"
-	}
+	}}
 	
 The server will contact facebook, validate the id and auth token work, and then return a `User` object if all is good (`HTTP 201 - Created` response type):
 	
@@ -113,7 +112,7 @@ Notice that because we were able to externally fetch their Facebook info, a phot
 
 Now that we have a user object, we'll need to fire one more query to authenticate that user and get a token back. The only call that is unprotected is `POST` to `/users/`, all other calls will require authorization. There are two ways to do this but the URL you use is the same. 
 
-**If the user has a facebook account**, you `POST` their `facebook_id` and `access_token` just like creating a user with Facebook.
+**If the user has a facebook account**, you `POST` their `facebook_id` and `facebook_access_token` just like creating a user with Facebook.
 
 **If the user has a regular email/password account**, you `POST` their `email` and `password`.
 

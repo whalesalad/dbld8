@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: auth_tokens
+#
+#  id         :integer         not null, primary key
+#  user_id    :integer
+#  token      :string(255)
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
+
 class AuthToken < ActiveRecord::Base
   before_create :generate_token
   

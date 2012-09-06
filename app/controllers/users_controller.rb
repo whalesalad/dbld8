@@ -5,16 +5,16 @@ class UsersController < ApplicationController
 
   # The authorization method to give a user a token for auth.
   def authenticate
-    is_facebook = (params.keys & ['facebook_id', 'access_token']).count == 2
+    is_facebook = (params.keys & ['facebook_id', 'facebook_access_token']).count == 2
     is_regular = (params.keys & ['email', 'password']).count == 2
 
     unless is_facebook or is_regular
-      return json_error 'You must specify either an email/password or facebook_id/access_token pair to authenticate.'
+      return json_error 'You must specify either an email/password or facebook_id/facebook_access_token pair to authenticate.'
     end
 
     if is_facebook
       require 'koala'
-      graph = Koala::Facebook::API.new(params[:access_token])
+      graph = Koala::Facebook::API.new(params[:facebook_access_token])
       
       # Perform a facebook api call with the access token to /me
       me = graph.get_object('me', { :fields => 'id' })
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
       # If the resulting object user id matches :facebook_id, 
       unless me['id'] == params[:facebook_id]
         # Let's error out here, since the id's do not match.
-        return json_error 'The facebook_id and access_token supplied do not validate.'
+        return json_error 'The facebook_id and facebook_access_token supplied do not validate.'
       end
       
       # find the user based on their facebook_id, then create&return an AuthToken
@@ -72,15 +72,15 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     # We're creating a regular user
-    if params[:password]
-      @user.password_confirmation = params[:password]
+    if params[:user][:password]
+      @user.password_confirmation = params[:user][:password]
     end
 
-    # If a facebook_id or access_token exists
-    if params[:access_token]
-      @user.facebook_id = params[:facebook_id]
-      @user.facebook_access_token = params[:access_token]
-    end
+    # # If a facebook_id or access_token exists
+    # if params[:user][:access_token]
+    #   @user.facebook_id = params[:user][:facebook_id]
+    #   @user.facebook_access_token = params[:user][:access_token]
+    # end
 
     if @user.save
       respond_with(@user, status: :created, location: @user)
