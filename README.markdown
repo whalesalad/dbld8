@@ -24,15 +24,18 @@ The `POST` should contain the following:
 		"password":"music7" 
 	}}
 
-Breakdown of attributes:
-
 * `single` is `true` or `false`
-* `interested_in` can be one of `guys`, `girls`, or `both`
-* `gender` can be simply `male` or `female`
-* `email` is not required
-* `password` is not required
+* `interested_in` can be `guys`, `girls`, or `both`
+* `gender` can be `male` or `female`
+* `email` is required
+* `password` is required
 
-If this is successful, a full user object will be returned along with a `HTTP/1.1 200 OK`
+#### Response
+
+Please note that the POST responses to create objects will return `201` as a status code.
+	
+	HTTP/1.1 201 CREATED
+	Content-Type: application/json; charset=utf-8
 
 	{
 	    "birthday": "1989-10-02",
@@ -55,45 +58,22 @@ If this is successful, a full user object will be returned along with a `HTTP/1.
 
 To create a new user with Facebook, post their Facebook user ID as `facebook_id` and their access token as `facebook_access_token` provided by authenticating in the iOS app. Their user object will be returned, prepopulated by data from Facebook for your convenience. You can optionally post other details which will override anything returned from Facebook. Anything you do not specify that we can collect from Facebook, will be stored in the user object.
 
-	{
-		user_id: 1
-		photo: http://static.dbld8.com/users/1/profile/103844813.jpg
-		email: 'michael@belluba.com'
-		first_name: 'John',
-		last_name: 'Smith',
-		birthday: 'MM/DD/YYYY',
-		age: 30,
-		status: 'single',
-		interest: 'women',
-		gender: 'male',
-		bio_text: 'I am going to rule the world!'
-		location: {
-			id: 34587,
-			fb_id: 48575,
-			name: 'Washington, DC',
-			lat: -33.334
-			lng: 7.384
-		},
-		interests: [ empty ]
-	}
+#### Example POST
 
-#### Bootstrapping 
+	{"user": {"first_name":"Michael", "facebook_access_token":"BAADoSWsmB7ABADzFoGmmScjU2dxZBhDiA71rwEFVRXGnBXuZB7ZBuLGj9kXlIFCMLjKVoq8FUrfZArjfuy5ZCv8B4gyY6puuYnNimn9ZByE0gJeDuJvyawdOpZA3prf01Q05OSCSPAM1AZDZD", "interested_in":"girls", "facebook_id":"1452030040"}}
 
-Here is an example of bootstrapping a user account by `POST`ing only their `facebook_id` and `facebook_access_token` and having the server populate their user profile.
+#### Response
 
-This is a `POST` to `/users/` with the following body:
+This is the actual response for my Facebook account.
 
-	{ "user": {"facebook_access_token": "AAACEdEose0cBAE9uKi5ilfYuw9ZCxWsvhJ1MP0yDAiSXZCW7FjLrpeeHUErILJVHYQqBpQXLIr9qKnj3C0pDKQIOJyTqwuqncjqkffwSZABijHaPtGm",
-	"facebook_id": "1452030040"
-	}}
-	
-The server will contact facebook, validate the id and auth token work, and then return a `User` object if all is good (`HTTP 201 - Created` response type):
-	
+	HTTP/1.1 201 CREATED
+	Content-Type: application/json; charset=utf-8
+
 	{
 	    "birthday": "1989-10-02",
 	    "bio": null,
 	    "last_name": "Whalen",
-	    "id": 1,
+	    "id": 7,
 	    "facebook_id": 1452030040,
 	    "gender": "male",
 	    "email": "michael@whalesalad.com",
@@ -104,7 +84,8 @@ The server will contact facebook, validate the id and auth token work, and then 
 	    "single": true
 	}
 
-Notice that because we were able to externally fetch their Facebook info, a photo is automatically provided (this does not work currently but will be filled in).
+
+Notice that in this case, the only thing I posted was the users `name`, `facebook_access_token`, `interested_in`, and `facebook_id`. The rest was filled in from Facebook by the server. The only fields ***required*** for this are `facebook_id` and `facebook_access_token`.
 
 ## User Authentication
 
@@ -116,7 +97,19 @@ Now that we have a user object, we'll need to fire one more query to authenticat
 
 **If the user has a regular email/password account**, you `POST` their `email` and `password`.
 
+**PLEASE NOTE:** Unlike creating a user, these properties do not belong inside of a `{ "user": { blah blah }}` object. Also, if this succeeds it responds with a `200` response code rather than `201` (Created) for the POST's to /users/
+
+#### Example POST
+
+	{
+		"email": "marcus@belluba.com",
+		"password": "ilovemyiphone"
+	}
+
 You'll `POST` this data to `/authenticate/`. In return, you will get the token object that you need for all future calls:
+
+	HTTP/1.1 200 OK
+	Content-Type: application/json; charset=utf-8
 
 	{
 	    "user_id": 1,
@@ -131,7 +124,27 @@ Where `Authorization` is the header key, and `Token token=a8c4d5935ecb6b2fcdd4cf
 
 #### GET /me/
 
-I introduced a fun/handy new method. You can `GET /me` as an authenticated user to get the currently authenticated users' profile.
+I introduced a fun/handy new method. You can `GET /me` as an authenticated user to get the currently authenticated user's profile.
+
+#### Response
+
+	HTTP/1.1 200 OK
+	Content-Type: application/json; charset=utf8
+	
+	{
+	    "birthday": "1989-10-02",
+	    "bio": null,
+	    "last_name": "Whalen",
+	    "id": 7,
+	    "facebook_id": 1452030040,
+	    "gender": "male",
+	    "email": "michael@whalesalad.com",
+	    "age": 22,
+	    "photo": null,
+	    "first_name": "Michael",
+	    "interested_in": "girls",
+	    "single": true
+	}
 
 ## User Interests
 
@@ -139,7 +152,7 @@ Interests are like tags. They are simple strings, meant to be unique. Like a Twi
 
 #### GET /interests/
 
-This will fetch all interests from the database.
+**Does not require authentication token.** I removed it so if you'd like to access the interests before creating a user you can. This will fetch all interests from the database. I guess at some point soon we will need to add some sort of limit and pagination parameters as the list will get too long =)
 
 	[
 	    {
@@ -181,6 +194,8 @@ This is not very handy, however. We want to be able to query for interests based
 
 You can pass a `q` query to `/interests/` to search for interests matching that name. Search is case-insensitive.
 
+#### Response (array of interest objects)
+
 	[
 	    {
 	        "name": "Running",
@@ -193,6 +208,8 @@ You can pass a `q` query to `/interests/` to search for interests matching that 
 
 Pass a single `id` to get the details of that interest.
 
+#### Response (single interest object)
+
 	{
 	    "name": "Surfing",
 	    "id": 5,
@@ -203,11 +220,11 @@ Pass a single `id` to get the details of that interest.
 
 You can POST to this endpoint to create a new interest.
 
-Example POST:
+#### POST:
 
 	{ "interest": { "name": "Starbucks" } }
 
-Example response:
+#### Response:
 
 	{
 	    "name": "Starbucks",

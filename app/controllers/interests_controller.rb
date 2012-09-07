@@ -1,4 +1,6 @@
 class InterestsController < ApplicationController
+  skip_before_filter :restrict_access, :only => [:index, :show]
+  
   respond_to :json
 
   def index
