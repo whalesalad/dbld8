@@ -15,6 +15,8 @@ class Interest < ActiveRecord::Base
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :facebook_id, :allow_nil => true
 
+  has_and_belongs_to_many :users
+
   def as_json(options={})
     result = super({ :except => [:created_at, :updated_at] }.merge(options))
   end

@@ -93,6 +93,16 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
+    if params[:user][:interests]
+      _interests = [ ]
+      
+      params[:user][:interests].each do |interest_name|
+        _interests.append Interest.find_or_create_by_name(interest_name)
+      end
+
+      params[:user][:interests] = _interests
+    end
+
     if @user.update_attributes(params[:user])
       return respond_with head: :no_content
     else

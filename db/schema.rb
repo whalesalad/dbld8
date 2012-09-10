@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906002055) do
+ActiveRecord::Schema.define(:version => 20120910172219) do
 
   create_table "auth_tokens", :force => true do |t|
     t.integer  "user_id"
@@ -57,5 +57,13 @@ ActiveRecord::Schema.define(:version => 20120906002055) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+
+  create_table "users_interests", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "interest_id"
+  end
+
+  add_index "users_interests", ["interest_id", "user_id"], :name => "index_users_interests_on_interest_id_and_user_id"
+  add_index "users_interests", ["user_id", "interest_id"], :name => "index_users_interests_on_user_id_and_interest_id"
 
 end

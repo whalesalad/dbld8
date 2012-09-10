@@ -23,9 +23,11 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
+  has_and_belongs_to_many :interests
+
   attr_accessible :email, :password, :facebook_id, 
     :facebook_access_token, :first_name, :last_name, :birthday, 
-    :single, :interested_in, :gender, :bio
+    :single, :interested_in, :gender, :bio, :interests
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -49,6 +51,7 @@ class User < ActiveRecord::Base
     # Add some goodies
     result[:age] = age
     result[:photo] = nil
+    result[:interests] = interests
 
     result
   end
