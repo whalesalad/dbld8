@@ -4,9 +4,17 @@ gem 'rails', '3.2.8'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'pg'
 gem 'haml'
+gem 'thin'
 
 # Facebook
 gem 'koala'
+
+# S3 // AWS
+gem 'fog'
+
+# Images, File Handling
+gem 'rmagick'
+gem 'carrierwave'
 
 # Gems used only for assets and not in production
 group :assets do
@@ -17,9 +25,7 @@ group :assets do
   gem 'bootstrap-sass', '~> 2.0.4.1'
 end
 
-gem 'thin'
-
 group :development, :test do
-  gem 'pry-rails'  
+  gem 'pry-rails'
   gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
 end

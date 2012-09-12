@@ -6,8 +6,13 @@ class InterestsController < ApplicationController
   def index
     @interests = Interest.all
 
+    if params[:user_id]
+      @user = User.find_by_id(params[:user_id])
+      @interests = @user.interests.all
+    end
+
     if params[:query]
-      @interests = Interest.where('name ~* ?', params[:query])
+      @interests = @interests.where('name ~* ?', params[:query])
     end
 
     respond_with @interests

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910172219) do
+ActiveRecord::Schema.define(:version => 20120912043435) do
 
   create_table "auth_tokens", :force => true do |t|
     t.integer  "user_id"
@@ -29,13 +29,24 @@ ActiveRecord::Schema.define(:version => 20120910172219) do
 
   add_index "interests", ["name"], :name => "index_interests_on_name", :unique => true
 
+  create_table "interests_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "interest_id"
+  end
+
+  add_index "interests_users", ["interest_id", "user_id"], :name => "index_users_interests_on_interest_id_and_user_id"
+  add_index "interests_users", ["user_id", "interest_id"], :name => "index_users_interests_on_user_id_and_interest_id"
+
   create_table "locations", :force => true do |t|
-    t.string   "name",                                                     :null => false
-    t.decimal  "lat",                      :precision => 15, :scale => 10
-    t.decimal  "lng",                      :precision => 15, :scale => 10
-    t.integer  "facebook_id", :limit => 8
-    t.datetime "created_at",                                               :null => false
-    t.datetime "updated_at",                                               :null => false
+    t.string   "name",                                                             :null => false
+    t.decimal  "lat",                              :precision => 15, :scale => 10
+    t.decimal  "lng",                              :precision => 15, :scale => 10
+    t.integer  "facebook_id",         :limit => 8
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
+    t.string   "locality"
+    t.string   "administrative_area"
+    t.string   "country"
   end
 
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true
@@ -54,16 +65,9 @@ ActiveRecord::Schema.define(:version => 20120910172219) do
     t.text     "bio"
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
+    t.integer  "location_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-
-  create_table "users_interests", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "interest_id"
-  end
-
-  add_index "users_interests", ["interest_id", "user_id"], :name => "index_users_interests_on_interest_id_and_user_id"
-  add_index "users_interests", ["user_id", "interest_id"], :name => "index_users_interests_on_user_id_and_interest_id"
 
 end

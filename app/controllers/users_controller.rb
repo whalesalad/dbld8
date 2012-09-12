@@ -52,7 +52,7 @@ class UsersController < ApplicationController
   end
 
   def me
-    return render json: authenticated_user
+    render json: authenticated_user
   end
 
   # GET /
@@ -76,11 +76,15 @@ class UsersController < ApplicationController
       @user.password_confirmation = params[:user][:password]
     end
 
-    # # If a facebook_id or access_token exists
-    # if params[:user][:access_token]
-    #   @user.facebook_id = params[:user][:facebook_id]
-    #   @user.facebook_access_token = params[:user][:access_token]
-    # end
+    if params[:user][:interests]
+      _interests = [ ]
+      
+      params[:user][:interests].each do |interest_name|
+        _interests.append Interest.find_or_create_by_name(interest_name)
+      end
+
+      params[:user][:interests] = _interests
+    end
 
     if @user.save
       respond_with(@user, status: :created, location: @user)

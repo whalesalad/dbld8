@@ -23,11 +23,12 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
+  belongs_to :location
   has_and_belongs_to_many :interests
 
   attr_accessible :email, :password, :facebook_id, 
     :facebook_access_token, :first_name, :last_name, :birthday, 
-    :single, :interested_in, :gender, :bio, :interests
+    :single, :interested_in, :gender, :bio, :interests, :location
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -45,13 +46,14 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token]
+    exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token, :location_id]
     result = super({ :except => exclude }.merge(options))
     
     # Add some goodies
     result[:age] = age
     result[:photo] = nil
     result[:interests] = interests
+    result[:location] = location
 
     result
   end
@@ -114,6 +116,7 @@ class User < ActiveRecord::Base
       self.email = me['email']
     end
   end
+
 end
 
 

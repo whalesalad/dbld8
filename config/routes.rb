@@ -1,8 +1,13 @@
 DoubleDate::Application.routes.draw do
   match 'authenticate' => 'users#authenticate'
-  match 'me' => 'users#me'
   
+  get 'me' => 'users#me'
+
   resources :users, :interests, :locations
+
+  resources :users do
+    resources :interests
+  end
 
   root :to => 'home#index'
 
