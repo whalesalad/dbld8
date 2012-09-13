@@ -1,11 +1,28 @@
 DoubleDate::Application.routes.draw do
   match 'authenticate' => 'users#authenticate'
   
-  get 'me' => 'users#me'
+  # get 'me' => 'users#me'
 
-  resources :users, :interests, :locations
+  # resources :users, :interests, :locations
 
-  resources :users do
+  # public methods
+  
+  # post  /users        -> create a user
+  # post  /users/build  -> build a user from a facebook id and access_token
+
+  # token required, anyone can use
+
+  # get   /users        -> search users, useful for finding friends 
+  # get   /locations    -> search users, useful for finding friends  
+
+  # token required, user specific
+
+  # get   /me           -> get user based on token
+  # put   /me           -> update my user data
+  # put   /me/interests -> update my interests
+
+
+  resource :me, :controller => 'me' do
     resources :interests
   end
 
