@@ -6,6 +6,8 @@ class InterestsController < ApplicationController
   def index
     @interests = Interest.all
 
+    respond_with params and return
+
     if params[:user_id]
       @user = User.find_by_id(params[:user_id])
       @interests = @user.interests.all

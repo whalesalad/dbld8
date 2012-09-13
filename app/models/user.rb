@@ -19,7 +19,7 @@
 #
 
 class User < ActiveRecord::Base
-  before_validation :bootstrap_facebook_account, :on => :create
+  # before_validation :bootstrap_facebook_data, :on => :create
 
   has_secure_password
 
@@ -28,7 +28,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :email, :password, :facebook_id, 
     :facebook_access_token, :first_name, :last_name, :birthday, 
-    :single, :interested_in, :gender, :bio, :interests, :location
+    :single, :interested_in, :gender, :bio, :interests, :location,
+    :interests_by_name
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -47,6 +48,7 @@ class User < ActiveRecord::Base
 
   def as_json(options={})
     exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token, :location_id]
+    exclude.push :id if new_record?
     result = super({ :except => exclude }.merge(options))
     
     # Add some goodies
@@ -62,7 +64,7 @@ class User < ActiveRecord::Base
     unless self.facebook_id.blank? or self.facebook_access_token.blank?
       return true
     end
-    return false
+    false
   end
 
   def get_facebook_graph
@@ -70,7 +72,7 @@ class User < ActiveRecord::Base
     Koala::Facebook::API.new facebook_access_token
   end
 
-  def bootstrap_facebook_account
+  def bootstrap_facebook_data
     unless self.facebook_user?
       return
     end
@@ -115,6 +117,13 @@ class User < ActiveRecord::Base
     if self.email.blank?
       self.email = me['email']
     end
+  end
+
+  def interests_by_name=(interests)
+    interests.map! do |interest_name|
+      Interest.find_or_create_by_name(interest_name)
+    end
+    self.interests = interests
   end
 
 end

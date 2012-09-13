@@ -1,9 +1,10 @@
 DoubleDate::Application.routes.draw do
+  
   match 'authenticate' => 'users#authenticate'
   
-  # get 'me' => 'users#me'
+  post 'facebook_build' => 'users#build_from_facebook'
 
-  # resources :users, :interests, :locations
+  resources :users, :only => [:index, :show, :create]
 
   # public methods
   
@@ -13,18 +14,15 @@ DoubleDate::Application.routes.draw do
   # token required, anyone can use
 
   # get   /users        -> search users, useful for finding friends 
-  # get   /locations    -> search users, useful for finding friends  
+  # get   /locations    -> search users, useful for finding friends
 
-  # token required, user specific
+  resource :me, :controller => 'me'
 
-  # get   /me           -> get user based on token
-  # put   /me           -> update my user data
-  # put   /me/interests -> update my interests
+  # Interests, only list and show
+  resources :interests, :only [:index, :show]
 
-
-  resource :me, :controller => 'me' do
-    resources :interests
-  end
+  # Locations, only list and show
+  resources :locations, :only [:index, :show]
 
   root :to => 'home#index'
 

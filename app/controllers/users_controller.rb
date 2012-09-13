@@ -51,10 +51,6 @@ class UsersController < ApplicationController
     return render json: @token
   end
 
-  def me
-    render json: authenticated_user
-  end
-
   # GET /
   def index
     @users = User.all
@@ -76,16 +72,6 @@ class UsersController < ApplicationController
       @user.password_confirmation = params[:user][:password]
     end
 
-    if params[:user][:interests]
-      _interests = [ ]
-      
-      params[:user][:interests].each do |interest_name|
-        _interests.append Interest.find_or_create_by_name(interest_name)
-      end
-
-      params[:user][:interests] = _interests
-    end
-
     if @user.save
       respond_with(@user, status: :created, location: @user)
     else
@@ -93,25 +79,12 @@ class UsersController < ApplicationController
     end
   end
 
-  # PUT
-  def update
-    @user = User.find(params[:id])
+  def build_from_facebook
+    # build and respond with an empty user from facebook
+    @user = User.new(params[:user])
+    @user.bootstrap_facebook_data
 
-    if params[:user][:interests]
-      _interests = [ ]
-      
-      params[:user][:interests].each do |interest_name|
-        _interests.append Interest.find_or_create_by_name(interest_name)
-      end
-
-      params[:user][:interests] = _interests
-    end
-
-    if @user.update_attributes(params[:user])
-      return respond_with head: :no_content
-    else
-      return respond_with(@user, status: :unprocessable_entity)
-    end
+    respond_with @user
   end
 
   # DELETE
@@ -119,9 +92,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
 
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
-    end
+    respond_with head: :no_content
   end
 end
