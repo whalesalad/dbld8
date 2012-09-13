@@ -19,10 +19,10 @@ DoubleDate::Application.routes.draw do
   resource :me, :controller => 'me'
 
   # Interests, only list and show
-  resources :interests, :only [:index, :show]
+  resources :interests, :only => [:index, :show]
 
   # Locations, only list and show
-  resources :locations, :only [:index, :show]
+  resources :locations, :only => [:index, :show]
 
   root :to => 'home#index'
 
