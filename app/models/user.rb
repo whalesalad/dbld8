@@ -26,10 +26,11 @@ class User < ActiveRecord::Base
   belongs_to :location
   has_and_belongs_to_many :interests
 
-  attr_accessible :email, :password, :facebook_id, 
-    :facebook_access_token, :first_name, :last_name, :birthday, 
-    :single, :interested_in, :gender, :bio, :interests, :location,
-    :interests_by_name
+  attr_accessible :email, :password, :first_name, :last_name, :birthday, 
+    :single, :interested_in, :gender, :bio, :interest_ids, :location,
+    :interest_names, :location_id
+
+  attr_accessor :accessible
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -61,10 +62,7 @@ class User < ActiveRecord::Base
   end
 
   def facebook_user?
-    unless self.facebook_id.blank? or self.facebook_access_token.blank?
-      return true
-    end
-    false
+    self.facebook_id.present? and self.facebook_access_token.present?
   end
 
   def get_facebook_graph
@@ -99,10 +97,6 @@ class User < ActiveRecord::Base
       self.interested_in = inverse_gender_map[self.gender]
     end
 
-    # Unfortunately a password needs to be defined. This is a random one we can 
-    # recreate programatically later on if we need to.
-    self.password = "!#{self.id}+%+#{self.facebook_id}!"
-
     taken_rel_status = ['Engaged', 'Married', "It's complicated", 'In a relationship', 
                         'In a civil union', 'In a domestic partnership']
 
@@ -119,12 +113,18 @@ class User < ActiveRecord::Base
     end
   end
 
-  def interests_by_name=(interests)
+  def interest_names=(interests)
     interests.map! do |interest_name|
       Interest.find_or_create_by_name(interest_name)
     end
     self.interests = interests
   end
+
+  private  
+
+  def mass_assignment_authorizer(role = :default)
+    super + (accessible || [])
+  end 
 
 end
 

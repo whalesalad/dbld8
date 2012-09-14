@@ -6,6 +6,10 @@ gem 'pg'
 gem 'haml'
 gem 'thin'
 
+# GEO API Handling
+gem 'rest-client'
+gem 'json'
+
 # Facebook
 gem 'koala'
 

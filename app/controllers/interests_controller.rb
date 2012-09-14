@@ -4,15 +4,10 @@ class InterestsController < ApplicationController
   respond_to :json
 
   def index
-    @interests = Interest.all
-
-    if params[:user_id]
-      @user = User.find_by_id(params[:user_id])
-      @interests = @user.interests.all
-    end
+    @interests = Interest.find(:all)
 
     if params[:query]
-      @interests = @interests.where('name ~* ?', params[:query])
+      @interests = Interest.where('name ~* ?', params[:query])
     end
 
     respond_with @interests

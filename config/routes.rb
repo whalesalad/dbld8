@@ -2,7 +2,7 @@ DoubleDate::Application.routes.draw do
   
   match 'authenticate' => 'users#authenticate'
   
-  post 'users/build' => 'users#build_from_facebook'
+  post 'users/build' => 'users#build_facebook_user'
 
   resources :users, :only => [:index, :show, :create]
 
@@ -12,7 +12,9 @@ DoubleDate::Application.routes.draw do
   resources :interests, :only => [:index, :show]
 
   # Locations
-  resources :locations, :only => [:index, :show]
+  resources :locations, :only => [:index, :show] do
+    get 'search', :on => :collection
+  end
 
   # Home
   root :to => 'home#index'

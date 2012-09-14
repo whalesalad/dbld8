@@ -34,22 +34,24 @@ ActiveRecord::Schema.define(:version => 20120912043435) do
     t.integer "interest_id"
   end
 
-  add_index "interests_users", ["interest_id", "user_id"], :name => "index_users_interests_on_interest_id_and_user_id"
-  add_index "interests_users", ["user_id", "interest_id"], :name => "index_users_interests_on_user_id_and_interest_id"
+  add_index "interests_users", ["interest_id", "user_id"], :name => "index_interests_users_on_interest_id_and_user_id"
+  add_index "interests_users", ["user_id", "interest_id"], :name => "index_interests_users_on_user_id_and_interest_id"
 
   create_table "locations", :force => true do |t|
-    t.string   "name",                                                             :null => false
-    t.decimal  "lat",                              :precision => 15, :scale => 10
-    t.decimal  "lng",                              :precision => 15, :scale => 10
-    t.integer  "facebook_id",         :limit => 8
-    t.datetime "created_at",                                                       :null => false
-    t.datetime "updated_at",                                                       :null => false
+    t.string   "name",                     :null => false
     t.string   "locality"
-    t.string   "administrative_area"
+    t.string   "admin_name"
+    t.string   "admin_code"
     t.string   "country"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.integer  "facebook_id", :limit => 8
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
 
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true
+  add_index "locations", ["name"], :name => "index_locations_on_name", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email"

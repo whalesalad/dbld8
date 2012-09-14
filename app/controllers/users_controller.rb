@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :restrict_access, :only => [:authenticate, :create]
+  skip_before_filter :restrict_access, :only => [:authenticate, :create, :build_facebook_user]
   
   respond_to :json
 
@@ -65,11 +65,21 @@ class UsersController < ApplicationController
 
   # POST
   def create
-    @user = User.new(params[:user])
+    @user = User.new
+
+    # allow editing the facebook_id and facebook_access token 
+    # only for this request.
+    @user.accessible = [:facebook_id, :facebook_access_token]
+
+    @user.update_attributes(params[:user])
 
     # We're creating a regular user
     if params[:user][:password]
       @user.password_confirmation = params[:user][:password]
+    else
+      # Unfortunately a password needs to be defined. This is a random one we can 
+      # recreate programatically later on if we need to.
+      @user.password = "!+%+#{@user.facebook_id}!"
     end
 
     if @user.save
@@ -79,9 +89,11 @@ class UsersController < ApplicationController
     end
   end
 
-  def build_from_facebook
+  def build_facebook_user
     # build and respond with an empty user from facebook
-    @user = User.new(params[:user])
+    @user = User.new
+    @user.accessible = [:facebook_id, :facebook_access_token] 
+    @user.attributes = params[:user]
     @user.bootstrap_facebook_data
 
     respond_with @user
