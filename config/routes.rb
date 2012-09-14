@@ -1,14 +1,22 @@
 DoubleDate::Application.routes.draw do
+  
   match 'authenticate' => 'users#authenticate'
   
-  get 'me' => 'users#me'
+  post 'users/build' => 'users#build_facebook_user'
 
-  resources :users, :interests, :locations
+  resources :users, :only => [:index, :show, :create]
 
-  resources :users do
-    resources :interests
+  resource :me, :controller => "me"
+
+  # Interests
+  resources :interests, :only => [:index, :show]
+
+  # Locations
+  resources :locations, :only => [:index, :show] do
+    get 'search', :on => :collection
   end
 
+  # Home
   root :to => 'home#index'
 
   # The priority is based upon order of creation:

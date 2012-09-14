@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :restrict_access, :only => [:authenticate, :create]
+  skip_before_filter :restrict_access, :only => [:authenticate, :create, :build_facebook_user]
   
   respond_to :json
 
@@ -51,10 +51,6 @@ class UsersController < ApplicationController
     return render json: @token
   end
 
-  def me
-    render json: authenticated_user
-  end
-
   # GET /
   def index
     @users = User.all
@@ -69,21 +65,21 @@ class UsersController < ApplicationController
 
   # POST
   def create
-    @user = User.new(params[:user])
+    @user = User.new
+
+    # allow editing the facebook_id and facebook_access token 
+    # only for this request.
+    @user.accessible = [:facebook_id, :facebook_access_token]
+
+    @user.update_attributes(params[:user])
 
     # We're creating a regular user
     if params[:user][:password]
       @user.password_confirmation = params[:user][:password]
-    end
-
-    if params[:user][:interests]
-      _interests = [ ]
-      
-      params[:user][:interests].each do |interest_name|
-        _interests.append Interest.find_or_create_by_name(interest_name)
-      end
-
-      params[:user][:interests] = _interests
+    else
+      # Unfortunately a password needs to be defined. This is a random one we can 
+      # recreate programatically later on if we need to.
+      @user.password = "!+%+#{@user.facebook_id}!"
     end
 
     if @user.save
@@ -93,25 +89,14 @@ class UsersController < ApplicationController
     end
   end
 
-  # PUT
-  def update
-    @user = User.find(params[:id])
+  def build_facebook_user
+    # build and respond with an empty user from facebook
+    @user = User.new
+    @user.accessible = [:facebook_id, :facebook_access_token] 
+    @user.attributes = params[:user]
+    @user.bootstrap_facebook_data
 
-    if params[:user][:interests]
-      _interests = [ ]
-      
-      params[:user][:interests].each do |interest_name|
-        _interests.append Interest.find_or_create_by_name(interest_name)
-      end
-
-      params[:user][:interests] = _interests
-    end
-
-    if @user.update_attributes(params[:user])
-      return respond_with head: :no_content
-    else
-      return respond_with(@user, status: :unprocessable_entity)
-    end
+    respond_with @user
   end
 
   # DELETE
@@ -119,9 +104,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
 
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
-    end
+    respond_with head: :no_content
   end
 end
