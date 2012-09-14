@@ -2,7 +2,6 @@ class MeController < ApplicationController
   respond_to :json
 
   # The authorization method to give a user a token for auth.
-
   def show
     @user = authenticated_user
 

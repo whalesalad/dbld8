@@ -1,24 +1,17 @@
 !!! 5
 %html
   %head
-    %meta{ :content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible" }
     %meta{ :content => "width=device-width", :name => "viewport" }
 
     %title= full_title(yield(:title))
     
     = stylesheet_link_tag    "application", :media => "all"
-    = csrf_meta_tags
-    = yield(:head)
+    - # = csrf_meta_tags
+    - # = yield(:head)
   
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
   
     #wrapper
-      
-      #main
-        = yield
-
-      .clearfix
-
-      = render 'layouts/footer'
+      = yield
     
-    = javascript_include_tag "application"
+    - # = javascript_include_tag "application"

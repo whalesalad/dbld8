@@ -2,28 +2,19 @@ DoubleDate::Application.routes.draw do
   
   match 'authenticate' => 'users#authenticate'
   
-  post 'facebook_build' => 'users#build_from_facebook'
+  post 'users/build' => 'users#build_from_facebook'
 
   resources :users, :only => [:index, :show, :create]
 
-  # public methods
-  
-  # post  /users        -> create a user
-  # post  /users/build  -> build a user from a facebook id and access_token
+  resource :me, :controller => "me"
 
-  # token required, anyone can use
-
-  # get   /users        -> search users, useful for finding friends 
-  # get   /locations    -> search users, useful for finding friends
-
-  resource :me, :controller => 'me'
-
-  # Interests, only list and show
+  # Interests
   resources :interests, :only => [:index, :show]
 
-  # Locations, only list and show
+  # Locations
   resources :locations, :only => [:index, :show]
 
+  # Home
   root :to => 'home#index'
 
   # The priority is based upon order of creation:
