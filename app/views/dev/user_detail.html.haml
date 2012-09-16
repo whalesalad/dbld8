@@ -1,0 +1,19 @@
+%section.user-detail
+  %h2
+    #{@user}
+    %span= link_to 'Back', dev_users_path
+
+  %section.friendly
+    %p <b>User ID:</b><br/> #{@user.id}
+    %p <b>Email:</b><br/> #{@user.email}
+    %p <b>Facebook ID:</b><br/> #{@user.facebook_id}
+    %p <b>Facebook Access Token:</b><br/> #{@user.facebook_access_token}
+    %p <b>Birthday:</b><br/> #{@user.birthday}
+    %p <b>Single?</b><br/> #{@user.single}
+    %p <b>Interest In?</b><br/> #{@user.interested_in}
+    %p <b>Gender:</b><br/> #{@user.gender}
+    %p <b>Bio:</b><br/> #{@user.bio}
+    %p <b>Created:</b><br/> #{@user.created_at}
+
+  %section.debug
+    = debug @user

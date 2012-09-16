@@ -4,6 +4,11 @@ DoubleDate::Application.routes.draw do
 
   match 'authenticate' => 'users#authenticate'
 
+  namespace :dev do
+    get 'users'
+    get 'users/:id', :action => 'user_detail', :as => 'user_detail'
+  end
+
   resources :users, :only => [:index, :show, :create]
 
   resource :me, :controller => "me" do

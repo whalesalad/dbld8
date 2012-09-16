@@ -1,0 +1,24 @@
+%section.user-list
+  %table
+    %thead
+      %th ID
+      %th Name
+      %th Email
+      %th Facebook ID
+      %th Birthday
+      %th Single
+      %th Interested In
+      %th Gender
+      %th Created
+    
+    - for user in @users
+      %tr
+        %td #{user.id}
+        %td #{link_to user, dev_user_detail_path(user)}
+        %td #{user.email}
+        %td #{user.facebook_id}
+        %td #{user.birthday}
+        %td #{user.single}
+        %td #{user.interested_in}
+        %td #{user.gender}
+        %td #{user.created_at}
