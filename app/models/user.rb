@@ -73,6 +73,10 @@ class User < ActiveRecord::Base
     result
   end
 
+  def to_s
+    "#{first_name} #{last_name}"
+  end
+
   def facebook_user?
     if new_record?
       self.facebook_access_token.present?
