@@ -45,6 +45,10 @@ class UsersController < ApplicationController
       end
     end
 
+    if is_facebook and user.facebook_access_token.present?
+      user.facebook_access_token = params[:facebook_access_token]
+    end
+
     # At this point we have a user. Let's find or create the auth token and return it.
     @token = AuthToken.find_or_create_by_user_id(user.id)
 

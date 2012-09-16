@@ -19,7 +19,7 @@
 #
 
 class User < ActiveRecord::Base
-  # before_validation :bootstrap_facebook_data, :on => :create
+  after_create :fetch_and_store_facebook_photo
 
   has_secure_password
 
@@ -81,10 +81,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def facebook_photo(size=:large)
-    "https://graph.facebook.com/#{facebook_id}/picture?type=#{size}"
-  end
-
   def get_facebook_graph
     require 'koala'
     Koala::Facebook::API.new facebook_access_token
@@ -119,6 +115,27 @@ class User < ActiveRecord::Base
     self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
 
     self.email = me['email']
+  end
+
+  def facebook_photo(size=:large)
+    "https://graph.facebook.com/#{facebook_id}/picture?type=#{size}"
+  end
+
+  def full_size_facebook_photo
+    graph = get_facebook_graph
+    result = graph.fql_query("select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")")
+    if result and result[0].has_key? 'src_big'
+      return result[0]['src_big']
+    end
+  end
+
+  def fetch_and_store_facebook_photo
+    if facebook_user? and photo.blank?
+      photo = UserPhoto.new
+      photo.user_id = self.id
+      photo.remote_image_url = full_size_facebook_photo
+      photo.save!
+    end
   end
 
   def interest_names=(interests)
