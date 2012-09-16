@@ -6,7 +6,11 @@ DoubleDate::Application.routes.draw do
 
   resources :users, :only => [:index, :show, :create]
 
-  resource :me, :controller => "me"
+  resource :me, :controller => "me" do
+    resource :photo, :controller => 'user_photo', :only => [:show, :create]
+  end
+
+  # post 'me/photo' => 'me#create_photo'
 
   # Interests
   resources :interests, :only => [:index, :show]

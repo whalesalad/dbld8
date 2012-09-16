@@ -18,11 +18,4 @@ class MeController < ApplicationController
     end
   end
 
-  # def destroy
-  #   @user = authenticated_user
-    
-  #   @user.destroy
-
-  #   respond_with head: :no_content
-  # end
 end

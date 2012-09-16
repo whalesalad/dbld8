@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   belongs_to :location
   has_and_belongs_to_many :interests
 
+  has_one :photo, :class_name => 'UserPhoto'
+
   attr_accessible :email, :password, :first_name, :last_name, :birthday, 
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
@@ -43,8 +45,10 @@ class User < ActiveRecord::Base
 
   # Handles calculating the users' age (even with leap year!)
   def age
-    now = Time.now.utc.to_date
-    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+    if birthday.present?
+      now = Time.now.utc.to_date
+      return now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+    end
   end
 
   def as_json(options={})
@@ -54,7 +58,7 @@ class User < ActiveRecord::Base
     
     # Add some goodies
     result[:age] = age
-    result[:photo] = nil
+    result[:photo] = photo
     result[:interests] = interests
     result[:location] = location
 
