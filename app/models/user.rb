@@ -58,9 +58,17 @@ class User < ActiveRecord::Base
     
     # Add some goodies
     result[:age] = age
-    result[:photo] = photo
-    result[:interests] = interests
-    result[:location] = location
+    
+    if photo.present?
+      result[:photo] = photo
+    elsif facebook_user?
+      result[:photo] = {
+        :thumb => facebook_photo(:large)
+      }
+    end
+
+    result[:interests] = interests if interests.present?
+    result[:location] = location if location.present?
 
     result
   end
@@ -71,6 +79,10 @@ class User < ActiveRecord::Base
     else
       self.facebook_id.present?
     end
+  end
+
+  def facebook_photo(size=:large)
+    "https://graph.facebook.com/#{facebook_id}/picture?type=#{size}"
   end
 
   def get_facebook_graph
