@@ -1,8 +1,8 @@
 DoubleDate::Application.routes.draw do
   
-  match 'authenticate' => 'users#authenticate'
-  
   post 'users/build' => 'users#build_facebook_user'
+
+  match 'authenticate' => 'users#authenticate'
 
   resources :users, :only => [:index, :show, :create]
 

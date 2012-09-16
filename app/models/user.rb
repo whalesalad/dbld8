@@ -62,7 +62,11 @@ class User < ActiveRecord::Base
   end
 
   def facebook_user?
-    self.facebook_id.present? and self.facebook_access_token.present?
+    if new_record?
+      self.facebook_access_token.present?
+    else
+      self.facebook_id.present?
+    end
   end
 
   def get_facebook_graph
@@ -78,24 +82,16 @@ class User < ActiveRecord::Base
     graph = self.get_facebook_graph()
     me = graph.get_object('me')
 
+    self.facebook_id = me['id']
+
     # This is horrible code, needs to be refactored to loop
-    if self.first_name.blank?
-      self.first_name = me['first_name']
-    end
-
-    if self.last_name.blank?
-      self.last_name = me['last_name']
-    end
-
-    if self.gender.blank?
-      self.gender = me['gender']
-    end
+    self.first_name = me['first_name']
+    self.last_name = me['last_name']
+    self.gender = me['gender']
 
     inverse_gender_map = { 'male' => 'girls', 'female' => 'guys' }
 
-    if self.interested_in.blank?
-      self.interested_in = inverse_gender_map[self.gender]
-    end
+    self.interested_in = inverse_gender_map[self.gender]
 
     taken_rel_status = ['Engaged', 'Married', "It's complicated", 'In a relationship', 
                         'In a civil union', 'In a domestic partnership']
@@ -104,19 +100,16 @@ class User < ActiveRecord::Base
       self.single = false
     end
 
-    if self.birthday.blank?
-      self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
-    end
+    self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
 
-    if self.email.blank?
-      self.email = me['email']
-    end
+    self.email = me['email']
   end
 
   def interest_names=(interests)
     interests.map! do |interest_name|
       Interest.find_or_create_by_name(interest_name)
     end
+
     self.interests = interests
   end
 

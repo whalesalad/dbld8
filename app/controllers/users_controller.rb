@@ -89,21 +89,17 @@ class UsersController < ApplicationController
     end
   end
 
+  # Build and return an empty user from Facebookski
   def build_facebook_user
-    # build and respond with an empty user from facebook
+    unless params[:facebook_access_token]
+      return json_error 'You must specify a facebook_access_token in order to build a user.'
+    end
+
     @user = User.new
-    @user.accessible = [:facebook_id, :facebook_access_token] 
-    @user.attributes = params[:user]
+    @user.facebook_access_token = params[:facebook_access_token]
     @user.bootstrap_facebook_data
 
     respond_with @user
   end
 
-  # DELETE
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-
-    respond_with head: :no_content
-  end
 end
