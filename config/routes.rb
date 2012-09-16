@@ -1,12 +1,16 @@
 DoubleDate::Application.routes.draw do
   
-  match 'authenticate' => 'users#authenticate'
-  
   post 'users/build' => 'users#build_facebook_user'
+
+  match 'authenticate' => 'users#authenticate'
 
   resources :users, :only => [:index, :show, :create]
 
-  resource :me, :controller => "me"
+  resource :me, :controller => "me" do
+    resource :photo, :controller => 'user_photo', :only => [:show, :create]
+  end
+
+  # post 'me/photo' => 'me#create_photo'
 
   # Interests
   resources :interests, :only => [:index, :show]

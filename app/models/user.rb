@@ -19,12 +19,14 @@
 #
 
 class User < ActiveRecord::Base
-  # before_validation :bootstrap_facebook_data, :on => :create
+  after_create :fetch_and_store_facebook_photo
 
   has_secure_password
 
   belongs_to :location
   has_and_belongs_to_many :interests
+
+  has_one :photo, :class_name => 'UserPhoto'
 
   attr_accessible :email, :password, :first_name, :last_name, :birthday, 
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
@@ -43,8 +45,10 @@ class User < ActiveRecord::Base
 
   # Handles calculating the users' age (even with leap year!)
   def age
-    now = Time.now.utc.to_date
-    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+    if birthday.present?
+      now = Time.now.utc.to_date
+      return now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+    end
   end
 
   def as_json(options={})
@@ -54,15 +58,27 @@ class User < ActiveRecord::Base
     
     # Add some goodies
     result[:age] = age
-    result[:photo] = nil
-    result[:interests] = interests
-    result[:location] = location
+    
+    if photo.present?
+      result[:photo] = photo
+    elsif facebook_user?
+      result[:photo] = {
+        :thumb => facebook_photo(:large)
+      }
+    end
+
+    result[:interests] = interests if interests.present?
+    result[:location] = location if location.present?
 
     result
   end
 
   def facebook_user?
-    self.facebook_id.present? and self.facebook_access_token.present?
+    if new_record?
+      self.facebook_access_token.present?
+    else
+      self.facebook_id.present?
+    end
   end
 
   def get_facebook_graph
@@ -78,24 +94,16 @@ class User < ActiveRecord::Base
     graph = self.get_facebook_graph()
     me = graph.get_object('me')
 
+    self.facebook_id = me['id']
+
     # This is horrible code, needs to be refactored to loop
-    if self.first_name.blank?
-      self.first_name = me['first_name']
-    end
-
-    if self.last_name.blank?
-      self.last_name = me['last_name']
-    end
-
-    if self.gender.blank?
-      self.gender = me['gender']
-    end
+    self.first_name = me['first_name']
+    self.last_name = me['last_name']
+    self.gender = me['gender']
 
     inverse_gender_map = { 'male' => 'girls', 'female' => 'guys' }
 
-    if self.interested_in.blank?
-      self.interested_in = inverse_gender_map[self.gender]
-    end
+    self.interested_in = inverse_gender_map[self.gender]
 
     taken_rel_status = ['Engaged', 'Married', "It's complicated", 'In a relationship', 
                         'In a civil union', 'In a domestic partnership']
@@ -104,12 +112,29 @@ class User < ActiveRecord::Base
       self.single = false
     end
 
-    if self.birthday.blank?
-      self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
-    end
+    self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
 
-    if self.email.blank?
-      self.email = me['email']
+    self.email = me['email']
+  end
+
+  def facebook_photo(size=:large)
+    "https://graph.facebook.com/#{facebook_id}/picture?type=#{size}"
+  end
+
+  def full_size_facebook_photo
+    graph = get_facebook_graph
+    result = graph.fql_query("select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")")
+    if result and result[0].has_key? 'src_big'
+      return result[0]['src_big']
+    end
+  end
+
+  def fetch_and_store_facebook_photo
+    if facebook_user? and photo.blank?
+      photo = UserPhoto.new
+      photo.user_id = self.id
+      photo.remote_image_url = full_size_facebook_photo
+      photo.save!
     end
   end
 
@@ -117,6 +142,7 @@ class User < ActiveRecord::Base
     interests.map! do |interest_name|
       Interest.find_or_create_by_name(interest_name)
     end
+
     self.interests = interests
   end
 
