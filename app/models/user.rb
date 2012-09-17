@@ -131,14 +131,19 @@ class User < ActiveRecord::Base
     if result.any? and result[0].has_key? 'src_big'
       return result[0]['src_big']
     end
+    false
   end
 
   def fetch_and_store_facebook_photo
     if facebook_user? and photo.blank?
-      photo = UserPhoto.new
-      photo.user_id = self.id
-      photo.remote_image_url = full_size_facebook_photo
-      photo.save!
+      full_size_photo = full_size_facebook_photo
+
+      if full_size_photo
+        photo = UserPhoto.new
+        photo.user_id = self.id
+        photo.remote_image_url = full_size_facebook_photo
+        photo.save!
+      end
     end
   end
 
