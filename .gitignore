@@ -4,22 +4,16 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
-#Ignore foreman env file?
-.env
-
-*.DS_Store
-
 # Ignore bundler config
 /.bundle
-
-# Ignore the default SQLite database.
-/db/*.sqlite3
+/.env
 
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp
 
-/public/system/*
+/public/assets
+/public/system
 .sass-cache/
 
 # Ignore Solr data and process ident files

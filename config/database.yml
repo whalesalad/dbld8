@@ -40,4 +40,4 @@ production:
   database: doubledate 
   pool: 5
   username: doubledate
-  password: never fly without your wings
+  password: "never fly without your wings"
