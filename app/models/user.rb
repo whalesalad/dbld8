@@ -128,7 +128,7 @@ class User < ActiveRecord::Base
   def full_size_facebook_photo
     graph = get_facebook_graph
     result = graph.fql_query("select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")")
-    if result and result[0].has_key? 'src_big'
+    if result.any? and result[0].has_key? 'src_big'
       return result[0]['src_big']
     end
   end
