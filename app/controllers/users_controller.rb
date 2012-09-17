@@ -5,7 +5,8 @@ class UsersController < ApplicationController
 
   # The authorization method to give a user a token for auth.
   def authenticate
-    is_facebook = (params.keys & ['facebook_id', 'facebook_access_token']).count == 2
+    # is_facebook = (params.keys & ['facebook_id', 'facebook_access_token']).count == 2
+    is_facebook = params.has_key? :facebook_access_token
     is_regular = (params.keys & ['email', 'password']).count == 2
 
     unless is_facebook or is_regular
@@ -19,17 +20,17 @@ class UsersController < ApplicationController
       # Perform a facebook api call with the access token to /me
       me = graph.get_object('me', { :fields => 'id' })
       
-      # If the resulting object user id matches :facebook_id, 
-      unless me['id'] == params[:facebook_id]
-        # Let's error out here, since the id's do not match.
-        return json_error 'The facebook_id and facebook_access_token supplied do not validate.'
-      end
+      # # If the resulting object user id matches :facebook_id, 
+      # unless me['id'] == params[:facebook_id]
+      #   # Let's error out here, since the id's do not match.
+      #   return json_error 'The facebook_id and facebook_access_token supplied do not validate.'
+      # end
       
       # find the user based on their facebook_id, then create&return an AuthToken
-      user = User.find_by_facebook_id(params[:facebook_id])
+      user = User.find_by_facebook_id(me['id'])
 
       unless user
-        return json_not_found 'A facebook user does not exist for that facebook_id.'
+        return json_not_found 'A facebook user does not exist for the user associated with that access token.'
       end
       # at this point we have a user.
     elsif is_regular
@@ -45,8 +46,9 @@ class UsersController < ApplicationController
       end
     end
 
-    if is_facebook and user.facebook_access_token.present?
+    if is_facebook
       user.facebook_access_token = params[:facebook_access_token]
+      user.save!
     end
 
     # At this point we have a user. Let's find or create the auth token and return it.
