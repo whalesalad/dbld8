@@ -17,41 +17,38 @@ class UsersController < ApplicationController
       require 'koala'
       graph = Koala::Facebook::API.new(params[:facebook_access_token])
       
-      # Perform a facebook api call with the access token to /me
+      # Perform a Facebook API call to see if the user exists.
       me = graph.get_object('me', { :fields => 'id' })
       
-      # # If the resulting object user id matches :facebook_id, 
-      # unless me['id'] == params[:facebook_id]
-      #   # Let's error out here, since the id's do not match.
-      #   return json_error 'The facebook_id and facebook_access_token supplied do not validate.'
-      # end
-      
-      # find the user based on their facebook_id, then create&return an AuthToken
       user = User.find_by_facebook_id(me['id'])
 
+      # User not found?
       unless user
         return json_not_found 'A facebook user does not exist for the user associated with that access token.'
       end
-      # at this point we have a user.
+    
     elsif is_regular
-      # Right now, find any user by an email address and just 
+      # Right now, find any user by an email address
       user = User.find_by_email(params[:email])
 
+      # User not found?
       unless user
         return json_not_found 'A user does not exist for the email address specified.'
       end
 
+      # Try and auth the user
       unless user.authenticate(params[:password])
         return json_error 'The password specified was incorrect.'
       end
     end
 
+    # Update the users' facebook_access_token if possible.
     if is_facebook
       user.facebook_access_token = params[:facebook_access_token]
       user.save!
     end
 
-    # At this point we have a user. Let's find or create the auth token and return it.
+    # We've got a user. Let's find or create the auth token and return it.
     @token = AuthToken.find_or_create_by_user_id(user.id)
 
     return render json: @token
@@ -73,10 +70,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new
 
-    # allow editing the facebook_id and facebook_access token 
-    # only for this request.
+    # allow editing the facebook_id and facebook_access token only for this request.
     @user.accessible = [:facebook_id, :facebook_access_token]
 
+    # Update the user
     @user.update_attributes(params[:user])
 
     # We're creating a regular user

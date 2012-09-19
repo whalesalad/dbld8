@@ -57,8 +57,10 @@ class User < ActiveRecord::Base
     result = super({ :except => exclude }.merge(options))
     
     # Add some goodies
-    result[:age] = age
-    
+    unless new_record?
+      result[:age] = age
+    end
+
     if photo.present?
       result[:photo] = photo
     elsif facebook_user?
@@ -147,12 +149,17 @@ class User < ActiveRecord::Base
     end
   end
 
-  def interest_names=(interests)
-    interests.map! do |interest_name|
-      Interest.find_or_create_by_name(interest_name)
+  def interest_names=(interest_names)
+    interest_names.map! do |name|
+      Interest.find_or_create_by_name(name.strip)
     end
 
-    self.interests = interests
+    self.interests = interest_names
+    # _interests.map! do |interest_name|
+    #   Interest.find_or_create_by_name(interest_name)
+    # end
+
+    # @interests = _interests
   end
 
   private  

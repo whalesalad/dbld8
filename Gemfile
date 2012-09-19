@@ -6,6 +6,9 @@ gem 'pg'
 gem 'haml'
 gem 'thin'
 
+gem 'cucumber'
+gem 'json_spec'
+
 # GEO API Handling
 gem 'rest-client'
 gem 'json'
