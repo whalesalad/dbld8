@@ -18,7 +18,6 @@ class InterestsController < ApplicationController
     respond_with @interest
   end
 
-  # POST
   def create
     @interest = Interest.new(params[:interest])
 
