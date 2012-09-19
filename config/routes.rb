@@ -1,8 +1,8 @@
 DoubleDate::Application.routes.draw do
   
-  post 'users/build' => 'users#build_facebook_user'
+  post 'users/build' => 'users#build_facebook_user', :as => 'build_user'
 
-  match 'authenticate' => 'users#authenticate'
+  post 'authenticate' => 'users#authenticate'
 
   namespace :dev do
     get 'users'
@@ -11,7 +11,7 @@ DoubleDate::Application.routes.draw do
 
   resources :users, :only => [:index, :show, :create]
 
-  resource :me, :controller => "me" do
+  resource :me, :controller => "me", :only => [:show, :update] do
     resource :photo, :controller => 'user_photo', :only => [:show, :create]
   end
 

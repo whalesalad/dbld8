@@ -12,7 +12,7 @@ class MeController < ApplicationController
     @user = authenticated_user
 
     if @user.update_attributes(params[:user])
-      return respond_with head: :no_content
+      return respond_with @user
     else
       return respond_with(@user, status: :unprocessable_entity)
     end
