@@ -6,9 +6,6 @@ gem 'pg'
 gem 'haml'
 gem 'thin'
 
-gem 'cucumber'
-gem 'json_spec'
-
 # GEO API Handling
 gem 'rest-client'
 gem 'json'
@@ -33,6 +30,8 @@ group :assets do
 end
 
 group :development, :test do
+  gem 'cucumber'
+  gem 'json_spec'
   gem 'pry-rails'
   gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
 end
