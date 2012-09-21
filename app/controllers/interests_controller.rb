@@ -1,5 +1,5 @@
 class InterestsController < ApplicationController
-  skip_before_filter :restrict_access, :only => [:index, :show]
+  skip_before_filter :require_token_auth, :only => [:index, :show]
   
   respond_to :json
 

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  skip_before_filter :restrict_access, :all
+  skip_before_filter :require_token_auth, :all
 
   def index
     render :layout => false

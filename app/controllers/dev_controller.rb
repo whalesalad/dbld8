@@ -1,5 +1,5 @@
 class DevController < ApplicationController
-  skip_before_filter :restrict_access, :all
+  skip_before_filter :require_token_auth, :all
   
   respond_to :html, :json
 

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :restrict_access, :only => [:authenticate, :create, :build_facebook_user]
+  skip_before_filter :require_token_auth, :only => [:authenticate, :create, :build_facebook_user]
   
   respond_to :json
 

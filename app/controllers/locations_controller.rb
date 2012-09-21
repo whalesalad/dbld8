@@ -2,7 +2,7 @@ require 'rest_client'
 require 'json'
 
 class LocationsController < ApplicationController
-  skip_before_filter :restrict_access, :only => [:index, :show, :search]
+  skip_before_filter :require_token_auth, :only => [:index, :show, :search]
   
   respond_to :json
 

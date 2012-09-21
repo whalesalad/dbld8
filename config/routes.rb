@@ -4,10 +4,10 @@ DoubleDate::Application.routes.draw do
 
   post 'authenticate' => 'users#authenticate'
 
-  namespace :dev do
-    get 'users'
-    get 'users/:id', :action => 'user_detail', :as => 'user_detail'
-  end
+  # namespace :dev do
+  #   get 'users'
+  #   get 'users/:id', :action => 'user_detail', :as => 'user_detail'
+  # end
 
   resources :users, :only => [:index, :show, :create]
 
@@ -22,6 +22,14 @@ DoubleDate::Application.routes.draw do
   # Locations
   resources :locations, :only => [:index, :show] do
     get 'search', :on => :collection
+  end
+
+  # Admin
+  namespace :admin do
+    match '', :action => 'index'
+    resources :users, :only => [:index, :show]
+    # resources :posts#, only: [:index, :show, :new, :create, :update, :edit, :destroy]
+    # resources :tags,  only: [:new, :create, :update, :edit, :destroy, :index]
   end
 
   # Home

@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   belongs_to :location
   has_and_belongs_to_many :interests
 
+  has_one :token, :class_name => 'AuthToken'
   has_one :photo, :class_name => 'UserPhoto'
 
   attr_accessible :email, :password, :first_name, :last_name, :birthday, 
@@ -155,11 +156,6 @@ class User < ActiveRecord::Base
     end
 
     self.interests = interest_names
-    # _interests.map! do |interest_name|
-    #   Interest.find_or_create_by_name(interest_name)
-    # end
-
-    # @interests = _interests
   end
 
   private  

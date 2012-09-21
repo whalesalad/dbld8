@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   # protect_from_forgery
   # skip_before_filter :verify_authenticity_token
-  before_filter :restrict_access
+  before_filter :require_token_auth
 
   def json_error(error_message)
     return render json: { :error => error_message }, :status => 500
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def restrict_access
+  def require_token_auth
     authenticate_or_request_with_http_token do |token, options|
       token = AuthToken.find_by_token(token)
       return head :unauthorized unless token
