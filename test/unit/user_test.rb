@@ -16,6 +16,7 @@
 #  bio                   :text
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
+#  location_id           :integer
 #
 
 require 'test_helper'

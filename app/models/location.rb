@@ -2,16 +2,17 @@
 #
 # Table name: locations
 #
-#  id                  :integer         not null, primary key
-#  name                :string(255)     not null
-#  lat                 :decimal(15, 10)
-#  lng                 :decimal(15, 10)
-#  facebook_id         :integer(8)
-#  created_at          :datetime        not null
-#  updated_at          :datetime        not null
-#  locality            :string(255)
-#  administrative_area :string(255)
-#  country             :string(255)
+#  id          :integer         not null, primary key
+#  name        :string(255)     not null
+#  locality    :string(255)
+#  admin_name  :string(255)
+#  admin_code  :string(255)
+#  country     :string(255)
+#  latitude    :float
+#  longitude   :float
+#  facebook_id :integer(8)
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
 #
 
 require 'rest_client'
@@ -42,7 +43,7 @@ class Location < ActiveRecord::Base
     def find_near_point(latitude, longitude)
       results = Array.new
 
-      raw_locations = raw_geonames_places_near latitude, longitude
+      raw_locations = raw_geonames_places_near(latitude, longitude)
 
       raw_locations.each do |raw_location|
         if raw_location['population'] > 10
@@ -64,9 +65,8 @@ class Location < ActiveRecord::Base
         end
       end
 
+      # Sort (by distance) and return the results
       results.sort_by! { |l| l.distance.to_i }
-
-      return results
     end
   end
   # End class methods
@@ -74,6 +74,7 @@ class Location < ActiveRecord::Base
 
   def as_json(options={})
     exclude = [:created_at, :updated_at]
+    
     result = super({ :except => exclude }.merge(options))
 
     if country == 'US' && admin_code.present?
@@ -82,6 +83,10 @@ class Location < ActiveRecord::Base
       else
         result[:name] = "#{locality}, #{admin_code}"
       end
+    end
+
+    if distance.present?
+      result[:distance] = distance
     end
     
     result
