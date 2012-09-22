@@ -18,11 +18,9 @@ DoubleDate::Application.routes.draw do
 
   # Interests
   resources :interests, :only => [:index, :show]
-
+  
   # Locations
-  resources :locations, :only => [:index, :show] do
-    get 'search', :on => :collection
-  end
+  resources :locations, :only => [:index, :show]
 
   # Admin
   namespace :admin do

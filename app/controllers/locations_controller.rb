@@ -1,17 +1,11 @@
 class LocationsController < ApplicationController
-  skip_before_filter :require_token_auth, :only => [:index, :show, :search]
+  skip_before_filter :require_token_auth, :only => [:index, :show]
   before_filter :get_location, :only => [:show]
   
   respond_to :json
   
   def index
-    @locations = Location.all
-    respond_with @locations
-  end
-
-
-  def search
-    @locations = []
+    @locations = Location.find(:all)
     
     if params[:latitude] and params[:longitude]
       # we're doing a geo query!!!
@@ -21,7 +15,6 @@ class LocationsController < ApplicationController
     respond_with @locations
   end
 
-  
   def show
     respond_with @location
   end

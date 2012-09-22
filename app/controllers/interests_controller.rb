@@ -14,11 +14,9 @@ class InterestsController < ApplicationController
     respond_with @interests
   end
 
-
   def show
     respond_with @interest
   end
-
 
   def create
     @interest = Interest.new(params[:interest])
@@ -29,7 +27,6 @@ class InterestsController < ApplicationController
       respond_with(@interest, status: :unprocessable_entity)
     end
   end
-  
 
   protected
 
