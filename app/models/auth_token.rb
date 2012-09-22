@@ -16,8 +16,12 @@ class AuthToken < ActiveRecord::Base
   
   belongs_to :user
 
+  def to_s
+    token
+  end
+
   def as_json(options={})
-    { :user_id => user_id, :token => token }
+    return { :user_id => user_id, :token => token }
   end
   
   private

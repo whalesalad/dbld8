@@ -1,0 +1,32 @@
+.page-header
+  %h1
+    All Users
+    %small #{pluralize(@users.count, 'User')} Total
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Name
+      %th Email
+      %th FB ID
+      %th Birthday
+      %th Gender
+      %th Status
+      %th Interested
+      %th Created
+  
+  %tbody
+    - for user in @users
+      %tr{ :class => user.facebook? ? 'info' : '' }
+        %td #{user.id}
+        %td 
+          %b
+            #{link_to user, admin_user_path(user)}
+        %td #{user.email}
+        %td #{user.facebook_id}
+        %td #{l user.birthday, :format => :medium}
+        %td #{user.gender.titlecase}
+        %td #{user.status}
+        %td #{user.interested_in.titlecase}
+        %td #{l user.created_at, :format => :medium}

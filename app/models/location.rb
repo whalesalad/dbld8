@@ -72,18 +72,26 @@ class Location < ActiveRecord::Base
   # End class methods
   # 2 indent ruby is dizzying. end end end end end.
 
+  def name
+    if country == 'US' && admin_code.present?
+      if admin_code == 'DC'
+        return admin_name
+      else
+        return "#{locality}, #{admin_code}"
+      end
+    end
+
+    @name
+  end
+
+  def to_s
+    name
+  end
+
   def as_json(options={})
     exclude = [:created_at, :updated_at]
     
     result = super({ :except => exclude }.merge(options))
-
-    if country == 'US' && admin_code.present?
-      if admin_code == 'DC'
-        result[:name] = admin_name
-      else
-        result[:name] = "#{locality}, #{admin_code}"
-      end
-    end
 
     if distance.present?
       result[:distance] = distance

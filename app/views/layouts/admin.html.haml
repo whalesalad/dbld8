@@ -1,0 +1,39 @@
+!!! 5
+%html
+  %head
+    %meta{ :content => "width=device-width", :name => "viewport" }
+
+    %title= full_title(yield(:title))
+    
+    = stylesheet_link_tag "admin/admin", :media => "all"
+    = csrf_meta_tags
+    = yield(:head)
+  
+  %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          %ul.nav
+            %li= link_to 'Home', admin_path
+            %li= link_to 'API Docs', '#'
+
+    .container-fluid
+      .row-fluid
+        .span2
+          - if content_for? :sidebar
+            = yield :sidebar
+          - else
+            .well.sidebar-nav
+              %ul.nav.nav-list
+                %li{ :class => current_section?(:controller => "users") ? 'active' : '' }
+                  = link_to 'Users', admin_users_path
+                %li{ :class => current_section?(:controller => 'interests') ? 'active' : '' }
+                  = link_to 'Interests', admin_interests_path
+                %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
+                  = link_to 'Locations', admin_locations_path
+        
+        .span10
+          = yield
+      
+    
+    = javascript_include_tag "admin"

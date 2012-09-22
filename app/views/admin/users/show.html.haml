@@ -1,0 +1,65 @@
+%section.user-detail
+  %h1
+    #{@user}
+    %small
+      #{(@user.facebook?) ? 'Facebook' : 'Email/Pass'} User &mdash;
+      Created #{l @user.created_at, :format => :long}
+
+  .row-fluid
+    .span6
+
+      %h4 Bio
+
+      %blockquote
+        = @user.bio
+
+      %h4 DBLD8 Token: 
+      %p
+        - if @user.token.present?
+          %code #{@user.token}
+        - else
+          This user hasn't authenticated yet. Tokens are created on first login.
+    
+      %h4 Basic Info
+
+      %dl.dl-horizontal
+        %dt User ID
+        %dd #{@user.id}
+
+        %dt Email
+        %dd #{mail_to @user.email}
+
+        %dt Facebook ID
+        %dd 
+          - if @user.facebook?
+            #{@user.facebook_id}
+          - else
+            N/A
+
+        %dt Birthday
+        %dd #{l @user.birthday, :format => :long}
+
+        %dt Status
+        %dd #{@user.status}
+
+        %dt Interested In?
+        %dd #{@user.interested_in.titlecase}
+
+        %dt Gender
+        %dd #{@user.gender.titlecase}
+
+        %dt Created
+        %dd #{@user.created_at}
+
+
+      %h4 Location
+
+      %p
+        - if @user.location.present?
+          #{@user.location}
+        - else
+          No location defined.
+
+    .span6
+      %h4 Raw User Object
+      = debug @user

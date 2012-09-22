@@ -1,37 +1,41 @@
 class Admin::UsersController < AdminController
-  before_filter :fetch_user, :only => [:show, :edit, :update, :destroy]
+  before_filter :get_user, :only => [:show, :edit, :update, :destroy]
   # cache_sweeper :post_sweeper, only: [:create, :update, :destroy]
 
   def index
-    @posts = User.order('created_at DESC')
+    @users = User.order('created_at DESC')
   end
 
-  def new
-    @post = User.new
+  def show
+    # respond_with
   end
 
-  def edit
+  # def new
+  #   @user = User.new
+  # end
 
-  end
+  # def edit
 
-  def create
-    @post = Post.new(params[:post])
+  # end
+
+  # def create
+  #   @post = Post.new(params[:post])
     
-    if @post.save
-      redirect_to admin_posts_path, notice: 'BOOM look at you blogging like a boss.'
-    else
-      render action: "new"
-    end
-  end
+  #   if @post.save
+  #     redirect_to admin_posts_path, notice: 'BOOM look at you blogging like a boss.'
+  #   else
+  #     render action: "new"
+  #   end
+  # end
 
-  def update
-    if @post.update_attributes(params[:post])
-      flash[:notice] = 'Successfully updated post.'
-      redirect_to admin_posts_path
-    else
-      render 'edit'
-    end
-  end
+  # def update
+  #   if @post.update_attributes(params[:post])
+  #     flash[:notice] = 'Successfully updated post.'
+  #     redirect_to admin_posts_path
+  #   else
+  #     render 'edit'
+  #   end
+  # end
 
   def destroy
     @post.destroy
@@ -41,7 +45,7 @@ class Admin::UsersController < AdminController
 
   protected
 
-  def fetch_user
-    @user = Post.find_by_id(params[:id])
+  def get_user
+    @user = User.find_by_id(params[:id])
   end
 end

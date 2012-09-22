@@ -53,6 +53,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def status
+    single? ? "Single" : "Taken"
+  end
+
   def as_json(options={})
     exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token, :location_id]
     exclude.push :id if new_record?
@@ -65,7 +69,7 @@ class User < ActiveRecord::Base
 
     if photo.present?
       result[:photo] = photo
-    elsif facebook_user?
+    elsif facebook?
       result[:photo] = {
         :thumb => facebook_photo(:large)
       }
@@ -81,7 +85,7 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def facebook_user?
+  def facebook?
     if new_record?
       self.facebook_access_token.present?
     else
@@ -95,7 +99,7 @@ class User < ActiveRecord::Base
   end
 
   def bootstrap_facebook_data
-    unless self.facebook_user?
+    unless self.facebook?
       return
     end
 
@@ -139,7 +143,7 @@ class User < ActiveRecord::Base
   end
 
   def fetch_and_store_facebook_photo
-    if facebook_user? and photo.blank?
+    if facebook? and photo.blank?
       full_size_photo = full_size_facebook_photo
 
       if full_size_photo
