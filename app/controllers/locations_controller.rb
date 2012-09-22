@@ -3,14 +3,15 @@ require 'json'
 
 class LocationsController < ApplicationController
   skip_before_filter :require_token_auth, :only => [:index, :show, :search]
+  before_filter :get_location, :only => [:show]
   
   respond_to :json
-
+  
   def index
     @locations = Location.all
-
     respond_with @locations
   end
+
 
   def search
     @locations = []
@@ -50,22 +51,28 @@ class LocationsController < ApplicationController
       @locations.sort_by! { |l| l[:distance].to_i }
     end
 
-    respond_with @locations and return
+    respond_with @locations
   end
 
+  
   def show
-    @location = Location.find(params[:id])
     respond_with @location
   end
 
-  # POST
+  
   def create
-    @interest = Interest.new(params[:interest])
+    @location = Location.new(params[:location])
 
-    if @interest.save
-      respond_with(@interest, status: :created, location: @interest)
+    if @location.save
+      respond_with(@location, status: :created, location: @location)
     else
-      respond_with(@interest, status: :unprocessable_entity)
+      respond_with(@location, status: :unprocessable_entity)
     end
+  end
+
+  protected
+
+  def get_location
+    @location = Location.find(params[:id])
   end
 end

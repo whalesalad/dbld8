@@ -1,5 +1,6 @@
 class InterestsController < ApplicationController
   skip_before_filter :require_token_auth, :only => [:index, :show]
+  before_filter :get_interest, :only => [:show]
   
   respond_to :json
 
@@ -13,10 +14,11 @@ class InterestsController < ApplicationController
     respond_with @interests
   end
 
+
   def show
-    @interest = Interest.find(params[:id])
     respond_with @interest
   end
+
 
   def create
     @interest = Interest.new(params[:interest])
@@ -26,5 +28,12 @@ class InterestsController < ApplicationController
     else
       respond_with(@interest, status: :unprocessable_entity)
     end
+  end
+  
+
+  protected
+
+  def get_interest
+    @interest = Interest.find(params[:id])
   end
 end
