@@ -20,7 +20,7 @@ DoubleDate::Application.routes.draw do
   # Admin
   namespace :admin do
     match '', :action => 'index'
-    resources :users, :only => [:index, :show]
+    resources :users, :only => [:index, :show, :destroy]
     resources :interests, :only => [:index, :show]
     resources :locations, :only => [:index, :show]
     # resources :posts#, only: [:index, :show, :new, :create, :update, :edit, :destroy]

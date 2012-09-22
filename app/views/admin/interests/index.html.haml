@@ -1,0 +1,19 @@
+.page-header
+  %h1
+    All Interests
+    %small #{pluralize(@interests.count, 'Interest')} Total
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Name
+      %th Users
+  
+  %tbody
+    - for interest in @interests
+      %tr
+        %td #{interest.id}
+        %td 
+          %b #{interest}
+        %td #{pluralize interest.users.count, 'User'}

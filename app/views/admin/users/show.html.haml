@@ -8,57 +8,66 @@
   .row-fluid
     .span6
 
-      %h4 Bio
+      %section.content-section
+        %h4 Bio
+        %blockquote
+          = @user.bio
 
-      %blockquote
-        = @user.bio
-
-      %h4 DBLD8 Token: 
-      %p
-        - if @user.token.present?
-          %code #{@user.token}
-        - else
-          This user hasn't authenticated yet. Tokens are created on first login.
-    
-      %h4 Basic Info
-
-      %dl.dl-horizontal
-        %dt User ID
-        %dd #{@user.id}
-
-        %dt Email
-        %dd #{mail_to @user.email}
-
-        %dt Facebook ID
-        %dd 
-          - if @user.facebook?
-            #{@user.facebook_id}
+      %section.content-section
+        %h4 DBLD8 Token: 
+        %p
+          - if @user.token.present?
+            %code #{@user.token}
           - else
-            N/A
+            This user hasn't authenticated yet. Tokens are created on first login.
+    
+      %section.content-section
+        %h4 Basic Info
+        %dl.dl-horizontal
+          %dt User ID
+          %dd #{@user.id}
 
-        %dt Birthday
-        %dd #{l @user.birthday, :format => :long}
+          %dt Email
+          %dd #{mail_to @user.email}
 
-        %dt Status
-        %dd #{@user.status}
+          %dt Facebook ID
+          %dd 
+            - if @user.facebook?
+              #{@user.facebook_id}
+            - else
+              N/A
 
-        %dt Interested In?
-        %dd #{@user.interested_in.titlecase}
+          %dt Birthday
+          %dd #{l @user.birthday, :format => :long}
 
-        %dt Gender
-        %dd #{@user.gender.titlecase}
+          %dt Status
+          %dd #{@user.status}
 
-        %dt Created
-        %dd #{@user.created_at}
+          %dt Interested In?
+          %dd #{@user.interested_in.titlecase}
 
+          %dt Gender
+          %dd #{@user.gender.titlecase}
 
-      %h4 Location
+          %dt Created
+          %dd #{@user.created_at}
 
-      %p
-        - if @user.location.present?
-          #{@user.location}
-        - else
-          No location defined.
+      %section.content-section
+        %h4
+          Interests
+          %span.badge.badge-info #{@user.interests.count}
+        %p #{@user.interests.to_sentence}
+
+      %section.content-section  
+        %h4 Location
+        %p
+          - if @user.location.present?
+            #{link_to @user.location, admin_location_path(@user.location)}
+          - else
+            No location defined.
+
+      .form-actions
+        = link_to "Delete", admin_user_path(@user), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
 
     .span6
       %h4 Raw User Object

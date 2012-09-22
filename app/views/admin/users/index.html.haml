@@ -9,6 +9,7 @@
       %th ID
       %th Name
       %th Email
+      %th Location
       %th FB ID
       %th Birthday
       %th Gender
@@ -24,6 +25,7 @@
           %b
             #{link_to user, admin_user_path(user)}
         %td #{user.email}
+        %td #{user.location}
         %td #{user.facebook_id}
         %td #{l user.birthday, :format => :medium}
         %td #{user.gender.titlecase}

@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  belongs_to :location
+  belongs_to :location, :counter_cache => true
   has_and_belongs_to_many :interests
 
   has_one :token, :class_name => 'AuthToken'

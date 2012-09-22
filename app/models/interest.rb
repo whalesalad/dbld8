@@ -17,6 +17,10 @@ class Interest < ActiveRecord::Base
 
   has_and_belongs_to_many :users
 
+  def to_s
+    name
+  end
+
   def as_json(options={})
     result = super({ :except => [:created_at, :updated_at] }.merge(options))
   end

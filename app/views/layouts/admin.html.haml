@@ -14,7 +14,7 @@
       .navbar-inner
         .container-fluid
           %ul.nav
-            %li= link_to 'Home', admin_path
+            %li.active= link_to 'Home', admin_path
             %li= link_to 'API Docs', '#'
 
     .container-fluid
@@ -33,6 +33,12 @@
                   = link_to 'Locations', admin_locations_path
         
         .span10
+          - if flash.present?
+            %section.alerts
+            - flash.each do |name, msg|
+              %div{:class => "alert alert-#{name}"}
+                .message= msg if msg.is_a?(String)
+
           = yield
       
     

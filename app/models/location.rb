@@ -24,6 +24,8 @@ class Location < ActiveRecord::Base
   attr_accessible :name, :latitude, :longitude, :facebook_id, 
     :locality, :admin_name, :admin_code, :country
 
+  has_many :users, :dependent => :nullify
+
   # Class Methods
   class << self
     def raw_geonames_places_near(latitude, longitude)
@@ -69,8 +71,11 @@ class Location < ActiveRecord::Base
       results.sort_by! { |l| l.distance.to_i }
     end
   end
-  # End class methods
-  # 2 indent ruby is dizzying. end end end end end.
+  
+  
+  def to_s
+    name
+  end
 
   def name
     if country == 'US' && admin_code.present?
@@ -81,11 +86,13 @@ class Location < ActiveRecord::Base
       end
     end
 
-    @name
+    read_attribute(:name)
   end
 
-  def to_s
-    name
+  def google_map_url
+    if latitude.present? and longitude.present?
+      "http://maps.google.com/maps?q=#{latitude},+#{longitude}"
+    end
   end
 
   def as_json(options={})
