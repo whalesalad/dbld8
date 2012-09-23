@@ -7,8 +7,9 @@ class LocationsController < ApplicationController
   def index
     @locations = Location.find(:all)
     
-    if params[:latitude] and params[:longitude]
-      # we're doing a geo query!!!
+    if params[:query]
+      @locations = Location.where('name ~* ?', params[:query])
+    elsif params[:latitude] && params[:longitude]
       @locations = Location.find_near_point(params[:latitude], params[:longitude])
     end
 

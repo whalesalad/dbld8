@@ -23,8 +23,6 @@ DoubleDate::Application.routes.draw do
     resources :users, :only => [:index, :show, :destroy]
     resources :interests, :only => [:index, :show]
     resources :locations, :only => [:index, :show]
-    # resources :posts#, only: [:index, :show, :new, :create, :update, :edit, :destroy]
-    # resources :tags,  only: [:new, :create, :update, :edit, :destroy, :index]
   end
 
   # Home

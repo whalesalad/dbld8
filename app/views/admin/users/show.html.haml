@@ -9,9 +9,19 @@
     .span6
 
       %section.content-section
+        %h4 Photo
+        - if @user.photo.present?
+          =image_tag @user.photo.image.thumb.url, :class => 'img-circle'
+        - else
+          %p There is no photo object for #{@user}.
+
+      %section.content-section
         %h4 Bio
-        %blockquote
-          = @user.bio
+        - if @user.bio.present?
+          %blockquote
+            = @user.bio
+        - else
+          %p The bio for #{@user} is blank.
 
       %section.content-section
         %h4 DBLD8 Token: 

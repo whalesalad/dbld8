@@ -23,4 +23,10 @@ module AdminHelper
     end
   end
 
+  def glyphicon(name, white = nil)
+    c = "icon-#{name}"
+    c += " icon-white" unless white.nil?
+    "<i class=\"#{c}\"></i>"
+  end
+
 end

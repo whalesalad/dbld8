@@ -15,7 +15,7 @@
         .container-fluid
           %ul.nav
             %li.active= link_to 'Home', admin_path
-            %li= link_to 'API Docs', '#'
+            %li= link_to 'API Docs (Github)', 'https://github.com/whalesalad/dbld8/wiki', :target => '_blank'
 
     .container-fluid
       .row-fluid
@@ -26,11 +26,11 @@
             .well.sidebar-nav
               %ul.nav.nav-list
                 %li{ :class => current_section?(:controller => "users") ? 'active' : '' }
-                  = link_to 'Users', admin_users_path
+                  = link_to "#{glyphicon(:user)}Users".html_safe, admin_users_path
                 %li{ :class => current_section?(:controller => 'interests') ? 'active' : '' }
-                  = link_to 'Interests', admin_interests_path
+                  = link_to "#{glyphicon(:star)}Interests".html_safe, admin_interests_path
                 %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
-                  = link_to 'Locations', admin_locations_path
+                  = link_to "#{glyphicon('map-marker')}Locations".html_safe, admin_locations_path
         
         .span10
           - if flash.present?
