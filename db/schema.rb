@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120922232427) do
+ActiveRecord::Schema.define(:version => 20120923031225) do
 
   create_table "auth_tokens", :force => true do |t|
     t.integer  "user_id"
@@ -79,5 +79,6 @@ ActiveRecord::Schema.define(:version => 20120922232427) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id", :unique => true
 
 end

@@ -21,6 +21,7 @@
 
 class User < ActiveRecord::Base
   after_create :fetch_and_store_facebook_photo
+  before_validation :before_validation_on_create, :on => :create
 
   has_secure_password
 
@@ -39,13 +40,23 @@ class User < ActiveRecord::Base
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
 
-  validates_uniqueness_of :email
-  validates_presence_of :first_name, :last_name, :birthday, :gender, :email
+  # Registration validation
+  validates_presence_of :password, :email, :unless => :validate_new_facebook_user
+  validates_presence_of :facebook_id, :facebook_access_token, :unless => :validate_new_email_user
 
-  validates_inclusion_of :gender, :in => GENDER_CHOICES
-  validates_inclusion_of :interested_in, :in => INTEREST_CHOICES
+  validates_uniqueness_of :email, :message => "A user already exists with this email address."
+  validates_uniqueness_of :facebook_id, :allow_nil => true, :message => "A user already exists with this facebook_id."
+
+  validates_presence_of :first_name, :last_name, :birthday, :gender
+
+  validates_inclusion_of :gender, :in => GENDER_CHOICES, :message => "The field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
+  validates_inclusion_of :interested_in, :in => INTEREST_CHOICES, :allow_nil => true, :allow_blank => true
 
   # Handles calculating the users' age (even with leap year!)
+  def to_s
+    "#{first_name} #{last_name}"
+  end
+
   def age
     if birthday.present?
       now = Time.now.utc.to_date
@@ -81,8 +92,12 @@ class User < ActiveRecord::Base
     result
   end
 
-  def to_s
-    "#{first_name} #{last_name}"
+  def validate_new_facebook_user
+    facebook_access_token.present? && facebook_id.present?
+  end
+
+  def validate_new_email_user
+    email.present? && password.present?
   end
 
   def facebook?
@@ -99,34 +114,38 @@ class User < ActiveRecord::Base
   end
 
   def bootstrap_facebook_data
-    unless self.facebook?
-      return
-    end
+    return unless self.facebook?
 
-    graph = self.get_facebook_graph()
+    graph = get_facebook_graph
     me = graph.get_object('me')
 
+    # Even if these fields are passed in via user POST,
+    # ignore their answers becuase we need to keep 1:1 with FB
     self.facebook_id = me['id']
+    self.email = me['email']
 
-    # This is horrible code, needs to be refactored to loop
-    self.first_name = me['first_name']
-    self.last_name = me['last_name']
-    self.gender = me['gender']
+    # Loop the below attributes, they map 1:1 with our own
+    %w(first_name last_name gender).each do |fb_attr|
+      if self.read_attribute(fb_attr).blank?
+        self[fb_attr] = me[fb_attr]
+      end
+    end
 
-    inverse_gender_map = { 'male' => 'girls', 'female' => 'guys' }
+    if self.interested_in.blank?
+      self.interested_in = default_interested_in_from_gender(self.gender)
+    end
 
-    self.interested_in = inverse_gender_map[self.gender]
+    if self.birthday.blank?
+      self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
+    end
 
     taken_rel_status = ['Engaged', 'Married', "It's complicated", 'In a relationship', 
                         'In a civil union', 'In a domestic partnership']
 
-    if taken_rel_status.include? me['relationship_status']
+    if taken_rel_status.include?(me['relationship_status'])
       self.single = false
     end
 
-    self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
-
-    self.email = me['email']
   end
 
   def facebook_photo(size=:large)
@@ -136,9 +155,11 @@ class User < ActiveRecord::Base
   def full_size_facebook_photo
     graph = get_facebook_graph
     result = graph.fql_query("select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")")
+    
     if result.any? and result[0].has_key? 'src_big'
       return result[0]['src_big']
     end
+
     false
   end
 
@@ -161,6 +182,25 @@ class User < ActiveRecord::Base
     end
 
     self.interests = interest_names
+  end
+
+  def default_interested_in_from_gender(gender)
+    gender_map = { 'male' => 'girls', 'female' => 'guys' }
+    gender_map[gender]
+  end
+
+  def before_validation_on_create
+    # For example, if interested_in is not specified, let's set to opposite of gender.
+    if interested_in.blank?
+      self.interested_in = default_interested_in_from_gender(gender)
+    end
+
+    # Also, if we're a facebook user, we need to bootstrap required fields and set a random password
+    if facebook?
+      self.bootstrap_facebook_data
+      self.password = "!+%+#{facebook_id}!"
+      self.password_confirmation = "!+%+#{facebook_id}!"
+    end
   end
 
   private  

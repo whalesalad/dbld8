@@ -70,7 +70,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new
 
-    # allow editing the facebook_id and facebook_access token only for this request.
+    # Allow editing the facebook_id and facebook_access token only for this request.
     @user.accessible = [:facebook_id, :facebook_access_token]
 
     # Update the user
@@ -79,10 +79,6 @@ class UsersController < ApplicationController
     # We're creating a regular user
     if params[:user][:password]
       @user.password_confirmation = params[:user][:password]
-    else
-      # Unfortunately a password needs to be defined. This is a random one we can 
-      # recreate programatically later on if we need to.
-      @user.password = "!+%+#{@user.facebook_id}!"
     end
 
     if @user.save

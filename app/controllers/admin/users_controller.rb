@@ -1,6 +1,5 @@
 class Admin::UsersController < AdminController
   before_filter :get_user, :only => [:show, :edit, :update, :destroy]
-  # cache_sweeper :post_sweeper, only: [:create, :update, :destroy]
 
   def index
     @users = User.order('created_at DESC')
