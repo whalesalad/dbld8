@@ -41,13 +41,13 @@ class User < ActiveRecord::Base
   INTEREST_CHOICES = %w(guys girls both)
 
   # Registration validation
-  validates_presence_of :password, :email, :unless => :validate_new_facebook_user
-  validates_presence_of :facebook_id, :facebook_access_token, :unless => :validate_new_email_user
+  validates_presence_of :first_name, :last_name, :birthday, :gender
+
+  validates_presence_of :password, :email, :unless => :validate_facebook_user, :on => :create
+  validates_presence_of :facebook_id, :facebook_access_token, :unless => :validate_email_user, :on => :create
 
   validates_uniqueness_of :email, :message => "A user already exists with this email address."
   validates_uniqueness_of :facebook_id, :allow_nil => true, :message => "A user already exists with this facebook_id."
-
-  validates_presence_of :first_name, :last_name, :birthday, :gender
 
   validates_inclusion_of :gender, :in => GENDER_CHOICES, :message => "The field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
   validates_inclusion_of :interested_in, :in => INTEREST_CHOICES, :allow_nil => true, :allow_blank => true
@@ -92,12 +92,12 @@ class User < ActiveRecord::Base
     result
   end
 
-  def validate_new_facebook_user
-    facebook_access_token.present? && facebook_id.present?
+  def validate_facebook_user
+    self.facebook_access_token.present? && self.facebook_id.present?
   end
 
-  def validate_new_email_user
-    email.present? && password.present?
+  def validate_email_user
+    self.email.present? && self.password.present?
   end
 
   def facebook?

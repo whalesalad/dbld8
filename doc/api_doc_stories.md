@@ -16,7 +16,7 @@ Body, body, body this will be markdown
 #### Creating a user with Facebook
 * As an API client I can **POST** a `facebook_access_token` to `/users/build` and receive an unsaved user.
 
-#### Creating a user with Email / Password
+#### Creating a user with Emxqail / Password
 * As an API client I can **POST** user parameters to `/users` to create a new user.
 
 ## Authenticating a User
