@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
     return render json: { :error => error_message }, :status => 404
   end
 
+  def json_unauthorized(error_message)
+    return render json: { :error => error_message }, :status => 401
+  end
+
   def authenticated_user
     @authenticated_user || nil
   end

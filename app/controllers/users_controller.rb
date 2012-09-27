@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     is_regular = (params.keys & ['email', 'password']).count == 2
 
     unless is_facebook or is_regular
-      return json_error 'You must specify either an email/password or facebook_id/facebook_access_token pair to authenticate.'
+      return json_unauthorized 'You must specify either an email/password pair or facebook_access_token to authenticate.'
     end
 
     if is_facebook
@@ -18,13 +18,17 @@ class UsersController < ApplicationController
       graph = Koala::Facebook::API.new(params[:facebook_access_token])
       
       # Perform a Facebook API call to see if the user exists.
-      me = graph.get_object('me', { :fields => 'id' })
+      begin
+        me = graph.get_object('me', { :fields => 'id' })
+      rescue Koala::Facebook::APIError => exc
+        return json_error "There was an API error from Facebook: #{exc}"
+      end
       
       user = User.find_by_facebook_id(me['id'])
 
       # User not found?
       unless user
-        return json_not_found 'A facebook user does not exist for the user associated with that access token.'
+        return json_unauthorized 'A facebook user does not exist for the user associated with that access token.'
       end
     
     elsif is_regular
@@ -33,12 +37,12 @@ class UsersController < ApplicationController
 
       # User not found?
       unless user
-        return json_not_found 'A user does not exist for the email address specified.'
+        return json_unauthorized 'A user does not exist for the email address specified.'
       end
 
       # Try and auth the user
       unless user.authenticate(params[:password])
-        return json_error 'The password specified was incorrect.'
+        return json_unauthorized 'The password specified was incorrect.'
       end
     end
 
