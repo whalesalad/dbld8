@@ -29,6 +29,9 @@ ActiveRecord::Schema.define(:version => 20120930004146) do
     t.datetime "updated_at",                         :null => false
   end
 
+  add_index "friendships", ["friend_id", "user_id"], :name => "index_friendships_on_friend_id_and_user_id", :unique => true
+  add_index "friendships", ["user_id", "friend_id"], :name => "index_friendships_on_user_id_and_friend_id", :unique => true
+
   create_table "interests", :force => true do |t|
     t.string   "name",                     :null => false
     t.integer  "facebook_id", :limit => 8

@@ -10,11 +10,10 @@ class CreateFriendships < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_index :friendships [:user_id, :friend_id], :unique => true
-    add_index :friendships [:friend_id, :user_id], :unique => true
+    add_index :friendships, [:user_id, :friend_id], :unique => true
+    add_index :friendships, [:friend_id, :user_id], :unique => true
     
     # Handle the UUID noise, which actually is no longer necessary we do this in the code.
-    execute 'CREATE EXTENSION "uuid-ossp";'
     execute 'ALTER TABLE friendships ALTER COLUMN friendship_uuid SET DEFAULT uuid_generate_v4();';
   end
 end

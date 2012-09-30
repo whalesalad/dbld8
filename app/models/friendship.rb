@@ -10,7 +10,14 @@ class Friendship < ActiveRecord::Base
   belongs_to :friend, :class_name => "User", :foreign_key => "friend_id"
   
   validates_uniqueness_of :user_id, :scope => :friend_id, :message => "A friendship between these users already exists."
+  # validates_uniqueness_of :friend_id, :scope => :user_id, :message => "A friendship between these users already exists."
+  
+  validate :user_is_not_inviting_himself
   # validates_uniqueness_of :friend_id, :scope => :user_id
+  
+  def user_is_not_inviting_himself
+    errors.add(:friend_id, "You cannot become friends with yourself!") if user_id == friend_id
+  end
   
   def set_uuid
     require 'uuid'
