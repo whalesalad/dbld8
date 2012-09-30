@@ -63,21 +63,21 @@
           %dd #{@user.created_at}
 
       %section.content-section
-      %h4 Friends
-      %p 
-        #{pluralize @user.total_friends, 'Friend'}
-        - unless @user.friends.empty?
-          (#{@user.friends.to_sentence})
+        %h4 Friends
+        %p 
+          #{pluralize @user.total_friends, 'Friend'}
+          - unless @user.friends.empty?
+            (#{@user.friends.to_sentence})
       
-      %p #{pluralize @user.friendships.unapproved.count, 'Pending Invitation'} (sent to another user)
-      %p #{pluralize @user.inverse_friendships.unapproved.count, 'Incoming Friend Request'} (received from another user)
+        %p #{pluralize @user.friendships.unapproved.count, 'Pending Invitation'} (sent to another user)
+        %p #{pluralize @user.inverse_friendships.unapproved.count, 'Incoming Friend Request'} (received from another user)
 
       %section.content-section
         %h4
           Interests
           %span.badge.badge-info #{@user.interests.count}
         %p #{@user.interests.to_sentence}
-
+      
       %section.content-section  
         %h4 Location
         %p

@@ -19,7 +19,9 @@ class FriendshipsController < ApplicationController
     if @friendship.approve! @authenticated_user
       respond_with @friendship, :status => 200, :location => me_friendship_path(@friendship)
     else
-      render json: { :error => "You do not have permission to approve this friendship. Only those who receive requests can approve them." }, :status => 500
+      render json: { 
+        :error => "You do not have permission to approve this friendship. Only those who receive requests can approve them." 
+      }, :status => 500
     end
   end
   

@@ -27,7 +27,10 @@ class UsersController < ApplicationController
 
       # User not found?
       unless user
-        return json_unauthorized 'A facebook user does not exist for the user associated with that access token.'
+        return render json: { 
+          :error => "A facebook user does not exist for the user associated with that access token.",
+          :code => "NO_FACEBOOK_USER"
+        }, :status => 401
       end
     
     elsif is_regular
