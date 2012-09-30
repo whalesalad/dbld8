@@ -63,8 +63,8 @@
           %dd #{@user.created_at}
 
       %section.content-section
-      %h4 Friends
-      %p= pluralize @user.total_friends, 'Friend'
+      %h4= pluralize @user.total_friends, 'Friend'
+      %p #{@user.friends.to_sentence}
 
       %section.content-section
         %h4

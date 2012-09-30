@@ -60,14 +60,28 @@ class User < ActiveRecord::Base
   has_many :direct_friends, :through => :friendships, :conditions => { :'friendships.approved' => true }, :source => :friend
   has_many :inverse_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => true }, :source => :user
    
-  # This gets friendships that are pending
-  has_many :pending_friends, :through => :friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "user_id", :source => :user
-  has_many :requested_friendships, :through => :inverse_friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "friend_id", :source => :user
+  # Friends I have asked to be mine
+  has_many :requested_friends, :through => :friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "user_id", :source => :friend
+  
+  # Pending friends that I need to say yes/no to
+  has_many :pending_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "friend_id", :source => :user
   
   # Invite a friend if that friend is not this user and a friendship does not exist
   def invite(friend)
     return false if friend == self || find_any_friendship_with(friend)
     friendships.create(:friend_id => friend.id)
+  end
+  
+  def invited?(friend)
+    friendship = find_any_friendship_with(friend)
+    return false if friendship.nil?
+    friendship.friend == user
+  end
+  
+  def approve(friend)
+    friendship = find_any_friendship_with(friend)
+    return false if friendship.nil? || invited?(friend)
+    friendship.update_attribute(:approved, true)
   end
   
   def find_any_friendship_with(user)
