@@ -91,6 +91,8 @@ GEM
     koala (1.5.0)
       faraday (~> 0.7)
       multi_json (~> 1.3)
+    macaddr (1.6.1)
+      systemu (~> 2.5.0)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -104,7 +106,11 @@ GEM
     net-ssh (2.5.2)
     nokogiri (1.5.5)
     pg (0.14.1)
+    pg_array_parser (0.0.8)
     polyglot (0.3.3)
+    postgres_ext (0.0.8)
+      activerecord (~> 3.2.0)
+      pg_array_parser (~> 0.0.3)
     pry (0.9.10)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -158,6 +164,7 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    systemu (2.5.2)
     thin (1.4.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -171,6 +178,8 @@ GEM
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    uuid (2.3.5)
+      macaddr (~> 1.0)
 
 PLATFORMS
   ruby
@@ -189,6 +198,7 @@ DEPENDENCIES
   json_spec
   koala
   pg
+  postgres_ext
   pry-rails
   rails (= 3.2.8)
   rest-client
@@ -196,3 +206,4 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   thin
   uglifier (>= 1.0.3)
+  uuid

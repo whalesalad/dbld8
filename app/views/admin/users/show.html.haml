@@ -63,6 +63,10 @@
           %dd #{@user.created_at}
 
       %section.content-section
+      %h4 Friends
+      %p= pluralize @user.total_friends, 'Friend'
+
+      %section.content-section
         %h4
           Interests
           %span.badge.badge-info #{@user.interests.count}

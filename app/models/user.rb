@@ -51,8 +51,42 @@ class User < ActiveRecord::Base
 
   validates_inclusion_of :gender, :in => GENDER_CHOICES, :message => "The field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
   validates_inclusion_of :interested_in, :in => INTEREST_CHOICES, :allow_nil => true, :allow_blank => true
-
-  # Handles calculating the users' age (even with leap year!)
+  
+  # Handle the friendship relationships (the intermediary)
+  has_many :friendships
+  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  
+  # This gets direct (you are user_id) and inverse (you are friend_id) user objects
+  has_many :direct_friends, :through => :friendships, :conditions => { :'friendships.approved' => true }, :source => :friend
+  has_many :inverse_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => true }, :source => :user
+   
+  # This gets friendships that are pending
+  has_many :pending_friends, :through => :friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "user_id", :source => :user
+  has_many :requested_friendships, :through => :inverse_friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "friend_id", :source => :user
+  
+  # Invite a friend if that friend is not this user and a friendship does not exist
+  def invite(friend)
+    return false if friend == self || find_any_friendship_with(friend)
+    friendships.create(:friend_id => friend.id)
+  end
+  
+  def find_any_friendship_with(user)
+    friendship = Friendship.where(:user_id => id, :friend_id => user.id).first
+    if friendship.nil?
+      friendship = Friendship.where(:user_id => user.id, :friend_id => id).first
+    end
+    friendship
+  end
+  
+  def friends
+    reload
+    direct_friends + inverse_friends
+  end
+  
+  def total_friends
+    direct_friends(false).count + inverse_friends(false).count
+  end
+ 
   def to_s
     "#{first_name} #{last_name}"
   end

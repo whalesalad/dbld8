@@ -11,13 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120923031225) do
+ActiveRecord::Schema.define(:version => 20120930004146) do
 
   create_table "auth_tokens", :force => true do |t|
     t.integer  "user_id"
     t.string   "token"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "friendships", :force => true do |t|
+    t.uuid     "friendship_uuid",                    :null => false
+    t.integer  "user_id",                            :null => false
+    t.integer  "friend_id",                          :null => false
+    t.boolean  "approved",        :default => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "interests", :force => true do |t|

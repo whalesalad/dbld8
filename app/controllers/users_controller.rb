@@ -5,7 +5,6 @@ class UsersController < ApplicationController
 
   # The authorization method to give a user a token for auth.
   def authenticate
-    # is_facebook = (params.keys & ['facebook_id', 'facebook_access_token']).count == 2
     is_facebook = params.has_key? :facebook_access_token
     is_regular = (params.keys & ['email', 'password']).count == 2
 
@@ -45,7 +44,7 @@ class UsersController < ApplicationController
         return json_unauthorized 'The password specified was incorrect.'
       end
     end
-
+    
     # Update the users' facebook_access_token if possible.
     if is_facebook
       user.facebook_access_token = params[:facebook_access_token]
