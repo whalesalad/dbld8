@@ -20,6 +20,7 @@
 #
 
 class User < ActiveRecord::Base
+  before_create :set_uuid
   after_create :fetch_and_store_facebook_photo
   before_validation :before_validation_on_create, :on => :create
 
@@ -250,8 +251,18 @@ class User < ActiveRecord::Base
       self.password_confirmation = "!+%+#{facebook_id}!"
     end
   end
+  
+  def set_uuid
+    require 'uuid'
+    uuid = UUID.new
+    self.uuid = uuid.generate
+  end
+  
+  def compact_uuid
+    uuid.gsub /-/, ''
+  end
 
-  private  
+  private
 
   def mass_assignment_authorizer(role = :default)
     super + (accessible || [])
