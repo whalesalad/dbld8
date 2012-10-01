@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :require_token_auth, :only => [:authenticate, :create, :build_facebook_user]
+  skip_before_filter :require_token_auth, :only => [:authenticate, :create, :build_facebook_user, :invitation]
   
   respond_to :json
 
@@ -105,6 +105,13 @@ class UsersController < ApplicationController
     @user.bootstrap_facebook_data
 
     respond_with @user
+  end
+  
+  def invitation
+    @user = User.find_by_uuid(params[:uuid])
+    
+    render 'home/invite'
+    # render 'blah' and return
   end
 
 end

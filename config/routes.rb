@@ -3,6 +3,8 @@ DoubleDate::Application.routes.draw do
   post 'users/build' => 'users#build_facebook_user', :as => 'build_user'
 
   post 'authenticate' => 'users#authenticate'
+  
+  get 'invite/:uuid' => 'users#invitation'
 
   # ways to find other users
   # email

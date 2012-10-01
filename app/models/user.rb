@@ -134,7 +134,7 @@ class User < ActiveRecord::Base
         :thumb => facebook_photo(:large)
       }
     end
-
+    
     result[:interests] = interests if interests.present?
     result[:location] = location if location.present?
 
@@ -249,6 +249,14 @@ class User < ActiveRecord::Base
       self.bootstrap_facebook_data
       self.password = "!+%+#{facebook_id}!"
       self.password_confirmation = "!+%+#{facebook_id}!"
+    end
+  end
+  
+  def gender_posessive
+    if gender == "male"
+      "his"
+    else
+      "her"
     end
   end
   

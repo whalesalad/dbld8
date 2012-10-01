@@ -7,7 +7,7 @@
     
     = stylesheet_link_tag    "application", :media => "all"
     - # = csrf_meta_tags
-    - # = yield(:head)
+    = yield(:head)
   
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
   
