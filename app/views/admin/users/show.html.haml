@@ -37,6 +37,10 @@
           %dt User ID
           %dd #{@user.id}
 
+          %dt UUID
+          %dd
+            %code #{@user.uuid}
+
           %dt Email
           %dd #{mail_to @user.email}
 
@@ -64,13 +68,39 @@
 
       %section.content-section
         %h4 Friends
-        %p 
-          #{pluralize @user.total_friends, 'Friend'}
-          - unless @user.friends.empty?
-            (#{@user.friends.to_sentence})
-      
-        %p #{pluralize @user.friendships.unapproved.count, 'Pending Invitation'} (sent to another user)
-        %p #{pluralize @user.inverse_friendships.unapproved.count, 'Incoming Friend Request'} (received from another user)
+
+        %ul.nav.nav-tabs.user-tabs
+          %li= link_to "#{pluralize @user.total_friends, 'Wingman'}", '#wingmen-active', :data => { :toggle => 'tab' }
+          %li= link_to "#{@user.friendships.unapproved.count} Invited", '#wingmen-invited', :data => { :toggle => 'tab' }
+          %li= link_to "#{@user.inverse_friendships.unapproved.count} Incoming", '#wingmen-incoming', :data => { :toggle => 'tab' }
+        
+        %section.tab-content
+          #wingmen-active.tab-panel
+            - if @user.friends.count > 0
+              %ul
+                - for wingman in @user.friends
+                  %li= link_to wingman, admin_user_url(wingman)
+            - else
+              %p #{@user.first_name} does not have any wingmen.
+
+          #wingmen-invited.tab-panel
+            - if @user.friendships.unapproved.count > 0
+              %p These are invitations sent to other users:
+              %ul
+                - for friendship in @user.friendships.unapproved
+                  %li= friendship
+            - else
+              %p #{@user.first_name} does not have any pending invitations for other users.
+
+          #wingmen-incoming.tab-panel
+            - if @user.inverse_friendships.unapproved.count > 0
+              %p These are invitations received from other users:
+              %ul
+                - for friendship in @user.inverse_friendships.unapproved
+                  %li link_to #{friendship.user.first_name}, admin_user_url(friendship.user)
+            - else
+              %p #{@user.first_name} does not have any pending invitations from other users.
+
 
       %section.content-section
         %h4

@@ -12,4 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require admin/core_controller
+
+$(document).ready(function() {
+  new CoreController();
+});

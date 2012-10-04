@@ -48,6 +48,7 @@ DoubleDate::Application.routes.draw do
   namespace :admin do
     match '', :action => 'index'
     resources :users, :only => [:index, :show, :destroy]
+    resources :friendships
     resources :interests, :only => [:index, :show]
     resources :locations, :only => [:index, :show]
   end

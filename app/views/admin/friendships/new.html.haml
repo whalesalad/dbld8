@@ -1,0 +1,10 @@
+- provide :title, "New Friendship"
+
+%section.user-detail
+  %h1= yield(:title)
+
+  .row-fluid
+    .span6
+      %p This is a simple form to create a new friendship (wingman). Do not check the approved box to make it like an invitation. If approved is checked, it will be considered a mutual friendship.
+
+      = render partial: 'form'

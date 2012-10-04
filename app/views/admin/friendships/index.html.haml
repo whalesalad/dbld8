@@ -1,0 +1,23 @@
+.page-header
+  %h1
+    All Friendships (Wingmen)
+    %small #{pluralize(@friendships.count, 'Friendship')} Total
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Between
+      %th Approved
+      %th Created
+  
+  %tbody
+    - for friendship in @friendships
+      %tr
+        %td= friendship.id
+        %td= link_to friendship, admin_friendship_path(friendship)
+        %td #{friendship.approved? ? 'Yes' : 'No, Pending'}
+        %td #{l friendship.created_at, :format => :medium}
+
+.form-actions
+  = link_to "New Friendship", new_admin_friendship_path, :class => 'btn btn-primary'

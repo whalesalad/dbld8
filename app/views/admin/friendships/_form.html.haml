@@ -1,0 +1,21 @@
+= form_for([:admin, @friendship]) do |f|
+
+  %fieldset
+    
+    .field.title
+      = f.label :user_id, 'User ID'
+      = f.text_field :user_id
+
+    .field
+      = f.label :friend_id, 'Friend ID'
+      = f.text_field :friend_id
+
+    .field.checkfield
+      / = f.label :approved, 'Approved'
+      %label
+        = f.check_box :approved
+        Approved
+
+    .form-actions
+      = f.submit :class => 'btn btn-primary'
+      = link_to 'Cancel', :back, :class => 'btn'

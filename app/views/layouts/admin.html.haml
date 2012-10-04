@@ -27,8 +27,13 @@
               %ul.nav.nav-list
                 %li{ :class => current_section?(:controller => "users") ? 'active' : '' }
                   = link_to "#{glyphicon(:user)}Users".html_safe, admin_users_path
+                
+                %li{ :class => current_section?(:controller => "friendships") ? 'active' : '' }
+                  = link_to "#{glyphicon(:heart)}Friendships".html_safe, admin_friendships_path
+
                 %li{ :class => current_section?(:controller => 'interests') ? 'active' : '' }
                   = link_to "#{glyphicon(:star)}Interests".html_safe, admin_interests_path
+                
                 %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
                   = link_to "#{glyphicon('map-marker')}Locations".html_safe, admin_locations_path
         

@@ -1,0 +1,43 @@
+- provide :title, @friendship
+
+%section.user-detail
+  %h1
+    = yield :title
+    %small
+      Friendship created #{l @friendship.created_at, :format => :long}
+
+  .row-fluid
+    .span6
+
+      %p
+        This wingman is owned by #{@friendship.user}, and #{@friendship.approved? ? 'has been' : 'has not been'} approved.
+
+      %section.content-section
+        %h4 Basic Info
+        %dl.dl-horizontal
+          %dt ID
+          %dd #{@friendship.id}
+
+          %dt UUID
+          %dd 
+            %code #{@friendship.uuid}
+
+          %dt User/Creator
+          %dd #{link_to @friendship.user, admin_user_path(@friendship.user)}
+
+          %dt Friend
+          %dd #{link_to @friendship.friend, admin_user_path(@friendship.friend)}
+
+          %dt Approved
+          %dd #{@friendship.approved? ? "Yes" : "No"}
+
+          %dt Created
+          %dd #{@friendship.created_at}
+
+      
+      .form-actions
+        = link_to "Delete", admin_friendship_path(@friendship), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
+
+    .span6
+      %h4 Raw Friendship Object
+      = debug @friendship

@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 20121001003025) do
   end
 
   create_table "friendships", :force => true do |t|
-    t.uuid     "friendship_uuid",                    :null => false
+    t.uuid     "uuid",                    :null => false
     t.integer  "user_id",                            :null => false
     t.integer  "friend_id",                          :null => false
     t.boolean  "approved",        :default => false

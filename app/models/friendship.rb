@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class Friendship < ActiveRecord::Base
   before_create :set_uuid
   
@@ -15,6 +17,10 @@ class Friendship < ActiveRecord::Base
   validate :user_is_not_inviting_himself
   # validates_uniqueness_of :friend_id, :scope => :user_id
   
+  def to_s
+    "#{user} ↔ #{friend}"
+  end
+
   def user_is_not_inviting_himself
     errors.add(:friend_id, "You cannot become friends with yourself!") if user_id == friend_id
   end
@@ -22,7 +28,7 @@ class Friendship < ActiveRecord::Base
   def set_uuid
     require 'uuid'
     uuid = UUID.new
-    self.friendship_uuid = uuid.generate :compact
+    self.uuid = uuid.generate :compact
   end
   
   def approve!(approver)

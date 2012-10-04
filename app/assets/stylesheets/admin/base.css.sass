@@ -8,16 +8,22 @@ body
   padding: 5px 0
   ul.nav
     li
-      i.icon-user, i.icon-star, i.icon-map-marker
+      i
         float: right
         opacity: 0.50
       &.active
-        i.icon-user, i.icon-star, i.icon-map-marker
+        i
           opacity: 1
 
 
 section.content-section
   margin: 0 0 2em 0
+
+section.tab-content
+  .tab-panel
+    display: none
+    &.active
+      display: block
 
 dl.dl-horizontal
   dt

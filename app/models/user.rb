@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
   belongs_to :location, :counter_cache => true
   has_and_belongs_to_many :interests
 
-  has_one :token, :class_name => 'AuthToken'
-  has_one :photo, :class_name => 'UserPhoto'
+  has_one :token, :class_name => 'AuthToken', :dependent => :destroy
+  has_one :photo, :class_name => 'UserPhoto', :dependent => :destroy
 
   attr_accessible :email, :password, :first_name, :last_name, :birthday, 
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
@@ -54,8 +54,8 @@ class User < ActiveRecord::Base
   validates_inclusion_of :interested_in, :in => INTEREST_CHOICES, :allow_nil => true, :allow_blank => true
   
   # Handle the friendship relationships (the intermediary)
-  has_many :friendships
-  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  has_many :friendships, :dependent => :destroy
+  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id", :dependent => :destroy
   
   # This gets direct (you are user_id) and inverse (you are friend_id) user objects
   has_many :direct_friends, :through => :friendships, :conditions => { :'friendships.approved' => true }, :source => :friend
@@ -68,9 +68,13 @@ class User < ActiveRecord::Base
   has_many :pending_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "friend_id", :source => :user
   
   # Invite a friend if that friend is not this user and a friendship does not exist
-  def invite(friend)
+  def invite(friend, approve = nil)
     return false if friend == self || find_any_friendship_with(friend)
-    friendships.create(:friend_id => friend.id)
+    params = {:friend_id => friend.id}
+    unless approve.nil?
+      params[:approved] = true
+    end
+    friendships.create(params)
   end
   
   def invited?(friend)
