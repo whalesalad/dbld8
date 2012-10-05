@@ -4,6 +4,6 @@ class FriendsController < ApplicationController
   respond_to :json
   
   def index
-    respond_with @authenticated_user.friends
+    respond_with @authenticated_user.friends.as_json(:mini => true)
   end
 end

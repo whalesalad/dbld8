@@ -121,9 +121,37 @@ class User < ActiveRecord::Base
     single? ? "Single" : "Taken"
   end
 
+  def json_photo
+    if photo.present?
+      photo
+    elsif facebook?
+      { :thumb => facebook_photo(:large) }
+    end
+  end
+
+  # God this json code is so messy!
   def as_json(options={})
+    if options[:mini]
+      result = super :only => [:id, :gender]
+      
+      result[:full_name] = to_s
+      result[:age] = age
+      result[:location] = location.to_s if location.present?
+      result[:photo] = json_photo
+
+      return result
+    end
+
     exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token, :location_id]
-    exclude.push :id if new_record?
+    
+    if new_record?
+      exclude.push :id 
+    end
+
+    if options[:short]
+      exclude += [:bio, :birthday, :email]
+    end
+
     result = super({ :except => exclude }.merge(options))
     
     # Add some goodies
@@ -131,16 +159,14 @@ class User < ActiveRecord::Base
       result[:age] = age
     end
 
-    if photo.present?
-      result[:photo] = photo
-    elsif facebook?
-      result[:photo] = {
-        :thumb => facebook_photo(:large)
-      }
+    result[:photo] = json_photo
+
+    if options[:short]
+      result[:location] = location.as_json(:short => true) if location.present?
+    else
+      result[:interests] = interests if interests.present?
+      result[:location] = location if location.present?
     end
-    
-    result[:interests] = interests if interests.present?
-    result[:location] = location if location.present?
 
     result
   end
@@ -257,11 +283,7 @@ class User < ActiveRecord::Base
   end
   
   def gender_posessive
-    if gender == "male"
-      "his"
-    else
-      "her"
-    end
+    (gender == "male") ? "his" : "her"
   end
   
   def set_uuid

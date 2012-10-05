@@ -22,10 +22,14 @@ DoubleDate::Application.routes.draw do
     # GET /me/friends
     resources :friends, :only => [:index]
     
-    resources :friendships, :only => [:index, :show, :create, :delete] do
+    resources :friendships, :only => [:index, :show, :update, :create, :destroy] do
       # approve a pending friendship request
       # POST /me/friendships/:friendship_id/approve
-      post 'approve', :on => :member
+      # post 'approve', :on => :member
+
+      # ignore a pending friendship request (deletes it)
+      # POST /me/friendships/:friendship_id/ignore
+      post 'ignore', :on => :member
       
       # get list of pending friendships (others inviting me)
       # GET /me/friendships/pending

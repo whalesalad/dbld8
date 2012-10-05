@@ -32,5 +32,9 @@ class InterestsController < ApplicationController
 
   def get_interest
     @interest = Interest.find(params[:id])
+
+    if @interest.nil?
+      json_not_found("An interest with an ID of #{params[:id]} could not be found.")
+    end
   end
 end

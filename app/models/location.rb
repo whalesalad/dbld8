@@ -96,7 +96,11 @@ class Location < ActiveRecord::Base
   end
 
   def as_json(options={})
-    exclude = [:created_at, :updated_at]
+    exclude = [:created_at, :updated_at, :facebook_id]
+
+    if options[:short]
+      exclude += [:latitude, :longitude, :locaity, :users_count, :admin_code, :admin_name, :locality]
+    end
     
     result = super({ :except => exclude }.merge(options))
 

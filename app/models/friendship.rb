@@ -32,6 +32,11 @@ class Friendship < ActiveRecord::Base
     uuid = UUID.new
     self.uuid = uuid.generate :compact
   end
+
+  def can_be_modified_by(inquiring_user)
+    # Determines whether or not the user passed can perform actions on this friendship.
+    (inquiring_user.id == user.id) || (inquiring_user.id == friend.id)
+  end
   
   def approve!(approver)
     return true if self.approved
@@ -40,6 +45,17 @@ class Friendship < ActiveRecord::Base
       self.approved = true
       self.save
     end
+  end
+
+  def as_json(options={})
+    exclude = [:updated_at, :user_id, :friend_id]
+
+    result = super({ :except => exclude }.merge(options))
+
+    result[:user] = user.as_json :mini => true
+    result[:friend] = friend.as_json :mini => true
+
+    result
   end
   
 end

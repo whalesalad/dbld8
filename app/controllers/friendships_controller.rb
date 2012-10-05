@@ -1,5 +1,5 @@
 class FriendshipsController < ApplicationController
-  before_filter :find_friendship, :only => [:show, :approve, :destroy]
+  before_filter :find_friendship, :only => [:show, :update, :approve, :destroy]
   
   respond_to :json
 
@@ -15,7 +15,7 @@ class FriendshipsController < ApplicationController
     respond_with @friendship
   end
   
-  def approve
+  def update
     if @friendship.approve! @authenticated_user
       respond_with @friendship, :status => 200, :location => me_friendship_path(@friendship)
     else
@@ -44,13 +44,23 @@ class FriendshipsController < ApplicationController
   end
   
   def destroy
-    # Friendship.destroy!
+    if @friendship.can_be_modified_by @authenticated_user
+      if @friendship.destroy
+        respond_with(:nothing => true) 
+      end
+    else
+      json_unauthorized "You are not authorized to modify this friendship."
+    end
   end
   
   private
   
   def find_friendship
     @friendship = Friendship.find_by_id(params[:id])
+
+    if @friendship.nil?
+      json_not_found("A friendship with an ID of #{params[:id]} could not be found.")
+    end
   end
 
 end

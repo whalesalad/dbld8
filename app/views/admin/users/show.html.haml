@@ -97,7 +97,7 @@
               %p These are invitations received from other users:
               %ul
                 - for friendship in @user.inverse_friendships.unapproved
-                  %li link_to #{friendship.user.first_name}, admin_user_url(friendship.user)
+                  %li= link_to friendship.user.first_name, admin_user_url(friendship.user)
             - else
               %p #{@user.first_name} does not have any pending invitations from other users.
 
