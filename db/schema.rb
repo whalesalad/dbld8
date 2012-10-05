@@ -21,12 +21,12 @@ ActiveRecord::Schema.define(:version => 20121001003025) do
   end
 
   create_table "friendships", :force => true do |t|
-    t.uuid     "uuid",                    :null => false
-    t.integer  "user_id",                            :null => false
-    t.integer  "friend_id",                          :null => false
-    t.boolean  "approved",        :default => false
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.uuid     "uuid",                          :null => false
+    t.integer  "user_id",                       :null => false
+    t.integer  "friend_id",                     :null => false
+    t.boolean  "approved",   :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   add_index "friendships", ["friend_id", "user_id"], :name => "index_friendships_on_friend_id_and_user_id", :unique => true
