@@ -1,7 +1,13 @@
 = form_for([:admin, @friendship]) do |f|
 
   %fieldset
-    
+    - if @friendship.errors.any?
+      .alert.alert-error.alert-block
+        %h4 Please fix the following #{pluralize(@friendship.errors.count, "error")}:
+        - @friendship.errors.full_messages.each do |msg|
+          %ul
+            %li= msg
+
     .field.title
       = f.label :user_id, 'User ID'
       = f.text_field :user_id
