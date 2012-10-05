@@ -20,7 +20,7 @@ DoubleDate::Application.routes.draw do
 
     # get list of friends
     # GET /me/friends
-    resources :friends, :only => [:index]
+    resources :friends, :only => [:index, :show]
     
     resources :friendships, :only => [:index, :show, :update, :create, :destroy] do
       # approve a pending friendship request

@@ -90,6 +90,8 @@ class User < ActiveRecord::Base
   end
   
   def find_any_friendship_with(user)
+    user_id = (user.instance_of?(User)) ? user.id : user
+
     friendship = Friendship.where(:user_id => id, :friend_id => user.id).first
     if friendship.nil?
       friendship = Friendship.where(:user_id => user.id, :friend_id => id).first
