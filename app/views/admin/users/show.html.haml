@@ -103,6 +103,16 @@
 
 
       %section.content-section
+        %h4 Invitation Details
+
+        %p <b>Invite Slug:</b> <code>#{@user.invite_slug}</code>
+        
+        - invite_url = "#{request.protocol}#{request.host_with_port}#{@user.invite_path}"
+
+        %p <b>#{@user.first_name}'s Invite URL:</b> #{link_to(invite_url, invite_url, :target => '_blank')}
+
+
+      %section.content-section
         %h4
           Interests
           %span.badge.badge-info #{@user.interests.count}

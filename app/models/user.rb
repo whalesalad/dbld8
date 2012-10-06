@@ -254,7 +254,7 @@ class User < ActiveRecord::Base
   end
 
   def invite_path
-    "invite/#{invite_slug}"
+    "/invite/#{invite_slug}"
   end
 
   def generate_invite_slug
@@ -315,7 +315,8 @@ class User < ActiveRecord::Base
   end
 
   def set_invite_slug
-    self.update_attributes(:invite_slug => generate_invite_slug)
+    self.invite_slug = generate_invite_slug
+    self.save!
   end
 
 end
