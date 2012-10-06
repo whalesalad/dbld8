@@ -1,18 +1,30 @@
-- dd_url = "doubledate://invite?#{@user.invite_slug}"
+- provide :title, (@user) ? "Join #{@user.first_name} on DoubleDate!" : "Grab a friend and DoubleDate"
+
+- dd_url = (@user) ? "doubledate://invite?#{@user.invite_slug}" : "doubledate://welcome"
 
 - content_for :head do
   %meta{ :name => 'apple-itunes-app', :content => "app-id=XXXXXXXXX, app-argument=#{dd_url}" }
 
 %section#invite
-  %h3 #{@user.first_name} wants you to be <br/>#{@user.gender_posessive} wing on DoubleDate!
+  %h3
+    - if @user
+      #{@user.first_name} wants you to be <br/>#{@user.gender_posessive} wing on DoubleDate!
+    - else
+      Why would you want one when you can have two?
+
+  - if @user && @user.photo.present?
+    .user-photo-wrapper{ :style => "background-image: url(#{@user.photo.image.thumb.url})" }
 
   %p.description
-    It's not all about love, it's about having a good time. 
+    It's not all about love, it's about having a good time.
     %br/
-    Let's go have some fun on a DoubleDate.
+    - if @user
+      Let's go have some fun on a DoubleDate.
+    - else
+      Grab a friend and go have some fun on a DoubleDate.
 
-  %p= link_to "Add #{@user.first_name} as a Wing", dd_url, :class => 'btn btn-primary btn-large'
-  
-  %p.or OR
+  - if @user
+    %p= link_to "Add #{@user.first_name} as a Wing", dd_url, :class => 'btn btn-primary btn-large'
+    %p.or OR
 
   %p= link_to "Get DoubleDate from the App Store", "http://itunes.apple.com/en/app/DoubleDate/idXXXXXXXXX?mt=8", :class => 'btn'

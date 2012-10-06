@@ -108,7 +108,11 @@ class UsersController < ApplicationController
   end
   
   def invitation
-    @user = User.find_by_invite_slug(params[:invite_slug])
+    @user = false
+    
+    if params[:invite_slug]
+      @user = User.find_by_invite_slug(params[:invite_slug])
+    end
     
     render 'home/invite'
   end

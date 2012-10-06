@@ -4,7 +4,7 @@ DoubleDate::Application.routes.draw do
 
   post 'authenticate' => 'users#authenticate'
   
-  get 'invite/:invite_slug' => 'users#invitation', :as => 'user_invitation'
+  get 'invite(/:invite_slug)' => 'users#invitation', :as => 'user_invitation'
 
   # ways to find other users
   # email

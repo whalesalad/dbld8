@@ -42,6 +42,22 @@ a
   &:hover
     text-decoration: none
 
+.user-photo-wrapper
+  $size: 150
+  display: block
+  margin: 0 auto 20px auto
+  width: $size + px
+  height: $size + px
+  background:
+    position: 50% 50%
+    size: $size + px
+  border: 2px solid #FFF
+  +border-radius($size/2 + px)
+  +box-shadow(0 2px 8px rgba(0, 0, 0, .8))
+
+img.user-round-photo
+  border: 3px solid #FFF
+
 section#invite
   width: 400px
   margin: 0 auto
