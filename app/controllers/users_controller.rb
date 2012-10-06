@@ -108,10 +108,9 @@ class UsersController < ApplicationController
   end
   
   def invitation
-    @user = User.find_by_uuid(params[:uuid])
+    @user = User.find_by_invite_slug(params[:invite_slug])
     
     render 'home/invite'
-    # render 'blah' and return
   end
 
 end

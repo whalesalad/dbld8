@@ -8,7 +8,6 @@ gem 'thin'
 
 # Postgres ext goodies
 gem 'postgres_ext'
-gem 'uuid'
 
 # GEO API Handling
 gem 'rest-client'

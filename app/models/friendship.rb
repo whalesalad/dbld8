@@ -28,9 +28,8 @@ class Friendship < ActiveRecord::Base
   end
   
   def set_uuid
-    require 'uuid'
-    uuid = UUID.new
-    self.uuid = uuid.generate :compact
+    require 'securerandom'
+    self.uuid = SecureRandom.uuid
   end
 
   def can_be_modified_by(inquiring_user)

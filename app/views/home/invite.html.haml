@@ -1,16 +1,18 @@
-- dd_url = "doubledate://invite:#{@user.compact_uuid}"
+- dd_url = "doubledate://invite?#{@user.invite_slug}"
 
 - content_for :head do
   %meta{ :name => 'apple-itunes-app', :content => "app-id=XXXXXXXXX, app-argument=#{dd_url}" }
 
 %section#invite
-  %h3 #{@user.first_name} wants you to be #{@user.gender_posessive} wingman on DoubleDate!
+  %h3 #{@user.first_name} wants you to be <br/>#{@user.gender_posessive} wing on DoubleDate!
 
   %p.description
-    DoubleDate lets you and a friend go out and have a good time. <i>Guy or girl, it doesn't matter.</i>
+    It's not all about love, it's about having a good time. 
     %br/
-    Go DoubleDate and <strong>have more fun!</strong>
+    Let's go have some fun on a DoubleDate.
 
-  %p= link_to "I have DoubleDate, add #{@user.first_name} as a Wingman", dd_url, :class => 'btn btn-primary btn-large'
+  %p= link_to "Add #{@user.first_name} as a Wing", dd_url, :class => 'btn btn-primary btn-large'
+  
   %p.or OR
-  %p= link_to "Download DoubleDate from App Store", "http://itunes.apple.com/en/app/DoubleDate/idXXXXXXXXX?mt=8", :class => 'btn'
+
+  %p= link_to "Get DoubleDate from the App Store", "http://itunes.apple.com/en/app/DoubleDate/idXXXXXXXXX?mt=8", :class => 'btn'
