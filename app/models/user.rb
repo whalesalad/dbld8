@@ -50,7 +50,10 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :message => "A user already exists with this email address."
   validates_uniqueness_of :facebook_id, :allow_nil => true, :message => "A user already exists with this facebook_id."
 
-  validates_inclusion_of :gender, :in => GENDER_CHOICES, :message => "The field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
+  validates_inclusion_of :gender, 
+    :in => GENDER_CHOICES, 
+    :message => "The field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
+
   validates_inclusion_of :interested_in, :in => INTEREST_CHOICES, :allow_nil => true, :allow_blank => true
   
   # Handle the friendship relationships (the intermediary)
@@ -62,10 +65,18 @@ class User < ActiveRecord::Base
   has_many :inverse_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => true }, :source => :user
    
   # Friends I have asked to be mine
-  has_many :requested_friends, :through => :friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "user_id", :source => :friend
+  has_many :requested_friends, 
+    :through => :friendships, 
+    :conditions => { :'friendships.approved' => false }, 
+    :foreign_key => "user_id", :source => 
+    :friend
   
   # Pending friends that I need to say yes/no to
-  has_many :pending_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => false }, :foreign_key => "friend_id", :source => :user
+  has_many :pending_friends, 
+    :through => :inverse_friendships, 
+    :conditions => { :'friendships.approved' => false }, 
+    :foreign_key => "friend_id", 
+    :source => :user
   
   def to_s
     "#{first_name} #{last_name}"
@@ -90,7 +101,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # God this json code is so messy!
   def as_json(options={})
     if options[:mini]
       result = super :only => [:id, :gender]
@@ -216,6 +226,11 @@ class User < ActiveRecord::Base
         photo.save!
       end
     end
+  end
+
+  def facebook_friends
+    graph = get_facebook_graph
+    graph.get_connections("me", "friends", { :fields => 'id,name,gender,location' })
   end
 
   def interest_names=(interest_names)
