@@ -1,6 +1,4 @@
 class FriendsController < ApplicationController
-  # skip_before_filter :require_token_auth, :only => [:authenticate, :create, :build_facebook_user]
-
   before_filter :find_friend, :only => [:show, :destroy]
   
   respond_to :json
@@ -60,6 +58,59 @@ class FriendsController < ApplicationController
 
     # Return all of a users facebook friends
     respond_with @facebook_friends
+  end
+
+  def invite
+    facebook_ids = []
+    doubledate_users = []
+
+    unless params[:facebook_ids].nil?
+      facebook_ids = params[:facebook_ids].select { |id| id.is_a?(Fixnum) ? id : false }
+    end
+
+    unless params[:user_ids].nil?
+      doubledate_users = User.where(:id => params[:user_ids])
+    end
+
+    if facebook_ids.empty? && doubledate_users.empty?
+      json_error("Please specify a valid array of facebook_ids or user_ids.") and return
+    end
+
+    dbld8_invited = 0
+    fb_invited = 0
+
+    facebook_ids.each do |fb_id|
+      dbld8_user = User.find_by_facebook_id fb_id
+
+      if dbld8_user
+        if @authenticated_user.invite(dbld8_user)
+          dbld8_invited += 1
+        end
+      else
+        # Post on the users wall
+      end
+    end
+
+    render :json => { 
+      'dbld8_attempts' => doubledate_users.count,
+      'fb_attempts' => facebook_ids.length,
+      'dbld8_invited' => dbld8_invited,
+      'fb_invited' => fb_invited,
+      'total_invited' => dbld8_invited + fb_invited
+    }
+
+    # respond_with facebook_ids
+
+    # for each facebook id,
+      # if they are users, call @authenticated_user.invite(@the_user)
+      
+      # otherwise, create a wall post on that facebook user's wall
+      
+      # also, create the internal hidden object connecting the user sending the invite
+      # and the facebook id of the non-user
+
+    # also, hook user creation so that when a user is created, that bridge table
+    # is checked for a connection. If it exists, automatically make them friends.
   end
 
   private

@@ -22,7 +22,11 @@ DoubleDate::Application.routes.draw do
     # GET /me/friends
     resources :friends, :only => [:index, :show, :destroy] do
       get 'facebook', :on => :collection
+      post 'invite', :on => :collection
     end
+
+    # POST /me/invite_friends
+    # post 'invite_friends', :action => 'friends#invite_friends'
     
     resources :friendships, :only => [:index, :show, :update, :create, :destroy] do
       # approve a pending friendship request
