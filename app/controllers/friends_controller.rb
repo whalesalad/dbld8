@@ -96,6 +96,12 @@ class FriendsController < ApplicationController
       end
     end
 
+    doubledate_users.each do |user|
+      if @authenticated_user.invite(user)
+        dbld8_invited += 1
+      end
+    end
+
     render :json => { 
       'dbld8_attempts' => doubledate_users.count,
       'fb_attempts' => facebook_ids.length,
