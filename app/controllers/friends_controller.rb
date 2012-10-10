@@ -87,7 +87,10 @@ class FriendsController < ApplicationController
       else
         # Post on the users wall
         graph = @authenticated_user.get_facebook_graph
-        if graph.put_object(fb_id, "feed", :message => @authenticated_user.invite_message)
+        
+        message = "Hey! I'm inviting you to be my wingman. Let's go out and have some fun together!"
+
+        if graph.put_wall_post(message, @authenticated_user.facebook_invite_message, fb_id)
           fb_invited += 1
         end
       end

@@ -276,6 +276,10 @@ class User < ActiveRecord::Base
     "Hey! Become my wing on DoubleDate! Let's go have some fun. http://dbld8.com#{invite_path}"
   end
 
+  def facebook_invite_message
+    { :name => "Become my wing on DoubleDate!", :link => "http://dbld8.com#{invite_path}" }
+  end
+
   def generate_invite_slug
     reverse_epoch = created_at.to_i.to_s.reverse.chop
     slug = "#{reverse_epoch}#{id}#{Random.rand(10)}"
