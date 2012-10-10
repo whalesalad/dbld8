@@ -11,13 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121006024646) do
+ActiveRecord::Schema.define(:version => 20121010234053) do
 
   create_table "auth_tokens", :force => true do |t|
     t.integer  "user_id"
     t.string   "token"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "facebook_invites", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "facebook_id", :limit => 8
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
 
   create_table "friendships", :force => true do |t|

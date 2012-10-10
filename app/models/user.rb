@@ -77,6 +77,8 @@ class User < ActiveRecord::Base
     :conditions => { :'friendships.approved' => false }, 
     :foreign_key => "friend_id", 
     :source => :user
+
+  has_many :facebook_invites, :dependent => :destroy
   
   def to_s
     "#{first_name} #{last_name}"
@@ -270,14 +272,6 @@ class User < ActiveRecord::Base
 
   def invite_path
     "/invite/#{invite_slug}"
-  end
-
-  def invite_message
-    "Hey! Become my wing on DoubleDate! Let's go have some fun. http://dbld8.com#{invite_path}"
-  end
-
-  def facebook_invite_message
-    { :name => "Become my wing on DoubleDate!", :link => "http://dbld8.com#{invite_path}" }
   end
 
   def generate_invite_slug
