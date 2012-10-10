@@ -22,6 +22,8 @@ DoubleDate::Application.routes.draw do
     # GET /me/friends
     resources :friends, :only => [:index, :show, :destroy] do
       get 'facebook', :on => :collection
+      
+      # /me/friends/invite { facebook_ids: 109234, 23492349, 29349234 }
       post 'invite', :on => :collection
     end
 

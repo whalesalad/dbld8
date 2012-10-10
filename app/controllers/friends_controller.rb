@@ -82,12 +82,14 @@ class FriendsController < ApplicationController
     facebook_ids.each do |fb_id|
       dbld8_user = User.find_by_facebook_id fb_id
 
-      if dbld8_user
-        if @authenticated_user.invite(dbld8_user)
-          dbld8_invited += 1
-        end
+      if dbld8_user && @authenticated_user.invite(dbld8_user)
+        dbld8_invited += 1
       else
         # Post on the users wall
+        graph = @authenticated_user.get_facebook_graph
+        if graph.put_object(fb_id, "feed", :message => @authenticated_user.invite_message)
+          fb_invited += 1
+        end
       end
     end
 
