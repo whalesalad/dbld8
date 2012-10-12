@@ -65,7 +65,7 @@ class FriendsController < ApplicationController
     doubledate_users = []
 
     unless params[:facebook_ids].nil?
-      facebook_ids = params[:facebook_ids].select { |id| id.is_a?(Fixnum) ? id : false }
+      facebook_ids = params[:facebook_ids].map { |id| id.to_i }
     end
 
     unless params[:user_ids].nil?
