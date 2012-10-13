@@ -63,6 +63,8 @@ DoubleDate::Application.routes.draw do
     resources :friendships
     resources :interests, :only => [:index, :show]
     resources :locations, :only => [:index, :show]
+
+    mount Resque::Server, :at => 'resque', :as => 'resque'
   end
 
   # Home

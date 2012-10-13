@@ -19,6 +19,9 @@ gem 'koala'
 # S3 // AWS
 gem 'fog'
 
+# Background Jobbin'
+gem 'resque', :require => "resque/server"
+
 # Images, File Handling
 gem 'rmagick'
 gem 'carrierwave'
