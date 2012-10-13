@@ -26,6 +26,9 @@ gem 'resque', :require => "resque/server"
 gem 'rmagick'
 gem 'carrierwave'
 
+# Monitoring
+gem 'newrelic_rpm'
+
 # Gems used only for assets and not in production
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

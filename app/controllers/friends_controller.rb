@@ -103,18 +103,6 @@ class FriendsController < ApplicationController
       'total_invited' => dbld8_invited + fb_invited
     }
 
-    # respond_with facebook_ids
-
-    # for each facebook id,
-      # if they are users, call @authenticated_user.invite(@the_user)
-      
-      # otherwise, create a wall post on that facebook user's wall
-      
-      # also, create the internal hidden object connecting the user sending the invite
-      # and the facebook id of the non-user
-
-    # also, hook user creation so that when a user is created, that bridge table
-    # is checked for a connection. If it exists, automatically make them friends.
   end
 
   private
