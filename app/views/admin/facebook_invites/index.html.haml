@@ -1,0 +1,26 @@
+.page-header
+  %h1
+    All Facebook Invites
+    %small #{pluralize(@invites.count, 'Invite')} Total
+
+= form_tag destroy_multiple_admin_facebook_invites_path do
+  %table.table.table-striped
+    %thead
+      %tr
+        %th 
+        %th ID
+        %th User
+        %th Facebook ID
+        %th Created
+    
+    %tbody
+      - for invite in @invites
+        %tr
+          %td= check_box_tag "invites_to_delete[]", invite.id
+          %td= invite.id
+          %td= link_to invite.user, admin_user_path(invite.user)
+          %td= invite.facebook_id
+          %td #{l invite.created_at, :format => :long}
+
+  .form-actions
+    = submit_tag "Delete Invites", :class => 'btn btn-danger'
