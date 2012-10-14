@@ -99,7 +99,7 @@ class FriendsController < ApplicationController
 
     facebook_friends.select do |friend|
       # Clean up the ID
-      friend['facebook_id'] = friend['id']
+      friend['facebook_id'] = friend['id'].to_i
       friend.delete 'id'
 
       # continue unless this user has been invited
