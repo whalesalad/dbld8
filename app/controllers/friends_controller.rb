@@ -32,33 +32,9 @@ class FriendsController < ApplicationController
       respond_with [] and return
     end
 
-    @facebook_friends = @authenticated_user.facebook_friends.map do |friend|
-      friend['facebook_id'] = friend['id']
-      friend.delete 'id'
-
-      if friend.has_key? 'location'
-        friend['location'] = friend['location']['name']
-      end
-
-      # Exclude users who are already your friend
-      dbld8_user = User.find_by_facebook_id(friend['facebook_id'])
-
-      unless dbld8_user.nil?
-        friendship = @authenticated_user.find_any_friendship_with(dbld8_user)
-        
-        unless friendship.nil?
-          friend['friendship_id'] = friendship.id
-        end
-
-        friend['id'] = dbld8_user['id']
-      end
-
-      friend
-    end
-
-    # Return all of a users facebook friends
-    respond_with @facebook_friends
+    respond_with filter_facebook_friends(@authenticated_user.facebook_friends)
   end
+
 
   def invite
     facebook_ids = []
@@ -112,6 +88,49 @@ class FriendsController < ApplicationController
 
     if @friend.nil?
       json_not_found("A friend/user with the ID of #{params[:id]} could not be found.")
+    end
+  end
+
+  def filter_facebook_friends(facebook_friends = nil)
+    return [] if facebook_friends.nil?
+
+    friend_ids = facebook_friends.map { |f| f['id'] }
+    already_invited = FacebookInvite.find_all_by_facebook_id(friend_ids, :select => :facebook_id).map(&:facebook_id)
+
+    facebook_friends.select do |friend|
+      # Clean up the ID
+      friend['facebook_id'] = friend['id']
+      friend.delete 'id'
+
+      # continue unless this user has been invited
+      next if already_invited.include? friend['facebook_id']
+
+      # Clean up location
+      if friend.has_key? 'location'
+        friend['location'] = friend['location']['name']
+      end
+
+      # Clean up the photo
+      if friend.has_key? 'picture'
+        unless friend['picture']['data']['is_silhouette']
+          friend['photo'] = { :thumb => friend['picture']['data']['url'].gsub('_q', '_n') }
+        end
+        friend.delete 'picture'
+      end
+
+      dbld8_user = User.find_by_facebook_id(friend['facebook_id'])
+
+      unless dbld8_user.nil?
+        friend['id'] = dbld8_user['id']
+        friend['photo'] = dbld8_user.json_photo
+
+        # Check and see if a friendship exists
+        friendship = @authenticated_user.find_any_friendship_with(dbld8_user)
+      end
+
+      # Finally, return the frankenstein friend obj unless 
+      # there is already a friendship
+      friend unless friendship
     end
   end
 

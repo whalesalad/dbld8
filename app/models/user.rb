@@ -95,12 +95,13 @@ class User < ActiveRecord::Base
     single? ? "Single" : "Taken"
   end
 
+  def default_photo
+    "http://static.dbld8.com/misc/no-photo.png"
+  end
+
   def json_photo
-    if photo.present?
-      photo
-    elsif facebook?
-      { :thumb => facebook_photo(:large) }
-    end
+    return photo if photo.present?
+    { :thumb => default_photo }
   end
 
   def as_json(options={})
@@ -232,7 +233,7 @@ class User < ActiveRecord::Base
 
   def facebook_friends
     graph = get_facebook_graph
-    graph.get_connections("me", "friends", { :fields => 'id,name,gender,location' })
+    graph.get_connections("me", "friends", { :fields => 'id,name,gender,location,picture' })
   end
 
   def interest_names=(interest_names)
