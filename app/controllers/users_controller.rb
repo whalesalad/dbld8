@@ -79,6 +79,10 @@ class UsersController < ApplicationController
     # Allow editing the facebook_id and facebook_access token only for this request.
     @user.accessible = [:facebook_id, :facebook_access_token]
 
+    if params[:user].has_key? 'invite_path'
+      params[:user].delete 'invite_path'
+    end
+
     # Update the user
     @user.update_attributes(params[:user])
 

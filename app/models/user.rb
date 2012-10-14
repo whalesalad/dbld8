@@ -101,7 +101,10 @@ class User < ActiveRecord::Base
 
   def json_photo
     return photo if photo.present?
-    { :thumb => default_photo }
+
+    p = (facebook?) ? facebook_photo(:large) : default_photo
+
+    { :thumb => p }
   end
 
   def as_json(options={})
