@@ -1,30 +1,3 @@
-User:
-  first_name: Michael
-  last_name: Whalen
-  birthdate: MM/DD/YYYY
-  bio: Here is my short bio text.
-  registered: <DateTime>
-  gender: Guy / Girl
-  interested_in: Guys / Girls /Both
-  location: <Location>
-  interests: [<Interest>, ...]
-  wingmen: [<User>, ...]
-  actions: [<UserAction>, ...]
-  credits: A calculated aggregate of self.actions.credits calculated on post_save of <UserAction>
-  facebook_access_token: XXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-
-UserPhoto:
-  owner: <User>
-  url: http://static.dbld8.com/photos/userid/hash.jpg
-  uploaded: <DateTime>
-
-
-UserInterest:
-  name: "Running"
-  facebook_id: 109368782422374
-
-
 # This is where we define the value of each action.
 CreditAction:
   slug: 'activity_create'
@@ -71,13 +44,4 @@ ActivityInterest:
   sender: <User:Myself>
   wingman: <User:Marcus>
   message: "Hey girls! We're really interested in going!"
-
-
-# Location model (geodjango + postgis)
-Location:
-  name: Parkerhouse Drive
-  latitude: float
-  longitude: float
-  foursquare_id: 4b81a6c5f964a52067b530e3
-  facebook_id: 109368782422374
 
