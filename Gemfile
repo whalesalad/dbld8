@@ -5,6 +5,8 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'pg'
 gem 'haml'
 gem 'thin'
+gem 'countries'
+gem 'state_machine'
 
 # Postgres ext goodies
 gem 'postgres_ext'

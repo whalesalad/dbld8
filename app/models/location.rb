@@ -78,15 +78,15 @@ class Location < ActiveRecord::Base
   end
 
   def name
-    if country == 'US' && admin_code.present?
-      if admin_code == 'DC'
-        return admin_name
-      else
-        return "#{locality}, #{admin_code}"
-      end
+    if read_attribute(:country) == 'US' && admin_code.present?
+      return (admin_code == 'DC') ? admin_name : "#{locality}, #{admin_code}"
     end
 
-    read_attribute(:name)
+    "#{locality}, #{country.name}"
+  end
+
+  def country
+    @country ||= Country.new(read_attribute(:country))
   end
 
   def google_map_url
