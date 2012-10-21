@@ -7,7 +7,7 @@ class Activity < ActiveRecord::Base
   DAY_PREFERENCES = %w(Weekday Weekend)
   TIME_PREFERENCES = %w(Daytime Nighttime)
 
-  has_one :user
+  has_one :user, :dependent => :destroy
   has_one :wing
 
   # Validate day preference
@@ -21,7 +21,7 @@ class Activity < ActiveRecord::Base
     :message => "The field activity.time_pref is required. Possible values are #{TIME_PREFERENCES.join(', ')}."
 
   # states: active, expired
-  state_machine :status, :initial => :active
+  # def state wat
 
   def to_s
     title
