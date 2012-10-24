@@ -17,6 +17,8 @@
 #  created_at            :datetime        not null
 #  updated_at            :datetime        not null
 #  location_id           :integer
+#  uuid                  :uuid            not null
+#  invite_slug           :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -78,7 +80,11 @@ class User < ActiveRecord::Base
     :foreign_key => "friend_id", 
     :source => :user
 
+  # Facebook Invitations
   has_many :facebook_invites, :dependent => :destroy
+
+  has_many :activities, :dependent => :destroy
+  has_many :participating_activities, :class_name => "Activity", :foreign_key => "wing_id"
   
   def to_s
     "#{first_name} #{last_name}"

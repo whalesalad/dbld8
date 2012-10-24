@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20121015042900) do
     t.string   "time_pref"
     t.integer  "location_id"
     t.integer  "user_id",     :null => false
-    t.integer  "wing_id",     :null => false
+    t.integer  "wing_id"
     t.string   "status"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false

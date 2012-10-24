@@ -5,18 +5,23 @@ DoubleDate::Application.routes.draw do
   
   get 'invite(/:invite_slug)' => 'users#invitation', :as => 'user_invitation'
 
-  # ways to find other users
-  # email
-  # facebook id
+
   resources :users, :only => [:index, :show, :create] do
     get 'search', :on => :collection
   end
 
-  resources :activities
 
-  # get all activities
-  # get all my activities (grouped)
-
+  resources :activities, :only => [:index, :show, :create] do
+    # GET /activities/mine
+    # get all my activities (grouped)
+    # - activities i've created (me.activities)
+    # - activities a wing has created w/ me involved (me.participating_activities)
+    # - activities that i've shown interest in (engagement object created)
+    # - activities that i've shown interest in and are accepted
+    get 'mine', :on => :collection
+  end
+  
+  
   # ME!
   resource :me, :controller => "me" do
     # User Photos
@@ -35,10 +40,6 @@ DoubleDate::Application.routes.draw do
     # post 'invite_friends', :action => 'friends#invite_friends'
     
     resources :friendships, :only => [:index, :show, :update, :create, :destroy] do
-      # approve a pending friendship request
-      # POST /me/friendships/:friendship_id/approve
-      # post 'approve', :on => :member
-
       # ignore a pending friendship request (deletes it)
       # POST /me/friendships/:friendship_id/ignore
       post 'ignore', :on => :member
@@ -50,8 +51,8 @@ DoubleDate::Application.routes.draw do
       # Get a list of users I have requested
       # GET /me/friendships/requested
       get 'requested', :on => :collection
-      
     end
+
   end
   
   # Interests
@@ -65,9 +66,11 @@ DoubleDate::Application.routes.draw do
     match '', :action => 'index'
     resources :users, :only => [:index, :show, :destroy]
     resources :friendships
+
     resources :facebook_invites, :only => [:index] do
       post 'destroy_multiple', :on => :collection
     end
+    
     resources :interests, :only => [:index, :show]
     resources :locations, :only => [:index, :show]
 

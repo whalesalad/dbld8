@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: facebook_invites
+#
+#  id          :integer         not null, primary key
+#  user_id     :integer
+#  facebook_id :integer(8)
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
+#
+
 class FacebookInvite < ActiveRecord::Base
 
   # Queue up the sending of the invitation (writing on the wall)

@@ -13,6 +13,7 @@
 #  facebook_id :integer(8)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  users_count :integer         default(0)
 #
 
 require 'rest_client'

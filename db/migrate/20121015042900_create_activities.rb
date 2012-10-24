@@ -9,7 +9,7 @@ class CreateActivities < ActiveRecord::Migration
 
       t.integer :location_id
       t.integer :user_id, :null => false
-      t.integer :wing_id, :null => false
+      t.integer :wing_id
 
       t.string  :status
 
