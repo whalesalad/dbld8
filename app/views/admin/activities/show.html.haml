@@ -1,134 +1,88 @@
-%section.user-detail
-  %h1
-    #{@user}
-    %small
-      #{(@user.facebook?) ? 'Facebook' : 'Email/Pass'} User &mdash;
-      Created #{l @user.created_at, :format => :long}
+%section.activity-detail
+  %h1 #{@activity}
+  
+  %h3.object-meta ##{@activity.id}, Created #{l @activity.created_at, :format => :long}
+
+  %hr/
 
   .row-fluid
     .span6
+      
+      %section.content-section
+        %h4 Details
+        %p #{@activity.details}
 
       %section.content-section
-        %h4 Photo
-        - if @user.photo.present?
-          =image_tag @user.photo.image.thumb.url, :class => 'img-circle'
-        - else
-          %p There is no photo object for #{@user}.
+        %h4 Participants
+        %dl.dl-horizontal
+          %dt Creator
+          %dd #{link_to @activity.user, admin_user_path(@activity.user)}
 
-      %section.content-section
-        %h4 Bio
-        - if @user.bio.present?
-          %blockquote
-            = @user.bio
-        - else
-          %p The bio for #{@user} is blank.
-
-      %section.content-section
-        %h4 DBLD8 Token: 
-        %p
-          - if @user.token.present?
-            %code #{@user.token}
-          - else
-            This user hasn't authenticated yet. Tokens are created on first login.
-    
+          %dt Wingman
+          %dd #{link_to @activity.wing, admin_user_path(@activity.wing)}
+        
       %section.content-section
         %h4 Basic Info
+        
         %dl.dl-horizontal
-          %dt User ID
-          %dd #{@user.id}
+          %dt Activity ID
+          %dd #{@activity.id}
 
-          %dt UUID
+          %dt Preference
+          %dd #{@activity.preference}
+
+          %dt Location
           %dd
-            %code #{@user.uuid}
-
-          %dt Email
-          %dd #{mail_to @user.email}
-
-          %dt Facebook ID
-          %dd 
-            - if @user.facebook?
-              #{@user.facebook_id}
+            - if @activity.location.present?
+              #{link_to @activity.location, admin_location_path(@activity.location)}
             - else
-              N/A
-
-          %dt Birthday
-          %dd #{l @user.birthday, :format => :long}
-
-          %dt Status
-          %dd #{@user.status}
-
-          %dt Interested In?
-          %dd #{@user.interested_in.titlecase}
-
-          %dt Gender
-          %dd #{@user.gender.titlecase}
+              No location defined.
 
           %dt Created
-          %dd #{@user.created_at}
+          %dd #{l @activity.created_at, :format => :long}
 
-      %section.content-section
-        %h4 Friends
 
-        %ul.nav.nav-tabs.user-tabs
-          %li= link_to "#{pluralize @user.total_friends, 'Wingman'}", '#wingmen-active', :data => { :toggle => 'tab' }
-          %li= link_to "#{@user.friendships.unapproved.count} Invited", '#wingmen-invited', :data => { :toggle => 'tab' }
-          %li= link_to "#{@user.inverse_friendships.unapproved.count} Incoming", '#wingmen-incoming', :data => { :toggle => 'tab' }
+      / %section.content-section
+      /   %h4 Friends
+
+      /   %ul.nav.nav-tabs.user-tabs
+      /     %li= link_to "#{pluralize @user.total_friends, 'Wingman'}", '#wingmen-active', :data => { :toggle => 'tab' }
+      /     %li= link_to "#{@user.friendships.unapproved.count} Invited", '#wingmen-invited', :data => { :toggle => 'tab' }
+      /     %li= link_to "#{@user.inverse_friendships.unapproved.count} Incoming", '#wingmen-incoming', :data => { :toggle => 'tab' }
         
-        %section.tab-content
-          #wingmen-active.tab-panel
-            - if @user.friends.count > 0
-              %ul
-                - for wingman in @user.friends
-                  %li= link_to wingman, admin_user_url(wingman)
-            - else
-              %p #{@user.first_name} does not have any wingmen.
+      /   %section.tab-content
+      /     #wingmen-active.tab-panel
+      /       - if @user.friends.count > 0
+      /         %ul
+      /           - for wingman in @user.friends
+      /             %li= link_to wingman, admin_user_url(wingman)
+      /       - else
+      /         %p #{@user.first_name} does not have any wingmen.
 
-          #wingmen-invited.tab-panel
-            - if @user.friendships.unapproved.count > 0
-              %p These are invitations sent to other users:
-              %ul
-                - for friendship in @user.friendships.unapproved
-                  %li= friendship
-            - else
-              %p #{@user.first_name} does not have any pending invitations for other users.
+      /     #wingmen-invited.tab-panel
+      /       - if @user.friendships.unapproved.count > 0
+      /         %p These are invitations sent to other users:
+      /         %ul
+      /           - for friendship in @user.friendships.unapproved
+      /             %li= friendship
+      /       - else
+      /         %p #{@user.first_name} does not have any pending invitations for other users.
 
-          #wingmen-incoming.tab-panel
-            - if @user.inverse_friendships.unapproved.count > 0
-              %p These are invitations received from other users:
-              %ul
-                - for friendship in @user.inverse_friendships.unapproved
-                  %li= link_to friendship.user.first_name, admin_user_url(friendship.user)
-            - else
-              %p #{@user.first_name} does not have any pending invitations from other users.
-
-
-      %section.content-section
-        %h4 Invitation Details
-
-        %p <b>Invite Slug:</b> <code>#{@user.invite_slug}</code>
-        
-        - invite_url = "#{request.protocol}#{request.host_with_port}#{@user.invite_path}"
-
-        %p <b>#{@user.first_name}'s Invite URL:</b> #{link_to(invite_url, invite_url, :target => '_blank')}
+      /     #wingmen-incoming.tab-panel
+      /       - if @user.inverse_friendships.unapproved.count > 0
+      /         %p These are invitations received from other users:
+      /         %ul
+      /           - for friendship in @user.inverse_friendships.unapproved
+      /             %li= link_to friendship.user.first_name, admin_user_url(friendship.user)
+      /       - else
+      /         %p #{@user.first_name} does not have any pending invitations from other users.
 
 
-      %section.content-section
-        %h4
-          Interests
-          %span.badge.badge-info #{@user.interests.count}
-        %p #{@user.interests.to_sentence}
       
-      %section.content-section  
-        %h4 Location
-        %p
-          - if @user.location.present?
-            #{link_to @user.location, admin_location_path(@user.location)}
-          - else
-            No location defined.
 
       .form-actions
-        = link_to "Delete", admin_user_path(@user), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
+        = link_to "Delete Activity", admin_activity_path(@activity), :method => :delete, :confirm => "Are you sure you want to delete this activity?", :class => 'btn btn-danger'
 
     .span6
-      %h4 Raw User Object
-      = debug @user
+      %h4 Raw Activity Object
+      = debug @activity

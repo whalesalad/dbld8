@@ -1,12 +1,11 @@
 %section.user-detail
-  %h1
-    #{@location}
-    %small
-      / #{(@user.facebook?) ? 'Facebook' : 'Email/Pass'} User &mdash;
-      / Created #{l @user.created_at, :format => :long}
+  %h1 #{@location}
+  %h3.object-meta ##{@location.id}
+
+  %hr/ 
 
   .row-fluid
-    .span6
+    .span5
     
       %section.content-section
         %h4 Location Info
@@ -40,6 +39,25 @@
       .form-actions
         = link_to "Delete", admin_location_path(@location), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
 
-    .span6
-      %h4 Raw Location Object
-      = debug @location
+    .span7
+      %ul.nav.nav-tabs.location-tabs
+        %li= link_to "Activities Here", '#activities-at-location', :data => { :toggle => 'tab' }
+        %li= link_to "Raw Object", '#raw-location-object', :data => { :toggle => 'tab' }
+      
+      %section.tab-content
+        .tab-panel#activities-at-location
+          - if @location.activities.exists?
+            %p There's #{pluralize(@location.activities.count, 'activity')} going on here.
+
+            %ul.activities-list
+              - @location.activities.each do |activity|
+                %li
+                  %span.activity-meta #{activity.user} & #{activity.wing}
+                  %span.activity-title #{link_to(activity.title, admin_activity_path(activity))}
+
+          - else
+            %p There are no activities associated with this location.
+
+        .tab-panel#raw-location-object
+          %h4 Raw Location Object
+          = debug @location

@@ -16,3 +16,5 @@ class root.CoreController
     if controller_slug of @ROUTES
       try
         new @ROUTES[controller_slug]
+
+    $('ul.nav-tabs a:first').tab 'show'

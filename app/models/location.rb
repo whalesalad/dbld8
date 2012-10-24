@@ -26,6 +26,7 @@ class Location < ActiveRecord::Base
     :locality, :admin_name, :admin_code, :country
 
   has_many :users, :dependent => :nullify
+  has_many :activities
 
   # Class Methods
   class << self
