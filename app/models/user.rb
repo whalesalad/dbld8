@@ -330,6 +330,15 @@ class User < ActiveRecord::Base
     direct_friends(false).count + inverse_friends(false).count
   end
 
+  def all_my_activities
+    reload
+    activities + participating_activities
+  end
+  
+  def total_my_activities
+    activities(false).count + participating_activities(false).count
+  end
+
   private
 
   def mass_assignment_authorizer(role = :default)

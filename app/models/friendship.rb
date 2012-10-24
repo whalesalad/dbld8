@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # == Schema Information
 #
 # Table name: friendships
@@ -10,8 +11,6 @@
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
 #
-
-# encoding: UTF-8
 
 class Friendship < ActiveRecord::Base
   before_create :set_uuid

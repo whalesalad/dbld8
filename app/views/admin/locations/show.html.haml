@@ -28,7 +28,7 @@
           %dd #{@location.admin_code}
 
           %dt Country
-          %dd #{@location.country}
+          %dd #{@location.country.name}
 
           %dt Lat / Lng
           %dd= link_to "#{@location.latitude}, #{@location.longitude}", @location.google_map_url, :target => '_blank'

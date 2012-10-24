@@ -18,18 +18,18 @@
 class Activity < ActiveRecord::Base
   before_create :set_default_values
 
-  attr_accessible :title, :details, :location_id, :day_pref, :time_pref
+  attr_accessible :title, :details, :wing_id, :location_id, :day_pref, :time_pref
 
-  validates_presence_of :title, :details
+  validates_presence_of :title, :details, :wing_id
 
   # Leave these fields blank for = "Anytime"
   DAY_PREFERENCES = %w(Weekday Weekend)
   TIME_PREFERENCES = %w(Daytime Nighttime)
 
-  # STATUS_
-
   belongs_to :user
-  belongs_to :wing
+  belongs_to :wing, :class_name => 'User'
+
+  belongs_to :location
 
   # Validate day preference
   validates_inclusion_of :day_pref, 
@@ -51,6 +51,21 @@ class Activity < ActiveRecord::Base
 
   def to_s
     title
+  end
+
+  def preference
+    # Weekday / Daytime
+    p = []
+    
+    if day_pref.present?
+      p.append day_pref
+    end
+
+    if time_pref.present?
+      p.append time_pref
+    end
+
+    (p.count > 0) ? p.join(" / ") : "Anytime"
   end
 
   def as_json(options={})

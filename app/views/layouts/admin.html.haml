@@ -39,7 +39,10 @@
                 
                 %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
                   = link_to "#{glyphicon('map-marker')}Locations".html_safe, admin_locations_path
-
+                
+                %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
+                  = link_to "#{glyphicon(:calendar)}Activities".html_safe, admin_activities_path
+                
                 %li
                   = link_to "#{glyphicon('wrench')}Resque (Queue)".html_safe, admin_resque_path
         

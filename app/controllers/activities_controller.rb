@@ -11,7 +11,7 @@ class ActivitiesController < ApplicationController
 
   def mine
     # @activities = Activity.find_by_user_id(@authenticated_user.id)
-    respond_with @authenticated_user.activities 
+    respond_with @authenticated_user.all_my_activities
   end
 
   def show

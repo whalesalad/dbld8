@@ -66,11 +66,12 @@ DoubleDate::Application.routes.draw do
     match '', :action => 'index'
     resources :users, :only => [:index, :show, :destroy]
     resources :friendships
+    resources :activities
 
     resources :facebook_invites, :only => [:index] do
       post 'destroy_multiple', :on => :collection
     end
-    
+
     resources :interests, :only => [:index, :show]
     resources :locations, :only => [:index, :show]
 
