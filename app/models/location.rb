@@ -22,8 +22,9 @@ require 'json'
 class Location < ActiveRecord::Base
   attr_accessor :distance
 
-  attr_accessible :name, :latitude, :longitude, :facebook_id, 
-    :locality, :admin_name, :admin_code, :country
+  attr_accessible :name, :latitude, :longitude, :facebook_id,
+    :locality, :admin_name, :admin_code, :country, :foursquare_id,
+    :place
 
   has_many :users, :dependent => :nullify
   has_many :activities
@@ -74,7 +75,6 @@ class Location < ActiveRecord::Base
     end
   end
   
-  
   def to_s
     name
   end
@@ -94,6 +94,13 @@ class Location < ActiveRecord::Base
   def google_map_url
     if latitude.present? and longitude.present?
       "http://maps.google.com/maps?q=#{latitude},+#{longitude}"
+    end
+  end
+
+  def foursquare_venue
+    unless foursquare_id.empty?
+      require 'foursquare'
+      @foursquare_venue ||= Foursquare::Venue.find(foursquare_id, self)
     end
   end
 
