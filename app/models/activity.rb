@@ -23,8 +23,8 @@ class Activity < ActiveRecord::Base
   validates_presence_of :title, :details, :wing_id
 
   # Leave these fields blank for = "Anytime"
-  DAY_PREFERENCES = %w(Weekday Weekend)
-  TIME_PREFERENCES = %w(Daytime Nighttime)
+  DAY_PREFERENCES = %w(weekday weekend)
+  TIME_PREFERENCES = %w(day night)
 
   belongs_to :user
   belongs_to :wing, :class_name => 'User'

@@ -51,16 +51,14 @@ module Foursquare
       @location ||= new_location_from_json(@json["location"])
     end
 
-    def new_location_from_json(location_json)
-      new_location = Location.new(:name => name,
-                                  :latitude => location_json["lat"],
-                                  :longitude => location_json["lng"],
-                                  :country => location_json["cc"],
-                                  :locality => location_json["city"],
-                                  :foursquare_id => id,
-                                  :place => name)
-
-      # new_location['name'] = new_location.name
+    def location_from_json(location_json)
+      Location.new(:name => name,
+                   :place => name,
+                   :latitude => location_json["lat"],
+                   :longitude => location_json["lng"],
+                   :country => location_json["cc"],
+                   :locality => location_json["city"],
+                   :foursquare_id => id)
     end
 
   end
