@@ -11,7 +11,7 @@ DoubleDate::Application.routes.draw do
   end
 
 
-  resources :activities, :only => [:index, :show, :create] do
+  resources :activities, :only => [:index, :show, :create, :destroy] do
     # GET /activities/mine
     # get all my activities (grouped)
     # - activities i've created (me.activities)

@@ -2,7 +2,7 @@ class ActivitiesController < ApplicationController
   respond_to :json
   # skip_before_filter :require_token_auth, :only => [:index, :show]
   
-  before_filter :get_activity, :only => [:show]
+  before_filter :get_activity, :only => [:show, :destroy]
 
   def index
     @activities = Activity.all
@@ -28,6 +28,16 @@ class ActivitiesController < ApplicationController
       respond_with @activity, :status => :created, :location => @activity
     else
       respond_with @activity, :status => :unprocessable_entity
+    end
+  end
+
+  def destroy
+    unless (@activity.user_id == @authenticated_user.id)
+      return json_not_found "The authenticated user does not have permission to delete this activity."
+    end
+
+    if @activity.destroy
+      respond_with(:nothing => true)
     end
   end
 
