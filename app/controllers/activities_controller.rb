@@ -33,7 +33,7 @@ class ActivitiesController < ApplicationController
 
   def destroy
     unless (@activity.user_id == @authenticated_user.id)
-      return json_not_found "The authenticated user does not have permission to delete this activity."
+      return json_unauthorized "The authenticated user does not have permission to delete this activity."
     end
 
     if @activity.destroy

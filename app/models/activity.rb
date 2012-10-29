@@ -72,6 +72,12 @@ class Activity < ActiveRecord::Base
     exclude = [:created_at]
 
     result = super({ :except => exclude }.merge(options))
+
+    result[:user] = user.as_json :mini => true
+
+    if wing.present?
+      result[:wing] = wing.as_json :mini => true
+    end
     
     result
   end
