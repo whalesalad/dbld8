@@ -73,11 +73,9 @@ class Activity < ActiveRecord::Base
 
     result = super({ :except => exclude }.merge(options))
 
-    result[:user] = user.as_json :mini => true
-
-    if wing.present?
-      result[:wing] = wing.as_json :mini => true
-    end
+    result[:user] = user.as_json(:mini => true)
+    result[:wing] = wing.as_json(:mini => true) if wing.present?
+    result[:location] = location.as_json(:short => true) if location.present?
     
     result
   end
