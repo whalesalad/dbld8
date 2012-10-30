@@ -7,10 +7,17 @@ class LocationsController < ApplicationController
   def index
     @locations = Location.find(:all)
     
+    unless (params.keys & %w(latitude longitude)).empty?
+      @locations = if params[:include_places]
+        # search foursquare for locations and return them
+        Location.find_places_near_point(params[:latitude], params[:longitude])
+      else
+        Location.find_cities_near_point(params[:latitude], params[:longitude])
+      end
+    end
+
     if params[:query]
       @locations = Location.where('name ~* ?', params[:query])
-    elsif params[:latitude] && params[:longitude]
-      @locations = Location.find_near_point(params[:latitude], params[:longitude])
     end
 
     respond_with @locations
@@ -24,9 +31,9 @@ class LocationsController < ApplicationController
     @location = Location.new(params[:location])
 
     if @location.save
-      respond_with(@location, status: :created, location: @location)
+      respond_with(@location, :status => :created, :location => @location)
     else
-      respond_with(@location, status: :unprocessable_entity)
+      respond_with(@location, :status => :unprocessable_entity)
     end
   end
   

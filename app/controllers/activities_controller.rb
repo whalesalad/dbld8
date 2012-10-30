@@ -9,10 +9,15 @@ class ActivitiesController < ApplicationController
     respond_with @activities
   end
 
+
   def mine
-    # @activities = Activity.find_by_user_id(@authenticated_user.id)
+    # - activities i've created (me.activities)
+    # - activities a wing has created w/ me involved (me.participating_activities)
+    # - activities that i've shown interest in (engagement object created)
+    # - activities that i've shown interest in and are accepted
     respond_with @authenticated_user.all_my_activities
   end
+
 
   def show
     respond_with @activity

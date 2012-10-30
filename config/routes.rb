@@ -12,12 +12,7 @@ DoubleDate::Application.routes.draw do
 
 
   resources :activities, :only => [:index, :show, :create, :destroy] do
-    # GET /activities/mine
-    # get all my activities (grouped)
-    # - activities i've created (me.activities)
-    # - activities a wing has created w/ me involved (me.participating_activities)
-    # - activities that i've shown interest in (engagement object created)
-    # - activities that i've shown interest in and are accepted
+    # GET /activities/mine, get all my activities (grouped)
     get 'mine', :on => :collection
   end
   
@@ -59,7 +54,9 @@ DoubleDate::Application.routes.draw do
   resources :interests, :only => [:index, :show]
   
   # Locations
-  resources :locations, :only => [:index, :show]
+  resources :locations, :only => [:index, :show] do
+    # get 'places', :on => collection
+  end
 
   # Admin
   namespace :admin do
