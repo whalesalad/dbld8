@@ -13,7 +13,7 @@ class LocationsController < ApplicationController
         # search foursquare for locations and return them
         @locations = Location.find_places_near_point(params[:latitude], params[:longitude])
       else
-        @locations = Location.find_cities_near_point(params[:latitude], params[:longitude])
+        @locations = Location.find_cities_near(params[:latitude], params[:longitude])
       end
     end
 

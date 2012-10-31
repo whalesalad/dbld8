@@ -9,7 +9,7 @@
       %th ID
       %th Location
       %th Country
-      %th Users
+      %th Foursquare ID
   
   %tbody
     - for location in @locations
@@ -21,4 +21,4 @@
           - if location.place.present?
             • #{location.location_name}
         %td #{location.country.name}
-        %td #{location.users_count}
+        %td #{location.foursquare_id}

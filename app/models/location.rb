@@ -30,7 +30,7 @@ class Location < ActiveRecord::Base
 
   # Class Methods
   class << self
-    def find_cities_near_point(latitude, longitude)
+    def find_cities_near(latitude, longitude)
       require 'geonames'
 
       results = Array.new
@@ -38,7 +38,10 @@ class Location < ActiveRecord::Base
       places = Geonames.places_near(latitude, longitude)
 
       places.each do |raw_location|
-        location = Location.find_or_create_by_name(:country => raw_location['countryCode'], 
+        name = "#{raw_location['toponymName']}, #{raw_location['adminName1']}"
+
+        location = Location.find_or_create_by_name(:name => name,
+                                                   :country => raw_location['countryCode'], 
                                                    :admin_name => raw_location['adminName1'],
                                                    :admin_code => raw_location['adminCode1'],
                                                    :locality => raw_location['toponymName'],
@@ -59,7 +62,7 @@ class Location < ActiveRecord::Base
 
       venues = Foursquare::Venue.explore :ll => "#{latitude},#{longitude}"
 
-      locations = venues.map do |venue|
+      return venues.map do |venue|
         venue.location_and_save!
       end
     end
