@@ -25,7 +25,7 @@ module Foursquare
       end
     end
 
-    attr_reader :json
+    attr_reader :json, :location
 
     def initialize(json, location=nil)
       @json = json
@@ -36,7 +36,7 @@ module Foursquare
     end
 
     def to_s
-      "#{name} - #{location}"
+      "#{name} - #{location.name}"
     end
 
     def id
@@ -47,18 +47,47 @@ module Foursquare
       @json["name"]
     end
 
-    def location
-      @location ||= new_location_from_json(@json["location"])
+    def city
+      @json["location"]["city"]
     end
 
-    def location_from_json(location_json)
-      Location.new(:name => name,
-                   :place => name,
-                   :latitude => location_json["lat"],
-                   :longitude => location_json["lng"],
-                   :country => location_json["cc"],
-                   :locality => location_json["city"],
-                   :foursquare_id => id)
+    def state
+      @json["location"]["state"]
+    end
+
+    def country_code
+      @json["location"]["cc"]
+    end
+
+    def location
+      @location ||= find_or_create_location
+    end
+
+    def location_and_save!
+      l = location
+      l.save!
+      l
+    end
+
+    def sanitize_field(text)
+      case text
+      when nil
+        nil
+      when text == text.upcase
+        text.capitalize
+      end
+
+      text
+    end
+
+    def find_or_create_location
+      Location.find_or_initialize_by_foursquare_id(:foursquare_id => id,
+        :place => name,
+        :latitude => @json["location"]["lat"],
+        :longitude => @json["location"]["lng"],
+        :locality => sanitize_field(city),
+        :admin_code => state,
+        :country => country_code)
     end
 
   end

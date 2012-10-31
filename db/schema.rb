@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026025245) do
+ActiveRecord::Schema.define(:version => 20121031032804) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -93,7 +93,8 @@ ActiveRecord::Schema.define(:version => 20121026025245) do
   end
 
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true
-  add_index "locations", ["name"], :name => "index_locations_on_name", :unique => true
+  add_index "locations", ["foursquare_id"], :name => "index_locations_on_foursquare_id", :unique => true
+  add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "user_photos", :force => true do |t|
     t.integer  "user_id"

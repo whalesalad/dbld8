@@ -17,6 +17,8 @@
 #
 
 class Location < ActiveRecord::Base
+  after_initialize :set_name
+
   attr_accessor :distance
 
   attr_accessible :name, :latitude, :longitude, :facebook_id,
@@ -33,13 +35,10 @@ class Location < ActiveRecord::Base
 
       results = Array.new
 
-      raw_locations = Geonames.places_near(latitude, longitude)
+      places = Geonames.places_near(latitude, longitude)
 
-      raw_locations.each do |raw_location|
-        location_name = "#{raw_location['toponymName']}, #{raw_location['adminName1']}"
-
-        location = Location.find_or_create_by_name(:name => location_name,
-                                                   :country => raw_location['countryCode'], 
+      places.each do |raw_location|
+        location = Location.find_or_create_by_name(:country => raw_location['countryCode'], 
                                                    :admin_name => raw_location['adminName1'],
                                                    :admin_code => raw_location['adminCode1'],
                                                    :locality => raw_location['toponymName'],
@@ -58,20 +57,40 @@ class Location < ActiveRecord::Base
     def find_places_near_point(latitude, longitude)
       require 'foursquare'
 
+      venues = Foursquare::Venue.explore :ll => "#{latitude},#{longitude}"
 
+      locations = venues.map do |venue|
+        venue.location_and_save!
+      end
     end
   end
   
   def to_s
-    name
+    if place.present?
+      "#{place} - #{location_name}"
+    else
+      location_name  
+    end
   end
 
-  def name
-    if read_attribute(:country) == 'US' && admin_code.present?
-      return (admin_code == 'DC') ? admin_name : "#{locality}, #{admin_code}"
-    end
+  def location_name
+    return admin_name if admin_code.present? && admin_code == 'DC'
+
+    return "#{locality}, #{admin_code}" if read_attribute(:country) == 'US'
 
     "#{locality}, #{country.name}"
+  end
+
+  def admin_name
+    if place.present?
+      place
+    else
+      location_name  
+    end
+  end
+
+  def set_name
+    self.name ||= self.to_s
   end
 
   def country

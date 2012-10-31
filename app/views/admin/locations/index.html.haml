@@ -7,7 +7,7 @@
   %thead
     %tr
       %th ID
-      %th Name
+      %th Location
       %th Country
       %th Users
   
@@ -17,6 +17,8 @@
         %td #{location.id}
         %td 
           %b
-            #{link_to location, admin_location_path(location)}
+            #{link_to location.admin_name, admin_location_path(location)}
+          - if location.place.present?
+            • #{location.location_name}
         %td #{location.country.name}
         %td #{location.users_count}

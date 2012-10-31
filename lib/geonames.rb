@@ -28,6 +28,7 @@ module Geonames
     # eliminate unpopulated areas
     response.reject! { |place| place['population'] < 10 }
 
+    return response
   end
 
 end

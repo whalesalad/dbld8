@@ -8,11 +8,12 @@ class LocationsController < ApplicationController
     @locations = Location.find(:all)
     
     unless (params.keys & %w(latitude longitude)).empty?
-      @locations = if params[:include_places]
+      
+      if params[:include_places]
         # search foursquare for locations and return them
-        Location.find_places_near_point(params[:latitude], params[:longitude])
+        @locations = Location.find_places_near_point(params[:latitude], params[:longitude])
       else
-        Location.find_cities_near_point(params[:latitude], params[:longitude])
+        @locations = Location.find_cities_near_point(params[:latitude], params[:longitude])
       end
     end
 
