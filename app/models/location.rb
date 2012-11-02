@@ -106,11 +106,19 @@ class Location < ActiveRecord::Base
     end
   end
 
+  def foursquare?
+    foursquare_id.present?
+  end
+
   def foursquare_venue
-    unless foursquare_id.empty?
+    if foursquare?
       require 'foursquare'
       @foursquare_venue ||= Foursquare::Venue.find(foursquare_id, self)
     end
+  end
+
+  def foursquare_url
+    "http://foursquare.com/v/#{foursquare_id}" if foursquare?
   end
 
   def as_json(options={})

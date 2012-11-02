@@ -9,10 +9,10 @@
     
       %section.content-section
         %h4 Location Info
-        
+
         %dl.dl-horizontal
           %dt Location ID
-          %dd #{@location.id}
+          %dd <code>#{@location.id}</code>
 
           %dt Name
           %dd #{@location.name}
@@ -34,6 +34,20 @@
 
           %dt Created
           %dd #{@location.created_at}
+
+        - if @location.foursquare?
+          %section.content-section
+          %h4 Foursquare
+          
+          %p= image_tag 'powered-by-foursquare.png', :class => 'foursquare-brandmark'
+
+          %dl.dl-horizontal
+            %dt Forusquare ID
+            %dd <code>#{@location.foursquare_id}</code>
+
+            %dt Venue URL
+            %dd= link_to @location.foursquare_url, @location.foursquare_url, :target => "_blank"
+
 
 
       .form-actions
