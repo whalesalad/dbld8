@@ -1,0 +1,25 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th{ :width => '10%' } ID
+      %th{ :width => '50%' } Location
+      %th{ :width => '20%' } Country
+      %th{ :width => '15%' } Users Here
+      %th= image_tag 'foursquare-mini.png'
+  
+  %tbody
+    - for location in @locations
+      %tr
+        %td #{location.id}
+        %td 
+          %b
+            #{link_to location.admin_name, admin_location_path(location)}
+          - if location.place.present?
+            • #{location.location_name}
+        %td #{location.country.name}
+        %td #{location.users_count if location.city?}
+        %td 
+          - if location.foursquare?
+            = link_to 'Venue', location.foursquare_url, :target => '_blank'
+          - else
+            No

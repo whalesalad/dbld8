@@ -5,6 +5,16 @@ class Admin::LocationsController < AdminController
     @locations = Location.order('users_count DESC')
   end
 
+  def cities
+    @locations = Location.cities.order('users_count DESC')
+    # render 'index'
+  end
+
+  def places
+    @locations = Location.places.order('users_count DESC')
+    # render 'index'
+  end
+
   def show
     # respond_with
   end

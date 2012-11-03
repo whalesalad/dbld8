@@ -1,30 +1,11 @@
 .page-header
+  .btn-group.pull-right
+    = link_to 'All', admin_locations_path, :class => 'active btn'
+    = link_to 'Cities', cities_admin_locations_path, :class => 'btn'
+    = link_to 'Places', places_admin_locations_path, :class => 'btn'
+
   %h1
     All Locations
     %small #{pluralize(@locations.count, 'Location')} Total
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th ID
-      %th Location
-      %th Country
-      %th Users Here
-      %th= image_tag 'foursquare-mini.png'
-  
-  %tbody
-    - for location in @locations
-      %tr
-        %td #{location.id}
-        %td 
-          %b
-            #{link_to location.admin_name, admin_location_path(location)}
-          - if location.place.present?
-            • #{location.location_name}
-        %td #{location.country.name}
-        %td #{location.users_count if location.city?}
-        %td 
-          - if location.foursquare?
-            = link_to 'Venue', location.foursquare_url, :target => '_blank'
-          - else
-            No
+= render 'location_list'

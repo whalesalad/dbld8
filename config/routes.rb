@@ -70,7 +70,11 @@ DoubleDate::Application.routes.draw do
     end
 
     resources :interests, :only => [:index, :show]
-    resources :locations, :only => [:index, :show]
+    
+    resources :locations, :only => [:index, :show] do
+      get 'cities', :on => :collection
+      get 'places', :on => :collection
+    end
 
     mount Resque::Server, :at => 'resque', :as => 'resque'
   end

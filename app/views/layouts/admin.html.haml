@@ -26,6 +26,10 @@
           - else
             .well.sidebar-nav
               %ul.nav.nav-list
+                / <li class="nav-header">List header</li>
+                %li.nav-header 
+                  Internal Data
+
                 %li{ :class => current_section?(:controller => "users") ? 'active' : '' }
                   = link_to "#{glyphicon(:user)}Users".html_safe, admin_users_path
                 
@@ -44,6 +48,9 @@
                 %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
                   = link_to "#{glyphicon(:calendar)}Activities".html_safe, admin_activities_path
                 
+                %li.nav-header 
+                  Services
+
                 %li
                   = link_to "#{glyphicon('wrench')}Resque (Queue)".html_safe, admin_resque_path
         
