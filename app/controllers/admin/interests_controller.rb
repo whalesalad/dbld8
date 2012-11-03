@@ -3,6 +3,8 @@ class Admin::InterestsController < AdminController
 
   def index
     @interests = Interest.find(:all)
+
+    @interests.sort! { |a,b| b.users.count <=> a.users.count }
   end
 
   def show

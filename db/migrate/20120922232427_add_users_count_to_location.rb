@@ -7,6 +7,5 @@ class AddUsersCountToLocation < ActiveRecord::Migration
         Location.reset_counters loc.id, :users
       end
     end
-    
   end
 end

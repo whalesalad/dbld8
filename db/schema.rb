@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(:version => 20121031110919) do
   add_index "interests_users", ["user_id", "interest_id"], :name => "index_interests_users_on_user_id_and_interest_id"
 
   create_table "locations", :force => true do |t|
-    t.string   "name",                       :null => false
+    t.string   "name",                                      :null => false
     t.string   "locality"
     t.string   "admin_name"
     t.string   "admin_code"
@@ -85,10 +85,11 @@ ActiveRecord::Schema.define(:version => 20121031110919) do
     t.float    "latitude"
     t.float    "longitude"
     t.integer  "facebook_id",   :limit => 8
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "foursquare_id"
     t.string   "place"
+    t.integer  "users_count",                :default => 0
   end
 
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true

@@ -28,6 +28,9 @@ class Location < ActiveRecord::Base
   has_many :users, :dependent => :nullify
   has_many :activities
 
+  scope :cities, where(:foursquare_id => nil)
+  scope :places, where('foursquare_id IS NOT NULL')
+
   # Class Methods
   class << self
     def find_cities_near(latitude, longitude)
@@ -104,6 +107,10 @@ class Location < ActiveRecord::Base
     if latitude.present? and longitude.present?
       "http://maps.google.com/maps?q=#{latitude},+#{longitude}"
     end
+  end
+
+  def city?
+    foursquare_id.blank?
   end
 
   def foursquare?

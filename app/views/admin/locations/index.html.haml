@@ -9,6 +9,7 @@
       %th ID
       %th Location
       %th Country
+      %th Users Here
       %th= image_tag 'foursquare-mini.png'
   
   %tbody
@@ -21,6 +22,7 @@
           - if location.place.present?
             • #{location.location_name}
         %td #{location.country.name}
+        %td #{location.users_count if location.city?}
         %td 
           - if location.foursquare?
             = link_to 'Venue', location.foursquare_url, :target => '_blank'

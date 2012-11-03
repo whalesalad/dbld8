@@ -2,7 +2,7 @@ class Admin::LocationsController < AdminController
   before_filter :get_location, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @locations = Location.find(:all)
+    @locations = Location.order('users_count DESC')
   end
 
   def show

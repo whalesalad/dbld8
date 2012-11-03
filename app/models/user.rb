@@ -26,9 +26,14 @@ class User < ActiveRecord::Base
   after_create :fetch_and_store_facebook_photo, :set_invite_slug
   before_validation :before_validation_on_create, :on => :create
 
+  after_update do |user|
+    # Tedious manual process for now
+    Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
+  end
+
   has_secure_password
 
-  belongs_to :location
+  belongs_to :location, :counter_cache => true
   has_and_belongs_to_many :interests
 
   has_one :token, :class_name => 'AuthToken', :dependent => :destroy
