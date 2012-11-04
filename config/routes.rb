@@ -55,7 +55,9 @@ DoubleDate::Application.routes.draw do
   
   # Locations
   resources :locations, :only => [:index, :show] do
-    # get 'places', :on => collection
+    get 'both', :on => :collection
+    get 'cities', :on => :collection
+    get 'venues', :on => :collection
   end
 
   # Admin
@@ -73,7 +75,7 @@ DoubleDate::Application.routes.draw do
     
     resources :locations, :only => [:index, :show] do
       get 'cities', :on => :collection
-      get 'places', :on => :collection
+      get 'venues', :on => :collection
     end
 
     mount Resque::Server, :at => 'resque', :as => 'resque'

@@ -23,13 +23,13 @@ class Location < ActiveRecord::Base
 
   attr_accessible :name, :latitude, :longitude, :facebook_id,
     :locality, :admin_name, :admin_code, :country, :foursquare_id,
-    :place
+    :venue
 
   has_many :users, :dependent => :nullify
   has_many :activities
 
   scope :cities, where(:foursquare_id => nil)
-  scope :places, where('foursquare_id IS NOT NULL')
+  scope :venues, where('foursquare_id IS NOT NULL')
 
   # Class Methods
   class << self
@@ -38,9 +38,9 @@ class Location < ActiveRecord::Base
 
       results = Array.new
 
-      places = Geonames.places_near(latitude, longitude)
+      cities = Geonames.cities_near(latitude, longitude)
 
-      places.each do |raw_location|
+      cities.each do |raw_location|
         name = "#{raw_location['toponymName']}, #{raw_location['adminName1']}"
 
         location = Location.find_or_create_by_name(:name => name,
@@ -52,28 +52,37 @@ class Location < ActiveRecord::Base
                                                    :longitude => raw_location['lng'])
         
         # temporarily store distance for this result set. 
-        location.distance = raw_location['distance']
+        location.distance = raw_location['distance'].to_i * 1000
 
         results.push location
       end
 
-      results.sort_by! { |l| l.distance.to_i }
+      results.sort_by! { |l| l.distance }
     end
 
-    def find_places_near_point(latitude, longitude)
+    def find_venues_near(latitude, longitude)
       require 'foursquare'
 
-      venues = Foursquare::Venue.explore :ll => "#{latitude},#{longitude}"
+      venues = Foursquare::Venue.search :ll => "#{latitude},#{longitude}",
+        :intent => 'checkin', :radius => '3000', :limit => 100
 
       return venues.map do |venue|
-        venue.location_and_save!
+        venue.location
       end
+    end
+
+    def find_cities_and_venues_near(latitude, longitude)
+      cities = find_cities_near(latitude, longitude)
+      venues = find_venues_near(latitude, longitude)
+      combined = cities + venues
+      combined.sort_by! { |l| l.distance}
+      return combined
     end
   end
   
   def to_s
-    if place.present?
-      "#{place} - #{location_name}"
+    if venue.present?
+      "#{venue} - #{location_name}"
     else
       location_name  
     end
@@ -88,8 +97,8 @@ class Location < ActiveRecord::Base
   end
 
   def admin_name
-    if place.present?
-      place
+    if venue.present?
+      venue
     else
       location_name  
     end
