@@ -75,7 +75,7 @@ module Foursquare
     end
 
     def country_code
-      @json["location"]["cc"]
+      @json["location"]["cc"].upcase
     end
 
     def address
@@ -102,14 +102,18 @@ module Foursquare
     end
 
     def find_or_create_location
-      Location.find_or_create_by_foursquare_id(:foursquare_id => id,
+      params = {
+        :foursquare_id => id,
         :venue => name,
         :latitude => @json["location"]["lat"],
         :longitude => @json["location"]["lng"],
         :locality => sanitize_field(city),
-        :admin_code => state,
+        :state => state,
         :address => address,
-        :country => country_code)
+        :country => country_code
+      }
+
+      Location.find_or_create_by_foursquare_id(params)
     end
 
   end

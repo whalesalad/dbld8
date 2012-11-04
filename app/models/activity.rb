@@ -18,6 +18,10 @@
 class Activity < ActiveRecord::Base
   before_create :set_default_values
 
+  after_update do |activity|
+    Resque.enqueue(UpdateCounts, 'Location:activities') if activity.location_id_changed?
+  end
+
   attr_accessible :title, :details, :wing_id, :location_id, :day_pref, :time_pref
 
   validates_presence_of :title, :details, :wing_id
@@ -29,7 +33,7 @@ class Activity < ActiveRecord::Base
   belongs_to :user
   belongs_to :wing, :class_name => 'User'
 
-  belongs_to :location
+  belongs_to :location, :counter_cache => true
 
   # Validate day preference
   validates_inclusion_of :day_pref, 

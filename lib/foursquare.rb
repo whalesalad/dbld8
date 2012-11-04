@@ -24,6 +24,9 @@ module Foursquare
 
     params = (params.nil?) ? default_params : default_params.merge(params)
 
+    puts full_path
+    puts params
+
     response = RestClient.get full_path, { :params => params }
 
     JSON.parse(response)['response']

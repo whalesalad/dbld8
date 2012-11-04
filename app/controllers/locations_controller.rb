@@ -16,18 +16,18 @@ class LocationsController < ApplicationController
     respond_with @locations
   end
 
-  def both
-    @locations = Location.find_cities_and_venues_near(@latitude, @longitude)
-    respond_with @locations
-  end
-
   def cities
     @locations = Location.find_cities_near(@latitude, @longitude)
     respond_with @locations
   end
 
   def venues
-    @locations = Location.find_venues_near(@latitude, @longitude)
+    @locations = Location.find_venues_near(@latitude, @longitude, params[:query])
+    respond_with @locations
+  end
+
+  def both
+    @locations = Location.find_cities_and_venues_near(@latitude, @longitude, params[:query])
     respond_with @locations
   end
 

@@ -22,14 +22,17 @@ class Location < ActiveRecord::Base
   attr_accessor :distance
 
   attr_accessible :name, :latitude, :longitude, :facebook_id,
-    :locality, :admin_name, :admin_code, :country, :foursquare_id,
-    :venue
+    :locality, :state, :country, :foursquare_id,
+    :venue, :address, :geoname_id
 
   has_many :users, :dependent => :nullify
   has_many :activities
 
   scope :cities, where(:foursquare_id => nil)
   scope :venues, where('foursquare_id IS NOT NULL')
+
+  validates_uniqueness_of :geoname_id, :allow_nil => :true
+  validates_uniqueness_of :foursquare_id, :allow_nil => :true
 
   # Class Methods
   class << self
@@ -41,15 +44,16 @@ class Location < ActiveRecord::Base
       cities = Geonames.cities_near(latitude, longitude)
 
       cities.each do |raw_location|
-        name = "#{raw_location['toponymName']}, #{raw_location['adminName1']}"
+        params = {
+          :geoname_id => raw_location['geonameId'],
+          :country => raw_location['countryCode'], 
+          :state => raw_location['adminCode1'],
+          :locality => raw_location['toponymName'],
+          :latitude => raw_location['lat'],
+          :longitude => raw_location['lng']
+        }
 
-        location = Location.find_or_create_by_name(:name => name,
-                                                   :country => raw_location['countryCode'], 
-                                                   :admin_name => raw_location['adminName1'],
-                                                   :admin_code => raw_location['adminCode1'],
-                                                   :locality => raw_location['toponymName'],
-                                                   :latitude => raw_location['lat'],
-                                                   :longitude => raw_location['lng'])
+        location = Location.find_or_create_by_geoname_id(params)
         
         # temporarily store distance for this result set. 
         location.distance = raw_location['distance'].to_i * 1000
@@ -57,55 +61,64 @@ class Location < ActiveRecord::Base
         results.push location
       end
 
-      results.sort_by! { |l| l.distance }
+      results.sort_by! { |l| l.distance.to_i }
     end
 
-    def find_venues_near(latitude, longitude)
+    def find_venues_near(latitude, longitude, query=nil)
       require 'foursquare'
 
-      venues = Foursquare::Venue.search :ll => "#{latitude},#{longitude}",
-        :intent => 'checkin', :radius => '3000', :limit => 100
+      params = { 
+        :ll => "#{latitude},#{longitude}", 
+        :intent => 'checkin', 
+        :radius => '5000', 
+        :limit => 100 
+      }
+
+      unless query.nil?
+        params[:query] = query
+      end
+
+      venues = Foursquare::Venue.search params
 
       return venues.map do |venue|
         venue.location
       end
     end
 
-    def find_cities_and_venues_near(latitude, longitude)
+    def find_cities_and_venues_near(latitude, longitude, query=nil)
       cities = find_cities_near(latitude, longitude)
-      venues = find_venues_near(latitude, longitude)
-      combined = cities + venues
-      combined.sort_by! { |l| l.distance}
-      return combined
+      venues = find_venues_near(latitude, longitude, query)
+      both = cities + venues
+      return both.sort_by! { |l| l.distance }
     end
   end
   
+  def set_name
+    self.name ||= self.to_s
+  end
+
   def to_s
-    if venue.present?
-      "#{venue} - #{location_name}"
-    else
-      location_name  
-    end
+    prefix = (venue.present?) ? "#{venue} - " : ''
+    "#{prefix}#{location_name}"  
   end
 
   def location_name
-    return admin_name if admin_code.present? && admin_code == 'DC'
+    # If we're Washington DC
+    if state.present? && state.upcase == 'DC'
+      return 'Washington, D.C.'
+    end
 
-    return "#{locality}, #{admin_code}" if read_attribute(:country) == 'US'
+    # If we're in the US
+    if read_attribute(:country) == 'US'
+      return "#{locality}, #{state}"
+    end
 
+    # International
     "#{locality}, #{country.name}"
   end
 
   def admin_name
-    if venue.present?
-      venue
-    else
-      location_name  
-    end
-  end
-
-  def set_name
-    self.name ||= self.to_s
+    (venue.present?) ? venue : location_name
   end
 
   def country
@@ -134,14 +147,16 @@ class Location < ActiveRecord::Base
   end
 
   def foursquare_url
-    "http://foursquare.com/v/#{foursquare_id}" if foursquare?
+    if foursquare?
+      "http://foursquare.com/v/#{foursquare_id}"
+    end
   end
 
   def as_json(options={})
     exclude = [:created_at, :updated_at, :facebook_id, :country]
 
     if options[:short]
-      exclude += [:latitude, :longitude, :locaity, :users_count, :admin_code, :admin_name, :locality]
+      exclude += [:latitude, :longitude, :users_count, :state, :locality]
     end
     
     result = super({ :except => exclude }.merge(options))

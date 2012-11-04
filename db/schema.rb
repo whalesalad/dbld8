@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121104015616) do
+ActiveRecord::Schema.define(:version => 20121104040520) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -77,24 +77,26 @@ ActiveRecord::Schema.define(:version => 20121104015616) do
   add_index "interests_users", ["user_id", "interest_id"], :name => "index_interests_users_on_user_id_and_interest_id"
 
   create_table "locations", :force => true do |t|
-    t.string   "name",                                      :null => false
+    t.string   "name",                                         :null => false
     t.string   "locality"
-    t.string   "admin_name"
-    t.string   "admin_code"
+    t.string   "state"
     t.string   "country"
     t.float    "latitude"
     t.float    "longitude"
-    t.integer  "facebook_id",   :limit => 8
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.integer  "facebook_id",      :limit => 8
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.string   "foursquare_id"
     t.string   "venue"
-    t.integer  "users_count",                :default => 0
+    t.integer  "users_count",                   :default => 0
     t.string   "address"
+    t.integer  "geoname_id"
+    t.integer  "activities_count",              :default => 0
   end
 
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true
   add_index "locations", ["foursquare_id"], :name => "index_locations_on_foursquare_id", :unique => true
+  add_index "locations", ["geoname_id"], :name => "index_locations_on_geoname_id", :unique => true
   add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "user_photos", :force => true do |t|

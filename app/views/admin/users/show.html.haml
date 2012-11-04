@@ -5,6 +5,8 @@
       #{(@user.facebook?) ? 'Facebook' : 'Email/Pass'} User &mdash;
       Created #{l @user.created_at, :format => :long}
 
+  %hr/ 
+
   .row-fluid
     .span6
 
@@ -52,7 +54,7 @@
               N/A
 
           %dt Birthday
-          %dd #{l @user.birthday, :format => :long}
+          %dd #{l @user.birthday, :format => :long} &mdash; #{@user.age} Years Old
 
           %dt Status
           %dd #{@user.status}
