@@ -107,6 +107,10 @@ class Location < ActiveRecord::Base
     "#{prefix}#{location_name}"  
   end
 
+  def american?
+    read_attribute(:country) == 'US'
+  end
+
   def location_name
     # If we're Washington DC
     if state.present? && state.upcase == 'DC'
@@ -114,7 +118,7 @@ class Location < ActiveRecord::Base
     end
 
     # If we're in the US
-    if read_attribute(:country) == 'US'
+    if american?
       return "#{locality}, #{state}"
     end
 
@@ -172,10 +176,18 @@ class Location < ActiveRecord::Base
       exclude += [:venue, :address]
     end
 
+    unless american?
+      exclude += [:state]
+    end
+
     result = super({ :except => exclude }.merge(options))
 
     result[:country] = read_attribute(:country)
     result[:type] = type
+
+    if venue?
+      result[:location_name] = location_name
+    end
 
     if distance.present?
       result[:distance] = distance
