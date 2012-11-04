@@ -86,7 +86,7 @@ module Foursquare
 
     def find_or_create_location
       Location.find_or_create_by_foursquare_id(:foursquare_id => id,
-        :place => name,
+        :venue => name,
         :latitude => @json["location"]["lat"],
         :longitude => @json["location"]["lng"],
         :locality => sanitize_field(city),

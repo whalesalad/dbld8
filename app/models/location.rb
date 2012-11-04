@@ -52,12 +52,12 @@ class Location < ActiveRecord::Base
                                                    :longitude => raw_location['lng'])
         
         # temporarily store distance for this result set. 
-        location.distance = raw_location['distance'] * 1000
+        location.distance = raw_location['distance'].to_i * 1000
 
         results.push location
       end
 
-      results.sort_by! { |l| l.distance.to_i }
+      results.sort_by! { |l| l.distance }
     end
 
     def find_venues_near(latitude, longitude)
@@ -71,7 +71,11 @@ class Location < ActiveRecord::Base
     end
 
     def find_cities_and_venues_near(latitude, longitude)
-
+      cities = find_cities_near(latitude, longitude)
+      venues = find_venues_near(latitude, longitude)
+      combined = cities + venues
+      combined.sort_by! { |l| l.distance}
+      return combined
     end
   end
   
