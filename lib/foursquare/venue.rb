@@ -19,9 +19,11 @@ module Foursquare
       private
 
       def parse_venues_from_response(response)
-        response['groups'][0]['items'].map do |all|
+        venues = response['groups'][0]['items'].map do |all|
           self.new all["venue"]
         end
+
+        venues.sort_by! { |v| v.distance }
       end
     end
 
@@ -32,7 +34,11 @@ module Foursquare
 
       unless location.nil?
         @location = location
+      else
+        @location = find_or_create_location
       end
+
+      @location.distance = distance
     end
 
     def to_s
@@ -59,14 +65,12 @@ module Foursquare
       @json["location"]["cc"]
     end
 
-    def location
-      @location ||= find_or_create_location
+    def distance
+      @json["location"]["distance"]
     end
 
-    def location_and_save!
-      l = location
-      l.save!
-      l
+    def location
+      @location
     end
 
     def sanitize_field(text)
@@ -81,7 +85,7 @@ module Foursquare
     end
 
     def find_or_create_location
-      Location.find_or_initialize_by_foursquare_id(:foursquare_id => id,
+      Location.find_or_create_by_foursquare_id(:foursquare_id => id,
         :place => name,
         :latitude => @json["location"]["lat"],
         :longitude => @json["location"]["lng"],

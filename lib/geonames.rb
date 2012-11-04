@@ -22,11 +22,11 @@ module Geonames
     JSON.parse(response)['geonames']
   end
   
-  def self.places_near(latitude=nil, longitude=nil)
+  def self.cities_near(latitude=nil, longitude=nil)
     response = self.get "findNearbyPlaceNameJSON", :lat => latitude, :lng => longitude
 
     # eliminate unpopulated areas
-    response.reject! { |place| place['population'] < 10 }
+    response.reject! { |city| city['population'] < 10 }
 
     return response
   end

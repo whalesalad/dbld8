@@ -2,10 +2,10 @@
   .btn-group.pull-right
     = link_to 'All', admin_locations_path, :class => 'btn'
     = link_to 'Cities', cities_admin_locations_path, :class => 'btn'
-    = link_to 'Places', places_admin_locations_path, :class => 'active btn'
+    = link_to 'Venues', venues_admin_locations_path, :class => 'active btn'
 
   %h1
-    Place Locations
-    %small #{pluralize(@locations.count, 'Place')} Total
+    Venue Locations
+    %small #{pluralize(@locations.count, 'Venue')} Total
 
 = render 'location_list'

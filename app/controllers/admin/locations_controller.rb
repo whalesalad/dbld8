@@ -7,12 +7,10 @@ class Admin::LocationsController < AdminController
 
   def cities
     @locations = Location.cities.order('users_count DESC')
-    # render 'index'
   end
 
-  def places
-    @locations = Location.places.order('users_count DESC')
-    # render 'index'
+  def venues
+    @locations = Location.venues.order('users_count DESC')
   end
 
   def show

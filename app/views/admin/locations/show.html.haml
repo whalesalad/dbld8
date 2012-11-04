@@ -1,9 +1,9 @@
 %section.user-detail
   - if @location.foursquare?
     %h1
-      #{@location.place}
+      #{@location.venue}
       %small #{@location.location_name}
-    %h3.object-meta ID ##{@location.id} &mdash; Foursquare Place
+    %h3.object-meta ID ##{@location.id} &mdash; Foursquare Venue
   - else
     %h1 #{@location}
     %h3.object-meta ##{@location.id} &mdash; City
@@ -24,8 +24,8 @@
           %dd #{@location.name}
 
           - if @location.foursquare?
-            %dt Place (4SQ only)
-            %dd #{@location.place}
+            %dt Venue
+            %dd #{@location.venue}
 
           %dt Locality
           %dd #{@location.locality}
@@ -98,7 +98,7 @@
             - if @location.city?
               %p There are no users with <b>#{@location}</b> as their location.
             - else
-              %p Users cannot make places (4SQ locations) their location, only cities.
+              %p Users cannot make venues their location, only cities.
 
 
         .tab-panel#raw-location-object

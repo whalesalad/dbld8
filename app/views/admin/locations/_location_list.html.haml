@@ -14,7 +14,7 @@
         %td 
           %b
             #{link_to location.admin_name, admin_location_path(location)}
-          - if location.place.present?
+          - if location.venue.present?
             • #{location.location_name}
         %td #{location.country.name}
         %td #{location.users_count if location.city?}
