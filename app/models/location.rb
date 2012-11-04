@@ -63,7 +63,8 @@ class Location < ActiveRecord::Base
     def find_venues_near(latitude, longitude)
       require 'foursquare'
 
-      venues = Foursquare::Venue.explore :ll => "#{latitude},#{longitude}"
+      venues = Foursquare::Venue.search :ll => "#{latitude},#{longitude}",
+        :intent => 'checkin', :radius => '3000', :limit => 100
 
       return venues.map do |venue|
         venue.location

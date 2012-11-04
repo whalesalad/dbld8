@@ -16,6 +16,19 @@ module Foursquare
         parse_venues_from_response(response)
       end
 
+      def search(params)
+        response = Foursquare.get "/venues/search", params
+        
+        venues = response['venues'].map do |venue|
+          if venue['stats']['usersCount'] > 5
+            self.new(venue) 
+          else
+            nil
+          end
+        end.compact
+        # parse_venues_from_response(response)
+      end
+
       private
 
       def parse_venues_from_response(response)
@@ -65,6 +78,10 @@ module Foursquare
       @json["location"]["cc"]
     end
 
+    def address
+      @json["location"]["address"]
+    end
+
     def distance
       @json["location"]["distance"]
     end
@@ -91,6 +108,7 @@ module Foursquare
         :longitude => @json["location"]["lng"],
         :locality => sanitize_field(city),
         :admin_code => state,
+        :address => address,
         :country => country_code)
     end
 

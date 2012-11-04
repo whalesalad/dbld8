@@ -20,18 +20,18 @@
           %dt Location ID
           %dd <code>#{@location.id}</code>
 
-          %dt Name
+          %dt Full Name
           %dd #{@location.name}
 
           - if @location.foursquare?
             %dt Venue
             %dd #{@location.venue}
 
+            %dt Address
+            %dd #{@location.address}
+
           %dt Locality
           %dd #{@location.locality}
-
-          %dt Admin Name
-          %dd #{@location.admin_name || '-'}
 
           %dt Admin Code
           %dd #{@location.admin_code || '-'}

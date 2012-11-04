@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121104010447) do
+ActiveRecord::Schema.define(:version => 20121104015616) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20121104010447) do
     t.string   "foursquare_id"
     t.string   "venue"
     t.integer  "users_count",                :default => 0
+    t.string   "address"
   end
 
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true
