@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  skip_before_filter :require_token_auth, :only => [:index, :show]
+  skip_before_filter :require_token_auth, :only => [:index, :cities, :venues, :both, :show]
   
   before_filter :ensure_latlng, :only  => [:both, :cities, :venues]
   before_filter :get_location, :only => [:show]

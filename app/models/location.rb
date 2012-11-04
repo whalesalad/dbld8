@@ -78,7 +78,8 @@ class Location < ActiveRecord::Base
         params[:query] = query
       end
 
-      venues = Foursquare::Venue.search params
+      # Toggle this sucker between explore / search
+      venues = Foursquare::Venue.explore params
 
       return venues.map do |venue|
         venue.location
