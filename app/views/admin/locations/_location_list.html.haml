@@ -19,7 +19,7 @@
         %td #{location.country.name}
         %td #{location.users_count if location.city?}
         %td 
-          - if location.foursquare?
+          - if location.venue?
             = link_to 'Venue', location.foursquare_url, :target => '_blank'
           - else
             No

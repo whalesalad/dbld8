@@ -1,5 +1,5 @@
 %section.user-detail
-  - if @location.foursquare?
+  - if @location.venue?
     %h1
       #{@location.venue}
       %small #{@location.location_name}
@@ -23,7 +23,7 @@
           %dt Full Name
           %dd #{@location.name}
 
-          - if @location.foursquare?
+          - if @location.venue?
             %dt Venue
             %dd #{@location.venue}
 
@@ -48,7 +48,7 @@
           %dt Created
           %dd #{@location.created_at}
 
-        - if @location.foursquare?
+        - if @location.venue?
           %section.content-section
           %h4 Foursquare
           

@@ -119,7 +119,7 @@ class Location < ActiveRecord::Base
   end
 
   def admin_name
-    (venue.present?) ? venue : location_name
+    venue? ? venue : location_name
   end
 
   def country
@@ -132,37 +132,46 @@ class Location < ActiveRecord::Base
     end
   end
 
+  def type
+    venue? ? 'venue' : 'city'
+  end
+
   def city?
     foursquare_id.blank?
   end
 
-  def foursquare?
+  def venue?
     foursquare_id.present?
   end
 
   def foursquare_venue
-    if foursquare?
+    if venue?
       require 'foursquare'
       @foursquare_venue ||= Foursquare::Venue.find(foursquare_id, self)
     end
   end
 
   def foursquare_url
-    if foursquare?
+    if venue?
       "http://foursquare.com/v/#{foursquare_id}"
     end
   end
 
   def as_json(options={})
-    exclude = [:created_at, :updated_at, :facebook_id, :country]
+    exclude = [:created_at, :updated_at, :facebook_id, :country, :geoname_id, :foursquare_id]
 
     if options[:short]
-      exclude += [:latitude, :longitude, :users_count, :state, :locality]
+      exclude += [:latitude, :longitude, :users_count, :activities_count, :state, :locality]
     end
-    
+
+    if city?
+      exclude += [:venue, :address]
+    end
+
     result = super({ :except => exclude }.merge(options))
 
     result[:country] = read_attribute(:country)
+    result[:type] = type
 
     if distance.present?
       result[:distance] = distance
