@@ -46,7 +46,10 @@ DoubleDate::Application.configure do
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  # config.action_controller.asset_host = "http://assets.example.com"
+  config.action_controller.asset_host = "http://static.dbld8.com"
+
+  # Disable initialization on asset compilation
+  config.assets.initialize_on_precompile = false
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w(admin.js admin/admin.css)
