@@ -17,9 +17,6 @@ DoubleDate::Application.configure do
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
 
-  # Don't init entire rails env for asset compilation
-  config.assets.initialize_on_precompile = false
-
   # Generate digests for assets URLs
   config.assets.digest = true
 
@@ -47,7 +44,7 @@ DoubleDate::Application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://static.dbld8.com"
-  config.action_controller.asset_host = "//#{ENV['FOG_DIRECTORY']}" 
+  config.action_controller.asset_host = "//#{Rails.configuration.fog['fog_directory']}" 
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w(admin.js admin/admin.css)

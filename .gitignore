@@ -14,8 +14,9 @@
 /log/*
 /tmp
 
-/public/assets
-/public/system
+/public/system/*
+/public/assets/*
+!/public/assets/manifest.yml
 .sass-cache/
 
 # Ignore Solr data and process ident files
