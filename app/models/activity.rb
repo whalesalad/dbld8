@@ -24,6 +24,8 @@ class Activity < ActiveRecord::Base
 
   attr_accessible :title, :details, :wing_id, :location_id, :day_pref, :time_pref
 
+  default_scope order('created_at DESC')
+
   validates_presence_of :title, :details, :wing_id
 
   # Leave these fields blank for = "Anytime"

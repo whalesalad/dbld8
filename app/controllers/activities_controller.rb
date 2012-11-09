@@ -5,7 +5,7 @@ class ActivitiesController < ApplicationController
   before_filter :get_activity, :only => [:show, :destroy]
 
   def index
-    @activities = Activity.all
+    @activities = Activity.find(:all)
     respond_with @activities
   end
 
