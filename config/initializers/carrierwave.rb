@@ -9,7 +9,8 @@ CarrierWave.configure do |config|
   }
 
   config.fog_directory  = "static.dbld8.com"
-  config.fog_host       = "http://static.dbld8.com"
+  # config.fog_host       = "http://static.dbld8.com"
+  config.asset_host     = "http://static.dbld8.com"
   config.fog_public     = true
   config.fog_attributes = { 'Cache-Control' => 'max-age=315576000' }
 end
