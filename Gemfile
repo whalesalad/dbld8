@@ -28,7 +28,7 @@ gem 'rmagick'
 gem 'carrierwave'
 
 # Monitoring
-gem 'newrelic_rpm'
+gem 'asset_sync'
 
 # Gems used only for assets and not in production
 group :assets do
@@ -37,7 +37,6 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
-  gem 'asset_sync'
 end
 
 group :development, :test do
