@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   after_create :fetch_and_store_facebook_photo, :set_invite_slug
   before_validation :before_validation_on_create, :on => :create
 
+  after_create :hook_facebook_invites, :if => :relevant_facebook_invite
+
   after_update do |user|
     # Tedious manual process for now
     Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
@@ -87,6 +89,12 @@ class User < ActiveRecord::Base
 
   # Facebook Invitations
   has_many :facebook_invites, :dependent => :destroy
+  
+  # The invites that might have led to my creation
+  has_many :inverse_facebook_invites, 
+    :class_name => "FacebookInvite", 
+    :primary_key => "facebook_id",
+    :foreign_key => "facebook_id"
 
   has_many :activities, :dependent => :destroy
   has_many :participating_activities, :class_name => "Activity", :foreign_key => "wing_id"
@@ -133,7 +141,7 @@ class User < ActiveRecord::Base
     exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token, :location_id]
     
     if new_record?
-      exclude.push :id 
+      exclude << :id 
     end
 
     if options[:short]
@@ -297,10 +305,13 @@ class User < ActiveRecord::Base
   # Invite a friend if that friend is not this user and a friendship does not exist
   def invite(friend, approve = nil)
     return false if friend == self || find_any_friendship_with(friend)
+    
     params = {:friend_id => friend.id}
+    
     unless approve.nil?
       params[:approved] = true
     end
+
     friendships.create(params)
   end
   
@@ -344,6 +355,25 @@ class User < ActiveRecord::Base
     activities(false).count + participating_activities(false).count
   end
 
+  def relevant_facebook_invite
+    # This logic is split out because more than one invite might exist
+    # and we'll want this to return just one single invite?
+    inverse_facebook_invites.order('created_at DESC').first
+  end
+
+  def hook_facebook_invites
+    invite = relevant_facebook_invite
+    # pseudocode
+    #   1) Give the user who created this invite some credits
+    # invite_user.credits += 10
+    #   2) Create a friendship request between the creator <=> this new user.
+    # invite_user.invite(self)
+    # 
+    # This belongs as a background process most likely
+    # Resque.enqueue(XXXFacebookInviteSucceeded, 'invite.id')
+    # 
+  end
+
   private
 
   def mass_assignment_authorizer(role = :default)
@@ -361,5 +391,3 @@ class User < ActiveRecord::Base
   end
 
 end
-
-

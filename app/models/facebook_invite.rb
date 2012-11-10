@@ -19,6 +19,7 @@ class FacebookInvite < ActiveRecord::Base
   attr_accessible :user_id, :facebook_id
 
   belongs_to :user
+  belongs_to :future_user, :class_name => "User", :foreign_key => "facebook_id", :primary_key => "facebook_id"
 
   # Ensure only one facebook -> user connection can exist.
   validates_uniqueness_of :facebook_id, :scope => :user_id
@@ -39,5 +40,9 @@ class FacebookInvite < ActiveRecord::Base
     # Post to the end users' FB wall
     user_graph = user.get_facebook_graph
     user_graph.put_wall_post(message_text, facebook_invite_message, facebook_id)
+  end
+
+  def fulfilled?
+    future_user.present?
   end
 end
