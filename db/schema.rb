@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121104040520) do
+ActiveRecord::Schema.define(:version => 20121110190017) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -48,7 +48,6 @@ ActiveRecord::Schema.define(:version => 20121104040520) do
   add_index "facebook_invites", ["user_id", "facebook_id"], :name => "index_facebook_invites_on_user_id_and_facebook_id", :unique => true
 
   create_table "friendships", :force => true do |t|
-    t.uuid     "uuid",                          :null => false
     t.integer  "user_id",                       :null => false
     t.integer  "friend_id",                     :null => false
     t.boolean  "approved",   :default => false

@@ -38,8 +38,8 @@ class FacebookInvite < ActiveRecord::Base
 
   def send_invite
     # Post to the end users' FB wall
-    user_graph = user.get_facebook_graph
-    user_graph.put_wall_post(message_text, facebook_invite_message, facebook_id)
+    # user_graph = 
+    user.facebook_graph.put_wall_post(message_text, facebook_invite_message, facebook_id)
   end
 
   def fulfilled?

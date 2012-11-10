@@ -22,8 +22,8 @@
 #
 
 class User < ActiveRecord::Base
-  before_create :set_uuid
-  after_create :fetch_and_store_facebook_photo, :set_invite_slug
+  after_create :set_uuid, :fetch_and_store_facebook_photo, :set_invite_slug
+
   before_validation :before_validation_on_create, :on => :create
 
   after_create :hook_facebook_invites, :if => :relevant_facebook_invite
@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
 
-  attr_accessor :accessible
+  attr_accessor :accessible, :facebook_graph
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -185,16 +185,14 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_facebook_graph
-    require 'koala'
-    Koala::Facebook::API.new facebook_access_token
+  def facebook_graph
+    @facebook_graph ||= get_facebook_graph
   end
 
   def bootstrap_facebook_data
     return unless self.facebook?
 
-    graph = get_facebook_graph
-    me = graph.get_object('me')
+    me = facebook_graph.get_object('me')
 
     # Even if these fields are passed in via user POST,
     # ignore their answers becuase we need to keep 1:1 with FB
@@ -230,8 +228,7 @@ class User < ActiveRecord::Base
   end
 
   def full_size_facebook_photo
-    graph = get_facebook_graph
-    result = graph.fql_query("select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")")
+    result = facebook_graph.fql_query("select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")")
     
     if result.any? and result[0].has_key? 'src_big'
       return result[0]['src_big']
@@ -254,8 +251,7 @@ class User < ActiveRecord::Base
   end
 
   def facebook_friends
-    graph = get_facebook_graph
-    graph.get_connections("me", "friends", { :fields => 'id,name,gender,location,picture' })
+    facebook_graph.get_connections("me", "friends", { :fields => 'id,name,gender,location,picture' })
   end
 
   def interest_names=(interest_names)
@@ -289,17 +285,8 @@ class User < ActiveRecord::Base
     (gender == "male") ? "his" : "her"
   end
   
-  def compact_uuid
-    uuid.gsub /-/, ''
-  end
-
   def invite_path
     "/invite/#{invite_slug}"
-  end
-
-  def generate_invite_slug
-    reverse_epoch = created_at.to_i.to_s.reverse.chop
-    slug = "#{reverse_epoch}#{id}#{Random.rand(10)}"
   end
 
   # Invite a friend if that friend is not this user and a friendship does not exist
@@ -382,12 +369,18 @@ class User < ActiveRecord::Base
 
   def set_uuid
     require 'securerandom'
-    self.uuid = SecureRandom.uuid
+    uuid = SecureRandom.uuid
   end
 
   def set_invite_slug
-    self.invite_slug = generate_invite_slug
-    self.save!
+    reverse_epoch = created_at.to_i.to_s.reverse.chop
+    invite_slug = "#{reverse_epoch}#{id}#{Random.rand(10)}"
+    save!
+  end
+
+  def get_facebook_graph
+    require 'koala'
+    Koala::Facebook::API.new facebook_access_token
   end
 
 end

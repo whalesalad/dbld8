@@ -3,7 +3,6 @@
 # Table name: friendships
 #
 #  id         :integer         not null, primary key
-#  uuid       :uuid            not null
 #  user_id    :integer         not null
 #  friend_id  :integer         not null
 #  approved   :boolean         default(FALSE)

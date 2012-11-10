@@ -18,10 +18,6 @@
           %dt ID
           %dd #{@friendship.id}
 
-          %dt UUID
-          %dd 
-            %code #{@friendship.uuid}
-
           %dt User/Creator
           %dd #{link_to @friendship.user, admin_user_path(@friendship.user)}
 
