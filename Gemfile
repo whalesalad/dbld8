@@ -14,6 +14,10 @@ gem 'postgres_ext'
 gem 'rest-client'
 gem 'json'
 
+# Elasticsearch
+gem 'kaminari'
+gem 'tire'
+
 # Facebook
 gem 'koala'
 

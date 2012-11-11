@@ -134,10 +134,16 @@ class Location < ActiveRecord::Base
     @country ||= Country.new(read_attribute(:country))
   end
 
+  def has_point?
+    latitude.present? && longitude.present?
+  end
+
+  def elasticsearch_point
+    { lat: latitude, lon: longitude } if has_point?
+  end
+
   def google_map_url
-    if latitude.present? and longitude.present?
-      "http://maps.google.com/maps?q=#{latitude},+#{longitude}"
-    end
+    "http://maps.google.com/maps?q=#{latitude},+#{longitude}" if has_point?
   end
 
   def type

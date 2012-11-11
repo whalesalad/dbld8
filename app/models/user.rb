@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :interests
 
   has_one :token, :class_name => 'AuthToken', :dependent => :destroy
-  has_one :photo, :class_name => 'UserPhoto', :dependent => :destroy
+  has_one :profile_photo, :class_name => 'UserPhoto', :dependent => :destroy
 
   attr_accessible :email, :password, :first_name, :last_name, :birthday, 
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
@@ -118,12 +118,8 @@ class User < ActiveRecord::Base
     "http://static.dbld8.com/misc/no-photo.png"
   end
 
-  def json_photo
-    return photo if photo.present?
-
-    p = (facebook?) ? facebook_photo(:large) : default_photo
-
-    { :thumb => p }
+  def photo
+    profile_photo || { :thumb => (facebook?) ? facebook_photo(:large) : default_photo }
   end
 
   def as_json(options={})
@@ -133,7 +129,7 @@ class User < ActiveRecord::Base
       result[:full_name] = to_s
       result[:age] = age
       result[:location] = location.to_s if location.present?
-      result[:photo] = json_photo
+      result[:photo] = photo
 
       return result
     end
@@ -155,7 +151,8 @@ class User < ActiveRecord::Base
       result[:age] = age
     end
 
-    result[:photo] = json_photo
+    # json_photo
+    result[:photo] = photo
 
     if options[:short]
       result[:location] = location.as_json(:short => true) if location.present?
@@ -170,19 +167,15 @@ class User < ActiveRecord::Base
   end
 
   def validate_facebook_user
-    self.facebook_access_token.present? && self.facebook_id.present?
+    facebook_access_token.present? && facebook_id.present?
   end
 
   def validate_email_user
-    self.email.present? && self.password.present?
+    email.present? && password.present?
   end
 
   def facebook?
-    if new_record?
-      self.facebook_access_token.present?
-    else
-      self.facebook_id.present?
-    end
+    facebook_access_token.present? || facebook_id.present?
   end
 
   def facebook_graph

@@ -122,7 +122,7 @@ class FriendsController < ApplicationController
 
       unless dbld8_user.nil?
         friend['id'] = dbld8_user['id']
-        friend['photo'] = dbld8_user.json_photo
+        friend['photo'] = dbld8_user.photo
 
         # Check and see if a friendship exists
         friendship = @authenticated_user.find_any_friendship_with(dbld8_user)
