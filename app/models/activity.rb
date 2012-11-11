@@ -68,7 +68,7 @@ class Activity < ActiveRecord::Base
 
   def self.search(params)
 
-    # If we specify anytime, ignore to include everything
+    # If we specify anytime, ignore it to include everything
     if !!(params[:happening] =~ /anytime/i)
       params.delete :happening
     end
