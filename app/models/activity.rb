@@ -59,6 +59,7 @@ class Activity < ActiveRecord::Base
     indexes :id, :index => :not_analyzed
     indexes :title, :analyzer => 'snowball', :boost => 100
     indexes :details, :analyzer => 'snowball'
+    indexes :location, :analyzer => 'snowball', :as => 'location.name'
     indexes :preferences, :as => 'day_time_preferences', :index_name => :preference
     indexes :created_at, :type => 'date'
     indexes :point, :type => 'geo_point', :as => 'location.elasticsearch_point'
