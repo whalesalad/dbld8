@@ -22,7 +22,8 @@
 #
 
 class User < ActiveRecord::Base
-  after_create :set_uuid, :fetch_and_store_facebook_photo, :set_invite_slug
+  before_create :set_uuid
+  after_create :fetch_and_store_facebook_photo, :set_invite_slug
 
   before_validation :before_validation_on_create, :on => :create
 
@@ -362,7 +363,7 @@ class User < ActiveRecord::Base
 
   def set_uuid
     require 'securerandom'
-    uuid = SecureRandom.uuid
+    self.uuid = SecureRandom.uuid
   end
 
   def set_invite_slug
