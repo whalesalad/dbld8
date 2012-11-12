@@ -67,10 +67,11 @@ class Activity < ActiveRecord::Base
   end
 
   def self.search(params)
-
     # If we specify anytime, ignore it to include everything
-    if !!(params[:happening] =~ /anytime/i)
-      params.delete :happening
+    params.delete :happening if !!(params[:happening] =~ /anytime/i)
+
+    if params[:latitude] && params[:longitude]
+      point = "#{params[:latitude]},#{params[:longitude]}"
     end
 
     tire.search(:load => true) do
@@ -84,8 +85,20 @@ class Activity < ActiveRecord::Base
       # Handles 'happening' = (weekday|weekend)
       filter :terms, preferences: [params[:happening]] if params[:happening].present?
 
-      # Handle sorting
-      # sort { by :created_at, 'desc' }
+      # Handles filtering by proximity to a point
+      unless point.nil? || params[:distance].nil?
+        filter :geo_distance, :distance => params[:distance], :point => point
+      end
+
+      case params[:sort]
+      when 'closest'
+        sort { by '_geo_distance' => { point: point }} unless point.nil?  
+      when 'newest'
+        sort { by :created_at, 'desc' }
+      when 'oldest'
+        sort { by :created_at, 'asc' }
+      end
+      
     end
   end
 

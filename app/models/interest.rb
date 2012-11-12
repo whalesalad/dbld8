@@ -22,6 +22,7 @@ class Interest < ActiveRecord::Base
   end
 
   def as_json(options={})
-    result = super({ :except => [:created_at, :updated_at] }.merge(options))
+    exclude = [:created_at, :updated_at, :facebook_id]
+    result = super({ :except => exclude }.merge(options))
   end
 end

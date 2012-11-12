@@ -4,19 +4,8 @@ class ActivitiesController < ApplicationController
   
   before_filter :get_activity, :only => [:show, :destroy]
 
-  SEARCH_PARAMS = %w(query sort happening proximity min_age max_age)
-
   def index
-    # a deliciously simple and complex looking way to see if there 
-    # are any search parameters
-    # unless (params.keys & SEARCH_PARAMS).empty?
-    #   # let's do some searching, shall we?
-    #   @activities = Activity.search(params)
-    # else
-    #   @activities = Activity.find(:all)  
-    # end
     @activities = Activity.search(params)
-
     respond_with @activities
   end
 
