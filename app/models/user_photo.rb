@@ -52,6 +52,14 @@ class UserPhoto < ActiveRecord::Base
 
   mount_uploader :image, UserPhotoUploader
 
+  def thumb
+    image.thumb
+  end
+
+  def large
+    image.large
+  end
+
   def as_json(options={})
     exclude = [:created_at, :updated_at, :image, :user_id]
     result = super({ :except => exclude }.merge(options))    
