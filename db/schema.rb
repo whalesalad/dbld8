@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121110190017) do
+ActiveRecord::Schema.define(:version => 20121112160943) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -36,6 +36,15 @@ ActiveRecord::Schema.define(:version => 20121110190017) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "credit_actions", :force => true do |t|
+    t.string   "slug"
+    t.integer  "cost"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "credit_actions", ["slug"], :name => "index_credit_actions_on_slug", :unique => true
 
   create_table "facebook_invites", :force => true do |t|
     t.integer  "user_id"
@@ -97,6 +106,17 @@ ActiveRecord::Schema.define(:version => 20121110190017) do
   add_index "locations", ["foursquare_id"], :name => "index_locations_on_foursquare_id", :unique => true
   add_index "locations", ["geoname_id"], :name => "index_locations_on_geoname_id", :unique => true
   add_index "locations", ["name"], :name => "index_locations_on_name"
+
+  create_table "user_actions", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "type"
+    t.string   "action_slug"
+    t.integer  "cost"
+    t.integer  "related_id"
+    t.string   "related_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "user_photos", :force => true do |t|
     t.integer  "user_id"
