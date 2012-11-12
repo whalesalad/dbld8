@@ -231,7 +231,7 @@ class User < ActiveRecord::Base
   end
 
   def fetch_and_store_facebook_photo
-    if facebook? and photo.blank?
+    if facebook? and profile_photo.blank?
       full_size_photo = full_size_facebook_photo
 
       if full_size_photo
