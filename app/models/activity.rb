@@ -91,7 +91,9 @@ class Activity < ActiveRecord::Base
         filter :geo_distance, :distance => params[:distance], :point => point
       end
 
-      case params[:sort]
+      sort = params[:sort] || 'newest'
+
+      case sort
       when 'closest'
         sort { by '_geo_distance' => { point: point }} unless point.nil?  
       when 'newest'
@@ -129,7 +131,7 @@ class Activity < ActiveRecord::Base
   end
 
   def as_json(options={})
-    exclude = [:created_at, :location_id, :wing_id, :user_id]
+    exclude = [:updated_at, :location_id, :wing_id, :user_id]
 
     result = super({ :except => exclude }.merge(options))
 
