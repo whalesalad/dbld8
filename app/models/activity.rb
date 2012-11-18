@@ -91,6 +91,7 @@ class Activity < ActiveRecord::Base
         filter :geo_distance, :distance => params[:distance], :point => point
       end
 
+      # Default sorting of newest for now.
       sort = params[:sort] || 'newest'
 
       case sort
