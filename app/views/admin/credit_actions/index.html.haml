@@ -1,0 +1,29 @@
+.page-header
+  %h1
+    Credit Actions
+    %small #{pluralize(@credit_actions.count, 'Action')} Total
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Slug
+      %th Cost
+      %th Last Updated
+
+  %tbody
+    - for action in @credit_actions
+      %tr{ :class => (action.earns?) ? 'success' : 'error' }
+        %td #{action.id}
+
+        %td
+          %b
+            #{link_to action, admin_credit_action_path(action)}
+
+        %td #{action.cost}
+
+        %td #{l action.updated_at, :format => :medium}
+
+%hr/
+
+= link_to 'New Credit Action', new_admin_credit_action_path, :class => 'btn'

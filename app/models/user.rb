@@ -22,11 +22,11 @@
 #
 
 class User < ActiveRecord::Base
-  before_create :set_uuid
-  after_create :fetch_and_store_facebook_photo, :set_invite_slug
-
   before_validation :before_validation_on_create, :on => :create
 
+  before_create :set_uuid
+
+  after_create :fetch_and_store_facebook_photo, :set_invite_slug
   after_create :hook_facebook_invites, :if => :relevant_facebook_invite
 
   after_update do |user|
@@ -34,15 +34,19 @@ class User < ActiveRecord::Base
     Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
   end
 
+  has_many :actions, :class_name => "UserAction"
+
   has_secure_password
 
   belongs_to :location, :counter_cache => true
-  has_and_belongs_to_many :interests
+
+  has_and_belongs_to_many :interests, :before_add => :validate_max_interests
+  # validate :max_interests_count, :on =>
 
   has_one :token, :class_name => 'AuthToken', :dependent => :destroy
   has_one :profile_photo, :class_name => 'UserPhoto', :dependent => :destroy
 
-  attr_accessible :email, :password, :first_name, :last_name, :birthday, 
+  attr_accessible :email, :password, :first_name, :last_name, :birthday,
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
 
@@ -60,46 +64,46 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :message => "A user already exists with this email address."
   validates_uniqueness_of :facebook_id, :allow_nil => true, :message => "A user already exists with this facebook_id."
 
-  validates_inclusion_of :gender, 
-    :in => GENDER_CHOICES, 
+  validates_inclusion_of :gender,
+    :in => GENDER_CHOICES,
     :message => "The field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
 
   validates_inclusion_of :interested_in, :in => INTEREST_CHOICES, :allow_nil => true, :allow_blank => true
-  
+
   # Handle the friendship relationships (the intermediary)
   has_many :friendships, :dependent => :destroy
   has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id", :dependent => :destroy
-  
+
   # This gets direct (you are user_id) and inverse (you are friend_id) user objects
   has_many :direct_friends, :through => :friendships, :conditions => { :'friendships.approved' => true }, :source => :friend
   has_many :inverse_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => true }, :source => :user
-   
+
   # Friends I have asked to be mine
-  has_many :requested_friends, 
-    :through => :friendships, 
-    :conditions => { :'friendships.approved' => false }, 
-    :foreign_key => "user_id", :source => 
+  has_many :requested_friends,
+    :through => :friendships,
+    :conditions => { :'friendships.approved' => false },
+    :foreign_key => "user_id", :source =>
     :friend
-  
+
   # Pending friends that I need to say yes/no to
-  has_many :pending_friends, 
-    :through => :inverse_friendships, 
-    :conditions => { :'friendships.approved' => false }, 
-    :foreign_key => "friend_id", 
+  has_many :pending_friends,
+    :through => :inverse_friendships,
+    :conditions => { :'friendships.approved' => false },
+    :foreign_key => "friend_id",
     :source => :user
 
   # Facebook Invitations
   has_many :facebook_invites, :dependent => :destroy
-  
+
   # The invites that might have led to my creation
-  has_many :inverse_facebook_invites, 
-    :class_name => "FacebookInvite", 
+  has_many :inverse_facebook_invites,
+    :class_name => "FacebookInvite",
     :primary_key => "facebook_id",
     :foreign_key => "facebook_id"
 
   has_many :activities, :dependent => :destroy
   has_many :participating_activities, :class_name => "Activity", :foreign_key => "wing_id"
-  
+
   def to_s
     "#{first_name} #{last_name}"
   end
@@ -126,7 +130,7 @@ class User < ActiveRecord::Base
   def as_json(options={})
     if options[:mini]
       result = super :only => [:id, :gender]
-      
+
       result[:full_name] = to_s
       result[:age] = age
       result[:location] = location.to_s if location.present?
@@ -136,9 +140,9 @@ class User < ActiveRecord::Base
     end
 
     exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token, :location_id]
-    
+
     if new_record?
-      exclude << :id 
+      exclude << :id
     end
 
     if options[:short]
@@ -146,7 +150,7 @@ class User < ActiveRecord::Base
     end
 
     result = super({ :except => exclude }.merge(options))
-    
+
     # Add some goodies
     unless new_record?
       result[:age] = age
@@ -208,7 +212,7 @@ class User < ActiveRecord::Base
       self.birthday = Date.strptime(me['birthday'],'%m/%d/%Y')
     end
 
-    taken_rel_status = ['Engaged', 'Married', "It's complicated", 'In a relationship', 
+    taken_rel_status = ['Engaged', 'Married', "It's complicated", 'In a relationship',
                         'In a civil union', 'In a domestic partnership']
 
     if taken_rel_status.include?(me['relationship_status'])
@@ -223,7 +227,7 @@ class User < ActiveRecord::Base
 
   def full_size_facebook_photo
     result = facebook_graph.fql_query("select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")")
-    
+
     if result.any? and result[0].has_key? 'src_big'
       return result[0]['src_big']
     end
@@ -274,11 +278,11 @@ class User < ActiveRecord::Base
       self.password_confirmation = "!+%+#{facebook_id}!"
     end
   end
-  
+
   def gender_posessive
     (gender == "male") ? "his" : "her"
   end
-  
+
   def invite_path
     "/invite/#{invite_slug}"
   end
@@ -286,28 +290,28 @@ class User < ActiveRecord::Base
   # Invite a friend if that friend is not this user and a friendship does not exist
   def invite(friend, approve = nil)
     return false if friend == self || find_any_friendship_with(friend)
-    
+
     params = {:friend_id => friend.id}
-    
+
     unless approve.nil?
       params[:approved] = true
     end
 
     friendships.create(params)
   end
-  
+
   def invited?(friend)
     friendship = find_any_friendship_with(friend)
     return false if friendship.nil?
     friendship.friend == user
   end
-  
+
   def approve(friend)
     friendship = find_any_friendship_with(friend)
     return false if friendship.nil? || invited?(friend)
     friendship.update_attribute(:approved, true)
   end
-  
+
   def find_any_friendship_with(user)
     user_id = (user.instance_of?(User)) ? user.id : user
 
@@ -317,12 +321,12 @@ class User < ActiveRecord::Base
     end
     friendship
   end
-  
+
   def friends
     reload
     direct_friends + inverse_friends
   end
-  
+
   def total_friends
     direct_friends(false).count + inverse_friends(false).count
   end
@@ -331,7 +335,7 @@ class User < ActiveRecord::Base
     reload
     activities + participating_activities
   end
-  
+
   def total_my_activities
     activities(false).count + participating_activities(false).count
   end
@@ -343,16 +347,16 @@ class User < ActiveRecord::Base
   end
 
   def hook_facebook_invites
-    invite = relevant_facebook_invite
+    # invite = relevant_facebook_invite
     # pseudocode
     #   1) Give the user who created this invite some credits
     # invite_user.credits += 10
     #   2) Create a friendship request between the creator <=> this new user.
     # invite_user.invite(self)
-    # 
+    #
     # This belongs as a background process most likely
     # Resque.enqueue(XXXFacebookInviteSucceeded, 'invite.id')
-    # 
+    #
   end
 
   private
@@ -368,7 +372,7 @@ class User < ActiveRecord::Base
 
   def set_invite_slug
     reverse_epoch = created_at.to_i.to_s.reverse.chop
-    invite_slug = "#{reverse_epoch}#{id}#{Random.rand(10)}"
+    self.invite_slug = "#{reverse_epoch}#{id}#{Random.rand(10)}"
     save!
   end
 

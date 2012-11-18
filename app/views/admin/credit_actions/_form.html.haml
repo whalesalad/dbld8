@@ -1,0 +1,24 @@
+= form_for [:admin, @credit_action], :html => { :class => 'form-horizontal' } do |f|
+
+  %fieldset
+    - if @credit_action.errors.any?
+      .alert.alert-error.alert-block
+        %h4 Please fix the following #{pluralize(@credit_action.errors.count, "error")}:
+        - @credit_action.errors.full_messages.each do |msg|
+          %ul
+            %li= msg
+
+    .control-group
+      = f.label :slug, 'Slug', :class => 'control-label'
+      
+      .controls
+        = f.text_field :slug
+
+    .control-group
+      = f.label :cost, 'Cost', :class => 'control-label'
+      .controls
+        = f.text_field :cost
+
+    .form-actions
+      = f.submit :class => 'btn btn-primary'
+      = link_to 'Cancel', :back, :class => 'btn'

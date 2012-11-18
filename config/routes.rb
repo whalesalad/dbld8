@@ -2,7 +2,7 @@ DoubleDate::Application.routes.draw do
   post 'users/build' => 'users#build_facebook_user', :as => 'build_user'
 
   post 'authenticate' => 'users#authenticate'
-  
+
   get 'invite(/:invite_slug)' => 'users#invitation', :as => 'user_invitation'
 
 
@@ -15,8 +15,8 @@ DoubleDate::Application.routes.draw do
     # GET /activities/mine, get all my activities (grouped)
     get 'mine', :on => :collection
   end
-  
-  
+
+
   # ME!
   resource :me, :controller => "me" do
     # User Photos
@@ -26,33 +26,33 @@ DoubleDate::Application.routes.draw do
     # GET /me/friends
     resources :friends, :only => [:index, :show, :destroy] do
       get 'facebook', :on => :collection
-      
+
       # /me/friends/invite { facebook_ids: 109234, 23492349, 29349234 }
       post 'invite', :on => :collection
     end
 
     # POST /me/invite_friends
     # post 'invite_friends', :action => 'friends#invite_friends'
-    
+
     resources :friendships, :only => [:index, :show, :update, :create, :destroy] do
       # ignore a pending friendship request (deletes it)
       # POST /me/friendships/:friendship_id/ignore
       post 'ignore', :on => :member
-      
+
       # get list of pending friendships (others inviting me)
       # GET /me/friendships/pending
       get 'pending', :on => :collection
-      
+
       # Get a list of users I have requested
       # GET /me/friendships/requested
       get 'requested', :on => :collection
     end
 
   end
-  
+
   # Interests
   resources :interests, :only => [:index, :show]
-  
+
   # Locations
   resources :locations, :only => [:index, :show] do
     get 'both', :on => :collection
@@ -72,16 +72,18 @@ DoubleDate::Application.routes.draw do
     end
 
     resources :interests, :only => [:index, :show]
-    
+
     resources :locations, :only => [:index, :show] do
       get 'cities', :on => :collection
       get 'venues', :on => :collection
     end
+
+    resources :credit_actions
 
     mount Resque::Server, :at => 'resque', :as => 'resque'
   end
 
   # Home
   root :to => 'home#index'
-  
+
 end

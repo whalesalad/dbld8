@@ -5,11 +5,11 @@
     %link{ :rel => 'shortcut icon', :href => '//static.dbld8.com/favicon.png' }
 
     %title= full_title(yield(:title))
-    
+
     = stylesheet_link_tag "admin/admin", :media => "all"
     = csrf_meta_tags
     = yield(:head)
-  
+
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
@@ -27,12 +27,12 @@
             .well.sidebar-nav
               %ul.nav.nav-list
                 / <li class="nav-header">List header</li>
-                %li.nav-header 
+                %li.nav-header
                   Internal Data
 
                 %li{ :class => current_section?(:controller => "users") ? 'active' : '' }
                   = link_to "#{glyphicon(:user)}Users".html_safe, admin_users_path
-                
+
                 %li{ :class => current_section?(:controller => "friendships") ? 'active' : '' }
                   = link_to "#{glyphicon(:heart)}Friendships".html_safe, admin_friendships_path
 
@@ -41,19 +41,22 @@
 
                 %li{ :class => current_section?(:controller => 'interests') ? 'active' : '' }
                   = link_to "#{glyphicon(:star)}Interests".html_safe, admin_interests_path
-                
+
                 %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
                   = link_to "#{glyphicon('map-marker')}Locations".html_safe, admin_locations_path
-                
+
                 %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
                   = link_to "#{glyphicon(:calendar)}Activities".html_safe, admin_activities_path
-                
-                %li.nav-header 
+
+                %li{ :class => current_section?(:controller => 'credit_actions') ? 'active' : '' }
+                  = link_to "#{glyphicon('shopping-cart')}Credit Actions".html_safe, admin_credit_actions_path
+
+                %li.nav-header
                   Services
 
                 %li
                   = link_to "#{glyphicon('wrench')}Resque (Queue)".html_safe, admin_resque_path
-        
+
         .span10
           - if flash.present?
             %section.alerts
@@ -62,6 +65,6 @@
                 .message= msg if msg.is_a?(String)
 
           = yield
-      
-    
+
+
     = javascript_include_tag "admin"
