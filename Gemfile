@@ -24,6 +24,9 @@ gem 'koala'
 # S3 // AWS
 gem 'fog'
 
+# Mixpanel
+# gem 'mixpanel'
+
 # Background Jobbin'
 gem 'resque', :require => "resque/server"
 

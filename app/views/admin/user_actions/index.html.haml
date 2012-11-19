@@ -3,9 +3,6 @@
     User Actions
     %small #{pluralize(@user_actions.count, 'Action')} Total
 
-%p These are the <b>market values</b> for user actions. Updating a cost here will change the cost of performing those actions going forward. Exising user actions will not change. 
-
-%p This will allow us to adjust the pricing as we see fit, on the fly, without effecting past behavior.
 
 %table.table.table-striped
   %thead
@@ -14,7 +11,7 @@
       %th Action
       %th User
       %th Credit Cost
-      %th Last Updated
+      %th Occurred
 
   %tbody
     - for action in @user_actions
@@ -23,11 +20,11 @@
 
         %td
           %b
-            #{link_to action, edit_admin_credit_action_path(action)}
+            #{action}
         %td #{action.user}
 
         %td #{action.cost_to_s}
-        %td #{l action.updated_at, :format => :medium}
+        %td #{l action.created_at, :format => :long}
 
 %hr/
 
