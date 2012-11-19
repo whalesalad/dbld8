@@ -44,7 +44,8 @@ DoubleDate::Application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://static.dbld8.com"
-  config.action_controller.asset_host = "//#{Rails.configuration.fog['fog_directory']}" 
+  config.action_controller.asset_host = "//s3.amazonaws.com/#{Rails.configuration.fog['fog_directory']}/"
+  # config.action_controller.asset_host = "//#{Rails.configuration.fog['fog_directory']}"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w(admin.js admin/admin.css)
