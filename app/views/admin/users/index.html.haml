@@ -7,6 +7,7 @@
   %thead
     %tr
       %th ID
+      %th 
       %th Name
       %th Email
       %th Location
@@ -21,6 +22,9 @@
     - for user in @users
       %tr{ :class => user.facebook? ? 'info' : '' }
         %td #{user.id}
+        %td
+          - if user.profile_photo.present?
+            =image_tag user.photo.thumb, :class => 'img-circle', :width => "20px", :height => "20px"
         %td 
           %b
             #{link_to user, admin_user_path(user)}
