@@ -13,6 +13,6 @@
 #  updated_at   :datetime        not null
 #
 
-class RegistrationAction < UserAction
+class ActivityCreateAction < UserAction
   
 end

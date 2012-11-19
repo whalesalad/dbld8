@@ -110,7 +110,6 @@ ActiveRecord::Schema.define(:version => 20121112160943) do
   create_table "user_actions", :force => true do |t|
     t.integer  "user_id"
     t.string   "type"
-    t.string   "action_slug"
     t.integer  "cost"
     t.integer  "related_id"
     t.string   "related_type"

@@ -32,6 +32,10 @@
             %code #{@user.token}
           - else
             This user hasn't authenticated yet. Tokens are created on first login.
+
+      %section.content-section
+        %h4 Credits:
+        %p #{@user.first_name} has <b>#{pluralize(@user.total_credits, 'credit')}.</b>
     
       %section.content-section
         %h4 Basic Info

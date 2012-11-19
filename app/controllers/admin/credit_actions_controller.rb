@@ -13,14 +13,18 @@ class Admin::CreditActionsController < AdminController
     @credit_action = CreditAction.new(params[:credit_action])
     
     if @credit_action.save
-      redirect_to admin_credit_actions_path, success: 'Credit action created successfully.'
+      redirect_to admin_credit_actions_path, :flash => { success: 'Credit action created successfully.' }
     else
       render action: "new"
     end
   end
 
-  def edit
-
+  def update
+    if @credit_action.update_attributes(params[:credit_action])
+      redirect_to admin_credit_actions_path, :flash => { success: 'Credit action updated successfully.' }
+    else
+      render action: "edit"
+    end
   end
 
   def destroy

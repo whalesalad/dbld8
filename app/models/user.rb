@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
     Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
   end
 
+  # Actions
   has_many :actions, :class_name => "UserAction"
 
   has_secure_password
@@ -41,7 +42,6 @@ class User < ActiveRecord::Base
   belongs_to :location, :counter_cache => true
 
   has_and_belongs_to_many :interests, :before_add => :validate_max_interests
-  # validate :max_interests_count, :on =>
 
   has_one :token, :class_name => 'AuthToken', :dependent => :destroy
   has_one :profile_photo, :class_name => 'UserPhoto', :dependent => :destroy
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
 
-  attr_accessor :accessible, :facebook_graph
+  attr_accessor :accessible, :facebook_graph, :total_credits
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -357,6 +357,14 @@ class User < ActiveRecord::Base
     # This belongs as a background process most likely
     # Resque.enqueue(XXXFacebookInviteSucceeded, 'invite.id')
     #
+  end
+
+  def trigger(slug, related=nil)
+    UserAction.create_from_user_and_slug(self, slug, related)
+  end
+
+  def total_credits
+    actions.uncached { actions.sum :cost }
   end
 
   private
