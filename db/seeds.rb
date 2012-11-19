@@ -25,9 +25,18 @@ end
 
 misc_interests = [
   'Apple', 'Programming', 'Cave Diving', 'Off Roading', 'Deep-Sea Fishing',
-  'Sexting', 'Dancing', 'Clubbing', 'Dubstep', 'Concerts'
+  'Dancing', 'Clubbing', 'Dubstep', 'Concerts', 'Skiing', 'Brunettes'
 ]
 
 misc_interests.each do |interest|
   Interest.create(name: interest)
+end
+
+credit_actions = {
+  'registration' => 1000,
+  'activity_create' => -10
+}
+
+credit_actions.each do |slug, cost|
+  CreditAction.create(:slug => slug, :cost => cost)
 end
