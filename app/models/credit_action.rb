@@ -41,4 +41,8 @@ class CreditAction < ActiveRecord::Base
     "#{prefix}#{cost.abs}"
   end
 
+  def mapped
+    "#{slug}_action".classify
+  end
+
 end

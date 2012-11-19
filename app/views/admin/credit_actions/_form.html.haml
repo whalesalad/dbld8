@@ -20,5 +20,5 @@
         = f.text_field :cost
 
     .form-actions
-      = f.submit :class => 'btn btn-primary'
-      = link_to 'Cancel', :back, :class => 'btn'
+      = f.submit 'Save', :class => 'btn btn-primary'
+      = link_to 'Cancel', admin_credit_actions_path, :class => 'btn'

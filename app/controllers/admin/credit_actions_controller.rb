@@ -2,7 +2,7 @@ class Admin::CreditActionsController < AdminController
   before_filter :get_credit_action, :only => [:show, :edit, :update]
 
   def index
-    @credit_actions = CreditAction.order('created_at DESC')
+    @credit_actions = CreditAction.order('created_at ASC')
   end
 
   def new
@@ -19,8 +19,8 @@ class Admin::CreditActionsController < AdminController
     end
   end
 
-  def show
-    # respond_with
+  def edit
+
   end
 
   def destroy

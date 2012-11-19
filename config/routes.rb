@@ -78,7 +78,7 @@ DoubleDate::Application.routes.draw do
       get 'venues', :on => :collection
     end
 
-    resources :credit_actions
+    resources :credit_actions, :only => [:index, :new, :create, :edit, :update]
 
     mount Resque::Server, :at => 'resque', :as => 'resque'
   end

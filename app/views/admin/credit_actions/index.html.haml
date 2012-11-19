@@ -3,12 +3,17 @@
     Credit Actions
     %small #{pluralize(@credit_actions.count, 'Action')} Total
 
+%p These are the <b>market values</b> for user actions. Updating a cost here will change the cost of performing those actions going forward. Exising user actions will not change. 
+
+%p This will allow us to adjust the pricing as we see fit, on the fly, without effecting past behavior.
+
 %table.table.table-striped
   %thead
     %tr
       %th ID
       %th Slug
-      %th Cost
+      %th Credit Cost
+      %th Mapped Class
       %th Last Updated
 
   %tbody
@@ -18,12 +23,12 @@
 
         %td
           %b
-            #{link_to action, admin_credit_action_path(action)}
+            #{link_to action.slug, edit_admin_credit_action_path(action)}
 
         %td #{action.cost}
-
+        %td <i>#{action.mapped}</i>
         %td #{l action.updated_at, :format => :medium}
 
 %hr/
 
-= link_to 'New Credit Action', new_admin_credit_action_path, :class => 'btn'
+= link_to 'New', new_admin_credit_action_path, :class => 'btn'
