@@ -10,6 +10,8 @@
 #
 
 class CreditAction < ActiveRecord::Base
+  include Concerns::CostConcerns
+
   attr_accessible :slug, :cost
 
   validates_uniqueness_of :slug
@@ -17,28 +19,12 @@ class CreditAction < ActiveRecord::Base
 
   validates_presence_of :slug, :cost
 
-  def earns?
-    cost > 0
-  end
-
-  def spends?
-    cost < 0
-  end
-
   def to_s
     "#{slug} (#{cost_to_s})"
   end
 
   def to_param
     slug
-  end
-
-  def prefix
-    earns? ? '+' : '-'
-  end
-
-  def cost_to_s
-    "#{prefix}#{cost.abs}"
   end
 
   def mapped

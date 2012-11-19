@@ -14,6 +14,8 @@
 #
 
 class UserAction < ActiveRecord::Base
+  include Concerns::CostConcerns
+  
   before_validation :set_cost, :on => :create
 
   attr_accessible :cost, :related_id, :related_type
@@ -36,8 +38,12 @@ class UserAction < ActiveRecord::Base
   # Optionally, a related object
   belongs_to :related, :polymorphic => true
 
+  def to_s
+    type.gsub('Action', '')
+  end
+
   def action_slug
-    type.underscore.split('_')[0...-1].join('_')
+    to_s.underscore
   end
 
   def credit_action

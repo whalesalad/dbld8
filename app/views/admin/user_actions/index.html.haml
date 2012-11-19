@@ -1,0 +1,34 @@
+.page-header
+  %h1
+    User Actions
+    %small #{pluralize(@user_actions.count, 'Action')} Total
+
+%p These are the <b>market values</b> for user actions. Updating a cost here will change the cost of performing those actions going forward. Exising user actions will not change. 
+
+%p This will allow us to adjust the pricing as we see fit, on the fly, without effecting past behavior.
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Action
+      %th User
+      %th Credit Cost
+      %th Last Updated
+
+  %tbody
+    - for action in @user_actions
+      %tr{ :class => (action.earns?) ? 'success' : 'error' }
+        %td #{action.id}
+
+        %td
+          %b
+            #{link_to action, edit_admin_credit_action_path(action)}
+        %td #{action.user}
+
+        %td #{action.cost_to_s}
+        %td #{l action.updated_at, :format => :medium}
+
+%hr/
+
+= link_to 'New Credit Action', new_admin_credit_action_path, :class => 'btn'

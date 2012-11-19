@@ -51,6 +51,9 @@
                 %li{ :class => current_section?(:controller => 'credit_actions') ? 'active' : '' }
                   = link_to "#{glyphicon('shopping-cart')}Credit Actions".html_safe, admin_credit_actions_path
 
+                %li{ :class => current_section?(:controller => 'user_actions') ? 'active' : '' }
+                  = link_to "#{glyphicon('fire')}User Actions".html_safe, admin_user_actions_path
+
                 %li.nav-header
                   Services
 

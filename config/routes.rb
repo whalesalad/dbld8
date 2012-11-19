@@ -79,6 +79,7 @@ DoubleDate::Application.routes.draw do
     end
 
     resources :credit_actions, :only => [:index, :new, :create, :edit, :update]
+    resources :user_actions, :only => [:index]
 
     mount Resque::Server, :at => 'resque', :as => 'resque'
   end
