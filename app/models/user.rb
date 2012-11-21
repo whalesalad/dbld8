@@ -132,6 +132,7 @@ class User < ActiveRecord::Base
       result = super :only => [:id, :gender]
 
       result[:full_name] = to_s
+      result[:first_name] = first_name
       result[:age] = age
       result[:location] = location.to_s if location.present?
       result[:photo] = photo
