@@ -1,12 +1,17 @@
 %section.activity-detail
-  %h1 #{@activity}
+  %h1 
+    #{@activity}
+    - if @activity.location.present?
+      %small
+        = (@activity.location.venue?) ? 'at' : 'in'
+        #{@activity.location}
   
   %h3.object-meta ##{@activity.id}, Created #{l @activity.created_at, :format => :long}
 
   %hr/
 
   .row-fluid
-    .span6
+    .span5
       
       %section.content-section
         %h4 Details
@@ -42,47 +47,29 @@
           %dd #{l @activity.created_at, :format => :long}
 
 
-      / %section.content-section
-      /   %h4 Friends
-
-      /   %ul.nav.nav-tabs.user-tabs
-      /     %li= link_to "#{pluralize @user.total_friends, 'Wingman'}", '#wingmen-active', :data => { :toggle => 'tab' }
-      /     %li= link_to "#{@user.friendships.unapproved.count} Invited", '#wingmen-invited', :data => { :toggle => 'tab' }
-      /     %li= link_to "#{@user.inverse_friendships.unapproved.count} Incoming", '#wingmen-incoming', :data => { :toggle => 'tab' }
-        
-      /   %section.tab-content
-      /     #wingmen-active.tab-panel
-      /       - if @user.friends.count > 0
-      /         %ul
-      /           - for wingman in @user.friends
-      /             %li= link_to wingman, admin_user_url(wingman)
-      /       - else
-      /         %p #{@user.first_name} does not have any wingmen.
-
-      /     #wingmen-invited.tab-panel
-      /       - if @user.friendships.unapproved.count > 0
-      /         %p These are invitations sent to other users:
-      /         %ul
-      /           - for friendship in @user.friendships.unapproved
-      /             %li= friendship
-      /       - else
-      /         %p #{@user.first_name} does not have any pending invitations for other users.
-
-      /     #wingmen-incoming.tab-panel
-      /       - if @user.inverse_friendships.unapproved.count > 0
-      /         %p These are invitations received from other users:
-      /         %ul
-      /           - for friendship in @user.inverse_friendships.unapproved
-      /             %li= link_to friendship.user.first_name, admin_user_url(friendship.user)
-      /       - else
-      /         %p #{@user.first_name} does not have any pending invitations from other users.
-
-
-      
-
       .form-actions
         = link_to "Delete Activity", admin_activity_path(@activity), :method => :delete, :confirm => "Are you sure you want to delete this activity?", :class => 'btn btn-danger'
 
-    .span6
-      %h4 Raw Activity Object
-      = debug @activity
+    .span7
+      %ul.nav.nav-tabs.location-tabs
+        %li= link_to "Incoming Engagements", '#incoming-engagements', :data => { :toggle => 'tab' }
+        %li= link_to "Raw Object", '#raw-object', :data => { :toggle => 'tab' }
+
+      %section.tab-content
+        .tab-panel#incoming-engagements
+          - if @activity.engagements.exists?
+            %p There's #{pluralize(@activity.engagements.count, 'engagement')} for this activity.
+
+            %ul.engagements-list
+              - @activity.engagements.each do |engagement|
+                %li
+                  %span.engagement-users #{engagement.participant_names}
+                  %span.engagement-meta 
+                    #{engagement.status.titlecase} • Sent #{l engagement.created_at, :format => :long}
+
+          - else
+            %p There are no incoming engagements for this activity.
+
+        .tab-panel#raw-object
+          %h4 Raw Activity Object
+          = debug @activity

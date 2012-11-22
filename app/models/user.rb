@@ -41,7 +41,8 @@ class User < ActiveRecord::Base
 
   belongs_to :location, :counter_cache => true
 
-  has_and_belongs_to_many :interests, :before_add => :validate_max_interests
+  has_and_belongs_to_many :interests
+  #, :before_add => :validate_max_interests
 
   has_one :token, :class_name => 'AuthToken', :dependent => :destroy
   has_one :profile_photo, :class_name => 'UserPhoto', :dependent => :destroy
@@ -103,6 +104,9 @@ class User < ActiveRecord::Base
 
   has_many :activities, :dependent => :destroy
   has_many :participating_activities, :class_name => "Activity", :foreign_key => "wing_id"
+
+  has_many :engagements, :dependent => :destroy
+  has_many :participating_engagements, :class_name => "Engagement", :foreign_key => "wing_id"
 
   def to_s
     "#{first_name} #{last_name}"

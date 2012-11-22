@@ -1,4 +1,5 @@
 DoubleDate::Application.routes.draw do
+
   post 'users/build' => 'users#build_facebook_user', :as => 'build_user'
 
   post 'authenticate' => 'users#authenticate'
@@ -14,6 +15,11 @@ DoubleDate::Application.routes.draw do
   resources :activities, :only => [:index, :show, :create, :destroy] do
     # GET /activities/mine, get all my activities (grouped)
     get 'mine', :on => :collection
+
+    # /activities/10/engagements
+    # /activities/10/engagements/12
+    resources :engagements
+
   end
 
 

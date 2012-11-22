@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  state: MyString
+  user_id: 1
+  wing_id: 1
+  activity_id: 1
+  message: MyText
+
+two:
+  state: MyString
+  user_id: 1
+  wing_id: 1
+  activity_id: 1
+  message: MyText

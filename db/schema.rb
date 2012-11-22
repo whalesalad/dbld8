@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121112160943) do
+ActiveRecord::Schema.define(:version => 20121122153540) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -45,6 +45,22 @@ ActiveRecord::Schema.define(:version => 20121112160943) do
   end
 
   add_index "credit_actions", ["slug"], :name => "index_credit_actions_on_slug", :unique => true
+
+  create_table "engagements", :force => true do |t|
+    t.string   "status"
+    t.integer  "user_id",     :null => false
+    t.integer  "wing_id",     :null => false
+    t.integer  "activity_id", :null => false
+    t.text     "message"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "engagements", ["status"], :name => "index_engagements_on_status"
+  add_index "engagements", ["user_id", "activity_id"], :name => "index_engagements_on_user_id_and_activity_id", :unique => true
+  add_index "engagements", ["user_id"], :name => "index_engagements_on_user_id"
+  add_index "engagements", ["wing_id", "activity_id"], :name => "index_engagements_on_wing_id_and_activity_id", :unique => true
+  add_index "engagements", ["wing_id"], :name => "index_engagements_on_wing_id"
 
   create_table "facebook_invites", :force => true do |t|
     t.integer  "user_id"
