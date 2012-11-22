@@ -1,28 +1,44 @@
 class EngagementsController < ApplicationController
   respond_to :json
 
-  before_filter :get_engagement, :only => [:show, :destroy]
   before_filter :get_activity
+  before_filter :get_engagement, :only => [:show, :destroy]
+
+  before_filter :handle_engagement_permissions, :only => [:index, :show]
 
   def index
-    # render json: params and return
-    # @engagements = 
-    respond_with @activity.engagements
+    respond_with @activity.engagements 
   end
 
   def create
-    # @activity
-    # @authenticated_user
+    @engagement = @activity.engagements.new(params[:engagement])
+    @engagement.user = @authenticated_user
 
-    engagement = { :user_id => @authenticated_user.id }.merge(params[:engagement])
+    if @engagement.save
+      respond_with @engagement, :status => :created, :location => activity_engagement_path(@engagement)
+    else
+      respond_with @engagement, :status => :unprocessable_entity
+    end    
+  end
 
-    @activity.engagements.create(engagement)
+  def show
+    respond_with @engagement
   end
 
   private
 
   def get_activity
     @activity = Activity.find_by_id(params[:activity_id])
+  end
+
+  def get_engagement
+    @engagement = @activity.engagements.find_by_id(params[:id])
+  end
+
+  def handle_engagement_permissions
+    unless @activity.user == @authenticated_user  
+      return json_unauthorized "The authenticated user does not have permission to manipulate engagements for this activity."
+    end
   end
 
 end
