@@ -20,6 +20,9 @@ DoubleDate::Application.routes.draw do
     # /activities/10/engagements/12
     resources :engagements
 
+    # To accept an engagement,
+    # PUT engagement.status = accepted
+
   end
 
 

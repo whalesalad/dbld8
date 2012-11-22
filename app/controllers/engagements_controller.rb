@@ -25,7 +25,7 @@ class EngagementsController < ApplicationController
     respond_with @engagement
   end
 
-  private
+private
 
   def get_activity
     @activity = Activity.find_by_id(params[:activity_id])

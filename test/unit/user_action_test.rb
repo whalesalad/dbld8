@@ -5,7 +5,6 @@
 #  id           :integer         not null, primary key
 #  user_id      :integer
 #  type         :string(255)
-#  action_slug  :string(255)
 #  cost         :integer
 #  related_id   :integer
 #  related_type :string(255)
