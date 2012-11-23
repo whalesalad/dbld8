@@ -24,15 +24,19 @@ module Foursquare
 
     params = (params.nil?) ? default_params : default_params.merge(params)
 
-    puts full_path
-    puts params
-
     response = RestClient.get full_path, { :params => params }
+
+    debug 'Full Path', full_path
+    debug 'Params', params
+    debug 'Response', response
 
     JSON.parse(response)['response']
   end
 
-  def post 
-
+  def self.debug(label, data)
+    puts "=== [FOURSQUARE] #{label.upcase} ==="
+    puts data
+    puts "\n"    
   end
+
 end

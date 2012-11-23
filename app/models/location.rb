@@ -78,16 +78,12 @@ class Location < ActiveRecord::Base
         :limit => 100 
       }
 
-      unless query.nil?
-        params[:query] = query
-      end
+      params[:query] = query unless query.nil?
 
       # Toggle this sucker between explore / search
-      venues = Foursquare::Venue.explore params
+      venues = Foursquare::Venue.search(params)
 
-      return venues.map do |venue|
-        venue.location
-      end
+      return venues.map { |v| v.location }
     end
 
     def find_cities_and_venues_near(latitude, longitude, query=nil)

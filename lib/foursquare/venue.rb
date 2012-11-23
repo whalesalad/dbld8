@@ -13,30 +13,28 @@ module Foursquare
 
       def explore(params)
         response = Foursquare.get "/venues/explore", params
-        parse_venues_from_response(response)
+        parse_venues_from_response(response['groups'].first['items'])
       end
 
       def search(params)
         response = Foursquare.get "/venues/search", params
-        
-        venues = response['venues'].map do |venue|
-          if venue['stats']['usersCount'] > 5
-            self.new(venue) 
-          else
-            nil
-          end
-        end.compact
-        # parse_venues_from_response(response)
+        parse_venues_from_response(response['venues'])
       end
 
       private
 
-      def parse_venues_from_response(response)
-        venues = response['groups'][0]['items'].map do |all|
-          self.new all["venue"]
+      def parse_venues_from_response(raw_venues)
+        venues = []
+
+        return venues if raw_venues.count == 0
+        
+        raw_venues.each do |venue|
+          if venue['stats']['usersCount'] > 5
+            venues << self.new(venue) 
+          end
         end
 
-        venues.sort_by! { |v| v.distance }
+        venues.compact.sort_by! { |v| v.distance }
       end
     end
 
