@@ -1,11 +1,15 @@
 source 'https://rubygems.org'
 
+# Por Heroku
+ruby "1.9.3"
+
 gem 'rails', '3.2.9'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'pg'
 gem 'haml'
 gem 'thin'
 gem 'countries'
+gem 'faker'
 
 # Postgres ext goodies
 gem 'postgres_ext'

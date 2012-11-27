@@ -26,10 +26,12 @@ class User < ActiveRecord::Base
 
   before_create :set_uuid
 
-  after_create :fetch_and_store_facebook_photo, :set_invite_slug
+  after_create :fetch_and_store_facebook_photo
+  after_create :set_invite_slug
   after_create :hook_facebook_invites, :if => :relevant_facebook_invite
+  after_create :trigger_registration
 
-  after_update do |user|
+  after_save do |user|
     # Tedious manual process for now
     Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
   end
@@ -392,6 +394,10 @@ class User < ActiveRecord::Base
   def get_facebook_graph
     require 'koala'
     Koala::Facebook::API.new facebook_access_token
+  end
+
+  def trigger_registration
+    self.trigger 'registration'
   end
 
 end
