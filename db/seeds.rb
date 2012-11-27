@@ -1,3 +1,5 @@
+$LOAD_PATH << File.dirname(__FILE__)
+
 #                        __       __      __        __
 #    ________  ___  ____/ /  ____/ /___ _/ /_____ _/ /
 #   / ___/ _ \/ _ \/ __  /  / __  / __ `/ __/ __ `/ / 
@@ -6,11 +8,7 @@
 #
 #
 
-
-# interests
-# locations
 # activities
-# users
 # friendships
 
 # Let's get some initial interests defined here.
@@ -38,58 +36,10 @@ credit_actions = {
 }
 
 credit_actions.each do |slug, cost|
-  # CreditAction.create(:slug => slug, :cost => cost)
+  # CreditAction.find_or_create(:slug => slug, :cost => cost)
 end
 
+# do user seeds
+require 'seeds/user_seed'
 
-MALE_NAMES = %w(Alex Allen Adam Austin Ben Bill Brian Chad Chris Dan David Kyle 
-                Levi Michael Mike Nate Nick Peter Paul Ryan Sam)
-
-FEMALE_NAMES = %w(Amanda Ashley Erica Eve Heather Kennedy Elizabeth Mary Rachel Rebecca
-                  Sarah Ivy Jamie Jenna Jenny Jessica Jess Julie Melissa Natalie)
-
-LAST_NAMES = %w(Smith Johnson Williams Jones Brown Wilson Moore Taylor 
-                Anderson Thomas Martin Clark Rodriguez Baker Parker Reed 
-                Morgan Cox Grey Palmer Thompson Harris)
-
-location_ids = Location.cities.pluck(:id)
-ages = (19..45).to_a
-
-interest_ids = []
-Interest.all.each do |interest|
-  interest_ids << interest.id if interest.users.count > 0
-end
-
-MALE_NAMES.each do |first|
-  last = LAST_NAMES.sample
-  email_prefix = "#{first[0]}#{last}"
-
-  u = User.create({ 
-    first_name: first, 
-    last_name: last,
-    email: "#{email_prefix.downcase}+test@belluba.com",
-    bio: Faker::Lorem.sentence(20),
-    password: 'testing',
-    birthday: ages.sample.years.ago,
-    location_id: location_ids.sample,
-    interest_ids: interest_ids.sample(7),
-    gender: 'male'
-  })
-end
-
-FEMALE_NAMES.each do |first|
-  last = LAST_NAMES.sample
-  email_prefix = "#{first[0]}#{last}"
-
-  u = User.create({ 
-    first_name: first, 
-    last_name: last,
-    email: "#{email_prefix.downcase}+test@belluba.com",
-    bio: Faker::Lorem.sentence(20),
-    password: 'testing',
-    birthday: ages.sample.years.ago,
-    location_id: location_ids.sample,
-    interest_ids: interest_ids.sample(7),
-    gender: 'female'
-  })
-end
+UserSeed.new()
