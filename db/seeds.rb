@@ -18,7 +18,7 @@ interests = [
   'Clubbing', 'Dubstep', 'Concerts', 'Skiing', 'Eating', 'Food' 
 ]
 
-# interests.each { |i| Interest.create(:name => i) }
+interests.each { |i| Interest.create(:name => i) }
   
 # Let's get some cities and venues...
 WASHINGTONDC = [38.8951118, -77.0363658]
@@ -27,7 +27,7 @@ SANTAMONICA = [34.0172423358256, -118.49820792675]
 WAIKIKI = [21.2764980618893, -157.827744483948]
 
 [WASHINGTONDC, OREBRO, SANTAMONICA, WAIKIKI].each do |lat,lng|
-  # Location.find_cities_and_venues_near(lat,lng)
+  Location.find_cities_and_venues_near(lat,lng)
 end
 
 credit_actions = {
@@ -36,7 +36,7 @@ credit_actions = {
 }
 
 credit_actions.each do |slug, cost|
-  # CreditAction.find_or_create(:slug => slug, :cost => cost)
+  CreditAction.find_or_create(:slug => slug, :cost => cost)
 end
 
 # do user seeds
