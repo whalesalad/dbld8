@@ -36,7 +36,7 @@ credit_actions = {
 }
 
 credit_actions.each do |slug, cost|
-  CreditAction.find_or_create(:slug => slug, :cost => cost)
+  CreditAction.create(:slug => slug, :cost => cost)
 end
 
 # do user seeds
