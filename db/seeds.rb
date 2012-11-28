@@ -43,3 +43,14 @@ end
 require 'seeds/user_seed'
 
 UserSeed.new()
+
+# connect users - create random friendships.
+# for every user, create 3 solidified friendships
+
+all_users = User.find(:all)
+
+all_users.each do |user|
+  user.invite all_users.sample, true
+  user.invite all_users.sample, true
+  user.invite all_users.sample, false
+end

@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   end
 
   # Actions
-  has_many :actions, :class_name => "UserAction"
+  has_many :actions, :class_name => "UserAction", :dependent => :destroy
 
   has_secure_password
 
@@ -300,7 +300,7 @@ class User < ActiveRecord::Base
 
     params = {:friend_id => friend.id}
 
-    unless approve.nil?
+    if approve == true
       params[:approved] = true
     end
 

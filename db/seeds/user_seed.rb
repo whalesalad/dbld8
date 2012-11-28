@@ -1,7 +1,7 @@
 class UserSeed
 
   MALE_NAMES = %w(Alex Allen Adam Austin Ben Bill Brian Chad Chris Dan David Kyle 
-                Levi Michael Mike Nate Nick Peter Paul Ryan Sam)
+                  Levi Michael Mike Nate Nick Peter Paul Ryan Sam Tom Ken Brett)
 
   FEMALE_NAMES = %w(Amanda Ashley Erica Eve Heather Kennedy Elizabeth Mary Rachel Rebecca
                     Sarah Ivy Jamie Jenna Jenny Jessica Jess Julie Melissa Natalie)
@@ -28,15 +28,17 @@ class UserSeed
       password: 'testing',
       birthday: ages.sample.years.ago,
       location_id: location_ids.sample,
-      interest_ids: interest_ids.sample(7),
       gender: gender
     })
+
+    # set interests
+    u.interests = interests.sample(7)
+
+    u.save!
   end
 
   def email_from(first_name, last_name)
-    email_prefix = "#{first_name[0]}#{last_name}".downcase
-    
-    "#{email_prefix}+test@belluba.com"
+    "#{first_name.downcase}.#{last_name.downcase}@dbld8.com"
   end
 
   def ages
@@ -47,9 +49,9 @@ class UserSeed
     Location.cities.pluck(:id)
   end
 
-  def interest_ids
+  def interests
     Interest.all.map do |interest|
-      (interest.users.count > 0) ? interest.id : nil
+      (interest.users.count > 0) ? interest : nil
     end.compact
   end
   
