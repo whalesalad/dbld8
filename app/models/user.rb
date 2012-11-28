@@ -260,11 +260,9 @@ class User < ActiveRecord::Base
   end
 
   def interest_names=(interest_names)
-    interest_names.map! do |name|
+    self.interests = interest_names.map do |name|
       Interest.find_or_create_by_name(name.strip)
     end
-
-    self.interests = interest_names
   end
 
   def default_interested_in_from_gender(gender)

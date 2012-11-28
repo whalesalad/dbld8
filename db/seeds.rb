@@ -18,6 +18,8 @@ interests = [
   'Clubbing', 'Dubstep', 'Concerts', 'Skiing', 'Eating', 'Food' 
 ]
 
+puts 'Seeding Interests...'
+
 interests.each { |i| Interest.create(:name => i) }
   
 # Let's get some cities and venues...
@@ -26,9 +28,13 @@ OREBRO = [59.2741206163838, 15.2066016197205]
 SANTAMONICA = [34.0172423358256, -118.49820792675]
 WAIKIKI = [21.2764980618893, -157.827744483948]
 
+puts 'Seeding Locations...'
+
 [WASHINGTONDC, OREBRO, SANTAMONICA, WAIKIKI].each do |lat,lng|
   Location.find_cities_and_venues_near(lat,lng)
 end
+
+puts 'Seeding CreditActions...'
 
 credit_actions = {
   'registration' => 1000,
@@ -36,16 +42,20 @@ credit_actions = {
 }
 
 credit_actions.each do |slug, cost|
-  CreditAction.create(:slug => slug, :cost => cost)
+  CreditAction.find_or_create_by_slug(:slug => slug, :cost => cost)
 end
 
 # do user seeds
 require 'seeds/user_seed'
 
+puts 'Seeding Users...'
+
 UserSeed.new()
 
 # connect users - create random friendships.
 # for every user, create 3 solidified friendships
+
+puts 'Building random friendships...'
 
 all_users = User.find(:all)
 
