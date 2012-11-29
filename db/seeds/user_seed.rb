@@ -33,7 +33,7 @@ class UserSeed
 
     # set interests
     u.interests = Interest.all.sample(7)
-    # u.save!
+
   end
 
   def email_from(first_name, last_name)
