@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 # Por Heroku
 ruby "1.9.3"
+gem 'foreman'
 
 gem 'rails', '3.2.9'
 gem 'bcrypt-ruby', '~> 3.0.0'
