@@ -64,7 +64,7 @@ private
 
   # only activity.participants can view index
   def activity_owners_only
-    unless @activity && @activity.allowed(@authenticated_user, :modify)
+    unless @activity && @activity.allowed(@authenticated_user, :all)
       unauthorized!
     end
   end
