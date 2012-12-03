@@ -135,6 +135,23 @@ class Activity < ActiveRecord::Base
     @age_bounds ||= [user.age, wing.age].sort!
   end
 
+  def participants
+    [user, wing]
+  end
+
+  def participant_names
+    participants.map(&:first_name).join ' + '
+  end
+
+  def allowed(a_user, permission = :all)
+    case permission
+    when :owner, :modify
+      a_user == user
+    when :all
+      participants.map(&:id).include? a_user.id
+    end
+  end
+
   def as_json(options={})
     exclude = [:updated_at, :location_id, :wing_id, :user_id]
 

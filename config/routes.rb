@@ -6,23 +6,26 @@ DoubleDate::Application.routes.draw do
 
   get 'invite(/:invite_slug)' => 'users#invitation', :as => 'user_invitation'
 
-
   resources :users, :only => [:index, :show, :create] do
     get 'search', :on => :collection
   end
 
-
-  resources :activities, :only => [:index, :show, :create, :destroy] do
+  resources :activities, :only => [:index, :show, :create, :update, :destroy] do
     # GET /activities/mine, get all my activities (grouped)
     get 'mine', :on => :collection
+    get 'other', :on => :collection
 
-    # /activities/10/engagements
-    # /activities/10/engagements/12
-    resources :engagements
+    # Multiple resources are accessible and manageable by the owner
+    resources :engagements do
+      # get 'view', :on => :member
+      get 'ignore', :on => :member
+    end
+
+    # A single resource is accessible/managable by other users
+    resource :engagement
 
     # To accept an engagement,
     # PUT engagement.status = accepted
-
   end
 
 

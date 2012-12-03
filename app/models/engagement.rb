@@ -17,7 +17,8 @@ class Engagement < ActiveRecord::Base
 
   attr_accessible :activity_id, :message, :status, :user_id, :wing_id
 
-  ENGAGEMENT_STATUS = %w(created viewed accepted ignored)
+  ENGAGEMENT_STATUS = %w(sent viewed ignored accepted)
+  IS_SENT, IS_VIEWED, IS_IGNORED, IS_ACCEPTED = ENGAGEMENT_STATUS
 
   default_scope order('created_at DESC')
 
@@ -46,8 +47,30 @@ class Engagement < ActiveRecord::Base
     [user, wing]
   end
 
+  def all_participants
+    (participants | activity.participants)
+  end
+
   def participant_names
     participants.map{ |u| u.first_name }.join ' + '
+  end
+
+  def allowed(a_user, permission = :all)
+    case permission
+    when :owner
+      a_user == user
+    when :owners
+      participants.map(&:id).include? a_user.id
+    when :all
+      all_participants.map(&:id).include? a_user.id
+    end
+  end
+
+  def mark_viewed!
+    if self.status != IS_VIEWED
+      self.status = IS_VIEWED
+      self.save!
+    end
   end
 
   def as_json(options={})
