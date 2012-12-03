@@ -24,8 +24,8 @@ DoubleDate::Application.routes.draw do
     # A single resource is accessible/managable by other users
     resource :engagement
 
-    # To accept an engagement,
-    # PUT engagement.status = accepted
+    # To accept an engagement, this will happen during the status change, 
+    # it will be observed "x" => "accepted" and subsequent events will fire
   end
 
 

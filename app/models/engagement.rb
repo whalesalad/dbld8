@@ -36,7 +36,7 @@ class Engagement < ActiveRecord::Base
   belongs_to :activity
 
   def set_default_values
-    self.status ||= ENGAGEMENT_STATUS[0]
+    self.status ||= IS_SENT
   end
 
   def to_s
