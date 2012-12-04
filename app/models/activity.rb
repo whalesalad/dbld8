@@ -160,6 +160,8 @@ class Activity < ActiveRecord::Base
     result[:user] = user.as_json(:mini => true)
     result[:wing] = wing.as_json(:mini => true) if wing.present?
     result[:location] = location.as_json(:short => true) if location.present?
+
+    result[:engagements_count] = engagements.count
     
     result
   end

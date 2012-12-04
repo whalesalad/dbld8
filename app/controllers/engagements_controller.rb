@@ -5,7 +5,7 @@ class EngagementsController < ApplicationController
   before_filter :get_engagement, :only => [:show, :destroy]
 
   before_filter :activity_owners_only, :only => [:index, :update]
-  before_filter :engagement_owners_only, :only => [:destroy]
+  # before_filter :engagement_owners_only, :only => [:destroy]
 
   def index
     respond_with @activity.engagements 
@@ -28,18 +28,26 @@ class EngagementsController < ApplicationController
 
     unless @engagement.allowed(@authenticated_user, :owners)
       # mark viewed if activity owners look at this
-      @engagement.mark_viewed!
+      @engagement.viewed!
     end
 
     respond_with @engagement
   end
 
   def destroy
-    if @engagement.destroy
-      respond_with(:nothing => true)
-    else
-      json_error "An error occured deleting this engagement."
+    if @engagement.allowed(@authenticated_user, :owner)
+      # if the user is the owner of the engagement, actually delete it.
+      if @engagement.destroy
+        respond_with(:nothing => true) and return
+      end
+    elsif @activity.allowed(@authenticated_user, :owner)
+      # if the user is the owner of the activity, set status to ignored
+      if @engagement.ignore!
+        respond_with(:nothing => true) and return
+      end
     end
+
+    json_error "An error occured deleting this engagement."
   end
 
 private

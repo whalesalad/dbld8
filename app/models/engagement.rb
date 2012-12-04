@@ -21,6 +21,7 @@ class Engagement < ActiveRecord::Base
   IS_SENT, IS_VIEWED, IS_IGNORED, IS_ACCEPTED = ENGAGEMENT_STATUS
 
   default_scope order('created_at DESC')
+  default_scope where('status != ?', IS_IGNORED)
 
   belongs_to :user
   belongs_to :wing, :class_name => 'User'
@@ -66,9 +67,16 @@ class Engagement < ActiveRecord::Base
     end
   end
 
-  def mark_viewed!
+  def viewed!
     if self.status != IS_VIEWED
       self.status = IS_VIEWED
+      self.save!
+    end
+  end
+
+  def ignore!
+    if self.status != IS_IGNORED
+      self.status = IS_IGNORED
       self.save!
     end
   end
