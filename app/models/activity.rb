@@ -26,7 +26,7 @@ class Activity < ActiveRecord::Base
 
   attr_accessible :title, :details, :wing_id, :location_id, :day_pref, :time_pref
 
-  attr_accessor :age_bounds
+  attr_accessor :age_bounds, :relationship
 
   default_scope order('created_at DESC')
 
@@ -157,11 +157,12 @@ class Activity < ActiveRecord::Base
 
     result = super({ :except => exclude }.merge(options))
 
+    result[:relationship] = relationship if relationship.present?
+    result[:engagements_count] = engagements.count
+
     result[:user] = user.as_json(:mini => true)
     result[:wing] = wing.as_json(:mini => true) if wing.present?
     result[:location] = location.as_json(:short => true) if location.present?
-
-    result[:engagements_count] = engagements.count
     
     result
   end

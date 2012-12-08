@@ -116,6 +116,10 @@ class User < ActiveRecord::Base
     :through => :engagements,
     :source => :activity
 
+  has_many :engaged_participating_activities, 
+    :through => :participating_engagements,
+    :source => :activity
+
   def to_s
     "#{first_name} #{last_name}"
   end
@@ -342,18 +346,29 @@ class User < ActiveRecord::Base
     direct_friends(false).count + inverse_friends(false).count
   end
 
-  def my_activity_associations
-    %w(activities participating_activities engaged_activities)
+  def activity_associations
+    {
+      :activities => 'owner',
+      :participating_activities => 'wing',
+      :engaged_activities => 'engaged',
+      :engaged_participating_activities => 'engaged'
+    }
   end
 
-  def all_my_activities
-    reload
-    my_activity_associations.map { |q| self.send(q) }.inject :+
+  def my_activities
+    activities = []
+    activity_associations.each do |association, relationship|
+      self.send(association).each do |activity|
+        activity.relationship = relationship
+        activities << activity
+      end
+    end
+    activities
   end
 
-  def all_my_activities_count
+  def my_activities_count
     reload
-    my_activity_associations.map { |q| self.send(q, false).count }.inject :+
+    activity_associations.keys.map { |q| self.send(q, false).count }.inject :+
   end
 
   def relevant_facebook_invite
