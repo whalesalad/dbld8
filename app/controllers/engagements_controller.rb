@@ -8,7 +8,7 @@ class EngagementsController < ApplicationController
   # before_filter :engagement_owners_only, :only => [:destroy]
 
   def index
-    respond_with @activity.engagements 
+    respond_with @activity.engagements.not_ignored 
   end
 
   def create

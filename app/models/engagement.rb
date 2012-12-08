@@ -21,7 +21,13 @@ class Engagement < ActiveRecord::Base
   IS_SENT, IS_VIEWED, IS_IGNORED, IS_ACCEPTED = ENGAGEMENT_STATUS
 
   default_scope order('created_at DESC')
-  default_scope where('status != ?', IS_IGNORED)
+  
+  scope :not_ignored, where('status != ?', IS_IGNORED)
+  
+  scope :sent, where(:status => IS_SENT)
+  scope :viewed, where(:status => IS_VIEWED)
+  scope :ignored, where(:status => IS_IGNORED)
+  scope :accepted, where(:status => IS_ACCEPTED)
 
   belongs_to :user
   belongs_to :wing, :class_name => 'User'

@@ -47,7 +47,9 @@ class User < ActiveRecord::Base
   #, :before_add => :validate_max_interests
 
   has_one :token, :class_name => 'AuthToken', :dependent => :destroy
+  
   has_one :profile_photo, :class_name => 'UserPhoto', :dependent => :destroy
+  has_many :profile_photos, :class_name => 'UserPhoto', :dependent => :destroy
 
   attr_accessible :email, :password, :first_name, :last_name, :birthday,
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
@@ -85,8 +87,8 @@ class User < ActiveRecord::Base
   has_many :requested_friends,
     :through => :friendships,
     :conditions => { :'friendships.approved' => false },
-    :foreign_key => "user_id", :source =>
-    :friend
+    :foreign_key => "user_id", 
+    :source => :friend
 
   # Pending friends that I need to say yes/no to
   has_many :pending_friends,
@@ -109,6 +111,10 @@ class User < ActiveRecord::Base
 
   has_many :engagements, :dependent => :destroy
   has_many :participating_engagements, :class_name => "Engagement", :foreign_key => "wing_id"
+
+  has_many :engaged_activities, 
+    :through => :engagements,
+    :source => :activity
 
   def to_s
     "#{first_name} #{last_name}"
@@ -336,13 +342,18 @@ class User < ActiveRecord::Base
     direct_friends(false).count + inverse_friends(false).count
   end
 
-  def all_my_activities
-    reload
-    activities + participating_activities
+  def my_activity_associations
+    %w(activities participating_activities engaged_activities)
   end
 
-  def total_my_activities
-    activities(false).count + participating_activities(false).count
+  def all_my_activities
+    reload
+    my_activity_associations.map { |q| self.send(q) }.inject :+
+  end
+
+  def all_my_activities_count
+    reload
+    my_activity_associations.map { |q| self.send(q, false).count }.inject :+
   end
 
   def relevant_facebook_invite

@@ -14,6 +14,7 @@ DoubleDate::Application.routes.draw do
     # GET /activities/mine, get all my activities (grouped)
     get 'mine', :on => :collection
     get 'other', :on => :collection
+    get 'engaged', :on => :collection
 
     # Multiple resources are accessible and manageable by the owner
     resources :engagements do
