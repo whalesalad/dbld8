@@ -37,8 +37,8 @@ class Activity < ActiveRecord::Base
   DAY_PREFERENCES = %w(weekday weekend)
   TIME_PREFERENCES = %w(day night)
 
-  RELATIONSHIP_CHOICES = %w(owner wing engaged)
-  IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
+  RELATIONSHIP_CHOICES = %w(open owner wing engaged)
+  IS_OPEN, IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
 
   belongs_to :user
   belongs_to :wing, :class_name => 'User'
@@ -156,14 +156,26 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def add_relationship_flag_for(a_user)
-    # IS_OWNER, IS_WING, IS_ENGAGED
-    return IS_OWNER if a_user.id == user_id
-    return IS_WING if a_user.id == wing_id
+  def relationship
+    @relationship || get_relationship_for
+  end
 
-    if a_user.engagements.find_by_activity_id(self.id).exists?
-      
+  def get_relationship_for(a_user=nil)
+    unless a_user.nil?
+      # IS_OWNER, IS_WING, IS_ENGAGED
+      return IS_OWNER if a_user.id == user_id
+      return IS_WING if a_user.id == wing_id
+
+      if a_user.engagements.find_by_activity_id(self.id).present?
+        return IS_ENGAGED
+      end
     end
+
+    IS_OPEN
+  end
+
+  def update_relationship_as(a_user)
+    self.relationship = get_relationship_for(a_user)
   end
 
   def as_json(options={})

@@ -6,6 +6,10 @@ class ActivitiesController < ApplicationController
 
   def index
     @activities = Activity.search(params)
+
+    @activities.each do |activity|
+      activity.update_relationship_as(@authenticated_user)
+    end
     
     respond_with @activities
   end
@@ -56,7 +60,7 @@ class ActivitiesController < ApplicationController
     if @activity.update_attributes(params[:activity])
       return respond_with @activity
     else
-      return respond_with(@activity, status: :unprocessable_entity)
+      return respond_with @activity, :status => :unprocessable_entity
     end
   end
 
@@ -72,7 +76,6 @@ private
   
   def get_activity
     @activity = Activity.find_by_id(params[:id])
-    @activity.add_relationship_flag_for(@authenticated_user)
   end
 
   def unauthorized!
