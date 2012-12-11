@@ -6,6 +6,7 @@ class ActivitiesController < ApplicationController
 
   def index
     @activities = Activity.search(params)
+    
     respond_with @activities
   end
 
@@ -71,16 +72,13 @@ private
   
   def get_activity
     @activity = Activity.find_by_id(params[:id])
+    @activity.add_relationship_flag_for(@authenticated_user)
   end
 
   def unauthorized!
     unless (@activity.user_id == @authenticated_user.id)
       return json_unauthorized "The authenticated user does not have permission to modify or delete this activity."
     end
-  end
-
-  def set_activity_status(owner, activity)
-
   end
 
 end

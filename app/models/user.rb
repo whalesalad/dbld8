@@ -109,11 +109,11 @@ class User < ActiveRecord::Base
   has_many :activities, :dependent => :destroy
   has_many :participating_activities, :class_name => "Activity", :foreign_key => "wing_id"
 
-  has_many :engagements, :dependent => :destroy
+  has_many :my_engagements, :dependent => :destroy
   has_many :participating_engagements, :class_name => "Engagement", :foreign_key => "wing_id"
 
   has_many :engaged_activities, 
-    :through => :engagements,
+    :through => :my_engagements,
     :source => :activity
 
   has_many :engaged_participating_activities, 
@@ -348,10 +348,10 @@ class User < ActiveRecord::Base
 
   def activity_associations
     {
-      :activities => 'owner',
-      :participating_activities => 'wing',
-      :engaged_activities => 'engaged',
-      :engaged_participating_activities => 'engaged'
+      :activities                       => Activity::IS_OWNER,
+      :participating_activities         => Activity::IS_WING,
+      :engaged_activities               => Activity::IS_ENGAGED,
+      :engaged_participating_activities => Activity::IS_ENGAGED
     }
   end
 
@@ -369,6 +369,11 @@ class User < ActiveRecord::Base
   def my_activities_count
     reload
     activity_associations.keys.map { |q| self.send(q, false).count }.inject :+
+  end
+
+  def engagements
+    reload
+    my_engagements + participating_engagements
   end
 
   def relevant_facebook_invite

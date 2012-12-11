@@ -24,7 +24,8 @@ class Activity < ActiveRecord::Base
     Resque.enqueue(UpdateCounts, 'Location:activities') if activity.location_id_changed?
   end
 
-  attr_accessible :title, :details, :wing_id, :location_id, :day_pref, :time_pref
+  attr_accessible :title, :details, :wing_id, 
+    :location_id, :day_pref, :time_pref
 
   attr_accessor :age_bounds, :relationship
 
@@ -35,6 +36,9 @@ class Activity < ActiveRecord::Base
   # Leave these fields blank for = "Anytime"
   DAY_PREFERENCES = %w(weekday weekend)
   TIME_PREFERENCES = %w(day night)
+
+  RELATIONSHIP_CHOICES = %w(owner wing engaged)
+  IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
 
   belongs_to :user
   belongs_to :wing, :class_name => 'User'
@@ -149,6 +153,16 @@ class Activity < ActiveRecord::Base
       a_user == user
     when :all
       participants.map(&:id).include? a_user.id
+    end
+  end
+
+  def add_relationship_flag_for(a_user)
+    # IS_OWNER, IS_WING, IS_ENGAGED
+    return IS_OWNER if a_user.id == user_id
+    return IS_WING if a_user.id == wing_id
+
+    if a_user.engagements.find_by_activity_id(self.id).exists?
+      
     end
   end
 
