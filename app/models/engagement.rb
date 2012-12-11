@@ -42,6 +42,8 @@ class Engagement < ActiveRecord::Base
 
   belongs_to :activity
 
+  has_many :messages
+
   def set_default_values
     self.status ||= IS_SENT
   end

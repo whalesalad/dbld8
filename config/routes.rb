@@ -18,17 +18,12 @@ DoubleDate::Application.routes.draw do
 
     # Multiple resources are accessible and manageable by the owner
     resources :engagements do
-      # get 'view', :on => :member
-      get 'ignore', :on => :member
+      resources :messages
     end
 
-    # A single resource is accessible/managable by other users
-    resource :engagement
-
-    # To accept an engagement, this will happen during the status change, 
-    # it will be observed "x" => "accepted" and subsequent events will fire
+    # shortcut to get messages on an engaged activity.
+    get 'messages', :on => :member
   end
-
 
   # ME!
   resource :me, :controller => "me" do

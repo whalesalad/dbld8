@@ -4,11 +4,17 @@ class EngagementsController < ApplicationController
   before_filter :get_activity
   before_filter :get_engagement, :only => [:show, :destroy]
 
-  before_filter :activity_owners_only, :only => [:index, :update]
+  before_filter :activity_owners_only, :only => [:update]
   # before_filter :engagement_owners_only, :only => [:destroy]
 
   def index
-    respond_with @activity.engagements.not_ignored
+    if @activity.allowed(@authenticated_user, :owner)
+      @engagements = @activity.engagements.not_ignored
+    else
+      @engagements = [get_singular_engagement]
+    end
+
+    respond_with @engagements
   end
 
   def create
@@ -57,17 +63,19 @@ private
   end
 
   def get_engagement
-    if params[:id]
-      # direct /engagements/:id/
-      @engagement = @activity.engagements.find_by_id(params[:id])
+    if params[:id] == 'mine'
+      @engagement = get_singular_engagement
     else
-      # singular resource, /engagement
-      @engagement = @activity.engagements.find_by_user_id(@authenticated_user.id)
+      @engagement = @activity.engagements.find_by_id(params[:id])      
     end
 
     if @engagement.nil?
       return json_not_found "You have not engaged in this activity yet, or the engagement was not found."
     end
+  end
+
+  def get_singular_engagement
+    @activity.engagements.find_by_user_id(@authenticated_user.id)
   end
 
   # only activity.participants can view index
