@@ -13,6 +13,13 @@ class Message < ActiveRecord::Base
     end
   end
 
-  
+  def as_json(options={})
+    exclude = [:updated_at, :engagement_id]
+
+    result = super({ :except => exclude }.merge(options))
+    
+    result
+  end
+
 
 end
