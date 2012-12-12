@@ -2,6 +2,7 @@ class ActivitiesController < ApplicationController
   respond_to :json
   
   before_filter :get_activity, :only => [:show, :update, :destroy]
+  before_filter :unauthorized!, :only => [:update, :destroy]
   before_filter :handle_activity_permissions, :only => [:update, :destroy]
 
   def index
@@ -46,8 +47,6 @@ class ActivitiesController < ApplicationController
   end
 
   def update
-    unauthorized!
-
     if @activity.update_attributes(params[:activity])
       return respond_with @activity
     else
@@ -56,8 +55,6 @@ class ActivitiesController < ApplicationController
   end
 
   def destroy
-    unauthorized! 
-
     if @activity.destroy
       respond_with(:nothing => true)
     end
@@ -67,12 +64,14 @@ private
   
   def get_activity
     @activity = Activity.find_by_id(params[:id])
+    json_not_found "The requested activity was not found." if @activity.nil?
+    @activity.update_relationship_as(@authenticated_user)
   end
 
   def unauthorized!
-    unless (@activity.user_id == @authenticated_user.id)
-      json_unauthorized "The authenticated user does not have" \
-      "permission to modify or delete this activity."
+    unless @activity.allowed?(@authenticated_user, :owner)
+      json_unauthorized "The authenticated user does not have " \
+        "permission to modify or delete this activity." 
     end
   end
 

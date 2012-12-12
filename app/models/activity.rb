@@ -157,9 +157,8 @@ class Activity < ActiveRecord::Base
       return IS_OWNER if a_user.id == user_id
       return IS_WING if a_user.id == wing_id
 
-      if a_user.engagements.find_by_activity_id(self.id).present?
-        return IS_ENGAGED
-      end
+      # TODO, handle this for your user id or your wing's user id.
+      return IS_ENGAGED if engagements.find_by_user_id(a_user)
     end
 
     IS_OPEN

@@ -3,7 +3,6 @@ class EngagementsController < ApplicationController
 
   before_filter :get_activity
   before_filter :get_engagement, :only => [:show, :destroy]
-
   before_filter :activity_owners_only, :only => [:update]
   # before_filter :engagement_owners_only, :only => [:destroy]
 
@@ -18,11 +17,15 @@ class EngagementsController < ApplicationController
   end
 
   def create
+    if @engagement
+      json_unauthorized "You or your wing have already engaged in this activity." 
+    end
+
     @engagement = @activity.engagements.new(params[:engagement])
     @engagement.user = @authenticated_user
 
     if @engagement.save
-      respond_with @engagement, :status => :created, :location => activity_engagement_path(@activity, @engagement)
+      respond_with @engagement, :status => :created, :location => activity_engagements_path(@activity, @engagement)
     else
       respond_with @engagement, :status => :unprocessable_entity
     end    
@@ -61,6 +64,7 @@ private
   def get_activity
     @activity = Activity.find_by_id(params[:activity_id])
     json_not_found "The requested activity was not found." if @activity.nil?
+    @activity.update_relationship_as(@authenticated_user)
   end
 
   def get_engagement
@@ -88,7 +92,7 @@ private
   end
 
   def unauthorized!
-    json_unauthorized "The authenticated user does not have" \
+    json_unauthorized "The authenticated user does not have " \
       "permission to do this."
   end
 

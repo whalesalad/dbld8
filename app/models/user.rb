@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
 
-  attr_accessor :accessible, :facebook_graph, :total_credits
+  attr_accessor :accessible, :facebook_graph, :total_credits, :age
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -129,10 +129,12 @@ class User < ActiveRecord::Base
   end
 
   def age
-    if birthday.present?
-      now = Time.now.utc.to_date
-      return now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
-    end
+    @age ||= determine_age
+  end
+
+  def determine_age
+    now = Time.now.utc.to_date
+    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
   end
 
   def status
