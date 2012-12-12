@@ -16,6 +16,8 @@
 #
 
 class Activity < ActiveRecord::Base
+  include Mixins::Participants
+
   before_create :set_default_values
 
   after_save :create_user_action
@@ -39,9 +41,6 @@ class Activity < ActiveRecord::Base
 
   RELATIONSHIP_CHOICES = %w(open owner wing engaged)
   IS_OPEN, IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
-
-  belongs_to :user
-  belongs_to :wing, :class_name => 'User'
 
   belongs_to :location, :counter_cache => true
 
@@ -139,15 +138,7 @@ class Activity < ActiveRecord::Base
     @age_bounds ||= [user.age, wing.age].sort!
   end
 
-  def participants
-    [user, wing]
-  end
-
-  def participant_names
-    participants.map(&:first_name).join ' + '
-  end
-
-  def allowed(a_user, permission = :all)
+  def allowed?(a_user, permission = :all)
     case permission
     when :owner, :modify
       a_user == user

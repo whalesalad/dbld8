@@ -8,7 +8,7 @@ class EngagementsController < ApplicationController
   # before_filter :engagement_owners_only, :only => [:destroy]
 
   def index
-    if @activity.allowed(@authenticated_user, :owner)
+    if @activity.allowed?(@authenticated_user, :owner)
       @engagements = @activity.engagements.not_ignored
     else
       @engagements = [get_singular_engagement]
@@ -30,9 +30,9 @@ class EngagementsController < ApplicationController
 
   def show
     # A user needs to be one of the four allowed to see this.
-    unauthorized! unless @engagement.allowed(@authenticated_user, :all)
+    unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
 
-    unless @engagement.allowed(@authenticated_user, :owners)
+    unless @engagement.allowed?(@authenticated_user, :owners)
       # mark viewed if activity owners look at this
       @engagement.viewed!
     end
@@ -41,12 +41,12 @@ class EngagementsController < ApplicationController
   end
 
   def destroy
-    if @engagement.allowed(@authenticated_user, :owner)
+    if @engagement.allowed?(@authenticated_user, :owner)
       # if the user is the owner of the engagement, actually delete it.
       if @engagement.destroy
         respond_with(:nothing => true) and return
       end
-    elsif @activity.allowed(@authenticated_user, :owner)
+    elsif @activity.allowed?(@authenticated_user, :owner)
       # if the user is the owner of the activity, set status to ignored
       if @engagement.ignore!
         respond_with(:nothing => true) and return
@@ -80,13 +80,13 @@ private
 
   # only activity.participants can view index
   def activity_owners_only
-    unless @activity && @activity.allowed(@authenticated_user, :all)
+    unless @activity && @activity.allowed?(@authenticated_user, :all)
       unauthorized!
     end
   end
 
   def engagement_owners_only
-    unless @engagement && @engagement.allowed(@authenticated_user, :owners)
+    unless @engagement && @engagement.allowed?(@authenticated_user, :owners)
       unauthorized!
     end
   end

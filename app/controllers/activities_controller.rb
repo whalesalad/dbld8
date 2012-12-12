@@ -15,15 +15,6 @@ class ActivitiesController < ApplicationController
   end
 
   def mine
-    # - activities i've created (me.activities)
-    # owned by me, type: owner
-    
-    # - activities a wing has created w/ me involved (me.participating_activities)
-    # owned by wing, type: wing
-
-    # - activities that i've shown interest in (engagement object created)
-    # owned by someone else, type: engaged
-
     # - activities that i've shown interest in and are accepted
     # TODO owned by someone else, type: accepted 
     respond_with @authenticated_user.my_activities
@@ -80,7 +71,8 @@ private
 
   def unauthorized!
     unless (@activity.user_id == @authenticated_user.id)
-      return json_unauthorized "The authenticated user does not have permission to modify or delete this activity."
+      return json_unauthorized "The authenticated user does not have \
+      permission to modify or delete this activity."
     end
   end
 

@@ -13,6 +13,8 @@
 #
 
 class Engagement < ActiveRecord::Base
+  include Mixins::Participants
+
   before_create :set_default_values
 
   attr_accessible :activity_id, :message, :status, :user_id, :wing_id
@@ -29,9 +31,6 @@ class Engagement < ActiveRecord::Base
   scope :ignored, where(:status => IS_IGNORED)
   scope :accepted, where(:status => IS_ACCEPTED)
 
-  belongs_to :user
-  belongs_to :wing, :class_name => 'User'
-
   validates_uniqueness_of :activity_id, 
     :scope => [:user_id, :wing_id], 
     :message => "You or your wing have already engaged in this activity."
@@ -42,7 +41,7 @@ class Engagement < ActiveRecord::Base
 
   belongs_to :activity
 
-  has_many :messages
+  has_many :messages, :dependent => :nullify
 
   def set_default_values
     self.status ||= IS_SENT
@@ -52,26 +51,22 @@ class Engagement < ActiveRecord::Base
     "Interest in #{activity}"
   end
 
-  def participants
-    [user, wing]
-  end
-
   def all_participants
     (participants | activity.participants)
   end
 
-  def participant_names
-    participants.map{ |u| u.first_name }.join ' + '
+  def all_participant_ids
+    (participant_ids | activity.participant_ids)
   end
 
-  def allowed(a_user, permission = :all)
+  def allowed?(a_user, permission = :all)
     case permission
     when :owner
       a_user == user
     when :owners
-      participants.map(&:id).include? a_user.id
+      participant_ids.include? a_user.id
     when :all
-      all_participants.map(&:id).include? a_user.id
+      all_participant_ids.include? a_user.id
     end
   end
 

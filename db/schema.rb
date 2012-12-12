@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121122153540) do
+ActiveRecord::Schema.define(:version => 20121212033921) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20121122153540) do
     t.datetime "updated_at",  :null => false
   end
 
+  add_index "activities", ["location_id"], :name => "index_activities_on_location_id"
   add_index "activities", ["status"], :name => "index_activities_on_status"
   add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
   add_index "activities", ["wing_id"], :name => "index_activities_on_wing_id"
@@ -36,6 +37,8 @@ ActiveRecord::Schema.define(:version => 20121122153540) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "auth_tokens", ["user_id"], :name => "index_auth_tokens_on_user_id"
 
   create_table "credit_actions", :force => true do |t|
     t.string   "slug"
@@ -123,6 +126,17 @@ ActiveRecord::Schema.define(:version => 20121122153540) do
   add_index "locations", ["geoname_id"], :name => "index_locations_on_geoname_id", :unique => true
   add_index "locations", ["name"], :name => "index_locations_on_name"
 
+  create_table "messages", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "engagement_id"
+    t.text     "message"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "messages", ["engagement_id"], :name => "index_messages_on_engagement_id"
+  add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
+
   create_table "user_actions", :force => true do |t|
     t.integer  "user_id"
     t.string   "type"
@@ -133,12 +147,17 @@ ActiveRecord::Schema.define(:version => 20121122153540) do
     t.datetime "updated_at",   :null => false
   end
 
+  add_index "user_actions", ["related_id", "related_type"], :name => "index_user_actions_on_related_id_and_related_type"
+  add_index "user_actions", ["user_id"], :name => "index_user_actions_on_user_id"
+
   create_table "user_photos", :force => true do |t|
     t.integer  "user_id"
     t.string   "image"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "user_photos", ["user_id"], :name => "index_user_photos_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
@@ -162,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20121122153540) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id", :unique => true
   add_index "users", ["invite_slug"], :name => "index_users_on_invite_slug", :unique => true
+  add_index "users", ["location_id"], :name => "index_users_on_location_id"
   add_index "users", ["uuid"], :name => "index_users_on_uuid", :unique => true
 
 end

@@ -107,13 +107,17 @@ class User < ActiveRecord::Base
     :foreign_key => "facebook_id"
 
   has_many :activities, :dependent => :destroy
-  has_many :participating_activities, :class_name => "Activity", :foreign_key => "wing_id"
+  has_many :participating_activities, 
+    :class_name => "Activity", 
+    :foreign_key => "wing_id"
 
   has_many :engagements, :dependent => :destroy
-  has_many :participating_engagements, :class_name => "Engagement", :foreign_key => "wing_id"
+  has_many :participating_engagements, 
+    :class_name => "Engagement",
+    :foreign_key => "wing_id"
 
   has_many :engaged_activities, 
-    :through => :my_engagements,
+    :through => :engagements,
     :source => :activity
 
   has_many :engaged_participating_activities, 
@@ -306,7 +310,7 @@ class User < ActiveRecord::Base
   def invite(friend, approve = nil)
     return false if friend == self || find_any_friendship_with(friend)
 
-    params = {:friend_id => friend.id}
+    params = { :friend_id => friend.id }
 
     if approve == true
       params[:approved] = true
