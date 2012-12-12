@@ -143,7 +143,7 @@ class Activity < ActiveRecord::Base
     when :owner, :modify
       a_user == user
     when :all
-      participants.map(&:id).include? a_user.id
+      participant_ids.include? a_user.id
     end
   end
 

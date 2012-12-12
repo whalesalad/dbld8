@@ -43,6 +43,10 @@ class Engagement < ActiveRecord::Base
 
   has_many :messages, :dependent => :nullify
 
+  def self.find_for_user_or_wing(user_id)
+    where('user_id = ? OR wing_id = ?', user_id, user_id).first
+  end
+
   def set_default_values
     self.status ||= IS_SENT
   end

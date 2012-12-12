@@ -79,7 +79,7 @@ private
   end
 
   def get_singular_engagement
-    @activity.engagements.find_by_user_id(@authenticated_user.id)
+    @activity.engagements.find_for_user_or_wing(@authenticated_user.id)
   end
 
   # only activity.participants can view index
