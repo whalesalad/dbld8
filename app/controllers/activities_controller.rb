@@ -71,8 +71,8 @@ private
 
   def unauthorized!
     unless (@activity.user_id == @authenticated_user.id)
-      return json_unauthorized "The authenticated user does not have \
-      permission to modify or delete this activity."
+      json_unauthorized "The authenticated user does not have" \
+      "permission to modify or delete this activity."
     end
   end
 

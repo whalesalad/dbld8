@@ -4,15 +4,15 @@ class ApplicationController < ActionController::Base
   before_filter :require_token_auth
 
   def json_error(error_message)
-    render json: { :error => error_message }, :status => 500
+    render json: { :error => error_message }, :status => 500 and return
   end
 
   def json_not_found(error_message)
-    render json: { :error => error_message }, :status => 404
+    render json: { :error => error_message }, :status => 404 and return
   end
 
   def json_unauthorized(error_message)
-    render json: { :error => error_message }, :status => 401
+    render json: { :error => error_message }, :status => 401 and return
   end
 
   def authenticated_user

@@ -8,10 +8,10 @@ class EngagementsController < ApplicationController
   # before_filter :engagement_owners_only, :only => [:destroy]
 
   def index
-    if @activity.allowed?(@authenticated_user, :owner)
-      @engagements = @activity.engagements.not_ignored
+    @engagements = if @activity.allowed?(@authenticated_user, :owner)
+      @activity.engagements.not_ignored
     else
-      @engagements = [get_singular_engagement]
+      [get_singular_engagement].compact
     end
 
     respond_with @engagements
@@ -60,18 +60,18 @@ private
 
   def get_activity
     @activity = Activity.find_by_id(params[:activity_id])
+    json_not_found "The requested activity was not found." if @activity.nil?
   end
 
   def get_engagement
-    if params[:id] == 'mine'
-      @engagement = get_singular_engagement
+    @engagement = if params[:id] == 'mine'
+      get_singular_engagement
     else
-      @engagement = @activity.engagements.find_by_id(params[:id])      
+      @activity.engagements.find_by_id(params[:id])      
     end
 
-    if @engagement.nil?
-      return json_not_found "You have not engaged in this activity yet, or the engagement was not found."
-    end
+    json_not_found "You have not engaged in this activity yet, " \
+      "or the engagement was not found." if @engagement.nil?
   end
 
   def get_singular_engagement
@@ -80,19 +80,16 @@ private
 
   # only activity.participants can view index
   def activity_owners_only
-    unless @activity && @activity.allowed?(@authenticated_user, :all)
-      unauthorized!
-    end
+    unauthorized! unless @activity.allowed?(@authenticated_user, :all)
   end
 
   def engagement_owners_only
-    unless @engagement && @engagement.allowed?(@authenticated_user, :owners)
-      unauthorized!
-    end
+    unauthorized! unless @engagement.allowed?(@authenticated_user, :owners)
   end
 
   def unauthorized!
-    json_unauthorized "The authenticated user does not have permission to do this." and return
+    json_unauthorized "The authenticated user does not have" \
+      "permission to do this."
   end
 
 end

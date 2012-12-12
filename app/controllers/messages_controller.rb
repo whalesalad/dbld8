@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
     respond_with @engagement.messages.find_by_id(params[:id])
   end
 
-  
+
 
 private
   
@@ -21,7 +21,7 @@ private
 
   def unauthorized!
     unless @engagement.allowed?(@authenticated_user, :all)
-      json_unauthorized "The authenticated user does not have\
+      json_unauthorized "The authenticated user does not have \
       permission to modify or delete this activity."
     end
   end
