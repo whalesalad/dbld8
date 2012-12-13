@@ -44,7 +44,11 @@ class Activity < ActiveRecord::Base
 
   belongs_to :location, :counter_cache => true
 
-  has_many :engagements
+  # ENGAGEMENTS
+  has_many :engagements, :dependent => :destroy
+  has_one :active_engagement,
+    :class_name => "Engagement",
+    :conditions => { 'status' => Engagement::IS_ACCEPTED }
 
   # Validate day preference
   validates_inclusion_of :day_pref, 

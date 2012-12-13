@@ -13,8 +13,10 @@ class MessagesController < ApplicationController
   end
 
   def create
-    @message = @engagement.messages.new(message: params[:message])
-    @message.user = @authenticated_user
+    @message = @engagement.messages.new({
+      :message => params[:message],
+      :user_id => @authenticated_user.id
+    })
 
     if @message.save
       respond_with @message, :status => :created, 
@@ -42,7 +44,7 @@ private
     json_not_found "The requested activity was not found." if @activity.nil?
     @activity.update_relationship_as(@authenticated_user)
   end
-  
+
   def get_engagement
     @engagement = if params[:engagement_id] == 'mine'
       @activity.engagements.find_for_user_or_wing(@authenticated_user.id)
@@ -52,7 +54,7 @@ private
   end
 
   def get_message
-    @message = @engagement.messages.find_by_id(params[:id])
+    @message = @activity.active_engagement.messages.find_by_id(params[:id])
   end
 
   def unauthorized!

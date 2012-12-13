@@ -20,9 +20,6 @@ DoubleDate::Application.routes.draw do
     resources :engagements do
       resources :messages
     end
-
-    # shortcut to get messages on an engaged activity.
-    get 'messages', :on => :member
   end
 
   # ME!

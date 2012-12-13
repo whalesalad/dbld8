@@ -17,6 +17,8 @@ class Message < ActiveRecord::Base
     exclude = [:updated_at, :engagement_id]
 
     result = super({ :except => exclude }.merge(options))
+
+    result[:first_name] = user.first_name
     
     result
   end

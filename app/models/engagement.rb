@@ -16,7 +16,9 @@ class Engagement < ActiveRecord::Base
   include Mixins::Participants
 
   before_create :set_default_values
+  after_commit :send_initial_message, :on => :create
 
+  attr_accessor :message
   attr_accessible :activity_id, :message, :status, :user_id, :wing_id
 
   ENGAGEMENT_STATUS = %w(sent viewed ignored accepted)
@@ -41,7 +43,8 @@ class Engagement < ActiveRecord::Base
 
   belongs_to :activity
 
-  has_many :messages, :dependent => :nullify
+  # Messages!
+  has_many :messages, :dependent => :destroy
 
   def self.find_for_user_or_wing(user_id)
     where('user_id = ? OR wing_id = ?', user_id, user_id).first
@@ -49,6 +52,10 @@ class Engagement < ActiveRecord::Base
 
   def set_default_values
     self.status ||= IS_SENT
+  end
+
+  def send_initial_message
+    messages.create :user_id => user.id, :message => message
   end
 
   def to_s
@@ -74,24 +81,31 @@ class Engagement < ActiveRecord::Base
     end
   end
 
+  def message
+    @message ||= messages.first
+  end
+
   def viewed!
-    if self.status != IS_VIEWED
-      self.status = IS_VIEWED
-      self.save!
-    end
+    self.status = IS_VIEWED
+    self.save!
   end
 
   def ignore!
-    if self.status != IS_IGNORED
-      self.status = IS_IGNORED
-      self.save!
-    end
+    self.status = IS_IGNORED
+    self.save!
+  end
+
+  def accept!
+    self.status = IS_ACCEPTED
+    self.save!
   end
 
   def as_json(options={})
     exclude = [:updated_at, :wing_id, :user_id]
 
     result = super({ :except => exclude }.merge(options))
+
+    result[:messages_count] = messages.count
 
     result[:user] = user.as_json(:mini => true)
     result[:wing] = wing.as_json(:mini => true) if wing.present?

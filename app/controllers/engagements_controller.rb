@@ -4,7 +4,6 @@ class EngagementsController < ApplicationController
   before_filter :get_activity
   before_filter :get_engagement, :only => [:show, :destroy]
   before_filter :activity_owners_only, :only => [:update]
-  # before_filter :engagement_owners_only, :only => [:destroy]
 
   def index
     @engagements = if @activity.allowed?(@authenticated_user, :owner)
@@ -28,7 +27,7 @@ class EngagementsController < ApplicationController
       respond_with @engagement, :status => :created, :location => activity_engagements_path(@activity, @engagement)
     else
       respond_with @engagement, :status => :unprocessable_entity
-    end    
+    end
   end
 
   def show

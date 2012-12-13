@@ -11,21 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121212033921) do
+ActiveRecord::Schema.define(:version => 20121213131237) do
 
   create_table "activities", :force => true do |t|
-    t.string   "title",       :null => false
+    t.string   "title",                :null => false
     t.string   "details"
     t.string   "day_pref"
     t.string   "time_pref"
     t.integer  "location_id"
-    t.integer  "user_id",     :null => false
-    t.integer  "wing_id",     :null => false
+    t.integer  "user_id",              :null => false
+    t.integer  "wing_id",              :null => false
     t.string   "status"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "active_engagement_id"
   end
 
+  add_index "activities", ["active_engagement_id"], :name => "index_activities_on_active_engagement_id"
   add_index "activities", ["location_id"], :name => "index_activities_on_location_id"
   add_index "activities", ["status"], :name => "index_activities_on_status"
   add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
@@ -54,7 +56,6 @@ ActiveRecord::Schema.define(:version => 20121212033921) do
     t.integer  "user_id",     :null => false
     t.integer  "wing_id",     :null => false
     t.integer  "activity_id", :null => false
-    t.text     "message"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
