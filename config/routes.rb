@@ -10,13 +10,11 @@ DoubleDate::Application.routes.draw do
     get 'search', :on => :collection
   end
 
-  resources :activities, :only => [:index, :show, :create, :update, :destroy] do
-    # GET /activities/mine, get all my activities (grouped)
+  resources :activities do
     get 'mine', :on => :collection
     get 'other', :on => :collection
     get 'engaged', :on => :collection
 
-    # Multiple resources are accessible and manageable by the owner
     resources :engagements do
       resources :messages
     end
