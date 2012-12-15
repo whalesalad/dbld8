@@ -15,7 +15,7 @@
 
   %tbody
     - for action in @user_actions
-      %tr{ :class => (action.earns?) ? 'success' : 'error' }
+      %tr
         %td #{action.id}
 
         %td
@@ -23,7 +23,9 @@
             #{action}
         %td #{action.user}
 
-        %td #{action.cost_to_s}
+        %td 
+          %span{ :class => "badge badge-#{(action.earns?) ? 'success' : 'important'}" }
+            #{action.cost_to_s}
         %td #{l action.created_at, :format => :long}
 
 %hr/
