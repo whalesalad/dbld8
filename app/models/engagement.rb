@@ -13,7 +13,7 @@
 #
 
 class Engagement < ActiveRecord::Base
-  include Mixins::Participants
+  include Concerns::ParticipantConcerns
 
   before_create :set_default_values
   after_commit :send_initial_message, :on => :create

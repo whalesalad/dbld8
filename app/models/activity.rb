@@ -16,7 +16,7 @@
 #
 
 class Activity < ActiveRecord::Base
-  include Mixins::Participants
+  include Concerns::ParticipantConcerns
 
   before_create :set_default_values
 

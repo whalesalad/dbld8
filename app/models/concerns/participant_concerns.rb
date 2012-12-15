@@ -1,5 +1,7 @@
-module Mixins
-  module Participants
+module Concerns
+  module ParticipantConcerns
+    extend ActiveSupport::Concern
+
     def self.included(base)
       base.class_eval do
         belongs_to :user
