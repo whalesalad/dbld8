@@ -36,7 +36,7 @@ class EngagementsController < ApplicationController
 
     unless @engagement.allowed?(@authenticated_user, :owners)
       # mark viewed if activity owners look at this
-      @engagement.viewed!
+      @engagement.viewed! if @engagement.unread?
     end
 
     respond_with @engagement

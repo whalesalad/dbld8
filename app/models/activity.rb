@@ -2,17 +2,18 @@
 #
 # Table name: activities
 #
-#  id          :integer         not null, primary key
-#  title       :string(255)     not null
-#  details     :string(255)
-#  day_pref    :string(255)
-#  time_pref   :string(255)
-#  location_id :integer
-#  user_id     :integer         not null
-#  wing_id     :integer         not null
-#  status      :string(255)
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
+#  id                   :integer         not null, primary key
+#  title                :string(255)     not null
+#  details              :string(255)
+#  day_pref             :string(255)
+#  time_pref            :string(255)
+#  location_id          :integer
+#  user_id              :integer         not null
+#  wing_id              :integer         not null
+#  status               :string(255)
+#  created_at           :datetime        not null
+#  updated_at           :datetime        not null
+#  active_engagement_id :integer
 #
 
 class Activity < ActiveRecord::Base
@@ -42,12 +43,20 @@ class Activity < ActiveRecord::Base
   RELATIONSHIP_CHOICES = %w(open owner wing engaged)
   IS_OPEN, IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
 
+  ACTIVITY_STATUS = %w(active engaged expired)
+  IS_ACTIVE, IS_ENGAGED, IS_EXPIRED = ACTIVITY_STATUS
+
+  scope :engaged, where(:status => IS_ENGAGED)
+  scope :expired, where(:status => IS_EXPIRED)
+
   belongs_to :location, :counter_cache => true
 
   # ENGAGEMENTS
   has_many :engagements, :dependent => :destroy
-  has_one :active_engagement,
+  
+  has_one :accepted_engagement,
     :class_name => "Engagement",
+    :foreign_key => "activity_id", 
     :conditions => { 'status' => Engagement::IS_ACCEPTED }
 
   # Validate day preference
@@ -120,7 +129,7 @@ class Activity < ActiveRecord::Base
   # states: active, expired
   # def state wat
   def set_default_values
-    self.status ||= 'active'
+    self.status ||= IS_ACTIVE
   end
 
   def to_s
@@ -170,6 +179,29 @@ class Activity < ActiveRecord::Base
 
   def update_relationship_as(a_user)
     self.relationship = get_relationship_for(a_user)
+  end
+
+  def engage!
+    self.status = IS_ENGAGED
+    self.save!
+  end
+
+  def expire!
+    self.status = IS_EXPIRED
+    self.save!
+  end
+
+  def accept_engagement!(engagement)
+    # place logic here to automatically handle making an engagement the "accepted"
+    # engagement for that activity. When an owner responds with their first message,
+    # then we should call activity.accept_engagement(id) which will set the status
+    # of the activity to engaged, and also mark the engagement as accepted.
+    
+    # self.engage!
+    self.transaction do
+      engagement.accept!
+      self.engage!
+    end
   end
 
   def as_json(options={})

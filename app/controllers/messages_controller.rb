@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
   before_filter :get_message, :only => [:show, :destroy]
   
   def index
-    respond_with @engagement.messages
+    respond_with @engagement.messages.order('created_at ASC')
   end
 
   def show
@@ -13,12 +13,17 @@ class MessagesController < ApplicationController
   end
 
   def create
+    # render json: @engagement.messages.where(:user_id => @authenticated_user.id) and return
     @message = @engagement.messages.new({
       :message => params[:message],
       :user_id => @authenticated_user.id
     })
 
     if @message.save
+      if @engagement.messages.where(:user_id => @authenticated_user.id).count == 1
+        @activity.accept_engagement! @engagement
+      end
+
       respond_with @message, :status => :created, 
         :location => activity_engagement_messages_path(@activity, @engagement)
     else
@@ -29,7 +34,7 @@ class MessagesController < ApplicationController
   def destroy
     unless @message.allowed?(@authenticated_user, :modify)
       json_unauthorized "The authenticated user does not have " \
-        "permission to delete this message." 
+        "permission to delete this message." and return
     end
 
     if @message.destroy
@@ -54,7 +59,8 @@ private
   end
 
   def get_message
-    @message = @activity.active_engagement.messages.find_by_id(params[:id])
+    @message = @engagement.messages.find_by_id(params[:id])
+    json_not_found "The requested message was not found." if @message.nil?
   end
 
   def unauthorized!

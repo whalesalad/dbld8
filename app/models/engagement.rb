@@ -7,7 +7,6 @@
 #  user_id     :integer         not null
 #  wing_id     :integer         not null
 #  activity_id :integer         not null
-#  message     :text
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #
@@ -83,6 +82,10 @@ class Engagement < ActiveRecord::Base
 
   def message
     @message ||= messages.first
+  end
+
+  def unread?
+    status == IS_SENT
   end
 
   def viewed!
