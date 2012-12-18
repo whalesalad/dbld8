@@ -18,6 +18,8 @@ DoubleDate::Application.routes.draw do
     resources :engagements do
       resources :messages
     end
+
+    resources :messages
   end
 
   # ME!

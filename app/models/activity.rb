@@ -13,7 +13,6 @@
 #  status               :string(255)
 #  created_at           :datetime        not null
 #  updated_at           :datetime        not null
-#  active_engagement_id :integer
 #
 
 class Activity < ActiveRecord::Base
@@ -186,6 +185,10 @@ class Activity < ActiveRecord::Base
     self.save!
   end
 
+  def engaged?
+    status == IS_ENGAGED and accepted_engagement.present?
+  end
+
   def expire!
     self.status = IS_EXPIRED
     self.save!
@@ -210,7 +213,13 @@ class Activity < ActiveRecord::Base
     result = super({ :except => exclude }.merge(options))
 
     result[:relationship] = relationship if relationship.present?
-    result[:engagements_count] = engagements.count
+
+    if engaged?
+      result[:accepted_engagement_id] = accepted_engagement.id
+      result[:messages_count] = accepted_engagement.messages.count
+    else
+      result[:engagements_count] = engagements.count
+    end
 
     result[:user] = user.as_json(:mini => true)
     result[:wing] = wing.as_json(:mini => true) if wing.present?

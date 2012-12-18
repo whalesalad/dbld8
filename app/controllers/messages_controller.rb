@@ -51,10 +51,14 @@ private
   end
 
   def get_engagement
-    @engagement = if params[:engagement_id] == 'mine'
-      @activity.engagements.find_for_user_or_wing(@authenticated_user.id)
+    if params.include? :engagement_id
+      @engagement = if params[:engagement_id] == 'mine'
+        @activity.engagements.find_for_user_or_wing(@authenticated_user.id)
+      else
+        @activity.engagements.find_by_id(params[:engagement_id])
+      end
     else
-      @activity.engagements.find_by_id(params[:engagement_id])
+      @engagement = @activity.accepted_engagement
     end
   end
 
