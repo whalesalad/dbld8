@@ -13,20 +13,20 @@
       %th ID
       %th Slug
       %th Credit Cost
-      %th Mapped Class
       %th Last Updated
 
   %tbody
     - for action in @credit_actions
-      %tr{ :class => (action.earns?) ? 'success' : 'error' }
+      %tr
         %td #{action.id}
 
         %td
           %b
-            #{link_to action.slug, edit_admin_credit_action_path(action)}
+            #{link_to action.mapped, edit_admin_credit_action_path(action)}
 
-        %td #{action.cost}
-        %td <i>#{action.mapped}</i>
+        %td 
+          %span{ :class => "badge badge-#{(action.earns?) ? 'success' : 'important'}" }
+            #{action.cost}
         %td #{l action.updated_at, :format => :medium}
 
 %hr/

@@ -13,6 +13,7 @@
       %th Owner
       %th Wingman
       %th Status
+      %th Engagements
       %th Created
   
   %tbody
@@ -26,5 +27,6 @@
         %td #{activity.location}
         %td #{link_to activity.user, admin_user_path(activity.user)}
         %td #{link_to activity.wing, admin_user_path(activity.wing)}
-        %td #{activity.status}
+        %td #{activity.status.titlecase}
+        %td #{activity.engagements.count}
         %td #{l activity.created_at, :format => :medium}
