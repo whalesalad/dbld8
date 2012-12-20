@@ -365,7 +365,12 @@ class User < ActiveRecord::Base
     activities = []
     activity_associations.each do |association, relationship|
       self.send(association).each do |activity|
-        activity.relationship = relationship
+        # if an ignored engagement exists, booya
+        activity.relationship = if activity.engagements.ignored.find_for_user_or_wing(id)
+          'ignored'
+        else
+          relationship
+        end
         activities << activity
       end
     end

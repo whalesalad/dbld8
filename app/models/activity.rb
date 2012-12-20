@@ -170,7 +170,10 @@ class Activity < ActiveRecord::Base
       return IS_WING if a_user.id == wing_id
 
       # TODO, handle this for your user id or your wing's user id.
-      return IS_ENGAGED if engagements.find_by_user_id(a_user)
+      engagement = engagements.find_for_user_or_wing(a_user.id)
+      if engagement
+        return (engagement.ignored?) ? Engagement::IS_IGNORED : IS_ENGAGED
+      end
     end
 
     IS_OPEN
@@ -218,7 +221,7 @@ class Activity < ActiveRecord::Base
       result[:accepted_engagement_id] = accepted_engagement.id
       result[:messages_count] = accepted_engagement.messages.count
     else
-      result[:engagements_count] = engagements.count
+      result[:engagements_count] = engagements.not_ignored.count
     end
 
     result[:user] = user.as_json(:mini => true)

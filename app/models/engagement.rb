@@ -15,12 +15,11 @@ class Engagement < ActiveRecord::Base
   include Concerns::ParticipantConcerns
 
   before_create :set_default_values
-  after_commit :send_initial_message, :on => :create
+  # after_commit :send_initial_message, :on => :create
 
-  attr_accessor :message
-  attr_accessible :activity_id, :message, :status, :user_id, :wing_id
+  attr_accessible :activity_id, :status, :user_id, :wing_id
 
-  ENGAGEMENT_STATUS = %w(sent viewed ignored accepted)
+  ENGAGEMENT_STATUS = %w(new viewed ignored accepted)
   IS_SENT, IS_VIEWED, IS_IGNORED, IS_ACCEPTED = ENGAGEMENT_STATUS
 
   default_scope order('created_at DESC')
@@ -35,6 +34,8 @@ class Engagement < ActiveRecord::Base
   validates_uniqueness_of :activity_id, 
     :scope => [:user_id, :wing_id], 
     :message => "You or your wing have already engaged in this activity."
+
+  validates_presence_of :activity_id, :user_id, :wing_id
 
   # edge case, marcus invites me to go do an activity, but i don't want
   # to do it with him, so i find it myself and want to do it with a
@@ -53,7 +54,7 @@ class Engagement < ActiveRecord::Base
     self.status ||= IS_SENT
   end
 
-  def send_initial_message
+  def send_initial_message(message)
     messages.create :user_id => user.id, :message => message
   end
 
@@ -93,6 +94,10 @@ class Engagement < ActiveRecord::Base
     self.save!
   end
 
+  def ignored?
+    status == IS_IGNORED
+  end
+
   def ignore!
     self.status = IS_IGNORED
     self.save!
@@ -109,6 +114,7 @@ class Engagement < ActiveRecord::Base
     result = super({ :except => exclude }.merge(options))
 
     result[:messages_count] = messages.count
+    result[:initial_message] = messages.first.message
 
     result[:user] = user.as_json(:mini => true)
     result[:wing] = wing.as_json(:mini => true) if wing.present?

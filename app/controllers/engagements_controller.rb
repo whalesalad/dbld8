@@ -20,11 +20,20 @@ class EngagementsController < ApplicationController
       json_unauthorized "You or your wing have already engaged in this activity." 
     end
 
+    message = params[:engagement].delete(:message)
+    params[:engagement][:user_id] = @authenticated_user.id
+
     @engagement = @activity.engagements.new(params[:engagement])
-    @engagement.user = @authenticated_user
 
     if @engagement.save
-      respond_with @engagement, :status => :created, :location => activity_engagements_path(@activity, @engagement)
+      # Send the first message for this engagement
+      # I'd like to hook this to the after_create event
+      # but there is no way to cache the message text for this
+      @engagement.send_initial_message(message)
+
+      # Finally, respond
+      respond_with @engagement, :status => :created, 
+        :location => activity_engagement_path(@activity, @engagement)
     else
       respond_with @engagement, :status => :unprocessable_entity
     end
