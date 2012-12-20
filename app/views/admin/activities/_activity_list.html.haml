@@ -1,0 +1,27 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Title
+      %th Preference
+      %th Location
+      %th Owner
+      %th Wingman
+      %th Status
+      %th Engagements
+      %th Created
+  
+  %tbody
+    - for activity in @activities
+      %tr
+        %td #{activity.id}
+        %td 
+          %b
+            #{link_to activity, admin_activity_path(activity)}
+        %td #{activity.preference}
+        %td #{activity.location}
+        %td #{link_to activity.user, admin_user_path(activity.user)}
+        %td #{link_to activity.wing, admin_user_path(activity.wing)}
+        %td #{activity.status.titlecase}
+        %td #{activity.engagements.count}
+        %td #{l activity.created_at, :format => :medium}

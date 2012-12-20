@@ -2,7 +2,15 @@ class Admin::ActivitiesController < AdminController
   before_filter :get_activity, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @activities = Activity.order('created_at DESC')
+    @activities = Activity.all
+  end
+
+  def engaged
+    @activities = Activity.engaged
+  end
+
+  def expired
+    @activities = Activity.expired
   end
 
   def show

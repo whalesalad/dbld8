@@ -1,14 +1,14 @@
 .page-header
   .btn-group.pull-right
-    = link_to 'All', admin_activities_path, :class => 'active btn'
+    = link_to 'All', admin_activities_path, :class => 'btn'
     = link_to 'Engaged', engaged_admin_activities_path, :class => 'btn'
-    = link_to 'Expired', expired_admin_activities_path, :class => 'btn'
+    = link_to 'Expired', expired_admin_activities_path, :class => 'active btn'
 
   %h1
-    All Activities
+    Expired Activities
     %small #{pluralize(@activities.count, 'Activity')} Total
 
 - if @activities.present?
   = render 'activity_list'
 - else
-  %p There are no activities.
+  %p There are no expired activities.

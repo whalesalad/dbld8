@@ -47,6 +47,7 @@ class Activity < ActiveRecord::Base
 
   scope :engaged, where(:status => IS_ENGAGED)
   scope :expired, where(:status => IS_EXPIRED)
+  scope :accepted, lambda { joins(:engagements).merge(Engagement.accepted) } 
 
   belongs_to :location, :counter_cache => true
 
