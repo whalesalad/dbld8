@@ -11,6 +11,7 @@ gem 'haml'
 gem 'thin'
 gem 'countries'
 gem 'faker'
+gem 'jbuilder'
 
 # Postgres ext goodies
 gem 'postgres_ext'
