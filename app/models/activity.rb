@@ -20,7 +20,7 @@ class Activity < ActiveRecord::Base
 
   before_create :set_default_values
 
-  after_save :create_user_action
+  after_commit :create_user_action, :on => :create
 
   after_update do |activity|
     Resque.enqueue(UpdateCounts, 'Location:activities') if activity.location_id_changed?
