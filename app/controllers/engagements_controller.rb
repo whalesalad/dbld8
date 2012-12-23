@@ -38,7 +38,7 @@ class EngagementsController < BaseActivitiesController
 
       # Finally, respond
       respond_with @engagement, :status => :created, 
-        :location => activity_engagement_path(@activity, @engagement)
+        :location => activity_engagement_path(@activity, @engagement), :template => 'engagements/show'
     else
       respond_with @engagement, :status => :unprocessable_entity
     end
