@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # == Schema Information
 #
 # Table name: locations
@@ -99,7 +100,7 @@ class Location < ActiveRecord::Base
   end
 
   def to_s
-    prefix = (venue.present?) ? "#{venue} - " : ''
+    prefix = (venue.present?) ? "#{venue} • " : ''
     "#{prefix}#{location_name}"  
   end
 
@@ -128,6 +129,10 @@ class Location < ActiveRecord::Base
 
   def country
     @country ||= Country.new(read_attribute(:country))
+  end
+
+  def short_country
+    read_attribute :country
   end
 
   def has_point?
@@ -162,40 +167,11 @@ class Location < ActiveRecord::Base
   end
 
   def foursquare_url
-    if venue?
-      "http://foursquare.com/v/#{foursquare_id}"
-    end
+    "http://foursquare.com/v/#{foursquare_id}" if venue?
   end
 
   def as_json(options={})
-    exclude = [:created_at, :updated_at, :facebook_id, :country, :geoname_id, :foursquare_id]
-
-    if options[:short]
-      exclude += [:latitude, :longitude, :users_count, :activities_count, :state, :locality]
-    end
-
-    if city?
-      exclude += [:venue, :address]
-    end
-
-    unless american?
-      exclude += [:state]
-    end
-
-    result = super({ :except => exclude }.merge(options))
-
-    result[:country] = read_attribute(:country)
-    result[:type] = type
-
-    if venue?
-      result[:location_name] = location_name
-    end
-
-    if distance.present?
-      result[:distance] = distance
-    end
-    
-    result
+    'BUILD'
   end
 
 end

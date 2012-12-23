@@ -208,27 +208,6 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def as_json(options={})
-    exclude = [:updated_at, :location_id, :wing_id, :user_id]
-
-    result = super({ :except => exclude }.merge(options))
-
-    result[:relationship] = relationship if relationship.present?
-
-    if engaged?
-      result[:accepted_engagement_id] = accepted_engagement.id
-      result[:messages_count] = accepted_engagement.messages.count
-    else
-      result[:engagements_count] = engagements.not_ignored.count
-    end
-
-    result[:user] = user.as_json(:mini => true)
-    result[:wing] = wing.as_json(:mini => true) if wing.present?
-    result[:location] = location.as_json(:short => true) if location.present?
-    
-    result
-  end
-
   private
 
   def create_user_action

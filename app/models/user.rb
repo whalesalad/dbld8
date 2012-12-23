@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
 
-  attr_accessor :accessible, :facebook_graph, :total_credits, :age
+  attr_accessor :accessible, :facebook_graph, :total_credits
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -128,15 +128,6 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def age
-    @age ||= determine_age
-  end
-
-  def determine_age
-    now = Time.now.utc.to_date
-    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
-  end
-
   def status
     single? ? "Single" : "Taken"
   end
@@ -147,51 +138,6 @@ class User < ActiveRecord::Base
 
   def photo
     profile_photo || { :thumb => (facebook?) ? facebook_photo(:large) : default_photo }
-  end
-
-  def as_json(options={})
-    if options[:mini]
-      result = super :only => [:id, :gender]
-
-      result[:full_name] = to_s
-      result[:first_name] = first_name
-      result[:age] = age
-      result[:location] = location.to_s if location.present?
-      result[:photo] = photo
-
-      return result
-    end
-
-    exclude = [:created_at, :updated_at, :password_digest, :facebook_access_token, :location_id]
-
-    if new_record?
-      exclude << :id
-    end
-
-    if options[:short]
-      exclude += [:bio, :birthday, :email]
-    end
-
-    result = super({ :except => exclude }.merge(options))
-
-    # Add some goodies
-    unless new_record?
-      result[:age] = age
-    end
-
-    # json_photo
-    result[:photo] = photo
-
-    if options[:short]
-      result[:location] = location.as_json(:short => true) if location.present?
-    else
-      result[:interests] = interests if interests.present?
-      result[:location] = location if location.present?
-    end
-
-    result[:invite_path] = invite_path
-
-    result
   end
 
   def validate_facebook_user
@@ -399,6 +345,10 @@ class User < ActiveRecord::Base
 
   def total_credits
     actions.uncached { actions.sum :cost }
+  end
+
+  def as_json(options={})
+    'BUILD'
   end
 
   private

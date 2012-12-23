@@ -2,7 +2,8 @@ class MeController < ApplicationController
   respond_to :json
 
   def show
-    respond_with authenticated_user
+    @user = authenticated_user
+    respond_with @user, :template => 'users/show'
   end
 
   def update

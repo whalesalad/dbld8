@@ -21,4 +21,9 @@ module ApplicationHelper
   def facebook_app_id
     DoubleDate::FACEBOOK_APP_ID
   end
+
+  def determine_age(birthday)
+    now = Time.now.utc.to_date
+    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+  end
 end

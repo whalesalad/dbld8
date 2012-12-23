@@ -21,15 +21,18 @@ class ActivitiesController < ApplicationController
   end
 
   def mine
-    respond_with @authenticated_user.my_activities
+    @activities = @authenticated_user.my_activities
+    respond_with @activities, :template => 'activities/index'
   end
 
   def engaged
-    respond_with @authenticated_user.engaged_activities
+    @activities = @authenticated_user.engaged_activities
+    respond_with @activities, :template => 'activities/index'
   end
 
   def other
-    respond_with Activity.where('user_id != ?', @authenticated_user.id)
+    @activities = Activity.where('user_id != ?', @authenticated_user.id)
+    respond_with @activities, :template => 'activities/index'
   end
 
   def show
