@@ -24,6 +24,10 @@ class Friendship < ActiveRecord::Base
   validates_uniqueness_of :user_id, :scope => :friend_id, :message => "A friendship between these users already exists."
   
   validate :user_is_not_inviting_himself
+
+  def self.find_for_user_or_friend(user_id)
+    where('user_id = ? OR friend_id = ?', user_id, user_id)
+  end
   
   def to_s
     "#{user} + #{friend}"
