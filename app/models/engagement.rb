@@ -26,7 +26,7 @@ class Engagement < ActiveRecord::Base
   
   scope :not_ignored, where('status != ?', IS_IGNORED)
   
-  scope :new, where(:status => IS_NEW)
+  scope :fresh, where(:status => IS_NEW)
   scope :viewed, where(:status => IS_VIEWED)
   scope :ignored, where(:status => IS_IGNORED)
   scope :accepted, where(:status => IS_ACCEPTED)

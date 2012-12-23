@@ -22,7 +22,7 @@ class EngagementsController < BaseActivitiesController
 
   def create
     if @engagement
-      json_unauthorized "You or your wing have already engaged in this activity." 
+      json_unauthorized "You or your wing have already engaged in this activity."
     end
 
     message = params[:engagement].delete(:message)
