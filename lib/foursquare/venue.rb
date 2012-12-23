@@ -73,7 +73,7 @@ module Foursquare
     end
 
     def country_code
-      @json["location"]["cc"].upcase
+      (@json["location"]["cc"] || 'US').upcase
     end
 
     def address
