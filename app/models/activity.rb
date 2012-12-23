@@ -141,10 +141,8 @@ class Activity < ActiveRecord::Base
   end
 
   def day_time_preferences
-    prefs = []
-    prefs << day_pref.capitalize if day_pref.present?
-    prefs << time_pref.capitalize if time_pref.present?
-    (prefs.empty?) ? ['anytime'] : prefs
+    prefs = [day_pref, time_pref]
+    (prefs.any?) ? prefs.compact : ['anytime']
   end
 
   def age_bounds
