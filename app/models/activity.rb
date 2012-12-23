@@ -39,8 +39,8 @@ class Activity < ActiveRecord::Base
   DAY_PREFERENCES = %w(weekday weekend)
   TIME_PREFERENCES = %w(day night)
 
-  RELATIONSHIP_CHOICES = %w(open owner wing engaged)
-  IS_OPEN, IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
+  RELATIONSHIP_CHOICES = %w(open owner wing interested accepted)
+  IS_OPEN, IS_OWNER, IS_WING, IS_INTERESTED, IS_ACCEPTED = RELATIONSHIP_CHOICES
 
   ACTIVITY_STATUS = %w(active engaged expired)
   IS_ACTIVE, IS_ENGAGED, IS_EXPIRED = ACTIVITY_STATUS
@@ -165,23 +165,23 @@ class Activity < ActiveRecord::Base
   end
 
   def get_relationship_for(a_user=nil)
-    unless a_user.nil?
-      # IS_OWNER, IS_WING, IS_ENGAGED
-      return IS_OWNER if a_user.id == user_id
-      return IS_WING if a_user.id == wing_id
+    return IS_OPEN if a_user.nil?
+    
+    # IS_OWNER, IS_WING, IS_ENGAGED
+    return IS_OWNER if a_user.id == user_id
+    return IS_WING if a_user.id == wing_id
 
-      # TODO, handle this for your user id or your wing's user id.
-      engagement = engagements.find_for_user_or_wing(a_user.id)
-      if engagement
-        return (engagement.ignored?) ? Engagement::IS_IGNORED : IS_ENGAGED
-      end
+    # TODO, handle this for your user id or your wing's user id.
+    if engagement = engagements.find_for_user_or_wing(a_user.id)
+      return IS_INTERESTED if engagement.ignored?
+      return IS_ACCEPTED if engagement.accepted?
     end
-
-    IS_OPEN
   end
 
   def update_relationship_as(a_user)
-    self.relationship = get_relationship_for(a_user)
+    tap do |activity|
+      activity.relationship = get_relationship_for(a_user)  
+    end
   end
 
   def engage!
@@ -204,10 +204,9 @@ class Activity < ActiveRecord::Base
     # then we should call activity.accept_engagement(id) which will set the status
     # of the activity to engaged, and also mark the engagement as accepted.
     
-    # self.engage!
-    self.transaction do
+    transaction do
       engagement.accept!
-      self.engage!
+      engage!
     end
   end
 

@@ -41,11 +41,11 @@ class EngagementsController < ApplicationController
 
   def show
     # A user needs to be one of the four allowed to see this.
-    unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
+    return unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
 
-    unless @engagement.allowed?(@authenticated_user, :owners)
-      # mark viewed if activity owners look at this
-      @engagement.viewed! if @engagement.unread?
+    if @engagement.unread? && @activity.allowed?(@authenticated_user, :owner)
+      # mark viewed if activity owner looks at this
+      @engagement.viewed!
     end
 
     respond_with @engagement
@@ -70,8 +70,11 @@ class EngagementsController < ApplicationController
 private
 
   def get_activity
-    @activity = Activity.find_by_id(params[:activity_id])
-    json_not_found "The requested activity was not found." if @activity.nil?
+    @activity = Activity.find(params[:activity_id])
+
+  rescue ActiveRecord::RecordNotFound
+      return json_not_found "The requested activity was not found."
+    
     @activity.update_relationship_as(@authenticated_user)
   end
 

@@ -353,37 +353,24 @@ class User < ActiveRecord::Base
   end
 
   def activity_associations
-    {
-      :activities                       => Activity::IS_OWNER,
-      :participating_activities         => Activity::IS_WING,
-      :engaged_activities               => Activity::IS_ENGAGED,
-      :engaged_participating_activities => Activity::IS_ENGAGED
-    }
+    [:activities, :participating_activities, :engaged_activities, :engaged_participating_activities]
   end
 
   def my_activities
-    activities = []
-    activity_associations.each do |association, relationship|
-      self.send(association).each do |activity|
-        # if an ignored engagement exists, booya
-        activity.relationship = if activity.engagements.ignored.find_for_user_or_wing(id)
-          'ignored'
-        else
-          relationship
-        end
-        activities << activity
-      end
+    mine = []
+    activity_associations.each do |association|
+      self.send(association).each { |a| mine << a.update_relationship_as(self) }
     end
-    activities
+    mine
   end
 
   def my_activities_count
-    reload
-    activity_associations.keys.map { |q| self.send(q, false).count }.inject :+
+    # reload
+    activity_associations.map { |q| self.send(q, false).count }.inject :+
   end
 
   def all_engagements
-    reload
+    # reload
     engagements + participating_engagements
   end
 

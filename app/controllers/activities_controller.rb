@@ -6,12 +6,18 @@ class ActivitiesController < ApplicationController
   before_filter :handle_activity_permissions, :only => [:update, :destroy]
 
   def index
-    @activities = Activity.search(params)
+    @activities = []
 
-    @activities.each do |activity|
+    Activity.search(params).each do |activity|
       activity.update_relationship_as(@authenticated_user)
+      @activities << activity unless (activity.engaged? && (activity.relationship == Activity::IS_OPEN))
     end
-    
+
+    # reject activities you cannot see based on the relationship
+    # @activities.reject! do |activity|
+
+    # end
+
     respond_with @activities
   end
 
@@ -63,8 +69,11 @@ class ActivitiesController < ApplicationController
 private
   
   def get_activity
-    @activity = Activity.find_by_id(params[:id])
-    json_not_found "The requested activity was not found." if @activity.nil?
+    @activity = Activity.find(params[:id])
+    
+    rescue ActiveRecord::RecordNotFound
+      return json_not_found "The requested activity was not found."
+
     @activity.update_relationship_as(@authenticated_user)
   end
 

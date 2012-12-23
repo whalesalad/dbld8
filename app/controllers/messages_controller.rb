@@ -20,6 +20,7 @@ class MessagesController < ApplicationController
     })
 
     if @message.save
+      # Accept the engagement if the owner is replying.
       if @engagement.messages.where(:user_id => @authenticated_user.id).count == 1
         @activity.accept_engagement! @engagement
       end

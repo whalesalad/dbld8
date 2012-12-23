@@ -20,13 +20,13 @@ class Engagement < ActiveRecord::Base
   attr_accessible :activity_id, :status, :user_id, :wing_id
 
   ENGAGEMENT_STATUS = %w(new viewed ignored accepted)
-  IS_SENT, IS_VIEWED, IS_IGNORED, IS_ACCEPTED = ENGAGEMENT_STATUS
+  IS_NEW, IS_VIEWED, IS_IGNORED, IS_ACCEPTED = ENGAGEMENT_STATUS
 
   default_scope order('created_at DESC')
   
   scope :not_ignored, where('status != ?', IS_IGNORED)
   
-  scope :sent, where(:status => IS_SENT)
+  scope :new, where(:status => IS_NEW)
   scope :viewed, where(:status => IS_VIEWED)
   scope :ignored, where(:status => IS_IGNORED)
   scope :accepted, where(:status => IS_ACCEPTED)
@@ -51,7 +51,7 @@ class Engagement < ActiveRecord::Base
   end
 
   def set_default_values
-    self.status ||= IS_SENT
+    self.status ||= IS_NEW
   end
 
   def send_initial_message(message)
@@ -86,12 +86,12 @@ class Engagement < ActiveRecord::Base
   end
 
   def unread?
-    status == IS_SENT
+    status == IS_NEW
   end
 
   def viewed!
-    self.status = IS_VIEWED
-    self.save!
+    status = IS_VIEWED
+    save!
   end
 
   def ignored?
@@ -99,13 +99,17 @@ class Engagement < ActiveRecord::Base
   end
 
   def ignore!
-    self.status = IS_IGNORED
-    self.save!
+    status = IS_IGNORED
+    save!
+  end
+
+  def accepted?
+    status == IS_ACCEPTED
   end
 
   def accept!
-    self.status = IS_ACCEPTED
-    self.save!
+    status = IS_ACCEPTED
+    save!
   end
 
   def as_json(options={})
