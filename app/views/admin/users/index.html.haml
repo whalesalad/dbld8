@@ -16,6 +16,7 @@
       %th Gender
       %th Status
       %th Created
+      %th Auth'd
   
   %tbody
     - for user in @users
@@ -34,3 +35,4 @@
         %td #{user.gender.titlecase}
         %td #{user.status}
         %td #{l user.created_at, :format => :medium}
+        %td #{user.token.present? ? 'Yes' : ''}

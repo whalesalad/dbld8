@@ -1,9 +1,9 @@
-class EngagementsController < ApplicationController
+class EngagementsController < BaseActivitiesController
   respond_to :json
 
   before_filter :get_activity
   before_filter :get_engagement, :only => [:show, :destroy]
-  before_filter :activity_owners_only, :only => [:update]
+  before_filter :activity_participants_only, :only => [:update]
 
   def index
     @engagements = if @activity.engaged?
@@ -72,15 +72,10 @@ class EngagementsController < ApplicationController
     json_error "An error occured deleting this engagement."
   end
 
-private
+  private
 
-  def get_activity
-    @activity = Activity.find(params[:activity_id])
-
-    rescue ActiveRecord::RecordNotFound
-      return json_not_found "The requested activity was not found."
-    
-    @activity.update_relationship_as(@authenticated_user)
+  def activity_id
+    params[:activity_id]
   end
 
   def get_engagement
@@ -90,26 +85,15 @@ private
       @activity.engagements.find_by_id(params[:id])      
     end
 
-    json_not_found "You have not engaged in this activity yet, " \
-      "or the engagement was not found." if @engagement.nil?
-  end
-
-  def get_singular_engagement
-    @activity.engagements.find_for_user_or_wing(@authenticated_user.id)
+    if @engagement.nil?
+      return json_not_found "You have not engaged in this activity yet, "\
+        "or the engagement was not found."
+    end
   end
 
   # only activity.participants can view index
-  def activity_owners_only
-    unauthorized! unless @activity.allowed?(@authenticated_user, :all)
-  end
-
   def engagement_owners_only
-    unauthorized! unless @engagement.allowed?(@authenticated_user, :owners)
-  end
-
-  def unauthorized!
-    json_unauthorized "The authenticated user does not have " \
-      "permission to do this."
+    return unauthorized! unless @engagement.allowed?(@authenticated_user, :owners)
   end
 
 end

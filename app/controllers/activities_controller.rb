@@ -1,9 +1,8 @@
-class ActivitiesController < ApplicationController
+class ActivitiesController < BaseActivitiesController
   respond_to :json
   
   before_filter :get_activity, :only => [:show, :update, :destroy]
-  before_filter :unauthorized!, :only => [:update, :destroy]
-  before_filter :handle_activity_permissions, :only => [:update, :destroy]
+  before_filter :activity_owner_only, :only => [:update, :destroy]
 
   def index
     @activities = []
@@ -14,7 +13,7 @@ class ActivitiesController < ApplicationController
       # If the user can see the activity, add it to the list.
       # in this specific case, it's ensured that if the activity is engaged,
       # only the owner/wing or users who are engaged with it can see it.
-      @activities << activity unless (activity.engaged? && (activity.relationship == Activity::IS_OPEN))
+      @activities << activity unless activity.engaged_to_other?
     end
 
     respond_with @activities
@@ -36,6 +35,7 @@ class ActivitiesController < ApplicationController
   end
 
   def show
+    return unauthorized! if @activity.engaged_to_other?
     respond_with @activity
   end
 
@@ -66,22 +66,10 @@ class ActivitiesController < ApplicationController
     end
   end
 
-private
-  
-  def get_activity
-    @activity = Activity.find(params[:id])
-    
-    rescue ActiveRecord::RecordNotFound
-      return json_not_found "The requested activity was not found."
+  private
 
-    @activity.update_relationship_as(@authenticated_user)
-  end
-
-  def unauthorized!
-    unless @activity.allowed?(@authenticated_user, :owner)
-      json_unauthorized "The authenticated user does not have " \
-        "permission to modify or delete this activity." 
-    end
+  def activity_id
+    params[:id]
   end
 
 end

@@ -174,12 +174,16 @@ class Activity < ActiveRecord::Base
       return IS_INTERESTED if engagement.ignored?
       return IS_ACCEPTED if engagement.accepted?
     end
+
+    IS_OPEN
   end
 
   def update_relationship_as(a_user)
-    tap do |activity|
-      activity.relationship = get_relationship_for(a_user)  
-    end
+    tap { |a| a.relationship = a.get_relationship_for(a_user)   }
+  end
+
+  def engaged_to_other?
+    engaged? && (relationship == IS_OPEN)
   end
 
   def engage!
