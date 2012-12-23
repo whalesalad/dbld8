@@ -1,16 +1,16 @@
 class LocationsController < ApplicationController
+  respond_to :json
+
   skip_before_filter :require_token_auth, :only => [:index, :cities, :venues, :both, :show]
   
   before_filter :ensure_latlng, :only  => [:both, :cities, :venues]
   before_filter :get_location, :only => [:show]
   
-  respond_to :json
-  
   def index
-    @locations = Location.find(:all)
-    
-    if params[:query]
-      @locations = Location.where('name ~* ?', params[:query])
+    @locations = if params[:query]
+      Location.where('name ~* ?', params[:query])
+    else
+      Location.find(:all)
     end
 
     respond_with @locations
@@ -18,17 +18,17 @@ class LocationsController < ApplicationController
 
   def cities
     @locations = Location.find_cities_near(@latitude, @longitude)
-    respond_with @locations
+    respond_with @locations, :template => 'locations/index'
   end
 
   def venues
     @locations = Location.find_venues_near(@latitude, @longitude, params[:query])
-    respond_with @locations
+    respond_with @locations, :template => 'locations/index'
   end
 
   def both
     @locations = Location.find_cities_and_venues_near(@latitude, @longitude, params[:query])
-    respond_with @locations
+    respond_with @locations, :template => 'locations/index'
   end
 
   def show
@@ -39,7 +39,7 @@ class LocationsController < ApplicationController
     @location = Location.new(params[:location])
 
     if @location.save
-      respond_with(@location, :status => :created, :location => @location)
+      respond_with(@location, :status => :created, :location => @location, :template => 'locations/show')
     else
       respond_with(@location, :status => :unprocessable_entity)
     end
