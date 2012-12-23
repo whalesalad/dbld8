@@ -35,5 +35,4 @@ class Message < ActiveRecord::Base
     result
   end
 
-
 end

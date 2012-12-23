@@ -28,7 +28,6 @@ class FriendsController < ApplicationController
     respond_with filter_facebook_friends(@authenticated_user.facebook_friends)
   end
 
-
   def invite
     facebook_ids = []
     doubledate_users = []

@@ -58,7 +58,7 @@
               N/A
 
           %dt Birthday
-          %dd #{l @user.birthday, :format => :long} &mdash; #{@user.age} Years Old
+          %dd #{l @user.birthday, :format => :long} &mdash; #{determine_age(@user.birthday)} Years Old
 
           %dt Status
           %dd #{@user.status}

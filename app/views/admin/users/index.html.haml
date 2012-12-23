@@ -30,7 +30,7 @@
         %td #{user.email}
         %td #{user.location}
         %td #{user.facebook_id}
-        %td #{user.age}
+        %td #{determine_age(user.birthday)}
         %td #{user.gender.titlecase}
         %td #{user.status}
         %td #{l user.created_at, :format => :medium}

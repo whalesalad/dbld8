@@ -60,13 +60,11 @@ class UsersController < ApplicationController
     return render json: @token
   end
 
-  # GET /
   def index
     @users = User.all
     respond_with @users
   end
 
-  # GET /<id>/
   def show
     @user = User.find(params[:id])
     respond_with @user
@@ -108,7 +106,7 @@ class UsersController < ApplicationController
     @user.facebook_access_token = params[:facebook_access_token]
     @user.bootstrap_facebook_data
 
-    respond_with @user
+    respond_with @user, :template => 'users/show'
   end
   
   def invitation
