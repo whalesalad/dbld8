@@ -22,6 +22,8 @@
 #
 
 class User < ActiveRecord::Base
+  # include Concerns::FacebookConcerns
+
   before_validation :before_validation_on_create, :on => :create
 
   before_create :set_uuid
@@ -44,7 +46,6 @@ class User < ActiveRecord::Base
   belongs_to :location, :counter_cache => true
 
   has_and_belongs_to_many :interests
-  #, :before_add => :validate_max_interests
 
   has_one :token, :class_name => 'AuthToken', :dependent => :destroy
   
@@ -125,7 +126,7 @@ class User < ActiveRecord::Base
     :source => :activity
 
   def to_s
-    "#{first_name} #{last_name}"
+    [first_name, last_name].join ' '
   end
 
   def status

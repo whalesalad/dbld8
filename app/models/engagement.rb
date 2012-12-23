@@ -113,17 +113,7 @@ class Engagement < ActiveRecord::Base
   end
 
   def as_json(options={})
-    exclude = [:updated_at, :wing_id, :user_id]
-
-    result = super({ :except => exclude }.merge(options))
-
-    result[:messages_count] = messages.count
-    result[:initial_message] = messages.first.message
-
-    result[:user] = user.as_json(:mini => true)
-    result[:wing] = wing.as_json(:mini => true) if wing.present?
-    
-    result
+    "BUILD"
   end
 
 end

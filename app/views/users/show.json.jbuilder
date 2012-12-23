@@ -2,9 +2,7 @@ unless @user.new_record?
   json.(@user, :id, :uuid)
   json.age determine_age(@user.birthday)
   json.invite_path user_invitation_path(@user.invite_slug)
-  json.interests @user.interests do |interest|
-    json.partial! interest
-  end
+  json.interests @user.interests
   json.location do
     json.partial! @user.location
   end

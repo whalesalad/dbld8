@@ -61,12 +61,9 @@ class UserPhoto < ActiveRecord::Base
   end
 
   def as_json(options={})
-    exclude = [:created_at, :updated_at, :image, :user_id]
-    result = super({ :except => exclude }.merge(options))    
-
+    result = super({ :only => [:id] })
     result[:thumb] = image.thumb.url
     result[:large] = image.large.url
-
     result
   end
   

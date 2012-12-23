@@ -22,7 +22,6 @@ class Interest < ActiveRecord::Base
   end
 
   def as_json(options={})
-    exclude = [:created_at, :updated_at, :facebook_id]
-    result = super({ :except => exclude }.merge(options))
+    result = super({ :only => [:id, :name] })
   end
 end

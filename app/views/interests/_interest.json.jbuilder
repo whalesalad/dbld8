@@ -1,1 +1,0 @@
-json.(interest, :id, :name)
