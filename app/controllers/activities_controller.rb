@@ -9,21 +9,18 @@ class ActivitiesController < ApplicationController
     @activities = []
 
     Activity.search(params).each do |activity|
+      # Update the relationship based on the current user.
       activity.update_relationship_as(@authenticated_user)
+      # If the user can see the activity, add it to the list.
+      # in this specific case, it's ensured that if the activity is engaged,
+      # only the owner/wing or users who are engaged with it can see it.
       @activities << activity unless (activity.engaged? && (activity.relationship == Activity::IS_OPEN))
     end
-
-    # reject activities you cannot see based on the relationship
-    # @activities.reject! do |activity|
-
-    # end
 
     respond_with @activities
   end
 
   def mine
-    # - activities that i've shown interest in and are accepted
-    # TODO owned by someone else, type: accepted 
     respond_with @authenticated_user.my_activities
   end
 

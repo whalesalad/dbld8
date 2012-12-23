@@ -155,7 +155,7 @@ class Activity < ActiveRecord::Base
     case permission
     when :owner, :modify
       a_user == user
-    when :all
+    when :all, :owners
       participant_ids.include? a_user.id
     end
   end

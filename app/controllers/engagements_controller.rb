@@ -6,9 +6,14 @@ class EngagementsController < ApplicationController
   before_filter :activity_owners_only, :only => [:update]
 
   def index
-    @engagements = if @activity.allowed?(@authenticated_user, :owner)
+    @engagements = if @activity.engaged?
+      # if this activity is engaged, immediately respond with the engaged activity
+      [@activity.accepted_engagement]
+    elsif @activity.allowed?(@authenticated_user, :owners)
+      # if the user is the user/wing
       @activity.engagements.not_ignored
     else
+      # if we're a random user, respond with their singular engagement.
       [get_singular_engagement].compact
     end
 
@@ -72,7 +77,7 @@ private
   def get_activity
     @activity = Activity.find(params[:activity_id])
 
-  rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound
       return json_not_found "The requested activity was not found."
     
     @activity.update_relationship_as(@authenticated_user)
