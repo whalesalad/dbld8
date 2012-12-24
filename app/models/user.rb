@@ -106,6 +106,15 @@ class User < ActiveRecord::Base
     single? ? "Single" : "Taken"
   end
 
+  def age
+    @age ||= determine_age
+  end
+
+  def determine_age
+    now = Time.now.utc.to_date
+    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+  end
+
   def default_photo
     "http://static.dbld8.com/misc/no-photo.png"
   end
