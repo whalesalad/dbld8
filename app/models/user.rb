@@ -107,12 +107,7 @@ class User < ActiveRecord::Base
   end
 
   def age
-    @age ||= determine_age
-  end
-
-  def determine_age
-    now = Time.now.utc.to_date
-    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+    @age ||= ((Date.today - birthday).to_i / 365.25).to_i
   end
 
   def default_photo

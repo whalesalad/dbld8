@@ -22,11 +22,6 @@ module ApplicationHelper
     DoubleDate::FACEBOOK_APP_ID
   end
 
-  def age_from_birthday(birthday)
-    now = Time.now.utc.to_date
-    now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
-  end
-
   def gender_posessive(gender)
     (gender == "male") ? "his" : "her"
   end

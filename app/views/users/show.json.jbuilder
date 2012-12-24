@@ -1,6 +1,6 @@
 unless @user.new_record?
   json.(@user, :id, :uuid)
-  json.age age_from_birthday(@user.birthday)
+  json.age @user.age
   json.invite_path user_invitation_path(@user.invite_slug)
   json.interests @user.interests
   json.location do

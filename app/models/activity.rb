@@ -171,8 +171,8 @@ class Activity < ActiveRecord::Base
 
     # TODO, handle this for your user id or your wing's user id.
     if engagement = engagements.find_for_user_or_wing(a_user.id)
-      return IS_INTERESTED if engagement.ignored?
       return IS_ACCEPTED if engagement.accepted?
+      return IS_INTERESTED
     end
 
     IS_OPEN
