@@ -99,9 +99,16 @@ class Location < ActiveRecord::Base
     self.name ||= self.to_s
   end
 
+  def name
+    to_s
+  end
+
+  def full_name
+    "#{(venue?) ? "#{venue} • " : ''}#{location_name}"
+  end
+
   def to_s
-    prefix = (venue.present?) ? "#{venue} • " : ''
-    "#{prefix}#{location_name}"  
+    venue? ? venue : location_name
   end
 
   def american?
