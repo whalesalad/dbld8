@@ -179,7 +179,7 @@ class Activity < ActiveRecord::Base
   end
 
   def update_relationship_as(a_user)
-    tap { |a| a.relationship = a.get_relationship_for(a_user)   }
+    tap { |a| a.relationship = a.get_relationship_for(a_user) }
   end
 
   def engaged_to_other?

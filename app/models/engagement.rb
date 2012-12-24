@@ -90,8 +90,8 @@ class Engagement < ActiveRecord::Base
   end
 
   def viewed!
-    status = IS_VIEWED
-    save!
+    self.status = IS_VIEWED
+    self.save!
   end
 
   def ignored?
@@ -99,8 +99,8 @@ class Engagement < ActiveRecord::Base
   end
 
   def ignore!
-    status = IS_IGNORED
-    save!
+    self.status = IS_IGNORED
+    self.save!
   end
 
   def accepted?
@@ -108,8 +108,8 @@ class Engagement < ActiveRecord::Base
   end
 
   def accept!
-    status = IS_ACCEPTED
-    save!
+    self.status = IS_ACCEPTED
+    self.save!
   end
 
   def as_json(options={})

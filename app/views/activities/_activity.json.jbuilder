@@ -1,8 +1,12 @@
-json.id activity.id
-json.(activity, :title, :details, :created_at)
-json.(activity, :status, :relationship)
+json.(activity, :id, :title, :details, :created_at, :status, :relationship)
 
-unless activity.engaged?
+
+if activity.engaged?
+  json.accepted_engagement do
+    json.id activity.accepted_engagement.id
+    json.messages_count activity.accepted_engagement.messages.count
+  end
+else
   json.engagements_count activity.engagements.not_ignored.count
 end
 
