@@ -102,6 +102,10 @@ class User < ActiveRecord::Base
     [first_name, last_name].join ' '
   end
 
+  def full_name
+    to_s
+  end
+
   def status
     single? ? "Single" : "Taken"
   end
