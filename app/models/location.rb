@@ -94,9 +94,14 @@ class Location < ActiveRecord::Base
       return both.sort_by! { |l| l.distance }
     end
   end
+
+  def to_s
+    venue? ? venue : location_name
+  end
   
+  # Sets the internal name, not really used.
   def set_name
-    self.name ||= self.to_s
+    self.name = self.to_s
   end
 
   def name
@@ -105,10 +110,6 @@ class Location < ActiveRecord::Base
 
   def full_name
     "#{(venue?) ? "#{venue} • " : ''}#{location_name}"
-  end
-
-  def to_s
-    venue? ? venue : location_name
   end
 
   def american?
