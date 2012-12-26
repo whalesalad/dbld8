@@ -119,6 +119,7 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.6.2)
     nokogiri (1.5.5)
+    oj (2.0.0)
     pg (0.14.1)
     pg_array_parser (0.0.8)
     polyglot (0.3.3)
@@ -237,6 +238,8 @@ DEPENDENCIES
   json_spec
   kaminari
   koala
+  multi_json
+  oj
   pg
   postgres_ext
   pry-rails
