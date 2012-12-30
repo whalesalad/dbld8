@@ -20,7 +20,7 @@
   
   %tbody
     - for user in @users
-      %tr{ :class => user.facebook? ? 'info' : '' }
+      %tr{ :class => user.is_a?(FacebookUser) ? 'info' : '' }
         %td #{user.id}
         %td
           - if user.profile_photo.present?

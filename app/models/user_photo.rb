@@ -31,13 +31,28 @@ class UserPhoto < ActiveRecord::Base
     # This is a sensible default for uploaders that are meant to be mounted:
     def store_dir
       # user/userid/photos/photoid/file
-      "user/#{model.user.id}/photos/#{model.id}"
+      "user/#{model.user_id}/photos/#{model.id}"
+    end
+
+    def filename 
+      if original_filename 
+        @name ||= Digest::MD5.hexdigest(File.dirname(current_path))
+        "#{@name}.#{file.extension}"
+      end
     end
 
     process :set_content_type
 
     version :thumb do
       process :resize_to_fill => [200, 200]
+    end
+
+    version :small do
+      process :resize_to_fill => [320, 200]
+    end
+
+    version :medium do
+      process :resize_to_fill => [640, 400]
     end
 
     version :large do

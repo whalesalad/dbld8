@@ -2,8 +2,7 @@
   %h1
     #{@user}
     %small
-      #{(@user.facebook?) ? 'Facebook' : 'Email/Pass'} User &mdash;
-      Created #{l @user.created_at, :format => :long}
+      #{@user.class} • UserID #{@user.id}
 
   %hr/ 
 
@@ -52,7 +51,7 @@
 
           %dt Facebook ID
           %dd 
-            - if @user.facebook?
+            - if @user.is_a?(FacebookUser)
               #{@user.facebook_id}
             - else
               N/A
