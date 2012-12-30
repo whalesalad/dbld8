@@ -30,7 +30,6 @@ class User < ActiveRecord::Base
   before_create :set_uuid
   after_create :set_invite_slug
 
-  after_create :fetch_and_store_facebook_photo
   after_create :trigger_registration
 
   after_save do |user|
@@ -108,7 +107,7 @@ class User < ActiveRecord::Base
   end
 
   def photo
-    profile_photo || default_photo
+    profile_photo || { thumb: default_photo }
   end
 
   def interest_names=(interest_names)

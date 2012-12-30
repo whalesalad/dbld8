@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  skip_before_filter :require_token_auth, :only => [:authenticate, :create, :build_facebook_user, :invitation]
+  skip_before_filter :require_token_auth, 
+    :only => [:authenticate, :create, :build_facebook_user, :invitation]
   
   respond_to :json
 
@@ -72,7 +73,11 @@ class UsersController < ApplicationController
 
   # POST
   def create
-    @user = User.new
+    @user = if params[:user].has_key?(:facebook_id)
+      FacebookUser.new
+    else
+      EmailUser.new
+    end
 
     # Allow editing the facebook_id and facebook_access token only for this request.
     @user.accessible = [:facebook_id, :facebook_access_token]
@@ -90,7 +95,7 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      respond_with(@user, status: :created, location: @user)
+      respond_with(@user, :status => :created, :location => user_path(@user), :template => 'users/show')
     else
       respond_with(@user, status: :unprocessable_entity)
     end
@@ -102,7 +107,7 @@ class UsersController < ApplicationController
       return json_error 'You must specify a facebook_access_token in order to build a user.'
     end
 
-    @user = User.new
+    @user = FacebookUser.new
     @user.facebook_access_token = params[:facebook_access_token]
     @user.bootstrap_facebook_data
 

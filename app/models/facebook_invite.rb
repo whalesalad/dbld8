@@ -10,7 +10,6 @@
 #
 
 class FacebookInvite < ActiveRecord::Base
-
   # Queue up the sending of the invitation (writing on the wall)
   after_commit do |invite|
     Resque.enqueue(FacebookWallPost, invite.id)
@@ -19,7 +18,11 @@ class FacebookInvite < ActiveRecord::Base
   attr_accessible :user_id, :facebook_id
 
   belongs_to :user
-  belongs_to :future_user, :class_name => "User", :foreign_key => "facebook_id", :primary_key => "facebook_id"
+  
+  belongs_to :future_user, 
+    :class_name => "FacebookUser", 
+    :foreign_key => "facebook_id", 
+    :primary_key => "facebook_id"
 
   # Ensure only one facebook -> user connection can exist.
   validates_uniqueness_of :facebook_id, :scope => :user_id

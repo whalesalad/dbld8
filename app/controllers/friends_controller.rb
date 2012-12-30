@@ -21,7 +21,7 @@ class FriendsController < ApplicationController
   end
 
   def facebook
-    unless @authenticated_user.facebook?
+    unless @authenticated_user.is_a?(FacebookUser)
       respond_with [] and return
     end
 

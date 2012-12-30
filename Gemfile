@@ -55,8 +55,15 @@ group :assets do
 end
 
 group :development, :test do
+  gem 'rspec-rails'
   gem 'cucumber'
   gem 'json_spec'
   gem 'pry-rails'
   gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
+end
+
+group :test do
+  gem "factory_girl_rails"
+  gem "capybara"
+  gem "guard-rspec"
 end

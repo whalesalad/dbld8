@@ -7,12 +7,13 @@ module Concerns
         after_create :hook_facebook_invites, :if => :relevant_facebook_invite
         
         # Facebook Invitations
-        has_many :facebook_invites, :dependent => :destroy
+        has_many :facebook_invites,
+          :foreign_key => "user_id",
+          :dependent => :destroy
 
         # The invites that might have led to my creation
         has_many :inverse_facebook_invites,
           :class_name => "FacebookInvite",
-          :primary_key => "facebook_id",
           :foreign_key => "facebook_id"
       end
     end

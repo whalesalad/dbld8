@@ -3,13 +3,17 @@ unless @user.new_record?
   json.age @user.age
   json.invite_path user_invitation_path(@user.invite_slug)
   json.interests @user.interests
-  json.location do
-    json.partial! @user.location
+  if @user.location.present?
+    json.location do
+      json.partial! @user.location
+    end
   end
 end
 
-json.facebook_id @user.facebook_id if @user.facebook?
+if @user.is_a?(FacebookUser)
+  json.facebook_id @user.facebook_id
+end
 
-json.(@user, :email, :first_name, :last_name, :gender, :single, :interested_in, :bio)
+json.(@user, :email, :first_name, :last_name, :gender, :birthday, :single, :interested_in, :bio)
 
 json.photo @user.photo

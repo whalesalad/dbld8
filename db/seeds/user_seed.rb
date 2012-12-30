@@ -20,7 +20,7 @@ class UserSeed
   def seed_user(first_name, gender)
     last_name = LAST_NAMES.sample
 
-    u = User.create({ 
+    u = EmailUser.create({ 
       first_name: first_name, 
       last_name: last_name,
       email: email_from(first_name, last_name),
