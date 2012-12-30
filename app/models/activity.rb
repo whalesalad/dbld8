@@ -62,13 +62,15 @@ class Activity < ActiveRecord::Base
   # Validate day preference
   validates_inclusion_of :day_pref, 
     :in => DAY_PREFERENCES, 
-    :message => "The field activity.day_pref is required. Possible values are #{DAY_PREFERENCES.join(', ')}.",
+    :message => "The field activity.day_pref is required. "\
+      "Possible values are #{DAY_PREFERENCES.join(', ')}.",
     :allow_blank => true
 
   # Validate time preference
   validates_inclusion_of :time_pref, 
     :in => TIME_PREFERENCES, 
-    :message => "The field activity.time_pref is required. Possible values are #{TIME_PREFERENCES.join(', ')}.",
+    :message => "The field activity.time_pref is required. "\
+      "Possible values are #{TIME_PREFERENCES.join(', ')}.",
     :allow_blank => true
 
   # Tire // Elasticsearch

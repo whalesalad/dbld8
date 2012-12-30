@@ -19,6 +19,7 @@
 #  location_id           :integer
 #  uuid                  :uuid            not null
 #  invite_slug           :string(255)
+#  type                  :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -70,7 +71,10 @@ class User < ActiveRecord::Base
     :in => GENDER_CHOICES,
     :message => "Field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
 
-  validates_inclusion_of :interested_in, :in => INTEREST_CHOICES, :allow_nil => true, :allow_blank => true
+  validates_inclusion_of :interested_in, 
+    :in => INTEREST_CHOICES, 
+    :allow_nil => true, 
+    :allow_blank => true
 
   has_many :activities, :dependent => :destroy
   has_many :participating_activities, 
@@ -107,7 +111,7 @@ class User < ActiveRecord::Base
   end
 
   def photo
-    profile_photo || { thumb: default_photo }
+    profile_photo || DefaultUserPhoto.new(self)
   end
 
   def interest_names=(interest_names)

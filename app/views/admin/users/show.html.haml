@@ -8,33 +8,34 @@
 
   .row-fluid
     .span6
+      .row-fluid
+        .span7
+          %section.content-section
+            %h4 Bio
+            - if @user.bio.present?
+              %blockquote
+                = @user.bio
+            - else
+              %p The bio for #{@user} is blank.
 
-      %section.content-section
-        %h4 Photo
-        - if @user.profile_photo.present?
-          =image_tag @user.photo.thumb, :class => 'img-circle'
-        - else
-          %p There is no photo object for #{@user}.
+          %section.content-section
+            %h4 DBLD8 Token: 
+            %p
+              - if @user.token.present?
+                %code #{@user.token}
+              - else
+                This user hasn't authenticated yet. Tokens are created on first login.
 
-      %section.content-section
-        %h4 Bio
-        - if @user.bio.present?
-          %blockquote
-            = @user.bio
-        - else
-          %p The bio for #{@user} is blank.
+          %section.content-section
+            %h4 Credits:
+            %p #{@user.first_name} has <b>#{pluralize(@user.total_credits, 'credit')}.</b>
 
-      %section.content-section
-        %h4 DBLD8 Token: 
-        %p
-          - if @user.token.present?
-            %code #{@user.token}
-          - else
-            This user hasn't authenticated yet. Tokens are created on first login.
+        .span5
+          %section.content-section
+            %h4 Photo
+            =image_tag @user.photo.thumb, :class => 'img-circle'
 
-      %section.content-section
-        %h4 Credits:
-        %p #{@user.first_name} has <b>#{pluralize(@user.total_credits, 'credit')}.</b>
+      %hr/
     
       %section.content-section
         %h4 Basic Info

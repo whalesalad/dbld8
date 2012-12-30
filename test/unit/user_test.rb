@@ -19,6 +19,7 @@
 #  location_id           :integer
 #  uuid                  :uuid            not null
 #  invite_slug           :string(255)
+#  type                  :string(255)
 #
 
 require 'test_helper'
