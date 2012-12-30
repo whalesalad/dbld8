@@ -1,5 +1,4 @@
-json.(activity, :id, :title, :details, :created_at, :status, :relationship)
-
+json.(activity, :id, :title, :details, :created_at, :day_pref, :time_pref, :status, :relationship)
 
 if activity.engaged?
   json.accepted_engagement do
@@ -11,11 +10,11 @@ else
 end
 
 json.user do
-  json.partial! activity.user
+  json.partial! 'users/user', user: activity.user
 end
 
 json.wing do
-  json.partial! activity.wing
+  json.partial! 'users/user', user: activity.wing
 end
 
 json.location do

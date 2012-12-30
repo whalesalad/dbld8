@@ -5,9 +5,9 @@ json.created_at_ago time_ago_in_words(engagement.created_at)
 json.messages_count engagement.messages.count
 
 json.user do
-  json.partial! engagement.user
+  json.partial! 'users/user', user: engagement.user
 end
 
 json.wing do
-  json.partial! engagement.wing
+  json.partial! 'users/user', user: engagement.wing
 end
