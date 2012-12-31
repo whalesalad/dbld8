@@ -2,11 +2,9 @@ module Concerns
   module ParticipantConcerns
     extend ActiveSupport::Concern
 
-    def self.included(base)
-      base.class_eval do
-        belongs_to :user
-        belongs_to :wing, :class_name => 'User'
-      end
+    included do
+      belongs_to :user
+      belongs_to :wing, :class_name => 'User'
     end
 
     def participants

@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   # protect_from_forgery
-  # skip_before_filter :verify_authenticity_token
 
   before_filter :require_token_auth
   after_filter :add_who_am_i_header

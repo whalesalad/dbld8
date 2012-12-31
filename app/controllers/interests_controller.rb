@@ -1,5 +1,5 @@
 class InterestsController < ApplicationController
-  skip_before_filter :require_token_auth, :only => [:index, :show]
+  skip_filter :require_token_auth, :only => [:index, :show]
   before_filter :get_interest, :only => [:show]
   
   respond_to :json
