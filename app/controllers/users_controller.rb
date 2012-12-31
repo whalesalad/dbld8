@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       render json: @token and return
     end
     
-    # If authentication fails, respond with the error.
+    # Finally, respond with the error if auth does not succeed.
     json_error auth.error
   end
 
