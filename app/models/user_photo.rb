@@ -14,7 +14,7 @@ class UserPhoto < ActiveRecord::Base
   
   belongs_to :user
 
-  validates_presence_of :image
+  validates_presence_of :image, :user_id
 
   default_scope order("created_at DESC")
 

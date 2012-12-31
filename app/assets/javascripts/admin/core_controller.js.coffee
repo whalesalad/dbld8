@@ -17,4 +17,7 @@ class root.CoreController
       try
         new @ROUTES[controller_slug]
 
-    $('ul.nav-tabs a:first').tab 'show'
+    $('ul.nav-tabs').each ->
+      $(this).find('a:first').tab 'show'
+
+    

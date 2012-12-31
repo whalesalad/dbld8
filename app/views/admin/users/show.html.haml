@@ -2,7 +2,7 @@
   %h1
     #{@user}
     %small
-      #{@user.class} • UserID #{@user.id}
+      #{@user.class} – ##{@user.id}
 
   %hr/ 
 
@@ -75,7 +75,7 @@
       %section.content-section
         %h4 Friends
 
-        %ul.nav.nav-tabs.user-tabs
+        %ul.nav.nav-tabs
           %li= link_to "#{pluralize @user.total_friends, 'Wingman'}", '#wingmen-active', :data => { :toggle => 'tab' }
           %li= link_to "#{@user.friendships.unapproved.count} Invited", '#wingmen-invited', :data => { :toggle => 'tab' }
           %li= link_to "#{@user.inverse_friendships.unapproved.count} Incoming", '#wingmen-incoming', :data => { :toggle => 'tab' }
@@ -136,5 +136,28 @@
         = link_to "Delete", admin_user_path(@user), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
 
     .span6
-      %h4 Raw User Object
-      = debug @user
+      %ul.nav.nav-tabs
+        %li= link_to "User Actions", '#user-actions', :data => { :toggle => 'tab' }
+        %li= link_to "Activities", '#user-activities', :data => { :toggle => 'tab' }
+        %li= link_to "Raw Object", '#raw-object', :data => { :toggle => 'tab' }
+
+      %section.tab-content
+        .tab-panel#user-actions
+          %h4 User Actions
+
+          %ul.actions-list
+            - @user.actions.each do |action|
+              %li
+                %span.action-name= action
+                %span.action-meta
+                  #{action.meta_string}
+
+
+        .tab-panel#user-activities
+          %h4 Activities
+
+        .tab-panel#raw-object
+          %h4
+            Raw User Object
+          = debug @user
+      

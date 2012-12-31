@@ -107,9 +107,11 @@ class UsersController < ApplicationController
       return json_error 'You must specify a facebook_access_token in order to build a user.'
     end
 
-    @user = FacebookUser.new
-    @user.facebook_access_token = params[:facebook_access_token]
-    @user.bootstrap_facebook_data
+    ActiveRecord::Base.uncached do
+      @user = FacebookUser.new
+      @user.facebook_access_token = params[:facebook_access_token]
+      @user.bootstrap_facebook_data
+    end
 
     respond_with @user, :template => 'users/show'
   end

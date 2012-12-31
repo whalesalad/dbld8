@@ -10,6 +10,10 @@ module Concerns
       cost < 0
     end
 
+    def cost_verb
+      earns? ? "earned" : "spent"
+    end
+
     def prefix
       earns? ? '+' : '-'
     end

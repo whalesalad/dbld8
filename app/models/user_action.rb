@@ -41,6 +41,14 @@ class UserAction < ActiveRecord::Base
     type.gsub('Action', '')
   end
 
+  def meta_string
+    "undefined"
+  end
+
+  def cost_string
+    "#{cost_verb} #{cost} credits."
+  end
+
   def action_slug
     to_s.underscore
   end

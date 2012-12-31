@@ -11,7 +11,7 @@
 
 class FacebookInvite < ActiveRecord::Base
   # Queue up the sending of the invitation (writing on the wall)
-  after_commit do |invite|
+  after_commit :on => :create do |invite|
     Resque.enqueue(FacebookWallPost, invite.id)
   end
 

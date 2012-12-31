@@ -29,14 +29,14 @@ class User < ActiveRecord::Base
   before_validation :before_validation_on_create, :on => :create
 
   before_create :set_uuid
+  
   after_create :set_invite_slug
-
   after_create :trigger_registration
 
-  after_save do |user|
+  # after_save do |user|
     # Tedious manual process for now
-    Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
-  end
+    # Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
+  # end
 
   # Password // Bcrypt
   has_secure_password

@@ -22,9 +22,9 @@ class Activity < ActiveRecord::Base
 
   after_commit :create_user_action, :on => :create
 
-  after_update do |activity|
-    Resque.enqueue(UpdateCounts, 'Location:activities') if activity.location_id_changed?
-  end
+  # after_update do |activity|
+    # Resque.enqueue(UpdateCounts, 'Location:activities') if activity.location_id_changed?
+  # end
 
   attr_accessible :title, :details, :wing_id, 
     :location_id, :day_pref, :time_pref

@@ -23,13 +23,19 @@
 #
 
 class FacebookUser < User
-  # Handles tracking facebook invitations and hooking credits where necessary
-  include Concerns::FacebookInviteConcerns
+  after_create :fetch_facebook_photo
+  after_create :hook_facebook_invites
 
-  # Get the facebook photo if no profile photo exists.
-  after_commit :fetch_facebook_photo, 
-    :on => :create, 
-    :if => Proc.new { |u| u.profile_photo.nil? }
+  # Facebook Invitations
+  has_many :facebook_invites,
+    :foreign_key => "user_id",
+    :dependent => :destroy
+
+  # The invites that might have led to my creation
+  has_many :inverse_facebook_invites,
+    :class_name => "FacebookInvite",
+    :foreign_key => "facebook_id",
+    :primary_key => "facebook_id"
 
   attr_accessor :facebook_graph, :large_facebook_photo
 
@@ -39,10 +45,15 @@ class FacebookUser < User
     :allow_nil => true, 
     :message => "A user already exists with this facebook_id."
 
-  def photo    
+  def photo
+    if new_record?
+      return DefaultUserPhoto.new(self)
+    end
+
     if profile_photo.blank?
       return fetch_facebook_photo
     end
+    
     profile_photo
   end
 
@@ -106,6 +117,20 @@ class FacebookUser < User
     ]
 
     self.single = !taken_status.include?(me['relationship_status'])
+  end
+
+  def has_facebook_invites?
+    inverse_facebook_invites.any?
+  end
+
+  def target_facebook_invite
+    inverse_facebook_invites.order('created_at DESC').first
+  end
+
+  def hook_facebook_invites
+    if has_facebook_invites?
+      Resque.enqueue(RewardFacebookInvite, target_facebook_invite.id)
+    end
   end
 
   private

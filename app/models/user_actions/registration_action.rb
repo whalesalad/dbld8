@@ -13,5 +13,7 @@
 #
 
 class RegistrationAction < UserAction
-  
+  def meta_string
+    "#{user} joined DBLD8 and #{cost_string}"
+  end
 end
