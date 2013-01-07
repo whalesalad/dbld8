@@ -59,6 +59,8 @@ class Activity < ActiveRecord::Base
     :foreign_key => "activity_id", 
     :conditions => { 'status' => Engagement::IS_ACCEPTED }
 
+  # has_many :messages, :through => :engagements
+
   # Validate day preference
   validates_inclusion_of :day_pref, 
     :in => DAY_PREFERENCES, 

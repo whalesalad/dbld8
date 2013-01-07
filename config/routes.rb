@@ -68,7 +68,11 @@ DoubleDate::Application.routes.draw do
   # Admin
   namespace :admin do
     match '', :action => 'index'
-    resources :users, :only => [:index, :show, :destroy]
+    
+    resources :users, :only => [:index, :show, :destroy] do
+      get 'photos', :on => :member
+    end
+
     resources :friendships
     
     resources :activities do

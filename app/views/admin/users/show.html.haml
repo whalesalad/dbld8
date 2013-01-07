@@ -33,7 +33,10 @@
         .span5
           %section.content-section
             %h4 Photo
-            =image_tag @user.photo.thumb, :class => 'img-circle'
+            %p
+              =image_tag @user.photo.thumb, :class => 'img-rounded'
+            %p 
+              = link_to 'All Photos by Size', photos_admin_user_path(@user), :class => 'btn btn-primary'
 
       %hr/
     

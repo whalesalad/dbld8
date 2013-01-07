@@ -1,5 +1,5 @@
 class Admin::UsersController < AdminController
-  before_filter :get_user, :only => [:show, :edit, :update, :destroy]
+  before_filter :get_user, :only => [:show, :photos, :edit, :update, :destroy]
 
   def index
     @users = User.order('created_at DESC')
@@ -7,6 +7,10 @@ class Admin::UsersController < AdminController
 
   def show
     # respond_with
+  end
+
+  def photos
+    # show all the photos for the user
   end
 
   def destroy

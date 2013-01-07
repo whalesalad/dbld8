@@ -1,0 +1,46 @@
+%section.user-detail
+  %h1
+    Photos for #{@user}
+    %small
+      #{@user.class} – ##{@user.id}
+
+  %hr/ 
+
+  .row-fluid
+    %p
+      Below are all of the various photo sizes that we are storing for each user photo.
+    %p
+      = link_to 'Back to User Info', :back, :class => 'btn'
+    
+    %dl.dl-horizontal
+      %dt 
+        Thumb 
+        %span.label.label-info
+          200x200
+      %dd
+        %p
+          =image_tag @user.photo.thumb, :class => 'img-rounded'
+
+      %dt 
+        Small
+        %span.label.label-info
+          320x200
+      %dd
+        %p
+          =image_tag @user.photo.small, :class => 'img-rounded'
+
+      %dt 
+        Medium
+        %span.label.label-info
+          640x400
+      %dd
+        %p
+          =image_tag @user.photo.medium, :class => 'img-rounded'
+
+      %dt 
+        Large
+        %span.label.label-info
+          1280x800
+      %dd
+        %p
+          =image_tag @user.photo.large, :class => 'img-rounded'

@@ -18,6 +18,10 @@ class UserPhoto < ActiveRecord::Base
 
   default_scope order("created_at DESC")
 
+  def self.recreate_images!
+    self.all.each { |photo| photo.image.recreate_versions! }
+  end
+
   class UserPhotoUploader < CarrierWave::Uploader::Base
     # Include RMagick or MiniMagick support:
     include CarrierWave::RMagick
@@ -56,7 +60,7 @@ class UserPhoto < ActiveRecord::Base
     end
 
     version :large do
-      process :resize_to_limit => [960, 640]
+      process :resize_to_limit => [1280, 800]
     end
 
     def extension_white_list
@@ -69,6 +73,14 @@ class UserPhoto < ActiveRecord::Base
 
   def thumb
     image.thumb
+  end
+
+  def small
+    image.small
+  end
+
+  def medium
+    image.medium
   end
 
   def large
