@@ -24,7 +24,7 @@ class RewardFacebookInviteWorker
     begin
       # Trigger the recruit action
       # Ultimately this should send a notification to the user
-      facebook_invitation.user.trigger('recruit', facebook_invitation)
+      facebook_invitation.user.trigger('recruit', new_user)
     rescue ActiveRecord::RecordInvalid => invalid
       puts "Recruit credits have already been awarded."
     end

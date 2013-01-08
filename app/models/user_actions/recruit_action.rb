@@ -22,12 +22,12 @@ class RecruitAction < UserAction
     :scope => [:related_id, :related_type], 
     :message => "This user has already been awarded for this recruit."
 
-  def invite
+  def recruited
     related
   end
 
   def meta_string
-    "#{user} recruited #{invite.future_user} and #{cost_string}"
+    "#{user} recruited #{recruited} and #{cost_string}"
   end
 
 end
