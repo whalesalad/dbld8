@@ -19,16 +19,17 @@
               %p The bio for #{@user} is blank.
 
           %section.content-section
-            %h4 DBLD8 Token: 
+            %h4 DBLD8 Auth Token
             %p
               - if @user.token.present?
-                %code #{@user.token}
+                %code
+                  #{@user.token}
               - else
                 This user hasn't authenticated yet. Tokens are created on first login.
 
           %section.content-section
-            %h4 Credits:
-            %p #{@user.first_name} has <b>#{pluralize(@user.total_credits, 'credit')}.</b>
+            %h4 Coins
+            %p #{@user.first_name} has <b>#{pluralize(@user.total_credits, 'coin')}.</b>
 
         .span5
           %section.content-section
@@ -163,4 +164,5 @@
           %h4
             Raw User Object
           = debug @user
+
       
