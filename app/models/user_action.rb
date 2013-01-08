@@ -46,7 +46,7 @@ class UserAction < ActiveRecord::Base
   end
 
   def cost_string
-    "#{cost_verb} #{cost} credits."
+    "#{cost_verb} #{cost} coins."
   end
 
   def action_slug

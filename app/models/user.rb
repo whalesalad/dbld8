@@ -170,6 +170,16 @@ class User < ActiveRecord::Base
     actions.uncached { actions.sum :cost }
   end
 
+  def total_coins
+    # FIXME
+    total_credits
+  end
+
+  def total_karma
+    # FIXME
+    0
+  end
+
   def as_json(options={})
     'BUILD'
   end
