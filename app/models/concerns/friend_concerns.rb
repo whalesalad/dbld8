@@ -72,6 +72,5 @@ module Concerns
       direct_friends(false).count + inverse_friends(false).count
     end
 
-
   end
 end
