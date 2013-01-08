@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     end
     
     # Finally, respond with the error if auth does not succeed.
-    json_error auth.error
+    render json: auth.error, :status => 401 and return
   end
 
   def index
@@ -33,16 +33,14 @@ class UsersController < ApplicationController
     else
       EmailUser.new
     end
-
+    
     # Allow editing the facebook_id and facebook_access token only for this request.
-    @user.accessible = [:facebook_id, :facebook_access_token]
-
-    if params[:user].has_key? 'invite_path'
-      params[:user].delete 'invite_path'
+    if @user.is_a?(FacebookUser)
+      @user.accessible = [:facebook_id, :facebook_access_token]
     end
 
     # Update the user
-    @user.update_attributes(params[:user])
+    @user.update_attributes(params[:user].except('invite_path', 'age'))
 
     # We're creating a regular user
     if @user.is_a?(EmailUser)
@@ -69,7 +67,7 @@ class UsersController < ApplicationController
       @user.bootstrap_facebook_data
     end
 
-    respond_with @user, :template => 'users/show'
+    respond_with @user, :template => 'users/bootstrap'
   end
   
   def invitation

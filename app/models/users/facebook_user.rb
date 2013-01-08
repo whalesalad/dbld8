@@ -23,9 +23,8 @@
 #
 
 class FacebookUser < User
-  after_create :fetch_facebook_photo
-  after_create :hook_facebook_invites
-
+  after_create :reward_for_invitation
+  
   # Facebook Invitations
   has_many :facebook_invites,
     :foreign_key => "user_id",
@@ -37,7 +36,7 @@ class FacebookUser < User
     :foreign_key => "facebook_id",
     :primary_key => "facebook_id"
 
-  attr_accessor :facebook_graph, :large_facebook_photo
+  attr_accessor :facebook_graph, :large_facebook_photo, :target_facebook_invite
 
   validates_presence_of :facebook_id, :facebook_access_token, :on => :create
 
@@ -82,7 +81,7 @@ class FacebookUser < User
     facebook_graph.get_connections("me", "friends", { :fields => 'id,name,gender,location,picture' })
   end
 
-  def before_validation_on_create    
+  def on_init
     # Set the password to some crap with their facebook_id
     # no one should ever know this.
     pass = "!+%+#{facebook_id}!"
@@ -119,18 +118,12 @@ class FacebookUser < User
     self.single = !taken_status.include?(me['relationship_status'])
   end
 
-  def has_facebook_invites?
-    inverse_facebook_invites.any?
+  def has_facebook_invite?
+    target_facebook_invite.present?
   end
 
   def target_facebook_invite
-    inverse_facebook_invites.order('created_at DESC').first
-  end
-
-  def hook_facebook_invites
-    if has_facebook_invites?
-      Resque.enqueue(RewardFacebookInvite, target_facebook_invite.id)
-    end
+    @target_facebook_invite ||= inverse_facebook_invites.order('created_at DESC').first
   end
 
   private
@@ -150,6 +143,10 @@ class FacebookUser < User
     if result.any? && result[0].has_key?('src_big')
       result[0]['src_big'] 
     end
+  end
+
+  def reward_for_invitation
+    RewardFacebookInviteWorker.perform_async(id)
   end
 
 end

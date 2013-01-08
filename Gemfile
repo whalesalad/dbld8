@@ -36,7 +36,12 @@ gem 'fog'
 # gem 'mixpanel'
 
 # Background Jobbin'
-gem 'resque', :require => "resque/server"
+gem 'sidekiq'
+gem 'slim'
+gem 'sinatra', :require => nil
+
+# gem 'resque', :require => "resque/server"
+
 
 # Images, File Handling
 gem 'rmagick'

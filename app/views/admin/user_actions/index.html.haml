@@ -10,7 +10,7 @@
       %th ID
       %th Action
       %th User
-      %th Cost
+      %th Coins
       %th Occurred
 
   %tbody
@@ -27,7 +27,3 @@
           %span{ :class => "badge badge-#{(action.earns?) ? 'success' : 'important'}" }
             #{action.cost_to_s}
         %td #{l action.created_at, :format => :long}
-
-%hr/
-
-= link_to 'New Credit Action', new_admin_credit_action_path, :class => 'btn'

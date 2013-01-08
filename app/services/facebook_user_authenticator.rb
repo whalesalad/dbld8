@@ -13,7 +13,15 @@ class FacebookUserAuthenticator < UserAuthenticator
       @error = "There was an API error from Facebook: #{exc}"
     else
       @user = User.find_by_facebook_id(me['id'])
-      update_access_token if @user
+      
+      if @user.nil?
+        @error = {
+          :error => "No Facebook User was found for this facebook_access_token.",
+          :code => "NO_FACEBOOK_USER"
+        }
+      else
+        update_access_token
+      end
     end
   end
 

@@ -26,17 +26,13 @@ class User < ActiveRecord::Base
   # Handles friendships between users (wings)
   include Concerns::FriendConcerns
 
-  before_validation :before_validation_on_create, :on => :create
+  before_validation :on_init, :on => :create
 
   before_create :set_uuid
-  
-  after_create :set_invite_slug
-  after_create :trigger_registration
 
-  # after_save do |user|
-    # Tedious manual process for now
-    # Resque.enqueue(UpdateCounts, 'Location:users') if user.location_id_changed?
-  # end
+  after_create :set_invite_slug
+
+  after_create :trigger_registration
 
   # Password // Bcrypt
   has_secure_password
@@ -57,7 +53,7 @@ class User < ActiveRecord::Base
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
 
-  attr_accessor :accessible, :total_credits
+  attr_accessor :accessible
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
@@ -94,6 +90,11 @@ class User < ActiveRecord::Base
     :through => :participating_engagements,
     :source => :activity
 
+
+  def on_init
+    self.interested_in ||= interested_in_from_gender(gender)
+  end
+  
   def to_s
     [first_name, last_name].join ' '
   end
@@ -128,17 +129,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def before_validation_on_create
-    # Set interested_in if it does not exist.
-    if interested_in.blank?
-      self.interested_in = interested_in_from_gender(gender)
-    end
-  end
-
-  def invite_path
-    "/invite/#{invite_slug}"
-  end
-
   def activity_associations
     [:activities, :participating_activities, 
       :engaged_activities, :engaged_participating_activities]
@@ -162,32 +152,30 @@ class User < ActiveRecord::Base
     engagements + participating_engagements
   end
 
-  def trigger(slug, related=nil)
-    UserAction.create_from_user_and_slug(self, slug, related)
-  end
-
-  def total_credits
-    actions.uncached { actions.sum :cost }
-  end
-
   def total_coins
-    # FIXME
-    total_credits
+    actions.uncached { actions.sum :coins }
   end
 
   def total_karma
-    # FIXME
-    0
+    actions.uncached { actions.sum :karma }
   end
 
   def as_json(options={})
     'BUILD'
   end
 
+  def trigger(slug, related=nil)
+    UserAction.create_from_user_and_slug(self, slug, related)
+  end
+
   private
 
   def mass_assignment_authorizer(role = :default)
     super + (accessible || [])
+  end
+
+  def trigger_registration
+    NewUserWorker.perform_async(id)
   end
 
   def set_uuid
@@ -198,10 +186,6 @@ class User < ActiveRecord::Base
   def set_invite_slug
     self.invite_slug = "#{created_at.to_i.to_s.reverse.chop}#{id}#{Random.rand(10)}"
     save!
-  end
-
-  def trigger_registration
-    self.trigger 'registration'
   end
 
 end

@@ -38,9 +38,7 @@
           =image_tag @user.photo.medium, :class => 'img-rounded'
 
       %dt 
-        Large
-        %span.label.label-info
-          1280x800
+        Original
       %dd
         %p
-          =image_tag @user.photo.large, :class => 'img-rounded'
+          =image_tag @user.photo.image, :class => 'img-rounded'

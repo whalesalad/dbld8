@@ -29,7 +29,7 @@
 
           %section.content-section
             %h4 Coins
-            %p #{@user.first_name} has <b>#{pluralize(@user.total_credits, 'coin')}.</b>
+            %p #{@user.first_name} has <b>#{pluralize(@user.total_coins, 'coin')}.</b>
 
         .span5
           %section.content-section
@@ -113,13 +113,14 @@
 
 
       %section.content-section
-        %h4 Invitation Details
+        %h4 Invitation
 
-        %p <b>Invite Slug:</b> <code>#{@user.invite_slug}</code>
-        
-        - invite_url = "#{request.protocol}#{request.host_with_port}#{@user.invite_path}"
+        %dl.dl-horizontal
+          %dt Slug
+          %dd <code>#{@user.invite_slug}</code>
 
-        %p <b>#{@user.first_name}'s Invite URL:</b> #{link_to(invite_url, invite_url, :target => '_blank')}
+          %dt URL
+          %dd #{link_to(user_invitation_url(@user.invite_slug), user_invitation_url(@user.invite_slug), :target => '_blank')}
 
 
       %section.content-section
@@ -142,6 +143,7 @@
     .span6
       %ul.nav.nav-tabs
         %li= link_to "User Actions", '#user-actions', :data => { :toggle => 'tab' }
+        %li= link_to "Friends", '#user-friends', :data => { :toggle => 'tab' }
         %li= link_to "Activities", '#user-activities', :data => { :toggle => 'tab' }
         %li= link_to "Raw Object", '#raw-object', :data => { :toggle => 'tab' }
 
@@ -156,6 +158,9 @@
                 %span.action-meta
                   #{action.meta_string}
 
+        .tab-panel#user-friends
+          %h4 Friends
+          %p Refactor friends here.
 
         .tab-panel#user-activities
           %h4 Activities

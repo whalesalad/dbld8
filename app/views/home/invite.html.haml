@@ -3,7 +3,7 @@
 - dd_url = (@user) ? "doubledate://invite?#{@user.invite_slug}" : "doubledate://welcome"
 
 - content_for :head do
-  %meta{ :name => 'apple-itunes-app', :content => "app-id=XXXXXXXXX, app-argument=#{dd_url}" }
+  %meta{ :name => 'apple-itunes-app', :content => "app-id=#{Rails.configuration.app_id}, app-argument=#{dd_url}" }
 
 %section#invite
   %h3
@@ -27,4 +27,5 @@
     %p= link_to "Add #{@user.first_name} as a Wing", dd_url, :class => 'btn btn-primary btn-large'
     %p.or OR
 
-  %p= link_to "Get DoubleDate from the App Store", "http://itunes.apple.com/en/app/DoubleDate/idXXXXXXXXX?mt=8", :class => 'btn'
+  %p
+    = link_to "Get DoubleDate from the App Store", itunes_path, :class => 'btn'

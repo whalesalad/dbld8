@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121230180516) do
+ActiveRecord::Schema.define(:version => 20130108192911) do
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -139,11 +139,12 @@ ActiveRecord::Schema.define(:version => 20121230180516) do
   create_table "user_actions", :force => true do |t|
     t.integer  "user_id"
     t.string   "type"
-    t.integer  "cost"
+    t.integer  "coins"
     t.integer  "related_id"
     t.string   "related_type"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "karma",        :default => 0
   end
 
   add_index "user_actions", ["related_id", "related_type"], :name => "index_user_actions_on_related_id_and_related_type"

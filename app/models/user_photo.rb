@@ -23,10 +23,8 @@ class UserPhoto < ActiveRecord::Base
   end
 
   class UserPhotoUploader < CarrierWave::Uploader::Base
-    # Include RMagick or MiniMagick support:
     include CarrierWave::RMagick
     include CarrierWave::MimeTypes
-    # include CarrierWave::MiniMagick
 
     # User S3 for file storage
     storage :fog
@@ -58,10 +56,6 @@ class UserPhoto < ActiveRecord::Base
       process :resize_to_fill => [640, 400]
     end
 
-    version :large do
-      process :resize_to_limit => [1280, 800]
-    end
-
     def extension_white_list
       %w(jpg jpeg gif png)
     end
@@ -82,16 +76,11 @@ class UserPhoto < ActiveRecord::Base
     image.medium
   end
 
-  def large
-    image.large
-  end
-
   def as_json(options={})
     result = super({ :only => [:id] })
     result[:thumb] = image.thumb.url
     result[:small] = image.small.url
     result[:medium] = image.medium.url
-    result[:large] = image.large.url
     result
   end
   

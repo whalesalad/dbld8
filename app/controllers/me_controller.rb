@@ -10,9 +10,9 @@ class MeController < ApplicationController
     @user = authenticated_user
 
     if @user.update_attributes(params[:user])
-      return respond_with @user, :template => 'users/show'
+      respond_with @user, :template => 'users/show'
     else
-      return respond_with(@user, status: :unprocessable_entity)
+      respond_with(@user, status: :unprocessable_entity)
     end
   end
 
