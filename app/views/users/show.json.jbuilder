@@ -15,4 +15,6 @@ end
 
 json.(@user, :email, :first_name, :last_name, :gender, :birthday, :age, :single, :interested_in, :bio)
 
+json.(@user, :total_coins, :total_karma)
+
 json.photo @user.photo
