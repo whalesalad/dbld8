@@ -34,8 +34,7 @@ class UserPhoto < ActiveRecord::Base
     # Override the directory where uploaded files will be stored.
     # This is a sensible default for uploaders that are meant to be mounted:
     def store_dir
-      # user/userid/photos/photoid/file
-      "user/#{model.user_id}/photos/#{model.id}"
+      "user/#{model.user.invite_slug}/photos"
     end
 
     def filename 
@@ -90,6 +89,8 @@ class UserPhoto < ActiveRecord::Base
   def as_json(options={})
     result = super({ :only => [:id] })
     result[:thumb] = image.thumb.url
+    result[:small] = image.small.url
+    result[:medium] = image.medium.url
     result[:large] = image.large.url
     result
   end
