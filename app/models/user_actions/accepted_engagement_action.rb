@@ -13,16 +13,18 @@
 #  karma_value  :integer         default(0)
 #
 
-class ActivityCreateAction < UserAction
+class AcceptedEngagementAction < UserAction
   def coin_value
-    10
+    -50
   end
 
-  def activity
+  # related is an Engagement object, so let's make this easy on ourselves
+  def engagement
     related
   end
-  
+
   def meta_string
-    "#{user} created #{activity||"an activity"} and #{cost_string}"
+    "#{user} accepted #{engagement} and #{cost_string}"
   end
+
 end

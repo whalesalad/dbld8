@@ -10,12 +10,14 @@
 #
 
 class FacebookInvite < ActiveRecord::Base
+  attr_accessible :user_id, :facebook_id
+
+  default_scope order('created_at DESC')
+
   # Queue up the sending of the invitation (writing on the wall)
   after_commit :on => :create do |invite|
-    Resque.enqueue(FacebookWallPost, invite.id)
+    FacebookWallPostWorker.perform_async(invite.id)
   end
-
-  attr_accessible :user_id, :facebook_id
 
   belongs_to :user
   
@@ -31,17 +33,19 @@ class FacebookInvite < ActiveRecord::Base
     "Hey! I'm inviting you to be my wingman. Let's go out and have some fun together!"
   end
 
+  def path
+    "http://dbld8.com/invite/#{user.invite_slug}"
+  end
+
   def invite_message
-    "#{message_text} http://dbld8.com#{user.invite_path}"
+    "#{message_text} #{path}"
   end
 
   def facebook_invite_message
-    { :name => "Become my wing on DoubleDate!", :link => "http://dbld8.com#{user.invite_path}" }
+    { :name => "Become my wing on DoubleDate!", :link => path }
   end
 
   def send_invite
-    # Post to the end users' FB wall
-    # user_graph = 
     user.facebook_graph.put_wall_post(message_text, facebook_invite_message, facebook_id)
   end
 

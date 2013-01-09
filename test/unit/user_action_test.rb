@@ -5,11 +5,12 @@
 #  id           :integer         not null, primary key
 #  user_id      :integer
 #  type         :string(255)
-#  cost         :integer
+#  coin_value   :integer
 #  related_id   :integer
 #  related_type :string(255)
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
+#  karma_value  :integer         default(0)
 #
 
 require 'test_helper'

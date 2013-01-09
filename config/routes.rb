@@ -6,6 +6,8 @@ DoubleDate::Application.routes.draw do
 
   get 'invite(/:invite_slug)' => 'users#invitation', :as => 'user_invitation'
 
+  get 'itunes' => redirect(Rails.configuration.app_store_url), :as => 'itunes'
+
   resources :users, :only => [:index, :show, :create] do
     get 'search', :on => :collection
   end
@@ -91,10 +93,11 @@ DoubleDate::Application.routes.draw do
       get 'venues', :on => :collection
     end
 
-    resources :credit_actions, :only => [:index, :new, :create, :edit, :update]
     resources :user_actions, :only => [:index]
 
-    mount Resque::Server, :at => 'resque', :as => 'resque'
+    require 'sidekiq/web'
+    mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'
+    # mount Resque::Server, :at => 'resque', :as => 'resque'
   end
 
   # Home
