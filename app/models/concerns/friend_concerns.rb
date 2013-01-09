@@ -63,7 +63,9 @@ module Concerns
 
     def friends
       reload
-      direct_friends + inverse_friends
+      
+      friends = direct_friends + inverse_friends
+
     end
 
     def total_friends
