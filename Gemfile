@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby "1.9.3"
 gem 'foreman'
 
-gem 'rails', '3.2.10'
+gem 'rails', '3.2.11'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'pg'
 gem 'haml'
@@ -41,7 +41,6 @@ gem 'slim'
 gem 'sinatra', :require => nil
 
 # gem 'resque', :require => "resque/server"
-
 
 # Images, File Handling
 gem 'rmagick'
