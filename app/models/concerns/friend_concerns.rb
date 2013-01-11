@@ -8,8 +8,15 @@ module Concerns
       has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id", :dependent => :destroy
 
       # This gets direct (you are user_id) and inverse (you are friend_id) user objects
-      has_many :direct_friends, :through => :friendships, :conditions => { :'friendships.approved' => true }, :source => :friend
-      has_many :inverse_friends, :through => :inverse_friendships, :conditions => { :'friendships.approved' => true }, :source => :user
+      has_many :direct_friends, 
+        :through => :friendships, 
+        :conditions => { :'friendships.approved' => true },
+        :source => :friend
+      
+      has_many :inverse_friends, 
+        :through => :inverse_friendships, 
+        :conditions => { :'friendships.approved' => true },
+        :source => :user
 
       # Friends I have asked to be mine
       has_many :requested_friends,
@@ -53,19 +60,12 @@ module Concerns
 
     def find_any_friendship_with(user)
       user_id = (user.instance_of?(User)) ? user.id : user
-
-      friendship = Friendship.where(:user_id => id, :friend_id => user.id).first
-      if friendship.nil?
-        friendship = Friendship.where(:user_id => user.id, :friend_id => id).first
-      end
-      friendship
+      (Friendship.where(:user_id => id, :friend_id => user.id).first || Friendship.where(:user_id => user.id, :friend_id => id).first)
     end
 
     def friends
-      reload
-      
+      # reload
       friends = direct_friends + inverse_friends
-
     end
 
     def total_friends

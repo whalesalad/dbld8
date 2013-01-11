@@ -31,30 +31,12 @@ DoubleDate::Application.routes.draw do
 
     # get list of friends
     # GET /me/friends
-    resources :friends, :only => [:index, :show, :destroy] do
+    resources :friends, :only => [:index, :update, :destroy] do
       get 'facebook', :on => :collection
 
       # /me/friends/invite { facebook_ids: 109234, 23492349, 29349234 }
       post 'invite', :on => :collection
     end
-
-    # POST /me/invite_friends
-    # post 'invite_friends', :action => 'friends#invite_friends'
-
-    resources :friendships, :only => [:index, :show, :update, :create, :destroy] do
-      # ignore a pending friendship request (deletes it)
-      # POST /me/friendships/:friendship_id/ignore
-      post 'ignore', :on => :member
-
-      # get list of pending friendships (others inviting me)
-      # GET /me/friendships/pending
-      get 'pending', :on => :collection
-
-      # Get a list of users I have requested
-      # GET /me/friendships/requested
-      get 'requested', :on => :collection
-    end
-
   end
 
   # Interests
