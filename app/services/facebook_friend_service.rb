@@ -25,6 +25,10 @@ class FacebookFriendService
     end.map { |fb_friend| FacebookFriend.new fb_friend }
   end
 
+  def invitable_users
+    already_users.delete_if { |e| user.find_any_friendship_with(e) } 
+  end
+
   def already_invited
     @already_invited ||= FacebookInvite.where(:facebook_id => facebook_friend_ids).pluck(:facebook_id)
   end

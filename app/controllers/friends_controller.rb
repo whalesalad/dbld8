@@ -44,7 +44,7 @@ class FriendsController < ApplicationController
 
     # Respond with users who already exist in DBLD8, 
     # followed by fb_users who have not been invited yet and are not users.
-    @users = friend_service.already_users + friend_service.invitable
+    @users = friend_service.invitable_users + friend_service.invitable
 
     respond_with @users, :template => 'friends/facebook'
   end
