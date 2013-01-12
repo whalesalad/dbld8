@@ -5,16 +5,16 @@
 #  id           :integer         not null, primary key
 #  user_id      :integer
 #  type         :string(255)
-#  coin_value   :integer
+#  coins        :integer
 #  related_id   :integer
 #  related_type :string(255)
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
-#  karma_value  :integer         default(0)
+#  karma        :integer         default(0)
 #
 
 class UserAction < ActiveRecord::Base
-  before_validation :determine_initial_values, :on => :create
+  before_validation :set_initial_values, :on => :create
 
   attr_accessible :related_id, :related_type
 
@@ -69,17 +69,21 @@ class UserAction < ActiveRecord::Base
     to_s.underscore
   end
 
-  private
+  def reset_initial_values!
+    self.coins = coin_value
+    self.karma = karma_value
+    save!
+  end
 
-  def current_coin_value
+  def coin_value
     10
   end
 
-  def current_karma_value
+  def karma_value
     0
   end
 
-  def determine_initial_values
+  def set_initial_values
     self.coins ||= coin_value
     self.karma ||= karma_value
   end

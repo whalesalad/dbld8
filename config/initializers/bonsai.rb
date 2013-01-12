@@ -1,0 +1,2 @@
+ENV['ELASTICSEARCH_URL'] = ENV['BONSAI_URL'] 
+INDEX_NAME = "dbld8-#{Rails.env}"

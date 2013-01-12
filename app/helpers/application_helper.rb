@@ -25,4 +25,8 @@ module ApplicationHelper
   def gender_posessive(gender)
     (gender == "male") ? "his" : "her"
   end
+
+  def true_false(s)
+    (s == 't') ? true : false
+  end
 end

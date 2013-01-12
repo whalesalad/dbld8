@@ -43,12 +43,12 @@ class Friendship < ActiveRecord::Base
   end
   
   def approve!(approving_user)
-    return if approved?
+    return true if approved?
 
     # Ensure only the receiving friend can approve friendship.
     if approving_user.id == friend_id
       self.approved = true
-      self.save!
+      save!
     end
   end
 

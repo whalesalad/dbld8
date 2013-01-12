@@ -32,24 +32,9 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  def update
-    if @friendship.approve! @authenticated_user
-      respond_with @friendship, :status => 200, :location => me_friendship_path(@friendship)
-    else
-      render json: { 
-        :error => "You do not have permission to approve this friendship. Only those who receive requests can approve them." 
-      }, :status => 500
-    end
-  end
   
   def destroy
-    if @friendship.can_be_modified_by @authenticated_user
-      if @friendship.destroy
-        respond_with(:nothing => true) 
-      end
-    else
-      json_unauthorized "You are not authorized to modify this friendship."
-    end
+    
   end
   
   private
