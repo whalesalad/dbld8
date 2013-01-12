@@ -12,6 +12,10 @@
 class Interest < ActiveRecord::Base
   attr_accessible :facebook_id, :name
 
+  attr_accessor :matched
+
+  default_scope order('name')
+
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :facebook_id, :allow_nil => true
 

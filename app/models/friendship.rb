@@ -21,7 +21,9 @@ class Friendship < ActiveRecord::Base
   
   validates_presence_of :user_id, :friend_id
 
-  validates_uniqueness_of :user_id, :scope => :friend_id, :message => "A friendship between these users already exists."
+  validates_uniqueness_of :user_id, 
+    :scope => :friend_id, 
+    :message => "A friendship between these users already exists."
   
   validate :user_is_not_inviting_himself
 

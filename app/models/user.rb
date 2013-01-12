@@ -121,6 +121,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  def interests_matching_with(another_user)
+    common_interests = (interests.pluck(:id) & another_user.interests.pluck(:id))
+    interests.map do |interest|
+      interest.tap { |n| n.matched = common_interests.include?(n.id) }
+    end
+  end
+
   def interested_in_from_gender(gender)
     case gender
     when 'male' then 'girls'

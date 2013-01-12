@@ -1,0 +1,1 @@
+json.(interest, :id, :name)
