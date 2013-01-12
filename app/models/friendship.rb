@@ -21,21 +21,25 @@ class Friendship < ActiveRecord::Base
   
   validates_presence_of :user_id, :friend_id
 
-  validates_uniqueness_of :user_id, 
-    :scope => :friend_id, 
-    :message => "A friendship between these users already exists."
-  
-  validate :user_is_not_inviting_himself
+  validate :unique_relationship?
+  validate :user_is_not_inviting_himself?
 
   def self.find_for_user_or_friend(user_id)
     where('user_id = ? OR friend_id = ?', user_id, user_id)
+  end
+
+  def unique_relationship?
+    errors.add(:user_id, "a friendship between these users already exists.") unless 
+      self.class.where("(user_id = ? AND friend_id = ?) OR 
+                        (user_id = ? AND friend_id = ?)",
+                         user_id, friend_id, friend_id, user_id).empty?
   end
   
   def to_s
     "#{user} + #{friend}"
   end
 
-  def user_is_not_inviting_himself
+  def user_is_not_inviting_himself?
     errors.add(:friend_id, "can not be the same as User. You cannot become friends with yourself!") if user_id == friend_id
   end
   
