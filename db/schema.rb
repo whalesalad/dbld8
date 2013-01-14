@@ -13,6 +13,8 @@
 
 ActiveRecord::Schema.define(:version => 20130108192911) do
 
+  add_extension "uuid-ossp"
+
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
     t.string   "details"

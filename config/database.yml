@@ -38,6 +38,7 @@ production:
   adapter: postgresql
   encoding: unicode
   database: doubledate 
-  pool: 5
   username: doubledate
   password: "never fly without your wings"
+  allow_concurrency: true
+  pool: 15
