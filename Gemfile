@@ -8,9 +8,6 @@ gem 'rails', '3.2.11'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'pg'
 gem 'haml'
-# gem 'thin'
-gem 'unicorn'
-# gem 'puma'
 gem 'countries'
 gem 'faker'
 gem 'multi_json'
@@ -61,7 +58,13 @@ group :assets do
   gem 'jquery-rails'
 end
 
+group :production do
+  gem 'unicorn'
+  # gem 'puma'
+end
+
 group :development, :test do
+  gem 'thin'
   gem 'quiet_assets'
   gem 'rspec-rails'
   gem 'cucumber'
