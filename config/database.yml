@@ -34,7 +34,17 @@ test:
   username: doubledate
   password:
 
-production:
+heroku: &heroku
+  adapter:  postgresql
+  encoding: unicode
+  pool: 20
+  database: dbmch8c7bepjs7
+  username: qfvqiuurnysonv
+  password: zPVIffBk1hB1TeAEUjCiYNK0xO
+  host: ec2-54-243-243-20.compute-1.amazonaws.com
+  port: 5432
+
+linode: &linode
   adapter: postgresql
   encoding: unicode
   database: doubledate 
@@ -42,3 +52,6 @@ production:
   password: "never fly without your wings"
   allow_concurrency: true
   pool: 15
+
+production:
+  <<: *linode
