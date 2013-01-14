@@ -154,6 +154,7 @@ GEM
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.6.3)
+    newrelic_rpm (3.5.0.1)
     nokogiri (1.5.6)
     oj (2.0.0)
     pg (0.14.1)
@@ -305,6 +306,7 @@ DEPENDENCIES
   kaminari
   koala
   multi_json
+  newrelic_rpm
   oj
   pg
   postgres_ext
