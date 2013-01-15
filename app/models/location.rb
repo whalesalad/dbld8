@@ -74,15 +74,18 @@ class Location < ActiveRecord::Base
 
       params = { 
         :ll => "#{latitude},#{longitude}", 
-        :intent => 'checkin', 
-        :radius => '5000', 
+        :radius => '90000', 
         :limit => 100 
       }
 
-      params[:query] = query unless query.nil?
+      if query.nil?
+        params[:section] = 'topPicks'
+      else
+        params[:query] = query
+      end
 
       # Toggle this sucker between explore / search
-      venues = Foursquare::Venue.search(params)
+      venues = Foursquare::Venue.explore(params)
 
       return venues.map { |v| v.location }
     end

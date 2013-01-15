@@ -26,9 +26,9 @@ module Foursquare
 
     response = RestClient.get full_path, { :params => params }
 
-    # debug 'Full Path', full_path
-    # debug 'Params', params
-    # debug 'Response', response
+    debug 'Full Path', full_path
+    debug 'Params', params
+    debug 'Response', response
 
     JSON.parse(response)['response']
   end

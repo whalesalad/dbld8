@@ -13,7 +13,10 @@ module Foursquare
 
       def explore(params)
         response = Foursquare.get "/venues/explore", params
-        parse_venues_from_response(response['groups'].first['items'])
+        
+        venues = response['groups'].first['items'].map {|i| i['venue']}
+        
+        parse_venues_from_response(venues)
       end
 
       def search(params)
@@ -29,9 +32,9 @@ module Foursquare
         return venues if raw_venues.count == 0
         
         raw_venues.each do |venue|
-          if venue['stats']['usersCount'] > 5
-            venues << self.new(venue) 
-          end
+          next if venue['stats']['usersCount'] < 5
+          next unless venue.has_key? 'location'
+          venues << self.new(venue)
         end
 
         venues.compact.sort_by! { |v| v.distance }
@@ -45,11 +48,9 @@ module Foursquare
 
       unless location.nil?
         @location = location
-      else
-        @location = find_or_create_location
       end
 
-      @location.distance = distance
+      # @location.distance = distance
     end
 
     def to_s
@@ -85,7 +86,7 @@ module Foursquare
     end
 
     def location
-      @location
+      @location ||= find_or_create_location
     end
 
     def sanitize_field(text)
