@@ -38,5 +38,4 @@ module Foursquare
     puts data
     puts "\n"    
   end
-
 end

@@ -64,6 +64,10 @@ class FriendsController < ApplicationController
     doubledate_users = FacebookUser.where(:facebook_id => facebook_ids)
 
     doubledate_users.each do |user|
+      # FIXME
+      # Right now we send an invite from current user => other user
+      # IF an invite exists already from other user, we should just approve it.
+      # Rare edge case but ... should be settled.
       @authenticated_user.invite(user)
     end
     
