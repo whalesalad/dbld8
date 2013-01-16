@@ -31,7 +31,7 @@ class Activity < ActiveRecord::Base
 
   attr_accessor :age_bounds, :relationship
 
-  default_scope order('created_at DESC')
+  default_scope includes(:engagements, :location, :user => [:profile_photo], :wing => [:profile_photo]).order('created_at DESC')
 
   validates_presence_of :title, :details, :wing_id
 

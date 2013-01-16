@@ -91,6 +91,8 @@ class User < ActiveRecord::Base
     :source => :activity
 
 
+  default_scope includes(:location, :interests, :profile_photo)
+
   def on_init
     self.interested_in ||= interested_in_from_gender(gender)
   end
@@ -164,7 +166,8 @@ class User < ActiveRecord::Base
   end
 
   def total_karma
-    actions.uncached { actions.sum :karma }
+    0
+    # actions.uncached { actions.sum :karma }
   end
 
   def as_json(options={})
