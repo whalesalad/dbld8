@@ -1,12 +1,17 @@
 %section.user-detail
-  - if @location.venue?
-    %h1
-      #{@location.venue}
-      %small #{@location.location_name}
-    %h3.object-meta ID ##{@location.id} &mdash; Foursquare Venue
-  - else
-    %h1 #{@location}
-    %h3.object-meta ##{@location.id} &mdash; City
+  .row-fluid
+    .span1
+      %br/
+      = image_tag @location.icon(88)
+    .span11
+      - if @location.venue?
+        %h1
+          #{@location.venue}
+          %small #{@location.location_name}
+        %h3.object-meta ID ##{@location.id} &mdash; Foursquare Venue
+      - else
+        %h1 #{@location}
+        %h3.object-meta ##{@location.id} &mdash; City
 
   %hr/ 
 

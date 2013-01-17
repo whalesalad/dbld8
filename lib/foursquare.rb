@@ -3,6 +3,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'rest_client'
 require 'json'
 require "foursquare/venue"
+require "foursquare/category"
 
 module Foursquare
   API_SERVER = "https://api.foursquare.com/v2"
@@ -26,9 +27,9 @@ module Foursquare
 
     response = RestClient.get full_path, { :params => params }
 
-    debug 'Full Path', full_path
-    debug 'Params', params
-    debug 'Response', response
+    # debug 'Full Path', full_path
+    # debug 'Params', params
+    # debug 'Response', response
 
     JSON.parse(response)['response']
   end

@@ -42,6 +42,7 @@ module Foursquare
     end
 
     attr_reader :json, :location
+    attr_accessor :categories
 
     def initialize(json, location=nil)
       @json = json
@@ -89,6 +90,19 @@ module Foursquare
       @location ||= find_or_create_location
     end
 
+    def categories
+      @categories ||= @json["categories"].map { |c| Foursquare::Category.new(c) }
+    end
+
+    def primary_category
+      return nil if categories.blank?
+      @primary_category ||= categories.select { |category| category.primary? }.try(:first)
+    end
+    
+    def icon
+      primary_category ? primary_category.icon : nil
+    end
+
     def sanitize_field(text)
       case text
       when nil
@@ -103,6 +117,7 @@ module Foursquare
     def find_or_create_location
       params = {
         :foursquare_id => id,
+        :foursquare_icon => icon,
         :venue => name,
         :latitude => @json["location"]["lat"],
         :longitude => @json["location"]["lng"],

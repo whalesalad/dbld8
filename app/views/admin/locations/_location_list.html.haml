@@ -3,7 +3,8 @@
 %table.table.table-striped
   %thead
     %tr
-      %th{ :width => '10%' } ID
+      %th{ :width => '7%' } ID
+      %th{ :width => '8%' } Icon
       %th{ :width => '50%' } Location
       %th{ :width => '20%' } Country
       %th{ :width => '15%' } Users Here
@@ -12,7 +13,10 @@
   %tbody
     - for location in @locations.limit(100)
       %tr
-        %td #{location.id}
+        %td
+          #{location.id}
+        %td
+          = image_tag location.icon(32) if location.venue?
         %td 
           %b
             #{link_to location.admin_name, admin_location_path(location)}

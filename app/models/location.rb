@@ -98,6 +98,15 @@ class Location < ActiveRecord::Base
     end
   end
 
+  def self.get_foursquare_icons
+    self.venues.each do |location|
+      if location.foursquare_icon.blank?
+        location.foursquare_icon = location.foursquare_venue.icon
+        location.save!
+      end
+    end
+  end
+
   def to_s
     venue? ? venue : location_name
   end
@@ -171,14 +180,25 @@ class Location < ActiveRecord::Base
   end
 
   def foursquare_venue
-    if venue?
-      require 'foursquare'
-      @foursquare_venue ||= Foursquare::Venue.find(foursquare_id, self)
-    end
+    return false unless venue?
+    
+    require 'foursquare'
+    @foursquare_venue ||= Foursquare::Venue.find(foursquare_id, self)
   end
 
   def foursquare_url
     "http://foursquare.com/v/#{foursquare_id}" if venue?
+  end
+
+  def icon(size=256)
+    sizes = [32, 64, 88, 256]
+    size = 256 unless sizes.include?(size)
+
+    icon_url = foursquare_icon || "https://foursquare.com/img/categories/none_%s.png"
+
+    bg = foursquare_icon.present? ? 'bg_' : ''      
+
+    icon_url % "#{bg}#{size}"
   end
 
   def as_json(options={})
