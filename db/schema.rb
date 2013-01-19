@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130118180038) do
+ActiveRecord::Schema.define(:version => 20130119150606) do
 
   add_extension "uuid-ossp"
 
@@ -62,6 +62,20 @@ ActiveRecord::Schema.define(:version => 20130118180038) do
   add_index "engagements", ["user_id"], :name => "index_engagements_on_user_id"
   add_index "engagements", ["wing_id", "activity_id"], :name => "index_engagements_on_wing_id_and_activity_id", :unique => true
   add_index "engagements", ["wing_id"], :name => "index_engagements_on_wing_id"
+
+  create_table "events", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "type"
+    t.integer  "coins"
+    t.integer  "related_id"
+    t.string   "related_type"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "karma",        :default => 0
+  end
+
+  add_index "events", ["related_id", "related_type"], :name => "index_user_actions_on_related_id_and_related_type"
+  add_index "events", ["user_id"], :name => "index_user_actions_on_user_id"
 
   create_table "facebook_invites", :force => true do |t|
     t.integer  "user_id"
@@ -145,20 +159,6 @@ ActiveRecord::Schema.define(:version => 20130118180038) do
 
   add_index "messages", ["engagement_id"], :name => "index_messages_on_engagement_id"
   add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
-
-  create_table "user_actions", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "type"
-    t.integer  "coins"
-    t.integer  "related_id"
-    t.string   "related_type"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
-    t.integer  "karma",        :default => 0
-  end
-
-  add_index "user_actions", ["related_id", "related_type"], :name => "index_user_actions_on_related_id_and_related_type"
-  add_index "user_actions", ["user_id"], :name => "index_user_actions_on_user_id"
 
   create_table "user_photos", :force => true do |t|
     t.integer  "user_id"

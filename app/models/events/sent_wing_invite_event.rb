@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: user_actions
+# Table name: events
 #
 #  id           :integer         not null, primary key
 #  user_id      :integer
@@ -13,18 +13,20 @@
 #  karma        :integer         default(0)
 #
 
-class AcceptedEngagementAction < UserAction
+class SentWingInviteEvent < Event
   def coin_value
-    -50
+    10
   end
 
-  # related is an Engagement object, so let's make this easy on ourselves
-  def engagement
+  validates_uniqueness_of :user_id, 
+    :scope => [:related_id, :related_type], 
+    :message => "This user has already been awarded for this recruit."
+
+  def recruited
     related
   end
 
-  def meta_string
-    "#{user} accepted #{engagement} and #{cost_string}"
+  def detail_string
+    "#{user} recruited #{recruited}"
   end
-
 end

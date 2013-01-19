@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: user_actions
+# Table name: events
 #
 #  id           :integer         not null, primary key
 #  user_id      :integer
@@ -13,16 +13,16 @@
 #  karma        :integer         default(0)
 #
 
-class ActivityCreateAction < UserAction
+class AcceptedWingInviteEvent < Event
   def coin_value
     10
   end
 
-  def activity
+  def wing
     related
   end
-  
-  def meta_string
-    "#{user} created #{activity||"an activity"} and #{cost_string}"
+
+  def detail_string
+    "#{user} accepted #{wing||"someone"}'s wing invite"
   end
 end

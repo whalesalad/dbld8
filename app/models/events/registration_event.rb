@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: user_actions
+# Table name: events
 #
 #  id           :integer         not null, primary key
 #  user_id      :integer
@@ -13,21 +13,12 @@
 #  karma        :integer         default(0)
 #
 
-class RecruitAction < UserAction
+class RegistrationEvent < Event
   def coin_value
-    10
+    1000
   end
 
-  validates_uniqueness_of :user_id, 
-    :scope => [:related_id, :related_type], 
-    :message => "This user has already been awarded for this recruit."
-
-  def recruited
-    related
+  def detail_string
+    "#{user} joined DBLD8"
   end
-
-  def meta_string
-    "#{user} recruited #{recruited} and #{cost_string}"
-  end
-
 end

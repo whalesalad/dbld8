@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: user_actions
+# Table name: events
 #
 #  id           :integer         not null, primary key
 #  user_id      :integer
@@ -13,12 +13,12 @@
 #  karma        :integer         default(0)
 #
 
-class RegistrationAction < UserAction
+class ProfileCompletedEvent < Event
   def coin_value
-    1000
+    50
   end
 
-  def meta_string
-    "#{user} joined DBLD8 and #{cost_string}"
+  def detail_string
+    "#{user} finished their profile"
   end
 end

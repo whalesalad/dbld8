@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: user_actions
+# Table name: events
 #
 #  id           :integer         not null, primary key
 #  user_id      :integer
@@ -13,19 +13,13 @@
 #  karma        :integer         default(0)
 #
 
-class UserAction < ActiveRecord::Base
+class Event < ActiveRecord::Base
   before_validation :set_initial_values, :on => :create
 
-  attr_accessible :related_id, :related_type
+  # validate the user has enough coins in the bank
+  # to do this new event
 
-  class << self
-    def create_from_user_and_slug(user, slug, related=nil)
-      action = "#{slug}_action".classify.constantize.new
-      action.user = user
-      action.related = related unless related.nil?
-      action.save!
-    end
-  end
+  attr_accessible :related_id, :related_type
 
   belongs_to :user
   validates_presence_of :user
@@ -33,8 +27,29 @@ class UserAction < ActiveRecord::Base
   # Optionally, a related object
   belongs_to :related, :polymorphic => true
 
+  def self.create_from_user_and_slug(user, slug, related=nil)
+    event = self.from_slug(slug)
+    event.user = user
+    event.related = related unless related.nil?
+    event.save!
+  end
+
+  def self.from_slug(slug)
+    "#{slug}_event".classify.constantize.new
+  end
+
+  def set_initial_values
+    self.coins ||= coin_value
+    self.karma ||= karma_value
+  end
+
   def to_s
-    type.gsub('Action', '')
+    return type if type == 'Event'
+    type.gsub('Event', '')
+  end
+
+  def slug
+    to_s.underscore
   end
 
   def earns?
@@ -43,6 +58,10 @@ class UserAction < ActiveRecord::Base
 
   def spends?
     !!earns?
+  end
+
+  def free?
+    coin_value.nil? || coin_value == 0
   end
 
   def cost_verb
@@ -57,16 +76,14 @@ class UserAction < ActiveRecord::Base
     "#{prefix}#{coins.abs}"
   end
 
-  def meta_string
-    "undefined"
+  def detail
+    s = [detail_string]
+    s << cost_string unless free?
+    "#{s.join(' ')}."
   end
 
   def cost_string
-    "#{cost_verb} #{coins} coins."
-  end
-
-  def action_slug
-    to_s.underscore
+    "#{cost_verb} #{coins} coins"
   end
 
   def reset_initial_values!
@@ -81,11 +98,6 @@ class UserAction < ActiveRecord::Base
 
   def karma_value
     0
-  end
-
-  def set_initial_values
-    self.coins ||= coin_value
-    self.karma ||= karma_value
   end
 
 end
