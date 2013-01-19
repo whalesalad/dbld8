@@ -1,0 +1,69 @@
+%section.engagement-detail
+  %ul.breadcrumb
+    %li
+      = link_to @activity, admin_activity_path(@activity)
+      %span.divider
+        \/
+    %li.active
+      = @engagement.participant_names
+
+  %h1 
+    #{@engagement.participant_names}, Engagement for "#{@activity}"
+  
+  %h3.object-meta 
+    Engagement ##{@engagement.id}, Created #{l @engagement.created_at, :format => :long} (#{time_ago_in_words(@engagement.created_at)} ago)
+
+  %hr/
+
+  .row-fluid
+    .span5
+      
+      %section.content-section
+        %h4 Engagement
+        %dl.dl-horizontal
+          %dt Creator
+          %dd #{link_to @engagement.user, admin_user_path(@engagement.user)}
+
+          %dt Wingman
+          %dd #{link_to @engagement.wing, admin_user_path(@engagement.wing)}
+
+        %h4 Activity
+        %dl.dl-horizontal
+          %dt Creator
+          %dd #{link_to @activity.user, admin_user_path(@activity.user)}
+
+          %dt Wingman
+          %dd #{link_to @activity.wing, admin_user_path(@activity.wing)}        
+        
+
+      .form-actions
+        = link_to "Delete Engagement", admin_activity_engagement_path(@activity, @engagement), :method => :delete, :confirm => "Are you sure you want to delete this engagement?", :class => 'btn btn-danger'
+
+    .span7
+      %ul.nav.nav-tabs.location-tabs
+        %li= link_to "Messages", '#engagement-messages', :data => { :toggle => 'tab' }
+        %li= link_to "Raw Object", '#raw-object', :data => { :toggle => 'tab' }
+
+      %section.tab-content
+        .tab-panel#engagement-messages
+          %h4 
+            Messages
+            %span.badge.badge-info #{@engagement.messages.count}
+          - @engagement.messages.each do |message|
+            
+            .media
+              .pull-left
+                = image_tag message.user.photo.thumb, :class => 'img-rounded media-object', :width => "50px", :height => "50px"
+              
+              .media-body
+                %h5.media-heading
+                  #{message.user}
+                  %small
+                    #{time_ago_in_words(message.created_at)} ago
+
+                %p
+                  #{message.body}
+        
+        .tab-panel#raw-object
+          %h4 Raw Activity Object
+          = debug @engagement

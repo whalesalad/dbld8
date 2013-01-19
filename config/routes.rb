@@ -20,8 +20,6 @@ DoubleDate::Application.routes.draw do
     resources :engagements do
       resources :messages
     end
-
-    resources :messages
   end
 
   # ME!
@@ -57,11 +55,15 @@ DoubleDate::Application.routes.draw do
       get 'photos', :on => :member
     end
 
-    resources :friendships
+    resources :friendships, :only => [:index, :show, :destroy]
     
-    resources :activities do
+    resources :activities, :only => [:index, :show] do
       get 'engaged', :on => :collection
       get 'expired', :on => :collection
+
+      resources :engagements, :only => [:index, :show] do
+        resources :messages, :only => [:index, :show]
+      end
     end
 
     resources :facebook_invites, :only => [:index] do

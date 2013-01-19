@@ -6,7 +6,7 @@
         = (@activity.location.venue?) ? 'at' : 'in'
         #{@activity.location}
   
-  %h3.object-meta ##{@activity.id}, Created #{l @activity.created_at, :format => :long}
+  %h3.object-meta ##{@activity.id}, Created #{l @activity.created_at, :format => :long} (#{time_ago_in_words(@activity.created_at)} ago)
 
   %hr/
 
@@ -52,7 +52,7 @@
 
     .span7
       %ul.nav.nav-tabs.location-tabs
-        %li= link_to "Incoming Engagements", '#incoming-engagements', :data => { :toggle => 'tab' }
+        %li= link_to "Engagements", '#incoming-engagements', :data => { :toggle => 'tab' }
         %li= link_to "Raw Object", '#raw-object', :data => { :toggle => 'tab' }
 
       %section.tab-content
@@ -60,15 +60,16 @@
           - if @activity.engagements.exists?
             %p There's #{pluralize(@activity.engagements.count, 'engagement')} for this activity.
 
-            %ul.engagements-list
+            %ul.generic-object-list
               - @activity.engagements.each do |engagement|
                 %li
-                  %span.engagement-users #{engagement.participant_names}
-                  %span.engagement-meta 
-                    #{engagement.status.titlecase} • Sent #{l engagement.created_at, :format => :long}
+                  %span.object-title 
+                    = link_to engagement.participant_names, admin_activity_engagement_path(@activity, engagement)
+                  %span.object-detail 
+                    Sent #{l engagement.created_at, :format => :long}
 
           - else
-            %p There are no incoming engagements for this activity.
+            %p There are no engagements for this activity.
 
         .tab-panel#raw-object
           %h4 Raw Activity Object

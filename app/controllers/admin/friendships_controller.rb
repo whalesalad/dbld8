@@ -17,7 +17,8 @@ class Admin::FriendshipsController < AdminController
     @friendship = Friendship.new(params[:friendship])
     
     if @friendship.save
-      redirect_to admin_friendships_path, success: 'The friendship has been created successfully.'
+      redirect_to admin_friendships_path, 
+        success: 'Friendship created successfully.'
     else
       render action: "new"
     end
@@ -25,7 +26,8 @@ class Admin::FriendshipsController < AdminController
 
   def destroy
     @friendship.destroy
-    redirect_to admin_friendships_path, :flash => { :success => "Successfully deleted friendship #{@friendship.to_s}." }
+    redirect_to admin_friendships_path, 
+      :success => "Successfully deleted friendship #{@friendship.to_s}."
   end
 
   protected

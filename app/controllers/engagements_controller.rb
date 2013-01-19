@@ -6,10 +6,7 @@ class EngagementsController < BaseActivitiesController
   before_filter :activity_participants_only, :only => [:update]
 
   def index
-    @engagements = if @activity.engaged?
-      # if this activity is engaged, immediately respond with the engaged activity
-      [@activity.accepted_engagement]
-    elsif @activity.allowed?(@authenticated_user, :owners)
+    @engagements = if @activity.allowed?(@authenticated_user, :owners)
       # if the user is the user/wing
       @activity.engagements.not_ignored
     else
@@ -25,7 +22,7 @@ class EngagementsController < BaseActivitiesController
       json_unauthorized "You or your wing have already engaged in this activity."
     end
 
-    message = params[:engagement].delete(:message)
+    body = params[:engagement].delete(:body)
     params[:engagement][:user_id] = @authenticated_user.id
 
     @engagement = @activity.engagements.new(params[:engagement])
@@ -34,7 +31,7 @@ class EngagementsController < BaseActivitiesController
       # Send the first message for this engagement
       # I'd like to hook this to the after_create event
       # but there is no way to cache the message text for this
-      @engagement.send_initial_message(message)
+      @engagement.send_initial_message(body)
 
       # Finally, respond
       respond_with @engagement, :status => :created, 
@@ -47,12 +44,6 @@ class EngagementsController < BaseActivitiesController
   def show
     # A user needs to be one of the four allowed to see this.
     return unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
-
-    if @engagement.unread? && @activity.allowed?(@authenticated_user, :owner)
-      # mark viewed if activity owner looks at this
-      @engagement.viewed!
-    end
-
     respond_with @engagement
   end
 

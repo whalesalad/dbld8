@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130116224950) do
+ActiveRecord::Schema.define(:version => 20130118180038) do
 
   add_extension "uuid-ossp"
 
@@ -23,13 +23,11 @@ ActiveRecord::Schema.define(:version => 20130116224950) do
     t.integer  "location_id"
     t.integer  "user_id",     :null => false
     t.integer  "wing_id",     :null => false
-    t.string   "status"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
 
   add_index "activities", ["location_id"], :name => "index_activities_on_location_id"
-  add_index "activities", ["status"], :name => "index_activities_on_status"
   add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
   add_index "activities", ["wing_id"], :name => "index_activities_on_wing_id"
 
@@ -52,15 +50,14 @@ ActiveRecord::Schema.define(:version => 20130116224950) do
   add_index "credit_actions", ["slug"], :name => "index_credit_actions_on_slug", :unique => true
 
   create_table "engagements", :force => true do |t|
-    t.string   "status"
-    t.integer  "user_id",     :null => false
-    t.integer  "wing_id",     :null => false
-    t.integer  "activity_id", :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "user_id",                        :null => false
+    t.integer  "wing_id",                        :null => false
+    t.integer  "activity_id",                    :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "ignored",     :default => false
   end
 
-  add_index "engagements", ["status"], :name => "index_engagements_on_status"
   add_index "engagements", ["user_id", "activity_id"], :name => "index_engagements_on_user_id_and_activity_id", :unique => true
   add_index "engagements", ["user_id"], :name => "index_engagements_on_user_id"
   add_index "engagements", ["wing_id", "activity_id"], :name => "index_engagements_on_wing_id_and_activity_id", :unique => true
@@ -128,10 +125,20 @@ ActiveRecord::Schema.define(:version => 20130116224950) do
   add_index "locations", ["geoname_id"], :name => "index_locations_on_geoname_id", :unique => true
   add_index "locations", ["name"], :name => "index_locations_on_name"
 
+  create_table "message_proxies", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "message_id"
+    t.boolean  "unread",     :default => true
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "message_proxies", ["user_id", "message_id"], :name => "index_message_proxies_on_user_id_and_message_id", :unique => true
+
   create_table "messages", :force => true do |t|
     t.integer  "user_id"
     t.integer  "engagement_id"
-    t.text     "message"
+    t.text     "body"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end

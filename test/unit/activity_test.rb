@@ -10,7 +10,6 @@
 #  location_id :integer
 #  user_id     :integer         not null
 #  wing_id     :integer         not null
-#  status      :string(255)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #

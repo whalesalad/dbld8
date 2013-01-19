@@ -32,8 +32,6 @@ class User < ActiveRecord::Base
 
   after_create :set_invite_slug
 
-  after_create :trigger_registration
-
   # Password // Bcrypt
   has_secure_password
 
@@ -91,7 +89,7 @@ class User < ActiveRecord::Base
     :source => :activity
 
 
-  default_scope includes(:location, :interests, :profile_photo)
+  default_scope includes(:location, :profile_photo)
 
   def on_init
     self.interested_in ||= interested_in_from_gender(gender)
@@ -138,6 +136,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def gender_posessive
+    (gender == "male") ? "his" : "her"
+  end
+
   def activity_associations
     [:activities, :participating_activities, 
       :engaged_activities, :engaged_participating_activities]
@@ -182,10 +184,6 @@ class User < ActiveRecord::Base
 
   def mass_assignment_authorizer(role = :default)
     super + (accessible || [])
-  end
-
-  def trigger_registration
-    NewUserWorker.perform_async(id)
   end
 
   def set_uuid

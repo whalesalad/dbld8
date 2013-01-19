@@ -22,7 +22,7 @@
       %tr{ :class => user.is_a?(FacebookUser) ? 'info' : '' }
         %td #{user.id}
         %td
-          =image_tag user.photo.thumb, :class => 'img-circle', :width => "20px", :height => "20px"
+          = image_tag user.photo.thumb, :class => 'img-rounded', :width => "30px", :height => "30px"
         %td 
           %b
             #{link_to user, admin_user_path(user)}

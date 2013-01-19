@@ -19,6 +19,7 @@
 #  address          :string(255)
 #  geoname_id       :integer
 #  activities_count :integer         default(0)
+#  foursquare_icon  :string(255)
 #
 
 class Location < ActiveRecord::Base

@@ -5,34 +5,40 @@
 #  id            :integer         not null, primary key
 #  user_id       :integer
 #  engagement_id :integer
-#  message       :text
+#  body          :text
 #  created_at    :datetime        not null
 #  updated_at    :datetime        not null
 #
 
 class Message < ActiveRecord::Base
-  attr_accessible :user_id, :message
+  attr_accessible :user_id, :body
 
   belongs_to :user
+  
   belongs_to :engagement
 
+  has_one :activity, :through => :engagement
+  
+  has_many :message_proxies, :dependent => :destroy
+
+  default_scope order('created_at ASC').includes(:user, :message_proxies)
+
   def allowed?(a_user, permission = :all)
-    case permission
-    when :owner, :modify
-      a_user == user
-    when :all
-      engagement.participant_ids.include?(a_user.id)
-    end
+    a_user.id == user.id
+    
+    # at the moment this is all that can be done, regardless of permissions
+    # case permission
+    # when :owner
+    #   a_user == user
+    # end
+  end
+
+  def unread_for(a_user)
+    message_proxies.find_by_user_id(a_user.id).unread?
   end
 
   def as_json(options={})
-    exclude = [:updated_at, :engagement_id]
-
-    result = super({ :except => exclude }.merge(options))
-
-    result[:first_name] = user.first_name
-    
-    result
+    'BUILD'
   end
 
 end

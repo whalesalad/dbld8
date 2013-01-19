@@ -23,8 +23,6 @@
 #
 
 class FacebookUser < User
-  after_create :reward_for_invitation
-  
   # Facebook Invitations
   has_many :facebook_invites,
     :foreign_key => "user_id",
@@ -143,10 +141,6 @@ class FacebookUser < User
     if result.any? && result[0].has_key?('src_big')
       result[0]['src_big'] 
     end
-  end
-
-  def reward_for_invitation
-    RewardFacebookInviteWorker.perform_async(id)
   end
 
 end

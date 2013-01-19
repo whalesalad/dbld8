@@ -13,17 +13,20 @@
           %section.content-section
             %h4 Bio
             - if @user.bio.present?
-              %blockquote
-                = @user.bio
+              %blockquote= @user.bio
             - else
               %p The bio for #{@user} is blank.
+
+            %h4
+              Interests
+              %span.badge.badge-info #{@user.interests.count}
+            %p #{@user.interests.to_sentence}
 
           %section.content-section
             %h4 DBLD8 Auth Token
             %p
               - if @user.token.present?
-                %code
-                  #{@user.token}
+                = text_field_tag 'token', @user.token, :readonly => true, :class => 'input-xlarge'
               - else
                 This user hasn't authenticated yet. Tokens are created on first login.
 
@@ -76,41 +79,7 @@
           %dt Created
           %dd #{@user.created_at}
 
-      %section.content-section
-        %h4 Friends
-
-        %ul.nav.nav-tabs
-          %li= link_to "#{pluralize @user.total_friends, 'Wingman'}", '#wingmen-active', :data => { :toggle => 'tab' }
-          %li= link_to "#{@user.friendships.unapproved.count} Invited", '#wingmen-invited', :data => { :toggle => 'tab' }
-          %li= link_to "#{@user.inverse_friendships.unapproved.count} Incoming", '#wingmen-incoming', :data => { :toggle => 'tab' }
-        
-        %section.tab-content
-          #wingmen-active.tab-panel
-            - if @user.friends.count > 0
-              %ul
-                - for wingman in @user.friends
-                  %li= link_to wingman, admin_user_url(wingman)
-            - else
-              %p #{@user.first_name} does not have any wingmen.
-
-          #wingmen-invited.tab-panel
-            - if @user.friendships.unapproved.count > 0
-              %p These are invitations sent to other users:
-              %ul
-                - for friendship in @user.friendships.unapproved
-                  %li= friendship
-            - else
-              %p #{@user.first_name} does not have any pending invitations for other users.
-
-          #wingmen-incoming.tab-panel
-            - if @user.inverse_friendships.unapproved.count > 0
-              %p These are invitations received from other users:
-              %ul
-                - for friendship in @user.inverse_friendships.unapproved
-                  %li= link_to friendship.user.first_name, admin_user_url(friendship.user)
-            - else
-              %p #{@user.first_name} does not have any pending invitations from other users.
-
+      %hr/
 
       %section.content-section
         %h4 Invitation
@@ -122,13 +91,8 @@
           %dt URL
           %dd #{link_to(user_invitation_url(@user.invite_slug), user_invitation_url(@user.invite_slug), :target => '_blank')}
 
+      %hr/
 
-      %section.content-section
-        %h4
-          Interests
-          %span.badge.badge-info #{@user.interests.count}
-        %p #{@user.interests.to_sentence}
-      
       %section.content-section  
         %h4 Location
         %p
@@ -149,21 +113,49 @@
 
       %section.tab-content
         .tab-panel#user-actions
-          %h4 User Actions
+          %h4
+            User Actions
+            %span.badge.badge-info #{@user.actions.count}
 
-          %ul.actions-list
+          %ul.generic-object-list
             - @user.actions.each do |action|
               %li
-                %span.action-name= action
-                %span.action-meta
+                %span.object-title
+                  #{action} 
+                  - if action.related.present?
+                    #{link_to '∞', url_for([:admin, action.related])}
+                %span.object-detail
                   #{action.meta_string}
 
         .tab-panel#user-friends
-          %h4 Friends
-          %p Refactor friends here.
+          %h4
+            Friends
+            %span.badge.badge-info #{@user.friends.count}
+          
+          - if @user.friends.present?
+            %ul.generic-object-list
+              - @user.friends.each do |friend|
+                %li
+                  %span.object-title
+                    = link_to friend, admin_user_path(friend)
+                  %span.object-detail
+                    #{friend.location}
 
         .tab-panel#user-activities
-          %h4 Activities
+          %h4
+            Activities
+            %span.badge.badge-info #{@user.activities.count}
+
+          - if @user.activities.present?
+            %ul.generic-object-list
+              - @user.activities.each do |activity|
+                %li
+                  %span.object-title
+                    = link_to activity, admin_activity_path(activity)
+                  %span.object-detail
+                    with #{link_to activity.wing, admin_user_path(activity.wing)} @ #{activity.location}
+          - else
+            %p #{@user.first_name} hasn't created any activities.
 
         .tab-panel#raw-object
           %h4

@@ -5,37 +5,26 @@ class ActivitiesController < BaseActivitiesController
   before_filter :activity_owner_only, :only => [:update, :destroy]
 
   def index
-    @activities = []
-
-    Activity.search(params).each do |activity|
-      # Update the relationship based on the current user.
-      activity.update_relationship_as(@authenticated_user)
-      # If the user can see the activity, add it to the list.
-      # in this specific case, it's ensured that if the activity is engaged,
-      # only the owner/wing or users who are engaged with it can see it.
-      @activities << activity unless activity.engaged_to_other?
-    end
-
+    @activities = Activity.search(params)
     respond_with @activities
   end
 
   def mine
     @activities = @authenticated_user.my_activities
-    respond_with @activities, :template => 'activities/index'
+    respond_with(@activities, :template => 'activities/index')
   end
 
   def engaged
     @activities = @authenticated_user.engaged_activities
-    respond_with @activities, :template => 'activities/index'
+    respond_with(@activities, :template => 'activities/index')
   end
 
   def other
     @activities = Activity.where('user_id != ?', @authenticated_user.id)
-    respond_with @activities, :template => 'activities/index'
+    respond_with(@activities, :template => 'activities/index')
   end
 
   def show
-    return unauthorized! if @activity.engaged_to_other?
     respond_with @activity
   end
 

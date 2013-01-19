@@ -8,7 +8,7 @@
 %section#invite
   %h3
     - if @user
-      #{@user.first_name} wants you to be <br/>#{gender_posessive(@user.gender)} wing on DoubleDate!
+      #{@user.first_name} wants you to be <br/>#{@user.gender_posessive} wing on DoubleDate!
     - else
       Why would you want one when you can have two?
 

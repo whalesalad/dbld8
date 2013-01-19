@@ -10,7 +10,6 @@
 #  location_id :integer
 #  user_id     :integer         not null
 #  wing_id     :integer         not null
-#  status      :string(255)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #
@@ -18,48 +17,27 @@
 class Activity < ActiveRecord::Base
   include Concerns::ParticipantConcerns
 
-  before_create :set_default_values
-
-  after_commit :create_user_action, :on => :create
-
-  # after_update do |activity|
-    # Resque.enqueue(UpdateCounts, 'Location:activities') if activity.location_id_changed?
-  # end
-
   attr_accessible :title, :details, :wing_id, 
     :location_id, :day_pref, :time_pref
 
   attr_accessor :age_bounds, :relationship
 
-  default_scope includes(:engagements, :location, :user => [:profile_photo], :wing => [:profile_photo]).order('created_at DESC')
-
   validates_presence_of :title, :details, :wing_id
 
-  # Leave these fields blank for = "Anytime"
-  DAY_PREFERENCES = %w(weekday weekend)
-  TIME_PREFERENCES = %w(day night)
+  default_scope includes(:engagements, :location, :user => [:profile_photo], :wing => [:profile_photo]).order('created_at DESC')
 
-  RELATIONSHIP_CHOICES = %w(open owner wing interested accepted)
-  IS_OPEN, IS_OWNER, IS_WING, IS_INTERESTED, IS_ACCEPTED = RELATIONSHIP_CHOICES
-
-  ACTIVITY_STATUS = %w(active engaged expired)
-  IS_ACTIVE, IS_ENGAGED, IS_EXPIRED = ACTIVITY_STATUS
-
-  scope :engaged, where(:status => IS_ENGAGED)
-  scope :expired, where(:status => IS_EXPIRED)
-  scope :accepted, lambda { joins(:engagements).merge(Engagement.accepted) } 
-
+  scope :expired, where(:expired => 'NOT NULL')
+  
   belongs_to :location, :counter_cache => true
 
-  # ENGAGEMENTS
+  # Engagements
   has_many :engagements, :dependent => :destroy
-  
-  has_one :accepted_engagement,
-    :class_name => "Engagement",
-    :foreign_key => "activity_id", 
-    :conditions => { 'status' => Engagement::IS_ACCEPTED }
 
-  # has_many :messages, :through => :engagements
+  # Messages
+  has_many :messages, :through => :engagements
+
+  DAY_PREFERENCES = %w(weekday weekend)
+  TIME_PREFERENCES = %w(day night)
 
   # Validate day preference
   validates_inclusion_of :day_pref, 
@@ -74,6 +52,9 @@ class Activity < ActiveRecord::Base
     :message => "The field activity.time_pref is required. "\
       "Possible values are #{TIME_PREFERENCES.join(', ')}.",
     :allow_blank => true
+
+  RELATIONSHIP_CHOICES = %w(open owner wing engaged)
+  IS_OPEN, IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
 
   # Tire // Elasticsearch
   include Tire::Model::Search
@@ -130,12 +111,6 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  # states: active, expired
-  # def state wat
-  def set_default_values
-    self.status ||= IS_ACTIVE
-  end
-
   def to_s
     title
   end
@@ -162,21 +137,20 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def relationship
-    @relationship || get_relationship_for
+  def relationship(a_user=nil)
+    @relationship ||= get_relationship_for(a_user)
   end
 
   def get_relationship_for(a_user=nil)
-    return IS_OPEN if a_user.nil?
-    
-    # IS_OWNER, IS_WING, IS_ENGAGED
-    return IS_OWNER if a_user.id == user_id
-    return IS_WING if a_user.id == wing_id
+    unless a_user.nil?
+      # IS_OWNER, IS_WING, IS_ENGAGED
+      return IS_OWNER if a_user.id == user_id
+      return IS_WING if a_user.id == wing_id
 
-    # TODO, handle this for your user id or your wing's user id.
-    if engagement = engagements.find_for_user_or_wing(a_user.id)
-      return IS_ACCEPTED if engagement.accepted?
-      return IS_INTERESTED
+      # TODO, handle this for your user id or your wing's user id.
+      if engagements.find_for_user_or_wing(a_user.id)
+        return IS_ENGAGED
+      end
     end
 
     IS_OPEN
@@ -186,40 +160,8 @@ class Activity < ActiveRecord::Base
     tap { |a| a.relationship = a.get_relationship_for(a_user) }
   end
 
-  def engaged_to_other?
-    engaged? && (relationship == IS_OPEN)
-  end
-
-  def engage!
-    self.status = IS_ENGAGED
-    self.save!
-  end
-
-  def engaged?
-    status == IS_ENGAGED and accepted_engagement.present?
-  end
-
   def expire!
-    self.status = IS_EXPIRED
-    self.save!
-  end
-
-  def accept_engagement!(engagement)
-    # place logic here to automatically handle making an engagement the "accepted"
-    # engagement for that activity. When an owner responds with their first message,
-    # then we should call activity.accept_engagement(id) which will set the status
-    # of the activity to engaged, and also mark the engagement as accepted.
     
-    transaction do
-      engagement.accept!
-      engage!
-    end
   end
-
-  private
-
-  def create_user_action
-    user.trigger 'activity_create', self
-  end
-
+  
 end

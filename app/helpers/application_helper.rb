@@ -22,11 +22,7 @@ module ApplicationHelper
     DoubleDate::FACEBOOK_APP_ID
   end
 
-  def gender_posessive(gender)
-    (gender == "male") ? "his" : "her"
+  def unread_message_for
   end
 
-  def true_false(s)
-    (s == 't') ? true : false
-  end
 end

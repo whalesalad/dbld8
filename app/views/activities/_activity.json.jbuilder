@@ -1,13 +1,8 @@
-json.(activity, :id, :title, :details, :created_at, :day_pref, :time_pref, :status, :relationship)
+json.(activity, :id, :title, :details, :created_at, :day_pref, :time_pref)
 
-if activity.engaged?
-  json.accepted_engagement do
-    json.id activity.accepted_engagement.id
-    json.messages_count activity.accepted_engagement.messages.count
-  end
-else
-  json.engagements_count activity.engagements.not_ignored.count
-end
+json.relationship activity.relationship(@authenticated_user)
+
+json.engagements_count activity.engagements.not_ignored.count
 
 json.user do
   json.partial! 'users/user', user: activity.user
