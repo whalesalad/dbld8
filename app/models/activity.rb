@@ -16,6 +16,7 @@
 
 class Activity < ActiveRecord::Base
   include Concerns::ParticipantConcerns
+  include Concerns::EventConcerns
 
   attr_accessible :title, :details, :wing_id, 
     :location_id, :day_pref, :time_pref

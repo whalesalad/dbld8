@@ -11,6 +11,8 @@
 #
 
 class Friendship < ActiveRecord::Base
+  include Concerns::EventConcerns
+  
   scope :approved, where(:approved => true)
   scope :unapproved, where(:approved => false)
   

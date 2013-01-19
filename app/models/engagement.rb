@@ -14,6 +14,7 @@
 
 class Engagement < ActiveRecord::Base
   include Concerns::ParticipantConcerns
+  include Concerns::EventConcerns
 
   attr_accessible :activity_id, :user_id, :wing_id
 
@@ -85,6 +86,10 @@ class Engagement < ActiveRecord::Base
   def unlock!
     self.unlocked = true
     save!
+  end
+
+  def admin_path
+    [:admin, activity, self]
   end
 
   def as_json(options={})

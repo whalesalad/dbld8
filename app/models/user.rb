@@ -25,6 +25,7 @@
 class User < ActiveRecord::Base
   # Handles friendships between users (wings)
   include Concerns::FriendConcerns
+  include Concerns::EventConcerns
 
   before_validation :on_init, :on => :create
 

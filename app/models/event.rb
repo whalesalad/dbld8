@@ -96,7 +96,11 @@ class Event < ActiveRecord::Base
   end
 
   def related_admin_path
-    [:admin, related]
+    if related.respond_to? :admin_path
+      related.admin_path
+    else
+      [:admin, related]
+    end
   end
 
   def reset_initial_values!
