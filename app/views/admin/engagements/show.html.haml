@@ -19,6 +19,14 @@
     .span5
       
       %section.content-section
+        %h4 Basic Info
+        %dl.dl-horizontal
+          %dt Ignored?
+          %dd= yesno(@engagement.ignored)
+
+          %dt Unlocked?
+          %dd= yesno(@engagement.unlocked)
+
         %h4 Engagement
         %dl.dl-horizontal
           %dt Creator

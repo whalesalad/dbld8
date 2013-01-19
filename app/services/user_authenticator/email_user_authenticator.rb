@@ -1,4 +1,4 @@
-class EmailUserAuthenticator < UserAuthenticator
+class UserAuthenticator::EmailUserAuthenticator < UserAuthenticator
   def initialize(params)
     super(params)
 
@@ -16,5 +16,4 @@ class EmailUserAuthenticator < UserAuthenticator
       @error = "The password specified was incorrect."
     end
   end
-  
 end

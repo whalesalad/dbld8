@@ -2,7 +2,9 @@ class EngagementsController < BaseActivitiesController
   respond_to :json
 
   before_filter :get_activity
-  before_filter :get_engagement, :only => [:show, :destroy]
+  
+  before_filter :get_engagement, :only => [:show, :unlock, :destroy]
+
   before_filter :activity_participants_only, :only => [:update]
 
   def index
@@ -18,33 +20,62 @@ class EngagementsController < BaseActivitiesController
   end
 
   def create
-    if @engagement
-      json_unauthorized "You or your wing have already engaged in this activity."
+    if @activity.engagements.find_for_user_or_wing(@authenticated_user)
+      return json_unauthorized "You or your wing have already engaged in this activity."
     end
 
-    body = params[:engagement].delete(:body)
+    message_body = params[:engagement].delete(:body)
+
+    if message_body.nil?
+      return json_error "You must include a message body with your engagement."
+    end
+
     params[:engagement][:user_id] = @authenticated_user.id
 
-    @engagement = @activity.engagements.new(params[:engagement])
+    ActiveRecord::Base.transaction do
+      @engagement = @activity.engagements.create(params[:engagement])
 
-    if @engagement.save
       # Send the first message for this engagement
       # I'd like to hook this to the after_create event
       # but there is no way to cache the message text for this
-      @engagement.send_initial_message(body)
+      @engagement.send_initial_message(message_body)
 
       # Finally, respond
-      respond_with @engagement, :status => :created, 
-        :location => activity_engagement_path(@activity, @engagement), :template => 'engagements/show'
-    else
-      respond_with @engagement, :status => :unprocessable_entity
+      respond_with @engagement, 
+        :status => :created, 
+        :location => activity_engagement_path(@activity, @engagement), 
+        :template => 'engagements/show' and return
     end
+    
+    respond_with @engagement, :status => :unprocessable_entity
   end
 
   def show
     # A user needs to be one of the four allowed to see this.
     return unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
     respond_with @engagement
+  end
+
+  def unlock
+    # simple POST will perform the unlock
+    unlocker = UnlockEngagementService.new(@engagement, @authenticated_user)
+
+    # If the user is unable to unlock
+    unless unlocker.unlockable?
+      return json_error "The current user cannot unlock this engagement."
+    end
+
+    # If the engagement was already unlocked
+    if @engagement.unlocked?
+      return json_error "This engagement has already been unlocked"
+    end
+
+    # Finally, let's unlock this beast.
+    if unlocker.unlock!
+      render json: { unlocked: true } and return
+    else
+      return json_error "An error ocurred unlocking this engagement."
+    end
   end
 
   def destroy
@@ -76,10 +107,8 @@ class EngagementsController < BaseActivitiesController
       @activity.engagements.find_by_id(params[:id])      
     end
 
-    if @engagement.nil?
-      return json_not_found "You have not engaged in this activity yet, "\
-        "or the engagement was not found."
-    end
+    return json_not_found "You have not engaged in this activity yet, "\
+      "or the engagement was not found." if @engagement.nil?
   end
 
   # only activity.participants can view index

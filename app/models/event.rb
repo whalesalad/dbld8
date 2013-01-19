@@ -18,8 +18,9 @@ class Event < ActiveRecord::Base
 
   # validate the user has enough coins in the bank
   # to do this new event
+  validate :has_enough_coins, :on => :create
 
-  attr_accessible :related_id, :related_type
+  attr_accessible :user, :related
 
   belongs_to :user
   validates_presence_of :user
@@ -36,6 +37,10 @@ class Event < ActiveRecord::Base
 
   def self.from_slug(slug)
     "#{slug}_event".classify.constantize.new
+  end
+
+  def has_enough_coins
+    errors.add(:user, "does not have enough coins to perform this event.") unless user.can_spend?(coin_value)
   end
 
   def set_initial_values
@@ -87,7 +92,11 @@ class Event < ActiveRecord::Base
   end
 
   def cost_string
-    "#{cost_verb} #{coins} coins"
+    "#{cost_verb} #{coins.abs} coins"
+  end
+
+  def related_admin_path
+    [:admin, related]
   end
 
   def reset_initial_values!

@@ -14,13 +14,10 @@
 #
 
 class NewActivityEvent < Event
+  alias activity related
+  
   def coin_value
     10
-  end
-
-  # alias activity related
-  def activity
-    related
   end
   
   def detail_string

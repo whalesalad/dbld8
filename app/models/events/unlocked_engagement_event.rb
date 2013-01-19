@@ -14,13 +14,14 @@
 #
 
 class UnlockedEngagementEvent < Event
-  def coin_value
-    -50
+  alias engagement related
+
+  def related_admin_path
+    [:admin, engagement.activity, engagement]
   end
 
-  # related is an Engagement object, so let's make this easy on ourselves
-  def engagement
-    related
+  def coin_value
+    -50
   end
 
   def detail_string

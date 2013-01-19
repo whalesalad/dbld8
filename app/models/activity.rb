@@ -24,7 +24,10 @@ class Activity < ActiveRecord::Base
 
   validates_presence_of :title, :details, :wing_id
 
-  default_scope includes(:engagements, :location, :user => [:profile_photo], :wing => [:profile_photo]).order('created_at DESC')
+  default_scope includes(:engagements, 
+    :location, 
+    :user => [:profile_photo], 
+    :wing => [:profile_photo]).order('created_at DESC')
 
   scope :expired, where(:expired => 'NOT NULL')
   
@@ -107,7 +110,6 @@ class Activity < ActiveRecord::Base
       when 'oldest'
         sort { by :created_at, 'asc' }
       end
-      
     end
   end
 

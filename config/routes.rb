@@ -18,6 +18,9 @@ DoubleDate::Application.routes.draw do
     get 'engaged', :on => :collection
 
     resources :engagements do
+      # allows an owner/wing to unlock an engagement
+      post 'unlock', :on => :member
+        
       resources :messages
     end
   end

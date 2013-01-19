@@ -14,9 +14,13 @@ class MessagesController < ApplicationController
   end
 
   def create
+    unless @engagement.unlocked?
+      return json_error "This engagement must be unlocked before replying."
+    end
+
     @message = @engagement.messages.new({
-      :body => params[:message][:body],
-      :user_id => @authenticated_user.id
+      :user => @authenticated_user,
+      :body => params[:message][:body]
     })
 
     if @message.save

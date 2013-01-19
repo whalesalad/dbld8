@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130119150606) do
+ActiveRecord::Schema.define(:version => 20130119170108) do
 
   add_extension "uuid-ossp"
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20130119150606) do
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.boolean  "ignored",     :default => false
+    t.boolean  "unlocked",    :default => false
   end
 
   add_index "engagements", ["user_id", "activity_id"], :name => "index_engagements_on_user_id_and_activity_id", :unique => true

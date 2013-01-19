@@ -23,6 +23,11 @@ module ApplicationHelper
   end
 
   def unread_message_for
+
+  end
+
+  def yesno(b)
+    b ? 'Yes' : 'No'
   end
 
 end

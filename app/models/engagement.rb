@@ -9,6 +9,7 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  ignored     :boolean         default(FALSE)
+#  unlocked    :boolean         default(FALSE)
 #
 
 class Engagement < ActiveRecord::Base
@@ -16,6 +17,7 @@ class Engagement < ActiveRecord::Base
 
   attr_accessible :activity_id, :user_id, :wing_id
 
+  scope :ignored, where(:ignored => true)
   scope :not_ignored, where(:ignored => false)
 
   default_scope order('created_at DESC').includes(:user, :wing)
@@ -37,7 +39,7 @@ class Engagement < ActiveRecord::Base
   end
 
   def send_initial_message(body)
-    messages.create :user_id => user.id, :body => body
+    messages.create :user => user, :body => body
   end
 
   def to_s
@@ -73,6 +75,15 @@ class Engagement < ActiveRecord::Base
 
   def ignore!
     self.ignored = true
+    save!
+  end
+
+  def locked?
+    !unlocked
+  end
+
+  def unlock!
+    self.unlocked = true
     save!
   end
 

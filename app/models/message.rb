@@ -11,14 +11,12 @@
 #
 
 class Message < ActiveRecord::Base
-  attr_accessible :user_id, :body
+  attr_accessible :user, :body
 
   belongs_to :user
-  
   belongs_to :engagement
 
   has_one :activity, :through => :engagement
-  
   has_many :message_proxies, :dependent => :destroy
 
   default_scope order('created_at ASC').includes(:user, :message_proxies)

@@ -172,6 +172,10 @@ class User < ActiveRecord::Base
     # actions.uncached { actions.sum :karma }
   end
 
+  def can_spend?(amount)
+    return (total_coins - amount.abs) > 0
+  end
+
   def as_json(options={})
     'BUILD'
   end

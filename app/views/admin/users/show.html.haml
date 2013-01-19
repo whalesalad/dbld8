@@ -123,7 +123,7 @@
                 %span.object-title
                   #{event} 
                   - if event.related.present?
-                    #{link_to '∞', url_for([:admin, event.related])}
+                    #{link_to '∞', url_for(event.related_admin_path)}
                 %span.object-detail
                   #{event.detail}
 

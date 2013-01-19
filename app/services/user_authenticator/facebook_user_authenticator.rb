@@ -1,6 +1,6 @@
 require 'koala'
 
-class FacebookUserAuthenticator < UserAuthenticator
+class UserAuthenticator::FacebookUserAuthenticator < UserAuthenticator
   def initialize(params)
     super(params)
 
@@ -31,5 +31,4 @@ class FacebookUserAuthenticator < UserAuthenticator
       user.save!
     end
   end
-  
 end
