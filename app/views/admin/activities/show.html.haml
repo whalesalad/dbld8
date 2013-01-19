@@ -64,6 +64,10 @@
               - @activity.engagements.each do |engagement|
                 %li
                   %span.object-title 
+                    - if engagement.ignored?
+                      %span.label.label-warning Ignored
+                    - elsif engagement.unlocked?
+                      %span.label.label-info Unlocked
                     = link_to engagement.participant_names, admin_activity_engagement_path(@activity, engagement)
                   %span.object-detail 
                     Sent #{l engagement.created_at, :format => :long}
