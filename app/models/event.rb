@@ -52,6 +52,10 @@ class Event < ActiveRecord::Base
     to_s.underscore
   end
 
+  def related?
+    related.present?
+  end
+
   def earns?
     coins > 0
   end
@@ -78,7 +82,7 @@ class Event < ActiveRecord::Base
 
   def detail
     s = [detail_string]
-    s << cost_string unless free?
+    s << "and #{cost_string}" unless free?
     "#{s.join(' ')}."
   end
 

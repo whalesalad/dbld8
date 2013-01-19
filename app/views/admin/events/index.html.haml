@@ -1,0 +1,39 @@
+.page-header
+  %h1
+    Events
+    %small #{pluralize(@events.count, 'Event')} Total
+
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Event
+      %th User
+      %th Related
+      %th Coins
+      %th Occurred
+
+  %tbody
+    - for event in @events
+      %tr
+        %td #{event.id}
+
+        %td
+          %b
+            #{event}
+          %br/
+          %small
+            #{event.detail}
+        %td #{event.user}
+
+        %td 
+          - if event.related?
+            %span.label.label-info
+              #{event.related.class}
+            #{link_to event.related, url_for([:admin, event.related])}
+
+        %td 
+          %span{ :class => "badge badge-#{(event.earns?) ? 'success' : 'important'}" }
+            #{event.cost_to_s}
+        %td #{l event.created_at, :format => :long}

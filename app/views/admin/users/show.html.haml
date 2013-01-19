@@ -106,26 +106,26 @@
 
     .span6
       %ul.nav.nav-tabs
-        %li= link_to "User Actions", '#user-actions', :data => { :toggle => 'tab' }
+        %li= link_to "Events", '#user-events', :data => { :toggle => 'tab' }
         %li= link_to "Friends", '#user-friends', :data => { :toggle => 'tab' }
         %li= link_to "Activities", '#user-activities', :data => { :toggle => 'tab' }
         %li= link_to "Raw Object", '#raw-object', :data => { :toggle => 'tab' }
 
       %section.tab-content
-        .tab-panel#user-actions
+        .tab-panel#user-events
           %h4
-            User Actions
-            %span.badge.badge-info #{@user.actions.count}
+            Events
+            %span.badge.badge-info #{@user.events.count}
 
           %ul.generic-object-list
-            - @user.actions.each do |action|
+            - @user.events.each do |event|
               %li
                 %span.object-title
-                  #{action} 
-                  - if action.related.present?
-                    #{link_to '∞', url_for([:admin, action.related])}
+                  #{event} 
+                  - if event.related.present?
+                    #{link_to '∞', url_for([:admin, event.related])}
                 %span.object-detail
-                  #{action.detail}
+                  #{event.detail}
 
         .tab-panel#user-friends
           %h4

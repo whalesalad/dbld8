@@ -35,8 +35,8 @@ class User < ActiveRecord::Base
   # Password // Bcrypt
   has_secure_password
 
-  # Actions
-  has_many :actions, :class_name => "UserAction", :dependent => :destroy
+  # Events
+  has_many :events, :dependent => :destroy
 
   belongs_to :location, :counter_cache => true
 
@@ -164,7 +164,7 @@ class User < ActiveRecord::Base
   end
 
   def total_coins
-    actions.uncached { actions.sum :coins }
+    events.uncached { events.sum :coins }
   end
 
   def total_karma

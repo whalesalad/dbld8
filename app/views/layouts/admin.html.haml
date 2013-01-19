@@ -48,8 +48,8 @@
                 %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
                   = link_to "#{glyphicon(:calendar)}Activities".html_safe, admin_activities_path
 
-                %li{ :class => current_section?(:controller => 'user_actions') ? 'active' : '' }
-                  = link_to "#{glyphicon('fire')}User Actions".html_safe, admin_user_actions_path
+                %li{ :class => current_section?(:controller => 'events') ? 'active' : '' }
+                  = link_to "#{glyphicon('fire')}Events".html_safe, admin_events_path
 
                 %li.nav-header
                   Services
