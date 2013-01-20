@@ -44,7 +44,7 @@ class UserPhoto < ActiveRecord::Base
 
     def url
       # "http://asset-#{rand(3) + 1}.dbld8.com/" + self.current_path
-      "#{Rails.action_controller.asset_host}/" + self.current_path
+      "https://db00q50qzosdc.cloudfront.net/" + self.current_path
     end
 
     process :set_content_type
