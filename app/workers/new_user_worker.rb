@@ -10,6 +10,6 @@ class NewUserWorker
     new_user = User.find(new_user_id)
 
     # Create the registration action
-    new_user.trigger 'registration'
+    RegistrationEvent.create(:user => new_user)
   end
 end

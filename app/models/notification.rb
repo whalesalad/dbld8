@@ -13,7 +13,19 @@ class Notification < ActiveRecord::Base
       return "You're #{event.activity.user.first_name}'s wing on #{event.activity.user.gender_posessive} DoubleDate \"#{event.activity}\"."
     end
 
+    if event.is_a?(SentWingInviteEvent)
+      return "#{target.user} invited you to be #{target.user.gender_posessive} wing."
+    end
+
+    if event.is_a?(RecruitedWingEvent)
+      return "#{target.friend} accepted your wing invitation!"
+    end
+
     "Notification from #{event}"
+  end
+
+  def target
+    event.related
   end
 
   def read?

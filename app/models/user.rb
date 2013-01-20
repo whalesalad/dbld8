@@ -25,7 +25,6 @@
 class User < ActiveRecord::Base
   # Handles friendships between users (wings)
   include Concerns::FriendConcerns
-  include Concerns::EventConcerns
   include Concerns::UUIDConcerns
 
   before_validation :on_init, :on => :create
@@ -34,6 +33,8 @@ class User < ActiveRecord::Base
 
   # Password // Bcrypt
   has_secure_password
+
+  has_many :events, :dependent => :nullify
 
   # Notifications
   has_many :notifications, :dependent => :destroy

@@ -79,8 +79,8 @@ class Friendship < ActiveRecord::Base
   end
 
   def create_recruit_events!
-    RecruitedWingEvent.create(:user => user, :related => self)
     AcceptedWingInviteEvent.create(:user => friend, :related => self)
+    RecruitedWingEvent.create(:user => user, :related => self)
   end
   
 end
