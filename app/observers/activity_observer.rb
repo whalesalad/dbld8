@@ -2,13 +2,8 @@ class ActivityObserver < ActiveRecord::Observer
 
   def after_commit(activity)
     if activity.send(:transaction_include_action?, :create)
-      # Create NewActivityAction
       NewActivityEvent.create(:user => activity.user, :related => activity)
     end
-
-    # Send notification to wing
-    #  - You're Ivan's wing on his new DoubleDate "Venice Beach Barhopping"
-    #  - You're Vanessa's wing on her new DoubleDate "Hiking in Manoa Valley"
   end
 
   def after_destroy(activity)

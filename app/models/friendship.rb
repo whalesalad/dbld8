@@ -17,13 +17,16 @@ class Friendship < ActiveRecord::Base
   scope :unapproved, where(:approved => false)
   
   attr_accessible :user_id, :friend_id, :approved
+
+  after_update :check_for_approved_changes
+  after_commit :create_invite_event!, :on => :create
   
   belongs_to :user
   belongs_to :friend, :class_name => "User", :foreign_key => "friend_id"
   
   validates_presence_of :user_id, :friend_id
 
-  validate :unique_relationship?
+  validate :unique_relationship?, :on => :create
   validate :user_is_not_inviting_himself?
 
   def self.find_for_user_or_friend(user_id)
@@ -60,15 +63,29 @@ class Friendship < ActiveRecord::Base
     end
   end
 
+  def check_for_approved_changes
+    # Notification.send(...) if (self.published_changed? && self.published == true)
+    create_recruit_events! if self.approved_changed? && self.approved == true
+  end
+
   def as_json(options={})
-    exclude = [:updated_at, :user_id, :friend_id]
+    'BUILD'
+    # exclude = [:updated_at, :user_id, :friend_id]
+    # result = super({ :except => exclude }.merge(options))
+    # result[:user] = user.as_json :mini => true
+    # result[:friend] = friend.as_json :mini => true
+    # result
+  end
 
-    result = super({ :except => exclude }.merge(options))
+  private
 
-    result[:user] = user.as_json :mini => true
-    result[:friend] = friend.as_json :mini => true
+  def create_invite_event!
+    SentWingInviteEvent.create(:user => user, :related => self)
+  end
 
-    result
+  def create_recruit_events!
+    RecruitedWingEvent.create(:user => user, :related => self)
+    AcceptedWingInviteEvent.create(:user => friend, :related => self)
   end
   
 end

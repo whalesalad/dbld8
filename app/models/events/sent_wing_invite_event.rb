@@ -14,19 +14,9 @@
 #
 
 class SentWingInviteEvent < Event
-  def coin_value
-    10
-  end
-
-  validates_uniqueness_of :user_id, 
-    :scope => [:related_id, :related_type], 
-    :message => "This user has already been awarded for this recruit."
-
-  def recruited
-    related
-  end
+  alias friendship related
 
   def detail_string
-    "#{user} recruited #{recruited}"
+    "#{user} invited #{friendship.friend}"
   end
 end

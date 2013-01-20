@@ -20,6 +20,8 @@ class Event < ActiveRecord::Base
 
   belongs_to :user
   validates_presence_of :user
+  
+  # ERRORING OUT
   # validate :has_enough_coins, :on => :create
 
   has_many :notifications, :dependent => :destroy
@@ -38,7 +40,9 @@ class Event < ActiveRecord::Base
   end
 
   def has_enough_coins
-    errors.add(:user, "does not have enough coins to perform this event.") unless user.can_spend?(coin_value)
+    unless user.can_spend?(coin_value)
+      errors.add(:user, "does not have enough coins to perform this event.")
+    end
   end
 
   def set_initial_values
@@ -60,15 +64,15 @@ class Event < ActiveRecord::Base
   end
 
   def earns?
-    coins > 0
+    coins >= 0
   end
 
   def spends?
-    !!earns?
+    !earns?
   end
 
   def free?
-    coin_value.nil? || coin_value == 0
+    coins.nil? || coins == 0
   end
 
   def cost_verb
@@ -76,6 +80,7 @@ class Event < ActiveRecord::Base
   end
 
   def prefix
+    return '' if free?
     earns? ? '+' : '-'
   end
 

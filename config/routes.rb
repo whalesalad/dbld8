@@ -58,7 +58,7 @@ DoubleDate::Application.routes.draw do
       get 'photos', :on => :member
     end
 
-    resources :friendships, :only => [:index, :show, :destroy]
+    resources :friendships
     
     resources :activities, :only => [:index, :show] do
       get 'engaged', :on => :collection

@@ -25,7 +25,7 @@ class NewActivityEvent < Event
   end
 
   def notify
-    # You're Ivan's wing on his new DoubleDate "Venice Beach Barhopping"
+    # Send notification to wing
     notifications.create(:user => activity.wing, :push => true)
   end
 end

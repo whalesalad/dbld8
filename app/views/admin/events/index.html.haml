@@ -32,6 +32,6 @@
             #{link_to event.related, url_for(event.related_admin_path)}
 
         %td 
-          %span{ :class => "badge badge-#{(event.earns?) ? 'success' : 'important'}" }
+          %span{ :class => "badge badge-#{badge_for_event(event)}" }
             #{event.cost_to_s}
         %td #{l event.created_at, :format => :long}

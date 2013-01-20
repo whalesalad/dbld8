@@ -30,4 +30,9 @@ module ApplicationHelper
     b ? 'Yes' : 'No'
   end
 
+  def badge_for_event(event)
+    return 'info' if event.free?
+    (event.earns?) ? 'success' : 'important'
+  end
+
 end

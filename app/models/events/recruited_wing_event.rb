@@ -13,14 +13,20 @@
 #  karma        :integer         default(0)
 #
 
-class AcceptedWingInviteEvent < Event
+class RecruitedWingEvent < Event
   alias friendship related
 
   def coin_value
+    # when a wing accepts your invitation, you earn 10 points
     10
   end
 
   def detail_string
-    "#{user} accepted #{friendship.user||"someone"}'s wing invite"
+    "#{user} recruited #{friendship.friend}"
+  end
+
+  def notify
+    # Notify the user who recruited this person that they just earned points
+    # notifications.create(:user => activity.wing, :push => true)
   end
 end

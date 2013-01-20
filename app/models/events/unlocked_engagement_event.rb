@@ -21,6 +21,6 @@ class UnlockedEngagementEvent < Event
   end
 
   def detail_string
-    "#{user} unlocked an engagement from #{engagement||'a deleted engagement.'}"
+    "#{user} unlocked an engagement from #{engagement||'a deleted engagement'}"
   end
 end
