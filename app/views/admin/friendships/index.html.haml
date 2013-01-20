@@ -8,7 +8,7 @@
     %tr
       %th ID
       %th Between
-      %th Approved
+      %th 
       %th Created
   
   %tbody
@@ -16,7 +16,10 @@
       %tr
         %td= friendship.id
         %td= link_to friendship, admin_friendship_path(friendship)
-        %td #{friendship.approved? ? 'Yes' : 'No, Pending'}
+        %td 
+          - unless friendship.approved?
+            %span.label
+              Pending
         %td #{l friendship.created_at, :format => :medium}
 
 .form-actions

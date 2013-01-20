@@ -33,6 +33,12 @@
                 %li{ :class => current_section?(:controller => "users") ? 'active' : '' }
                   = link_to "#{glyphicon(:user)}Users".html_safe, admin_users_path
 
+                %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
+                  = link_to "#{glyphicon(:calendar)}Activities".html_safe, admin_activities_path
+
+                %li{ :class => current_section?(:controller => 'events') ? 'active' : '' }
+                  = link_to "#{glyphicon('fire')}Events".html_safe, admin_events_path
+
                 %li{ :class => current_section?(:controller => "friendships") ? 'active' : '' }
                   = link_to "#{glyphicon(:heart)}Friendships".html_safe, admin_friendships_path
 
@@ -44,12 +50,6 @@
 
                 %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
                   = link_to "#{glyphicon('map-marker')}Locations".html_safe, admin_locations_path
-
-                %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
-                  = link_to "#{glyphicon(:calendar)}Activities".html_safe, admin_activities_path
-
-                %li{ :class => current_section?(:controller => 'events') ? 'active' : '' }
-                  = link_to "#{glyphicon('fire')}Events".html_safe, admin_events_path
 
                 %li.nav-header
                   Services

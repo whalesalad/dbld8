@@ -13,12 +13,6 @@
 #  karma        :integer         default(0)
 #
 
-# Send notification to [user, wing] on the Activity
-#  Jenny + Vanessa are interested in "DoubleDateName"
-
-# Send notification to the [wing] on the Engagement
-#  Vanessa picked you to be her wing on the DoubleDate "Hiking in Manoa Valley"
-
 class NewEngagementEvent < Event
   alias engagement related
 
@@ -40,5 +34,14 @@ class NewEngagementEvent < Event
 
   def detail_string
     "#{participants} engaged in #{activity}"
+  end
+
+  def notify
+    # Send notification to [user, wing] on the Activity
+    # Jenny + Vanessa are interested in "DoubleDateName"
+
+    # Send notification to the [wing] on the Engagement
+    # Vanessa picked you to be her wing on the DoubleDate "Hiking in Manoa Valley"
+    # notifications.create(:user => activity.wing, :push => true)
   end
 end

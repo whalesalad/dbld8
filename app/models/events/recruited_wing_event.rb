@@ -17,8 +17,7 @@ class RecruitedWingEvent < Event
   alias friendship related
 
   def coin_value
-    # when a wing accepts your invitation, you earn 10 points
-    10
+    10 # when a wing accepts your invitation, you earn 10 points
   end
 
   def detail_string
@@ -26,7 +25,8 @@ class RecruitedWingEvent < Event
   end
 
   def notify
-    # Notify the user who recruited this person that they just earned points
-    # notifications.create(:user => activity.wing, :push => true)
+    # Notify the user who recruited this person 
+    # that their friend accepted + they earned some points!
+    notifications.create(:user => user, :push => true)
   end
 end

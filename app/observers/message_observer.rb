@@ -4,8 +4,6 @@ class MessageObserver < ActiveRecord::Observer
     log_prefix = "[Message #{message.id}]"
     
     if message.send(:transaction_include_action?, :create)
-      # Rails.logger.info "#{log_prefix} NEW MESSAGE #{message.id} from #{message.user.first_name}"
-
       # For the orignal message owner (mark as read)
       message.message_proxies.create(:user_id => message.user.id, :unread => false)
 
@@ -22,4 +20,5 @@ class MessageObserver < ActiveRecord::Observer
     # message.engagement.notify_participants_of_new_message
     # "You have a new message from Jenny on "#{message.activity.title}"
   end
+  
 end

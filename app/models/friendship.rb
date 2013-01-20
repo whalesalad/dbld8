@@ -37,7 +37,7 @@ class Friendship < ActiveRecord::Base
     errors.add(:user_id, "a friendship between these users already exists.") unless 
       self.class.where("(user_id = ? AND friend_id = ?) OR 
                         (user_id = ? AND friend_id = ?)",
-                         user_id, friend_id, friend_id, user_id).empty?
+                        user_id, friend_id, friend_id, user_id).empty?
   end
   
   def to_s
@@ -70,11 +70,6 @@ class Friendship < ActiveRecord::Base
 
   def as_json(options={})
     'BUILD'
-    # exclude = [:updated_at, :user_id, :friend_id]
-    # result = super({ :except => exclude }.merge(options))
-    # result[:user] = user.as_json :mini => true
-    # result[:friend] = friend.as_json :mini => true
-    # result
   end
 
   private

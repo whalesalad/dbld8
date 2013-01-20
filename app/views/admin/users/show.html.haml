@@ -109,13 +109,18 @@
         %li= link_to "Events", '#user-events', :data => { :toggle => 'tab' }
         %li= link_to "Friends", '#user-friends', :data => { :toggle => 'tab' }
         %li= link_to "Activities", '#user-activities', :data => { :toggle => 'tab' }
+        %li= link_to "Notifications", '#user-notifications', :data => { :toggle => 'tab' }
         %li= link_to "Raw Object", '#raw-object', :data => { :toggle => 'tab' }
 
       %section.tab-content
         .tab-panel#user-events
           %h4
             Events
-            %span.badge.badge-info #{@user.events.count}
+            - if @user.events.present?
+              %span.badge.badge-info #{@user.events.count}
+
+          - if @user.events.blank?
+            %p #{@user.first_name} doesn't have any events.
 
           %ul.generic-object-list
             - @user.events.each do |event|
@@ -130,33 +135,54 @@
         .tab-panel#user-friends
           %h4
             Friends
-            %span.badge.badge-info #{@user.friends.count}
+            - if @user.friends.present?
+              %span.badge.badge-info #{@user.friends.count}
+
+          - if @user.friends.blank?
+            %p #{@user.first_name} doesn't have any events.
           
-          - if @user.friends.present?
-            %ul.generic-object-list
-              - @user.friends.each do |friend|
-                %li
-                  %span.object-title
-                    = link_to friend, admin_user_path(friend)
-                  %span.object-detail
-                    #{friend.location}
+          %ul.generic-object-list
+            - @user.friends.each do |friend|
+              %li
+                %span.object-title
+                  = link_to friend, admin_user_path(friend)
+                %span.object-detail
+                  #{friend.location}
 
         .tab-panel#user-activities
           %h4
             Activities
-            %span.badge.badge-info #{@user.activities.count}
+            - unless @user.activities.blank?
+              %span.badge.badge-info #{@user.activities.count}
 
-          - if @user.activities.present?
-            %ul.generic-object-list
-              - @user.activities.each do |activity|
-                %li
-                  %span.object-title
-                    = link_to activity, admin_activity_path(activity)
-                  %span.object-detail
-                    with #{link_to activity.wing, admin_user_path(activity.wing)} @ #{activity.location}
-          - else
+          - if @user.activities.blank?
             %p #{@user.first_name} hasn't created any activities.
+          
+          %ul.generic-object-list
+            - @user.activities.each do |activity|
+              %li
+                %span.object-title
+                  = link_to activity, admin_activity_path(activity)
+                %span.object-detail
+                  with #{link_to activity.wing, admin_user_path(activity.wing)} @ #{activity.location}
 
+        .tab-panel#user-notifications
+          %h4
+            Notifications
+            - unless @user.notifications.blank?
+              %span.badge.badge-info #{@user.notifications.count}
+
+          - if @user.notifications.blank?
+            %p #{@user.first_name} does not have any notifications.
+          
+          %ul.generic-object-list
+            - @user.notifications.each do |notification|
+              %li
+                %span.object-title
+                  = link_to notification, url_for(notification.event.related_admin_path)
+                %span.object-detail
+                  #{time_ago_in_words(notification.created_at)} ago
+          
         .tab-panel#raw-object
           %h4
             Raw User Object

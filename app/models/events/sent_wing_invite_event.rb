@@ -19,4 +19,9 @@ class SentWingInviteEvent < Event
   def detail_string
     "#{user} invited #{friendship.friend}"
   end
+
+  def notify
+    # Send notification to the friend who was invited
+    notifications.create(:user => friendship.friend, :push => true)
+  end
 end
