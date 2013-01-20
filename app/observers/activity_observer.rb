@@ -1,14 +1,10 @@
 class ActivityObserver < ActiveRecord::Observer
 
-  def after_create(activity)
-    log_prefix = "[Activity #{activity.id}]"
-
-    Rails.logger.info "#{log_prefix} NEW ACTIVITY: #{activity.id} '#{activity.title}' from #{activity.user.first_name}."
-
-    Rails.logger.info "#{log_prefix} NEW NOTIFICATION: You're #{activity.user.first_name}'s wing on #{activity.user.gender_posessive} new DoubleDate '#{activity.title}'."
-    
-    # Create NewActivityAction
-    activity.user.trigger 'activity_create', activity
+  def after_commit(activity)
+    if activity.send(:transaction_include_action?, :create)
+      # Create NewActivityAction
+      NewActivityEvent.create(:user => activity.user, :related => activity)
+    end
 
     # Send notification to wing
     #  - You're Ivan's wing on his new DoubleDate "Venice Beach Barhopping"

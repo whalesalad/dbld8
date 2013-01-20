@@ -26,18 +26,17 @@ class User < ActiveRecord::Base
   # Handles friendships between users (wings)
   include Concerns::FriendConcerns
   include Concerns::EventConcerns
+  include Concerns::UUIDConcerns
 
   before_validation :on_init, :on => :create
-
-  before_create :set_uuid
 
   after_create :set_invite_slug
 
   # Password // Bcrypt
   has_secure_password
 
-  # Events
-  has_many :events, :dependent => :destroy
+  # Notifications
+  has_many :notifications, :dependent => :destroy
 
   belongs_to :location, :counter_cache => true
 
@@ -189,11 +188,6 @@ class User < ActiveRecord::Base
 
   def mass_assignment_authorizer(role = :default)
     super + (accessible || [])
-  end
-
-  def set_uuid
-    require 'securerandom'
-    self.uuid = SecureRandom.uuid
   end
 
   def set_invite_slug

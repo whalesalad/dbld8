@@ -23,4 +23,9 @@ class NewActivityEvent < Event
   def detail_string
     "#{user} created #{activity||"an activity"}"
   end
+
+  def notify
+    # You're Ivan's wing on his new DoubleDate "Venice Beach Barhopping"
+    notifications.create(:user => activity.wing, :push => true)
+  end
 end

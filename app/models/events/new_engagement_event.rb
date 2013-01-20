@@ -13,11 +13,11 @@
 #  karma        :integer         default(0)
 #
 
-# Send notification to user and wing on the date
+# Send notification to [user, wing] on the Activity
 #  Jenny + Vanessa are interested in "DoubleDateName"
 
-# Send notification to the wing on the engagement
-#  "Vanessa picked you to be her wing on the DoubleDate "Hiking in Manoa Valley"
+# Send notification to the [wing] on the Engagement
+#  Vanessa picked you to be her wing on the DoubleDate "Hiking in Manoa Valley"
 
 class NewEngagementEvent < Event
   alias engagement related

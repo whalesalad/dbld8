@@ -14,18 +14,16 @@
 #
 
 class Event < ActiveRecord::Base
-  before_validation :set_initial_values, :on => :create
-
-  # validate the user has enough coins in the bank
-  # to do this new event
-  validate :has_enough_coins, :on => :create
-
   attr_accessible :user, :related
+
+  before_validation :set_initial_values, :on => :create
 
   belongs_to :user
   validates_presence_of :user
+  # validate :has_enough_coins, :on => :create
 
-  # Optionally, a related object
+  has_many :notifications, :dependent => :destroy
+
   belongs_to :related, :polymorphic => true
 
   def self.create_from_user_and_slug(user, slug, related=nil)
@@ -110,7 +108,7 @@ class Event < ActiveRecord::Base
   end
 
   def coin_value
-    10
+    0
   end
 
   def karma_value

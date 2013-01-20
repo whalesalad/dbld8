@@ -28,7 +28,7 @@ class Location < ActiveRecord::Base
   attr_accessor :distance
 
   attr_accessible :name, :latitude, :longitude, :facebook_id,
-    :locality, :state, :country, :foursquare_id,
+    :locality, :state, :country, :foursquare_id, :foursquare_icon,
     :venue, :address, :geoname_id
 
   has_many :users, :dependent => :nullify

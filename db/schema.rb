@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130119170108) do
+ActiveRecord::Schema.define(:version => 20130119211452) do
 
   add_extension "uuid-ossp"
 
@@ -160,6 +160,20 @@ ActiveRecord::Schema.define(:version => 20130119170108) do
 
   add_index "messages", ["engagement_id"], :name => "index_messages_on_engagement_id"
   add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
+
+  create_table "notifications", :force => true do |t|
+    t.uuid     "uuid",                          :null => false
+    t.integer  "user_id",                       :null => false
+    t.integer  "event_id",                      :null => false
+    t.boolean  "unread",     :default => true
+    t.boolean  "push",       :default => false
+    t.boolean  "pushed",     :default => false
+    t.string   "callback"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "notifications", ["user_id", "event_id"], :name => "index_notifications_on_user_id_and_event_id", :unique => true
 
   create_table "user_photos", :force => true do |t|
     t.integer  "user_id"
