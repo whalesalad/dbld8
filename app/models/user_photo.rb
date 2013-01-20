@@ -32,7 +32,7 @@ class UserPhoto < ActiveRecord::Base
     # Override the directory where uploaded files will be stored.
     # This is a sensible default for uploaders that are meant to be mounted:
     def store_dir
-      "user/#{model.user.invite_slug}/photos"
+      "user/#{model.user.uuid}/photos"
     end
 
     def filename 
@@ -43,7 +43,8 @@ class UserPhoto < ActiveRecord::Base
     end
 
     def url
-      "http://asset-#{rand(3) + 1}.dbld8.com/" + self.current_path
+      # "http://asset-#{rand(3) + 1}.dbld8.com/" + self.current_path
+      "#{Rails.action_controller.asset_host}/" + self.current_path
     end
 
     process :set_content_type
