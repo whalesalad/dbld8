@@ -6,15 +6,15 @@ class DefaultUserPhoto
   end
 
   def thumb
-    user.default_photo
+    user.default_thumb
   end
 
   def small
-    thumb
+    user.default_photo
   end
 
   def medium
-    thumb
+    user.default_photo
   end
 
   def as_json(options={})

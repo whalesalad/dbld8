@@ -25,7 +25,11 @@
 class EmailUser < User
   validates_presence_of :password, :email, :on => :create
 
+  def default_thumb
+    "https://db00q50qzosdc.cloudfront.net/misc/no-photo-thumb-#{gender}.png"
+  end
+
   def default_photo
-    "http://static.dbld8.com/misc/no-photo.png"
+    "https://db00q50qzosdc.cloudfront.net/misc/no-photo-#{gender}.png"
   end
 end

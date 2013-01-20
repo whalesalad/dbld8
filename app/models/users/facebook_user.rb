@@ -58,6 +58,10 @@ class FacebookUser < User
     facebook_photo(:large)
   end
 
+  def default_thumb
+    default_photo
+  end
+
   def facebook_graph
     @facebook_graph ||= get_facebook_graph
   end
