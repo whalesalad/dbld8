@@ -1,7 +1,7 @@
 namespace :dbld8 do
   task :attach_fake_photos => :environment do
     
-    profile_photos_dir = Rails.root.join('tmp', 'profile_photos')
+    profile_photos_dir = Rails.root.join('lib', 'profile_photos')
     
     photos = {
       'male' => Dir.glob(profile_photos_dir.join('male/*')),
