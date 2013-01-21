@@ -5,7 +5,14 @@ class ActivitiesController < BaseActivitiesController
   before_filter :activity_owner_only, :only => [:update, :destroy]
 
   def index
+    params[:point] = if params[:latitude] && params[:longitude]
+      "#{params[:latitude]},#{params[:longitude]}"
+    else
+      "#{@authenticated_user.location.latitude},#{@authenticated_user.location.longitude}"
+    end
+
     @activities = Activity.search(params)
+
     respond_with @activities
   end
 

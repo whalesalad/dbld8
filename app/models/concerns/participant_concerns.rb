@@ -14,18 +14,16 @@ module Concerns
       end
     end
 
-    module InstanceMethods
-      def participants
-        [user, wing]
-      end
+    def participants
+      [user, wing]
+    end
 
-      def participant_ids
-        [user_id, wing_id]
-      end
+    def participant_ids
+      [user_id, wing_id]
+    end
 
-      def participant_names
-        participants.map{ |u| u.first_name }.join ' + '
-      end
+    def participant_names
+      participants.map{ |u| u.first_name }.join ' + '
     end
 
   end

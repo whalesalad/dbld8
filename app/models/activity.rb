@@ -74,11 +74,7 @@ class Activity < ActiveRecord::Base
     # If we specify anytime, ignore it to include everything
     params.delete :happening if !!(params[:happening] =~ /anytime/i)
 
-    if params[:latitude] && params[:longitude]
-      point = "#{params[:latitude]},#{params[:longitude]}"
-    end
-
-    tire.search(:load => true) do
+    tire.search(:load => true, :per_page => 50) do
       # Match title/details
       query { string(params[:query]) } if params[:query].present?
       
@@ -90,8 +86,8 @@ class Activity < ActiveRecord::Base
       filter :terms, preferences: [params[:happening]] if params[:happening].present?
 
       # Handles filtering by proximity to a point
-      unless point.nil? || params[:distance].nil?
-        filter :geo_distance, :distance => params[:distance], :point => point
+      unless params[:point].nil? || params[:distance].nil?
+        filter :geo_distance, :distance => params[:distance], :point => params[:point]
       end
 
       # Default sorting of newest for now.
@@ -99,12 +95,14 @@ class Activity < ActiveRecord::Base
 
       case sort
       when 'closest'
-        sort { by '_geo_distance' => { point: point }} unless point.nil?  
+        sort { by '_geo_distance' => { point: params[:point] }} unless params[:point].nil?  
       when 'newest'
         sort { by :created_at, 'desc' }
       when 'oldest'
         sort { by :created_at, 'asc' }
       end
+
+      Rails.logger.debug("Tire: #{params.inspect}")
     end
   end
 
