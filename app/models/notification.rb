@@ -41,6 +41,10 @@ class Notification < ActiveRecord::Base
     "Notification from #{event}"
   end
 
+  def callback_str
+    "dbld8://#{target.class.model_name.parameterize}/#{target.id}"
+  end
+
   def target
     event.related
   end

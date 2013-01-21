@@ -30,6 +30,9 @@ DoubleDate::Application.routes.draw do
     # User Photos
     resource :photo, :controller => 'user_photo', :only => [:show, :create]
 
+    # resources :notifications
+    get 'notifications', :on => :member
+
     # get list of friends
     # GET /me/friends
     resources :friends, :only => [:index, :update, :destroy] do
