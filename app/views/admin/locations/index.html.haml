@@ -9,3 +9,5 @@
     %small #{pluralize(@locations.count, 'Location')} Total
 
 = render 'location_list'
+
+= paginate @locations

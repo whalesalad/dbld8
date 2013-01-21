@@ -35,3 +35,5 @@
           %span{ :class => "badge badge-#{badge_for_event(event)}" }
             #{event.cost_to_s}
         %td #{l event.created_at, :format => :long}
+
+= paginate @events

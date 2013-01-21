@@ -4,6 +4,7 @@ class Notification < ActiveRecord::Base
   attr_accessible :user, :event, :push, :callback
 
   # before_create :set_callback
+  default_scope order('created_at DESC')
 
   belongs_to :user
   belongs_to :event

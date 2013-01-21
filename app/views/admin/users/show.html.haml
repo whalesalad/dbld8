@@ -126,11 +126,11 @@
             - @user.events.each do |event|
               %li
                 %span.object-title
-                  #{event} 
+                  #{event.detail} 
                   - if event.related.present?
                     #{link_to '∞', url_for(event.related_admin_path)}
                 %span.object-detail
-                  #{event.detail}
+                  #{time_ago_in_words(event.created_at)} ago
 
         .tab-panel#user-friends
           %h4

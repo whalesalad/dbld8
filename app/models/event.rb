@@ -20,6 +20,8 @@ class Event < ActiveRecord::Base
 
   belongs_to :user
   validates_presence_of :user
+
+  default_scope order('created_at DESC').includes(:user, :related)
   
   # ERRORING OUT
   # validate :has_enough_coins, :on => :create

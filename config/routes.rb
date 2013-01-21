@@ -78,9 +78,12 @@ DoubleDate::Application.routes.draw do
     resources :locations, :only => [:index, :show] do
       get 'cities', :on => :collection
       get 'venues', :on => :collection
+      get 'page/:page', :action => :index, :on => :collection
     end
 
-    resources :events, :only => [:index]
+    resources :events, :only => [:index] do
+      get 'page/:page', :action => :index, :on => :collection
+    end
 
     require 'sidekiq/web'
     mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'
