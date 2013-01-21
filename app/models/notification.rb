@@ -10,16 +10,18 @@ class Notification < ActiveRecord::Base
   belongs_to :event
 
   def to_s
-    if event.is_a?(NewActivityEvent) && user == event.activity.wing
-      return "You're #{event.activity.user.first_name}'s wing on #{event.activity.user.gender_posessive} DoubleDate \"#{event.activity}\"."
-    end
+    if event.related.present?
+      if event.is_a?(NewActivityEvent) && user == event.activity.wing
+        return "You're #{event.activity.user.first_name}'s wing on #{event.activity.user.gender_posessive} DoubleDate \"#{event.activity}\"."
+      end
 
-    if event.is_a?(SentWingInviteEvent)
-      return "#{target.user} invited you to be #{target.user.gender_posessive} wing."
-    end
+      if event.is_a?(SentWingInviteEvent)
+        return "#{target.user} invited you to be #{target.user.gender_posessive} wing."
+      end
 
-    if event.is_a?(RecruitedWingEvent)
-      return "#{target.friend} accepted your wing invitation!"
+      if event.is_a?(RecruitedWingEvent)
+        return "#{target.friend} accepted your wing invitation!"
+      end
     end
 
     "Notification from #{event}"
