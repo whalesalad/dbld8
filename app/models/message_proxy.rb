@@ -19,4 +19,9 @@ class MessageProxy < ActiveRecord::Base
   def owners_proxy?
     message.user_id == user_id
   end
+
+  def mark_read!
+    self.unread = false
+    save!
+  end
 end

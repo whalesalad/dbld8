@@ -57,7 +57,7 @@
 
       %section.tab-content
         .tab-panel#incoming-engagements
-          - if @activity.engagements.exists?
+          - if @activity.engagements.present?
             %p There's #{pluralize(@activity.engagements.count, 'engagement')} for this activity.
 
             %ul.generic-object-list

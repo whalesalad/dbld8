@@ -35,16 +35,16 @@ class Engagement < ActiveRecord::Base
   has_many :messages, :dependent => :destroy
   has_many :message_proxies, :through => :messages
 
-  def self.find_for_user_or_wing(user_id)
-    where('user_id = ? OR wing_id = ?', user_id, user_id).first
-  end
-
-  def send_initial_message(body)
-    messages.create :user => user, :body => body
+  def send_initial_message(message)
+    messages.create(:user => user, :message => message)
   end
 
   def to_s
     "#{participant_names}: #{activity}"
+  end
+
+  def status
+    unlocked? ? 'unlocked' : 'locked'
   end
 
   def all_participants
@@ -68,10 +68,6 @@ class Engagement < ActiveRecord::Base
 
   def primary_message
     @message ||= messages.first
-  end
-
-  def viewed!
-    !!unread?
   end
 
   def ignore!

@@ -11,7 +11,7 @@
 #
 
 class Message < ActiveRecord::Base
-  attr_accessible :user, :body
+  attr_accessible :user, :message
 
   belongs_to :user
   belongs_to :engagement
@@ -20,6 +20,10 @@ class Message < ActiveRecord::Base
   has_many :message_proxies, :dependent => :destroy
 
   default_scope order('created_at ASC').includes(:user, :message_proxies)
+
+  def to_s
+    message
+  end
 
   def allowed?(a_user, permission = :all)
     a_user.id == user.id
@@ -31,8 +35,17 @@ class Message < ActiveRecord::Base
     # end
   end
 
-  def unread_for(a_user)
-    message_proxies.find_by_user_id(a_user.id).unread?
+  def proxy_for(a_user)
+    a_user = a_user.id if a_user.is_a?(User)
+    message_proxies.find_by_user_id(a_user)
+  end
+
+  def unread_for(a_user=nil)
+    proxy_for(a_user).unread? unless a_user.nil?
+  end
+
+  def mark_read!(a_user=nil)
+    proxy_for(a_user).read! unless a_user.nil?
   end
 
   def as_json(options={})

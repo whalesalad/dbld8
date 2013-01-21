@@ -21,7 +21,7 @@ class BaseActivitiesController < ApplicationController
   end
 
   def get_singular_engagement
-    @activity.engagements.find_for_user_or_wing(@authenticated_user.id)
+    @activity.engagements.find_for_user_or_wing(@authenticated_user.id).first
   end
 
   def unauthorized!

@@ -147,11 +147,12 @@ class User < ActiveRecord::Base
   end
 
   def my_activities
-    mine = []
-    activity_associations.each do |association|
-      self.send(association).each { |a| mine << a.update_relationship_as(self) }
-    end
-    mine
+    activities + participating_activities + engaged_activities + engaged_participating_activities
+    # mine = []
+    # activity_associations.each do |association|
+    #   self.send(association).each { |a| mine << a.update_relationship_as(self) }
+    # end
+    # mine
   end
 
   def my_activities_count
@@ -174,7 +175,7 @@ class User < ActiveRecord::Base
   end
 
   def can_spend?(amount)
-    return (total_coins - amount.abs) > 0
+    (total_coins - amount.abs) > 0
   end
 
   def as_json(options={})

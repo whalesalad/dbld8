@@ -7,16 +7,25 @@ module Concerns
       belongs_to :wing, :class_name => 'User'
     end
 
-    def participants
-      [user, wing]
+    module ClassMethods
+      def find_for_user_or_wing(user_id)
+        user_id = user_id.id if user_id.is_a?(User) 
+        where('user_id = ? OR wing_id = ?', user_id, user_id)
+      end
     end
 
-    def participant_ids
-      [user_id, wing_id]
-    end
+    module InstanceMethods
+      def participants
+        [user, wing]
+      end
 
-    def participant_names
-      participants.map{ |u| u.first_name }.join ' + '
+      def participant_ids
+        [user_id, wing_id]
+      end
+
+      def participant_names
+        participants.map{ |u| u.first_name }.join ' + '
+      end
     end
 
   end

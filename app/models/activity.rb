@@ -18,20 +18,16 @@ class Activity < ActiveRecord::Base
   include Concerns::ParticipantConcerns
   include Concerns::EventConcerns
 
+  attr_accessor :age_bounds, :relationship
+
   attr_accessible :title, :details, :wing_id, 
     :location_id, :day_pref, :time_pref
 
-  attr_accessor :age_bounds, :relationship
+  validates_presence_of :title, :details, :wing_id, :location_id
 
-  validates_presence_of :title, :details, :wing_id
+  default_scope includes(:engagements, :location).order('created_at DESC')
 
-  default_scope includes(:engagements, 
-    :location, 
-    :user => [:profile_photo], 
-    :wing => [:profile_photo]).order('created_at DESC')
-
-  scope :expired, where(:expired => 'NOT NULL')
-  
+  # Location
   belongs_to :location, :counter_cache => true
 
   # Engagements
@@ -46,15 +42,13 @@ class Activity < ActiveRecord::Base
   # Validate day preference
   validates_inclusion_of :day_pref, 
     :in => DAY_PREFERENCES, 
-    :message => "The field activity.day_pref is required. "\
-      "Possible values are #{DAY_PREFERENCES.join(', ')}.",
+    :message => "Possible values for day_pref are #{DAY_PREFERENCES.join(', ')}.",
     :allow_blank => true
 
   # Validate time preference
   validates_inclusion_of :time_pref, 
     :in => TIME_PREFERENCES, 
-    :message => "The field activity.time_pref is required. "\
-      "Possible values are #{TIME_PREFERENCES.join(', ')}.",
+    :message => "Possible values for time_pref are #{TIME_PREFERENCES.join(', ')}.",
     :allow_blank => true
 
   RELATIONSHIP_CHOICES = %w(open owner wing engaged)
@@ -150,8 +144,8 @@ class Activity < ActiveRecord::Base
       return IS_OWNER if a_user.id == user_id
       return IS_WING if a_user.id == wing_id
 
-      # TODO, handle this for your user id or your wing's user id.
-      if engagements.find_for_user_or_wing(a_user.id)
+      # If you or your wing have an engagement, your'e engaged.
+      if engagements.find_for_user_or_wing(a_user.id).exists?
         return IS_ENGAGED
       end
     end
@@ -163,8 +157,4 @@ class Activity < ActiveRecord::Base
     tap { |a| a.relationship = a.get_relationship_for(a_user) }
   end
 
-  def expire!
-    
-  end
-  
 end

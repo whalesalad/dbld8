@@ -10,7 +10,7 @@ class EngagementsController < BaseActivitiesController
   def index
     @engagements = if @activity.allowed?(@authenticated_user, :owners)
       # if the user is the user/wing
-      @activity.engagements.not_ignored
+      @activity.engagements
     else
       # if we're a random user, respond with their singular engagement.
       [get_singular_engagement].compact
@@ -20,11 +20,11 @@ class EngagementsController < BaseActivitiesController
   end
 
   def create
-    if @activity.engagements.find_for_user_or_wing(@authenticated_user)
+    if @activity.engagements.find_for_user_or_wing(@authenticated_user).exists?
       return json_unauthorized "You or your wing have already engaged in this activity."
     end
 
-    message_body = params[:engagement].delete(:body)
+    message_body = params[:engagement].delete(:message)
 
     if message_body.nil?
       return json_error "You must include a message body with your engagement."

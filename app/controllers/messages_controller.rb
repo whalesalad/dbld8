@@ -10,6 +10,7 @@ class MessagesController < ApplicationController
   end
 
   def show
+    @message.proxy_for(@authenticated_user).mark_read!
     respond_with @message
   end
 
@@ -20,7 +21,7 @@ class MessagesController < ApplicationController
 
     @message = @engagement.messages.new({
       :user => @authenticated_user,
-      :body => params[:message][:body]
+      :message => params[:message]
     })
 
     if @message.save
@@ -46,7 +47,6 @@ class MessagesController < ApplicationController
   def get_activity
     @activity = Activity.find_by_id(params[:activity_id])
     json_not_found "The requested activity was not found." if @activity.nil?
-    # @activity.update_relationship_as(@authenticated_user)
   end
 
   def get_engagement
