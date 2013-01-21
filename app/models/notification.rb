@@ -11,8 +11,22 @@ class Notification < ActiveRecord::Base
 
   def to_s
     if event.related.present?
-      if event.is_a?(NewActivityEvent) && user == event.activity.wing
+      # NEW ACTIVITY
+      if event.is_a?(NewActivityEvent) && user == target.wing
         return "You're #{event.activity.user.first_name}'s wing on #{event.activity.user.gender_posessive} DoubleDate \"#{event.activity}\"."
+      end
+
+      # NEW ENGAGEMENT
+      if event.is_a?(NewEngagementEvent)
+        # if the user is the engagement wing
+        if user == target.wing
+          return "#{target.user} picked you to be #{target.user.gender_posessive} wing on the DoubleDate \"#{target.activity}\""
+        end
+
+        # if the user is a participant
+        if target.activity.participant_ids.include?(user.id)
+          return "#{target.participant_names} are interested in \"#{target.activity}\""
+        end
       end
 
       if event.is_a?(SentWingInviteEvent)

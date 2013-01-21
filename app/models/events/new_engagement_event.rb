@@ -43,9 +43,12 @@ class NewEngagementEvent < Event
   def notify
     # Send notification to [user, wing] on the Activity
     # Jenny + Vanessa are interested in "DoubleDateName"
+    engagement.activity.participants.each do |u|
+      notifications.create(:user => u, :push => true)
+    end
 
     # Send notification to the [wing] on the Engagement
     # Vanessa picked you to be her wing on the DoubleDate "Hiking in Manoa Valley"
-    # notifications.create(:user => activity.wing, :push => true)
+    notifications.create(:user => engagement.wing, :push => true)
   end
 end
