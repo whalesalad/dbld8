@@ -12,7 +12,6 @@ class ActivitiesController < BaseActivitiesController
     end
 
     @activities = Activity.search(params)
-
     respond_with @activities
   end
 
@@ -50,16 +49,14 @@ class ActivitiesController < BaseActivitiesController
 
   def update
     if @activity.update_attributes(params[:activity])
-      return respond_with @activity
+      respond_with @activity
     else
-      return respond_with @activity, :status => :unprocessable_entity
+      respond_with @activity, :status => :unprocessable_entity
     end
   end
 
   def destroy
-    if @activity.destroy
-      respond_with(:nothing => true)
-    end
+    respond_with(:nothing => true) if @activity.destroy
   end
 
   private

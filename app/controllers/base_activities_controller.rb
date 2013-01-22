@@ -1,5 +1,4 @@
 class BaseActivitiesController < ApplicationController
-
   private
 
   def get_activity
@@ -18,10 +17,6 @@ class BaseActivitiesController < ApplicationController
 
   def activity_participants_only
     return unauthorized! unless @activity.allowed?(@authenticated_user, :all)
-  end
-
-  def get_singular_engagement
-    @activity.engagements.find_for_user_or_wing(@authenticated_user.id).first
   end
 
   def unauthorized!

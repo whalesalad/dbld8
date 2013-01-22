@@ -2,20 +2,11 @@ class EngagementsController < BaseActivitiesController
   respond_to :json
 
   before_filter :get_activity
-  
   before_filter :get_engagement, :only => [:show, :unlock, :destroy]
-
-  before_filter :activity_participants_only, :only => [:update]
+  before_filter :activity_participants_only, :only => [:index, :update]
 
   def index
-    @engagements = if @activity.allowed?(@authenticated_user, :owners)
-      # if the user is the user/wing
-      @activity.engagements
-    else
-      # if we're a random user, respond with their singular engagement.
-      [get_singular_engagement].compact
-    end
-
+    @engagements = @activity.engagements
     respond_with @engagements
   end
 
@@ -53,6 +44,7 @@ class EngagementsController < BaseActivitiesController
   def show
     # A user needs to be one of the four allowed to see this.
     return unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
+
     respond_with @engagement
   end
 
@@ -100,11 +92,18 @@ class EngagementsController < BaseActivitiesController
     params[:activity_id]
   end
 
+  def engagement_id
+    params[:id]
+  end
+
   def get_engagement
-    @engagement = if params[:id] == 'mine'
-      get_singular_engagement
+    @engagement = if @activity.allowed?(@authenticated_user, :owners)
+      if engagement_id.nil?
+        return json_error "As a date creator/wing, please request /engagements instead."
+      end
+      @activity.engagements.find_by_id(engagement_id)
     else
-      @activity.engagements.find_by_id(params[:id])      
+      @activity.engagements.find_for_user_or_wing(@authenticated_user.id).first
     end
 
     return json_not_found "You have not engaged in this activity yet, "\

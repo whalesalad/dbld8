@@ -1,7 +1,9 @@
-class MessagesController < ApplicationController
+class MessagesController < EngagementsController
   respond_to :json
   
-  before_filter :get_activity, :get_engagement
+  skip_before_filter :activity_participants_only
+
+  before_filter :get_engagement
   before_filter :get_message, :only => [:show, :destroy]
 
   def index
@@ -44,19 +46,8 @@ class MessagesController < ApplicationController
 
   private
 
-  def get_activity
-    @activity = Activity.find_by_id(params[:activity_id])
-    json_not_found "The requested activity was not found." if @activity.nil?
-  end
-
-  def get_engagement
-    @engagement = if params[:engagement_id] == 'mine'
-      @activity.engagements.find_for_user_or_wing(@authenticated_user.id).first
-    else
-      @activity.engagements.find_by_id(params[:engagement_id])
-    end
-
-    json_not_found "The requested engagement was not found." if @engagement.nil?
+  def engagement_id
+    params[:engagement_id]
   end
 
   def get_message
