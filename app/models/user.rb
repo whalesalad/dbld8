@@ -72,6 +72,8 @@ class User < ActiveRecord::Base
     :allow_nil => true, 
     :allow_blank => true
 
+  validate :max_interests
+
   has_many :activities, :dependent => :destroy
   has_many :participating_activities, 
     :class_name => "Activity", 
@@ -195,6 +197,12 @@ class User < ActiveRecord::Base
   def set_invite_slug
     self.invite_slug = "#{created_at.to_i.to_s.reverse.chop}#{id}#{Random.rand(10)}"
     save!
+  end
+
+  def max_interests
+    if interests(:reload).count > 10
+      errors.add(:interests, 'A user can only have a maximum of 10 interests.')
+    end
   end
 
 end
