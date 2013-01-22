@@ -25,7 +25,7 @@ class Activity < ActiveRecord::Base
 
   validates_presence_of :title, :details, :wing_id, :location_id
 
-  default_scope includes(:engagements, :location).order('created_at DESC')
+  default_scope includes(:user, :wing, :location).order('created_at DESC')
 
   # Location
   belongs_to :location, :counter_cache => true
@@ -74,7 +74,7 @@ class Activity < ActiveRecord::Base
     # If we specify anytime, ignore it to include everything
     params.delete :happening if !!(params[:happening] =~ /anytime/i)
 
-    tire.search(:load => true, :per_page => 50) do
+    tire.search(:load => { :include => [:user, :wing, :location] }, :per_page => 50) do
       # Match title/details
       query { string(params[:query]) } if params[:query].present?
       

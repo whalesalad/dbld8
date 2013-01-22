@@ -65,6 +65,7 @@ group :production do
 end
 
 group :development, :test do
+  gem 'bullet'
   gem 'thin'
   gem 'quiet_assets'
   gem 'rspec-rails'

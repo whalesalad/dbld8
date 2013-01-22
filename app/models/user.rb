@@ -90,7 +90,6 @@ class User < ActiveRecord::Base
     :through => :participating_engagements,
     :source => :activity
 
-
   default_scope includes(:location, :profile_photo)
 
   def on_init
@@ -148,7 +147,7 @@ class User < ActiveRecord::Base
   end
 
   def my_activities
-    activities + participating_activities + engaged_activities + engaged_participating_activities
+    (activities + participating_activities + engaged_activities + engaged_participating_activities)
     # mine = []
     # activity_associations.each do |association|
     #   self.send(association).each { |a| mine << a.update_relationship_as(self) }

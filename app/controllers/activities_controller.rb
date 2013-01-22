@@ -12,6 +12,7 @@ class ActivitiesController < BaseActivitiesController
     end
 
     @activities = Activity.search(params)
+    # @activities = Activity.includes(:location, :user, :wing, :engagements).search(params)
     respond_with @activities
   end
 

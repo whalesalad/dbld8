@@ -1,7 +1,7 @@
 class Notification < ActiveRecord::Base
   include Concerns::UUIDConcerns
 
-  attr_accessible :user, :event, :push, :callback
+  attr_accessible :user, :message_proxy, :event, :push, :callback
 
   # before_create :set_callback
   default_scope order('created_at DESC')
@@ -61,10 +61,3 @@ class Notification < ActiveRecord::Base
   end
 
 end
-
-
-# Wing gets notified they are part of a date
-# event is_a NewActivityEvent
-# user == event.activity.wing
-#  - You're Ivan's wing on his new DoubleDate "Venice Beach Barhopping"
-#  - You're Vanessa's wing on her new DoubleDate "Hiking in Manoa Valley"

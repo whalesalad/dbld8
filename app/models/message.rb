@@ -19,7 +19,7 @@ class Message < ActiveRecord::Base
   has_one :activity, :through => :engagement
   has_many :message_proxies, :dependent => :destroy
 
-  default_scope order('created_at ASC').includes(:user, :message_proxies)
+  default_scope order('created_at ASC')
 
   def to_s
     message
