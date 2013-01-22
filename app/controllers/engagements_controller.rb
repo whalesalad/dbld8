@@ -64,7 +64,9 @@ class EngagementsController < BaseActivitiesController
 
     # Finally, let's unlock this beast.
     if unlocker.unlock!
-      render json: { unlocked: true } and return
+      respond_with @engagement,
+        :location => activity_engagement_path(@activity, @engagement), 
+        :template => 'engagements/show' and return
     else
       return json_error "An error ocurred unlocking this engagement."
     end
