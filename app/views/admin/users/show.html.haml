@@ -67,6 +67,13 @@
           %dt Birthday
           %dd #{l @user.birthday, :format => :long} &mdash; #{@user.age} Years Old
 
+          %dt Location
+          %dd   
+            - if @user.location.present?
+              #{link_to @user.location, admin_location_path(@user.location)}
+            - else
+              No location defined.
+
           %dt Status
           %dd #{@user.status}
 
@@ -82,7 +89,7 @@
       %hr/
 
       %section.content-section
-        %h4 Invitation
+        %h4 Invite System
 
         %dl.dl-horizontal
           %dt Slug
@@ -93,13 +100,17 @@
 
       %hr/
 
-      %section.content-section  
-        %h4 Location
-        %p
-          - if @user.location.present?
-            #{link_to @user.location, admin_location_path(@user.location)}
-          - else
-            No location defined.
+      %section.content-section
+        %h4 Device Tokens
+
+        - unless @user.devices.exists?
+          %p #{@user.first_name} doesn't have any devices.
+
+        - else
+          %ul
+          - @user.devices.each do |device|
+            %li #{device.token}
+
 
       .form-actions
         = link_to "Delete", admin_user_path(@user), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'

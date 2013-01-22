@@ -27,6 +27,15 @@ class User < ActiveRecord::Base
   include Concerns::FriendConcerns
   include Concerns::UUIDConcerns
 
+  attr_accessible :email, :password, :first_name, :last_name, :birthday,
+    :single, :interested_in, :gender, :bio, :interest_ids, :location,
+    :interest_names, :location_id
+
+  attr_accessor :accessible, :approved
+
+  GENDER_CHOICES = %w(male female)
+  INTEREST_CHOICES = %w(guys girls both)
+
   before_validation :on_init, :on => :create
 
   after_create :set_invite_slug
@@ -38,6 +47,7 @@ class User < ActiveRecord::Base
 
   # Notifications
   has_many :notifications, :dependent => :destroy
+  has_many :devices, :dependent => :destroy
 
   belongs_to :location, :counter_cache => true
 
@@ -47,15 +57,6 @@ class User < ActiveRecord::Base
   
   has_one :profile_photo, :class_name => 'UserPhoto', :dependent => :destroy
   has_many :profile_photos, :class_name => 'UserPhoto', :dependent => :destroy
-
-  attr_accessible :email, :password, :first_name, :last_name, :birthday,
-    :single, :interested_in, :gender, :bio, :interest_ids, :location,
-    :interest_names, :location_id
-
-  attr_accessor :accessible, :approved
-
-  GENDER_CHOICES = %w(male female)
-  INTEREST_CHOICES = %w(guys girls both)
 
   # Registration validation
   validates_presence_of :first_name, :last_name, :birthday, :gender

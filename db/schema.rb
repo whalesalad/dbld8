@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121162105) do
+ActiveRecord::Schema.define(:version => 20130122024205) do
 
   add_extension "uuid-ossp"
 
@@ -48,6 +48,16 @@ ActiveRecord::Schema.define(:version => 20130121162105) do
   end
 
   add_index "credit_actions", ["slug"], :name => "index_credit_actions_on_slug", :unique => true
+
+  create_table "devices", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.string   "token",      :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "devices", ["token"], :name => "index_devices_on_token", :unique => true
+  add_index "devices", ["user_id"], :name => "index_devices_on_user_id"
 
   create_table "engagements", :force => true do |t|
     t.integer  "user_id",                        :null => false

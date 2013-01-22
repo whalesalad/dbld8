@@ -38,6 +38,8 @@ DoubleDate::Application.routes.draw do
     # resources :notifications
     get 'notifications', :on => :member
 
+    resource :device, :only => [:update, :destroy]
+
     # get list of friends
     # GET /me/friends
     resources :friends, :only => [:index, :update, :destroy] do
