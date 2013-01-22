@@ -152,14 +152,14 @@
         .tab-panel#user-activities
           %h4
             Activities
-            - unless @user.activities.blank?
+            - unless @user.my_activities.blank?
               %span.badge.badge-info #{@user.activities.count}
 
-          - if @user.activities.blank?
+          - if @user.my_activities.blank?
             %p #{@user.first_name} hasn't created any activities.
           
           %ul.generic-object-list
-            - @user.activities.each do |activity|
+            - @user.my_activities.each do |activity|
               %li
                 %span.object-title
                   = link_to activity, admin_activity_path(activity)
