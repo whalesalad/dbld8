@@ -17,8 +17,11 @@ class RewardFacebookInviteWorker
 
   def perform(new_user_id)
     new_user = User.find(new_user_id)
+
+    # Find the invite that probably got them here
     facebook_invitation = new_user.target_facebook_invite
 
+    # Stop if we don't have an invite
     return if facebook_invitation.blank?
 
     begin
