@@ -125,16 +125,13 @@
 
       %section.tab-content
         .tab-panel#user-events
-          %h4
-            Events
-            - if @user.events.present?
-              %span.badge.badge-info #{@user.events.count}
+          %h4 Recent Events
 
           - if @user.events.blank?
             %p #{@user.first_name} doesn't have any events.
 
           %ul.generic-object-list
-            - @user.events.each do |event|
+            - @user.events.limit(10).each do |event|
               %li
                 %span.object-title
                   #{event.detail} 
@@ -161,16 +158,13 @@
                   #{friend.location}
 
         .tab-panel#user-activities
-          %h4
-            Activities
-            - unless @user.my_activities.blank?
-              %span.badge.badge-info #{@user.activities.count}
+          %h4 Recent Activities
 
           - if @user.my_activities.blank?
             %p #{@user.first_name} hasn't created any activities.
           
           %ul.generic-object-list
-            - @user.my_activities.each do |activity|
+            - @user.my_activities.first(10).each do |activity|
               %li
                 %span.object-title
                   = link_to activity, admin_activity_path(activity)
@@ -178,16 +172,13 @@
                   with #{link_to activity.wing, admin_user_path(activity.wing)} @ #{activity.location}
 
         .tab-panel#user-notifications
-          %h4
-            Notifications
-            - unless @user.notifications.blank?
-              %span.badge.badge-info #{@user.notifications.count}
+          %h4 Recent Notifications
 
           - if @user.notifications.blank?
             %p #{@user.first_name} does not have any notifications.
           
           %ul.generic-object-list
-            - @user.notifications.each do |notification|
+            - @user.notifications.limit(10).each do |notification|
               %li
                 %span.object-title
                   = link_to notification, url_for(notification.event.related_admin_path)

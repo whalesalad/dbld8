@@ -19,6 +19,11 @@ class MeController < ApplicationController
     end
   end
 
+  def update_device_token
+    @device = @authenticated_user.devices.find_or_create_by_token params[:device_token]
+    respond_with @device
+  end
+
   private
 
   def get_user

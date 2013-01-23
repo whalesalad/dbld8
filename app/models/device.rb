@@ -5,4 +5,8 @@ class Device < ActiveRecord::Base
   validates_presence_of :token
 
   belongs_to :user
+
+  def as_json(options)
+    super(:only => [:token, :updated_at])
+  end
 end
