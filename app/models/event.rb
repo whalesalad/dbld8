@@ -122,4 +122,15 @@ class Event < ActiveRecord::Base
     0
   end
 
+  def properties
+    properties = { cost: cost_to_s, slug: slug }
+    
+    if related?
+      properties[:related] = related.class.model_name
+      properties[:related_id] = related.id
+    end
+    
+    return properties
+  end
+
 end
