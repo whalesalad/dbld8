@@ -50,7 +50,7 @@ gem 'carrierwave'
 gem 'asset_sync'
 
 # Analytics
-gem 'analytics-ruby'
+# gem 'analytics-ruby'
 
 # Gems used only for assets and not in production
 group :assets do
