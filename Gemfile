@@ -49,9 +49,6 @@ gem 'carrierwave'
 # Monitoring
 gem 'asset_sync'
 
-# Analytics
-# gem 'analytics-ruby'
-
 # Gems used only for assets and not in production
 group :assets do
   gem 'sass-rails',   '~> 3.2'
@@ -64,7 +61,6 @@ end
 group :production do
   gem 'unicorn'
   gem 'newrelic_rpm'
-  # gem 'puma'
 end
 
 group :development, :test do
