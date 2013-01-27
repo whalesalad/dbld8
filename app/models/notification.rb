@@ -25,8 +25,6 @@ class Notification < ActiveRecord::Base
   default_scope order('created_at DESC').includes(:user, :target)
 
   belongs_to :user
-  belongs_to :event
-
   belongs_to :target, :polymorphic => true
 
   def message?
