@@ -25,13 +25,15 @@ class Activity < ActiveRecord::Base
 
   validates_presence_of :title, :details, :wing_id, :location_id
 
-  default_scope includes(:user, :wing, :location).order('updated_at DESC')
+  default_scope order('activities.updated_at DESC')
 
   # Location
   belongs_to :location, :counter_cache => true
 
   # Engagements
-  has_many :engagements, :dependent => :destroy
+  has_many :engagements, 
+    :dependent => :destroy,
+    :include => [:user, :wing]
 
   # Messages
   has_many :messages, :through => :engagements

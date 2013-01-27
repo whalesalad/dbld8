@@ -7,7 +7,7 @@ class MessagesController < EngagementsController
   before_filter :get_message, :only => [:show, :destroy]
 
   def index
-    @messages = @engagement.messages
+    @messages = @engagement.messages.includes(:user)
     respond_with @messages
   end
 

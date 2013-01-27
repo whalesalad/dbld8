@@ -21,7 +21,7 @@ class Engagement < ActiveRecord::Base
   scope :ignored, where(:ignored => true)
   scope :not_ignored, where(:ignored => false)
 
-  default_scope order('updated_at DESC')
+  default_scope order('engagements.updated_at DESC')
   
   validates_uniqueness_of :activity_id, 
     :scope => [:user_id, :wing_id], 

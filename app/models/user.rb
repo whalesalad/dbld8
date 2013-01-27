@@ -74,8 +74,12 @@ class User < ActiveRecord::Base
 
   validate :max_interests
 
-  has_many :activities, :dependent => :destroy
+  has_many :activities, 
+    :include => [:user, :wing, :location],
+    :dependent => :destroy
+
   has_many :participating_activities, 
+    :include => [:user, :wing, :location],
     :class_name => "Activity", 
     :foreign_key => "wing_id"
 
@@ -85,10 +89,12 @@ class User < ActiveRecord::Base
     :foreign_key => "wing_id"
 
   has_many :engaged_activities, 
+    :include => [:user, :wing, :location],
     :through => :engagements,
     :source => :activity
 
   has_many :engaged_participating_activities, 
+    :include => [:user, :wing, :location],
     :through => :participating_engagements,
     :source => :activity
 

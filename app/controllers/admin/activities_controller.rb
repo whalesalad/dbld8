@@ -2,15 +2,15 @@ class Admin::ActivitiesController < AdminController
   before_filter :get_activity, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @activities = Activity.all
+    @activities = base_activities.all
   end
 
   def engaged
-    @activities = Activity.engaged
+    @activities = base_activities.engaged
   end
 
   def expired
-    @activities = Activity.expired
+    @activities = base_activities.expired
   end
 
   def show
@@ -23,6 +23,10 @@ class Admin::ActivitiesController < AdminController
   end
 
   private
+
+  def base_activities
+    Activity.includes({:engagements => [:user, :wing]})
+  end
 
   def get_activity
     @activity = Activity.find_by_id(params[:id])
