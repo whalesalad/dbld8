@@ -189,7 +189,7 @@ class User < ActiveRecord::Base
   end
 
   def primary_device_token
-    devices.first.token
+    devices.first.token if devices.any?
   end
 
   private

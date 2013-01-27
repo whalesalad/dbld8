@@ -1,20 +1,18 @@
 class PushNotificationWorker
   include Sidekiq::Worker
 
-  attr_accessor :pusher
-
-  def pusher
-    @pusher ||= Grocer.pusher(
-      certificate: Rails.root.join("cert/apn_#{Rails.env}.pem"),
-      gateway: "gateway.sandbox.push.apple.com"
-    )
-  end
+  # Set a global connection to APN one single time
+  APN_CONNECTION = Grocer.pusher(
+    certificate: Rails.root.join("cert/apn_#{Rails.configuration.apn_mode}.pem"),
+    gateway: Rails.configuration.apn_gateway
+  )
 
   def perform(n_id)
     notification = Notification.find_by_id(n_id)
 
     if notification && notification.pushable?
-      
+      return unless notification.user.primary_device_token.present?
+
       push_notification = Grocer::Notification.new(
         device_token: notification.user.primary_device_token,
         alert:        notification.to_s,
@@ -24,7 +22,7 @@ class PushNotificationWorker
         # identifier:   1234                  # optional
       )
 
-      pusher.push(push_notification)
+      APN_CONNECTION.push(push_notification)
 
       # notification.pushed!
     end
