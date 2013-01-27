@@ -11,8 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130122024205) do
+ActiveRecord::Schema.define(:version => 20130127155820) do
 
+  add_extension "hstore"
   add_extension "uuid-ossp"
 
   create_table "activities", :force => true do |t|
@@ -172,18 +173,17 @@ ActiveRecord::Schema.define(:version => 20130122024205) do
   add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
 
   create_table "notifications", :force => true do |t|
-    t.uuid     "uuid",                          :null => false
-    t.integer  "user_id",                       :null => false
-    t.integer  "event_id",                      :null => false
-    t.boolean  "unread",     :default => true
-    t.boolean  "push",       :default => false
-    t.boolean  "pushed",     :default => false
+    t.uuid     "uuid",                             :null => false
+    t.integer  "user_id",                          :null => false
+    t.boolean  "unread",      :default => true
+    t.boolean  "push",        :default => false
+    t.boolean  "pushed",      :default => false
     t.string   "callback"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "target_id"
+    t.string   "target_type", :default => "Event"
   end
-
-  add_index "notifications", ["user_id", "event_id"], :name => "index_notifications_on_user_id_and_event_id", :unique => true
 
   create_table "user_photos", :force => true do |t|
     t.integer  "user_id"

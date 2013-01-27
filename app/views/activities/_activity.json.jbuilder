@@ -1,4 +1,4 @@
-json.(activity, :id, :title, :details, :created_at, :day_pref, :time_pref)
+json.(activity, :id, :title, :details, :created_at, :updated_at, :day_pref, :time_pref)
 
 json.relationship activity.relationship(@authenticated_user)
 

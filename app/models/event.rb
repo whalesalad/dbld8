@@ -26,7 +26,9 @@ class Event < ActiveRecord::Base
   # ERRORING OUT
   # validate :has_enough_coins, :on => :create
 
-  has_many :notifications, :dependent => :destroy
+  has_many :notifications, 
+    :as => :target,
+    :dependent => :destroy
 
   belongs_to :related, :polymorphic => true
 

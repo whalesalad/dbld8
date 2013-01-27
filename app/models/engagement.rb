@@ -21,7 +21,7 @@ class Engagement < ActiveRecord::Base
   scope :ignored, where(:ignored => true)
   scope :not_ignored, where(:ignored => false)
 
-  default_scope order('created_at DESC')
+  default_scope order('updated_at DESC')
   
   validates_uniqueness_of :activity_id, 
     :scope => [:user_id, :wing_id], 
@@ -29,7 +29,7 @@ class Engagement < ActiveRecord::Base
 
   validates_presence_of :activity_id, :user_id, :wing_id
 
-  belongs_to :activity
+  belongs_to :activity, :touch => true
 
   # Messages!
   has_many :messages, :dependent => :destroy

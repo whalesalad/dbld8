@@ -24,10 +24,7 @@ class PushNotificationWorker
 
       APN_CONNECTION.push(push_notification)
 
-      # notification.pushed!
+      notification.pushed!
     end
   end
-
-
-
 end

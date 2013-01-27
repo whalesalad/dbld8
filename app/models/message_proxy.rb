@@ -13,15 +13,17 @@
 class MessageProxy < ActiveRecord::Base
   attr_accessible :user_id, :message_id, :unread
 
-  # after_commit :notify, :on => :create
+  after_commit :notify, :on => :create
 
-  has_one :user
-  has_one :message
+  belongs_to :user
+  belongs_to :message
   
-  # has_one :notification, :dependent => :destroy
+  has_one :notification,
+    :as => :target,
+    :dependent => :destroy
 
   def owners_proxy?
-    message.user_id == user_id
+    message.user_id == user.id
   end
 
   def mark_read!
@@ -30,6 +32,8 @@ class MessageProxy < ActiveRecord::Base
   end
 
   def notify
-    # create_notification(:user => user, :push => true, :unread => unread)
+    # create notifications for each user unless this is the user who created the message.
+    create_notification(:user => user, :push => true, :unread => unread) unless owners_proxy?
   end
+
 end

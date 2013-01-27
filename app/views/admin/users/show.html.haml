@@ -178,10 +178,10 @@
             %p #{@user.first_name} does not have any notifications.
           
           %ul.generic-object-list
-            - @user.notifications.limit(10).each do |notification|
+            - @user.notifications.limit(30).each do |notification|
               %li
                 %span.object-title
-                  = link_to notification, url_for(notification.event.related_admin_path)
+                  = link_to notification, url_for(notification.related_admin_path)
                 %span.object-detail
                   #{time_ago_in_words(notification.created_at)} ago
           

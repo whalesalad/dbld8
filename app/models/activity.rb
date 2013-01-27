@@ -25,7 +25,7 @@ class Activity < ActiveRecord::Base
 
   validates_presence_of :title, :details, :wing_id, :location_id
 
-  default_scope includes(:user, :wing, :location).order('created_at DESC')
+  default_scope includes(:user, :wing, :location).order('updated_at DESC')
 
   # Location
   belongs_to :location, :counter_cache => true

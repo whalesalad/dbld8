@@ -5,7 +5,7 @@
 #  id            :integer         not null, primary key
 #  user_id       :integer
 #  engagement_id :integer
-#  body          :text
+#  message       :text
 #  created_at    :datetime        not null
 #  updated_at    :datetime        not null
 #
@@ -14,7 +14,7 @@ class Message < ActiveRecord::Base
   attr_accessible :user, :message
 
   belongs_to :user
-  belongs_to :engagement
+  belongs_to :engagement, :touch => true
 
   has_one :activity, :through => :engagement
   has_many :message_proxies, :dependent => :destroy
