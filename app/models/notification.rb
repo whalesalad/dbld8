@@ -22,7 +22,7 @@ class Notification < ActiveRecord::Base
   attr_accessible :user, :message_proxy, :event, :push, :unread, :callback
 
   # before_create :set_callback
-  default_scope order('created_at DESC')
+  default_scope order('created_at DESC').includes(:user, :target)
 
   belongs_to :user
   belongs_to :event

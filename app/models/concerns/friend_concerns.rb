@@ -4,8 +4,15 @@ module Concerns
 
     included do
       # Handle the friendship relationships (the intermediary)
-      has_many :friendships, :dependent => :destroy
-      has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id", :dependent => :destroy
+      has_many :friendships, 
+        :include => [:user, :friend],
+        :dependent => :destroy
+
+      has_many :inverse_friendships, 
+        :class_name => "Friendship", 
+        :foreign_key => "friend_id", 
+        :include => [:user, :friend],
+        :dependent => :destroy
 
       # This gets direct (you are user_id) and inverse (you are friend_id) user objects
       has_many :direct_friends, 

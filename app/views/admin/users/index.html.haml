@@ -10,29 +10,28 @@
       %th 
       %th Name
       %th Email
-      %th Location
       %th Age
       %th Gender
       %th Status
       %th Created
-      %th Auth'd
-  
+
   %tbody
     - for user in @users
       %tr{ :class => user.is_a?(FacebookUser) ? 'info' : '' }
         %td #{user.id}
         %td
-          = image_tag user.photo.thumb, :class => 'img-rounded', :width => "30px", :height => "30px"
+          = image_tag user.photo.thumb, :class => 'img-rounded', :width => "40px", :height => "40px"
         %td 
           %b
             #{link_to user, admin_user_path(user)}
           - if user.is_a?(FacebookUser)
             %span.badge.badge-info
               Facebook
+          %br/
+          %small
+            #{user.location}
         %td #{user.email}
-        %td #{user.location}
         %td #{user.age}
         %td #{user.gender.titlecase}
         %td #{user.status}
         %td #{l user.created_at, :format => :medium}
-        %td #{user.token.present? ? 'Yes' : ''}
