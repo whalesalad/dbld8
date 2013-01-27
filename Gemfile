@@ -49,6 +49,9 @@ gem 'carrierwave'
 # Monitoring
 gem 'asset_sync'
 
+# Push Notifications
+gem 'grocer'
+
 # Gems used only for assets and not in production
 group :assets do
   gem 'sass-rails',   '~> 3.2'

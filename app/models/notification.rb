@@ -1,6 +1,8 @@
 class Notification < ActiveRecord::Base
   include Concerns::UUIDConcerns
 
+  after_commit :push_notification, :on => :create
+
   attr_accessible :user, :message_proxy, :event, :push, :callback
 
   # before_create :set_callback
@@ -53,11 +55,25 @@ class Notification < ActiveRecord::Base
     !unread?
   end
 
+  def pushable?
+    push? && unread? && !pushed?
+  end
+
+  def pushed!
+    self.unread = false
+    self.pushed = true
+    save!
+  end
+
   def set_callback
     # self.callback ||= 
     # if event.related.is_a?(Activity), open the activity
     # if event.is_a?(NewActivityEvent)
     # end
+  end
+
+  def push_notification
+    PushNotificationWorker.perform_async(self.id)
   end
 
 end

@@ -188,6 +188,10 @@ class User < ActiveRecord::Base
     UserAction.create_from_user_and_slug(self, slug, related)
   end
 
+  def primary_device_token
+    devices.first.token
+  end
+
   private
 
   def mass_assignment_authorizer(role = :default)
