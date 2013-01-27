@@ -22,6 +22,11 @@ class Engagement < ActiveRecord::Base
   scope :not_ignored, where(:ignored => false)
 
   default_scope order('engagements.updated_at DESC')
+
+  # I want all engagements that have message proxies with unread = true
+  scope :unread_for, lambda {|user|
+    joins(:message_proxies).where('message_proxies.user_id' => user.id).where('message_proxies.unread' => true)
+  }
   
   validates_uniqueness_of :activity_id, 
     :scope => [:user_id, :wing_id], 

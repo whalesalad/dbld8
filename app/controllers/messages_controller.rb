@@ -5,10 +5,16 @@ class MessagesController < EngagementsController
 
   before_filter :get_engagement
   before_filter :get_message, :only => [:show, :destroy]
+  after_filter :mark_messages_read, :only => [:index]
 
   def index
     @messages = @engagement.messages.includes(:user)
     respond_with @messages
+  end
+
+  def mark_messages_read
+    # Mark all of this users' proxies as unread
+    @engagement.message_proxies.update_all({:unread => false}, {:user_id => @authenticated_user.id, :unread => true})
   end
 
   def show

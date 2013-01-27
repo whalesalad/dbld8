@@ -17,17 +17,15 @@ class ActivitiesController < BaseActivitiesController
   end
 
   def mine
-    @activities = @authenticated_user.my_activities
+    # @activities = @authenticated_user.my_activities
+    @activities = base_activities.for_user(@authenticated_user)
     respond_with(@activities, :template => 'activities/index')
   end
 
   def engaged
-    @activities = @authenticated_user.engaged_activities
-    respond_with(@activities, :template => 'activities/index')
-  end
-
-  def other
-    @activities = Activity.where('user_id != ?', @authenticated_user.id)
+    # My activities that have engagements
+    # Activities that I am a wing on that have engagements
+    @activities = base_activities.for_user(@authenticated_user).with_engagements
     respond_with(@activities, :template => 'activities/index')
   end
 
@@ -61,6 +59,10 @@ class ActivitiesController < BaseActivitiesController
   end
 
   private
+
+  def base_activities
+    Activity.includes(:user, :wing, :location)
+  end
 
   def activity_id
     params[:id]

@@ -17,9 +17,14 @@ class Message < ActiveRecord::Base
   belongs_to :engagement, :touch => true
 
   has_one :activity, :through => :engagement
+  
   has_many :message_proxies, :dependent => :destroy
 
-  default_scope order('created_at ASC')
+  default_scope order('messages.created_at ASC')
+
+  scope :unread_for, lambda {|user| 
+    joins(:message_proxies).where('message_proxies.user_id' => user.id).where('message_proxies.unread' => true)
+  }
 
   def to_s
     message

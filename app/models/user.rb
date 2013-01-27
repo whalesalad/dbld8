@@ -83,7 +83,9 @@ class User < ActiveRecord::Base
     :class_name => "Activity", 
     :foreign_key => "wing_id"
 
-  has_many :engagements, :dependent => :destroy
+  has_many :engagements, 
+    :dependent => :destroy
+  
   has_many :participating_engagements, 
     :class_name => "Engagement",
     :foreign_key => "wing_id"

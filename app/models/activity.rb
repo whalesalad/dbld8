@@ -27,6 +27,12 @@ class Activity < ActiveRecord::Base
 
   default_scope order('activities.updated_at DESC')
 
+  scope :with_engagements, joins(:engagements).group('activities.id').having('COUNT(engagements.id) > 0')
+  
+  scope :for_user, lambda {|user|
+    joins(:engagements).where('activities.user_id = ? OR activities.wing_id = ? OR engagements.user_id = ? OR engagements.wing_id = ?', user.id, user.id, user.id, user.id)
+  }
+
   # Location
   belongs_to :location, :counter_cache => true
 
@@ -76,7 +82,7 @@ class Activity < ActiveRecord::Base
     # If we specify anytime, ignore it to include everything
     params.delete :happening if !!(params[:happening] =~ /anytime/i)
 
-    tire.search(:load => { :include => [:user, :wing, :location] }, :per_page => 50) do
+    tire.search(:load => { :include => [:user, :wing, :location] }, :per_page => 30) do
       # Match title/details
       query { string(params[:query]) } if params[:query].present?
       

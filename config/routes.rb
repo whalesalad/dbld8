@@ -14,7 +14,6 @@ DoubleDate::Application.routes.draw do
 
   resources :activities do
     get 'mine', :on => :collection
-    get 'other', :on => :collection
     get 'engaged', :on => :collection
 
     # Resources for the date owner
