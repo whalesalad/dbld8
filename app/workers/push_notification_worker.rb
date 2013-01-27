@@ -4,7 +4,10 @@ class PushNotificationWorker
   attr_accessor :pusher
 
   def pusher
-    @pusher ||= Grocer.pusher(certificate: Rails.root.join("cert/apn_#{Rails.env}.pem"))
+    @pusher ||= Grocer.pusher(
+      certificate: Rails.root.join("cert/apn_#{Rails.env}.pem"),
+      gateway: "gateway.sandbox.push.apple.com"
+    )
   end
 
   def perform(n_id)
