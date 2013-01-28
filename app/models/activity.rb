@@ -30,7 +30,7 @@ class Activity < ActiveRecord::Base
   scope :with_engagements, joins(:engagements).group('activities.id').having('COUNT(engagements.id) > 0')
   
   scope :for_user, lambda {|user|
-    joins(:engagements).where('activities.user_id = ? OR activities.wing_id = ? OR engagements.user_id = ? OR engagements.wing_id = ?', user.id, user.id, user.id, user.id)
+    select('distinct(activities.id)').includes(:engagements).where('activities.user_id = ? OR activities.wing_id = ? OR engagements.user_id = ? OR engagements.wing_id = ?', user.id, user.id, user.id, user.id)
   }
 
   # Location
