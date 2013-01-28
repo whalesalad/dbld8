@@ -11,18 +11,16 @@ class PushNotificationWorker
     notification = Notification.find_by_id(n_id)
 
     if notification && notification.pushable?
-      return unless notification.user.primary_device_token.present?
+      # return unless notification.user.primary_device_token.present?
 
-      push_notification = Grocer::Notification.new(
-        device_token: notification.user.primary_device_token,
-        alert:        notification.to_s,
-        # badge:        42,
-        # sound:        "siren.aiff",         # optional
-        # expiry:       Time.now + 60*60,     # optional; 0 is default, meaning the message is not stored
-        # identifier:   1234                  # optional
-      )
-
-      APN_CONNECTION.push(push_notification)
+      # Need to loop the user's devices and make notifications for each device
+      notification.user.devices.each do |device|
+        push_notification = Grocer::Notification.new({
+          device_token: device, 
+          alert: notification.to_s
+        })
+        APN_CONNECTION.push(push_notification)
+      end
 
       notification.pushed!
     end
