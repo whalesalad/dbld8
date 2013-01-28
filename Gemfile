@@ -31,6 +31,11 @@ gem 'koala'
 # S3 // AWS
 gem 'fog'
 
+# Redis // Caching
+gem 'redis'
+gem 'redis-store'
+gem 'redis-rails'
+
 # Mixpanel
 # gem 'mixpanel'
 

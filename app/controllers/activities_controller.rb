@@ -25,7 +25,7 @@ class ActivitiesController < BaseActivitiesController
   def engaged
     # My activities that have engagements
     # Activities that I am a wing on that have engagements
-    @activities = base_activities.for_user(@authenticated_user).with_engagements
+    @activities = base_activities.for_user_with_engagements(@authenticated_user)
     respond_with(@activities, :template => 'activities/index')
   end
 

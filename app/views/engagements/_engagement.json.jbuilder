@@ -11,10 +11,12 @@ if engagement.messages.first.present?
   json.primary_message engagement.messages.first.message
 end
 
-json.user do
-  json.partial! 'users/user', user: engagement.user
-end
+json.cache! engagement do |json|
+  json.user do
+    json.partial! 'users/user', user: engagement.user
+  end
 
-json.wing do
-  json.partial! 'users/user', user: engagement.wing
+  json.wing do
+    json.partial! 'users/user', user: engagement.wing
+  end
 end

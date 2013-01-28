@@ -33,6 +33,10 @@ class Activity < ActiveRecord::Base
     select('distinct(activities.id)').includes(:engagements).where('activities.user_id = ? OR activities.wing_id = ? OR engagements.user_id = ? OR engagements.wing_id = ?', user.id, user.id, user.id, user.id)
   }
 
+  scope :for_user_with_engagements, lambda {|user|
+    joins(:engagements).where('activities.user_id = ? OR activities.wing_id = ? OR engagements.user_id = ? OR engagements.wing_id = ?', user.id, user.id, user.id, user.id)
+  }
+
   # Location
   belongs_to :location, :counter_cache => true
 
