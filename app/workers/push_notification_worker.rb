@@ -15,10 +15,11 @@ class PushNotificationWorker
 
       # Need to loop the user's devices and make notifications for each device
       notification.user.devices.each do |device|
-        push_notification = Grocer::Notification.new({
-          device_token: device, 
+        push_notification = Grocer::Notification.new(
+          device_token: device.token, 
           alert: notification.to_s
-        })
+        )
+
         APN_CONNECTION.push(push_notification)
       end
 
