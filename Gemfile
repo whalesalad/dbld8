@@ -47,8 +47,8 @@ gem 'sinatra', :require => nil
 # gem 'resque', :require => "resque/server"
 
 # Images, File Handling
-gem 'rmagick'
-# gem 'mini_magick'
+# gem 'rmagick'
+gem 'mini_magick'
 gem 'carrierwave'
 
 # Monitoring

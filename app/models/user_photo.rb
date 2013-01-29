@@ -23,7 +23,8 @@ class UserPhoto < ActiveRecord::Base
   end
 
   class UserPhotoUploader < CarrierWave::Uploader::Base
-    include CarrierWave::RMagick
+    # include CarrierWave::RMagick
+    include CarrierWave::MiniMagick
     include CarrierWave::MimeTypes
 
     # User S3 for file storage
