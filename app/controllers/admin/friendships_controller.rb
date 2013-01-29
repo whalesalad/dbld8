@@ -2,7 +2,7 @@ class Admin::FriendshipsController < AdminController
   before_filter :get_friendship, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @friendships = Friendship.order('created_at DESC')
+    @friendships = Friendship.includes(:user, :friend).order('created_at DESC')
   end
 
   def show

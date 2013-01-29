@@ -25,7 +25,7 @@ class Admin::ActivitiesController < AdminController
   private
 
   def base_activities
-    Activity.includes({:engagements => [:user, :wing]})
+    Activity.includes(:user, :wing, :location, {:engagements => [:user, :wing]})
   end
 
   def get_activity
