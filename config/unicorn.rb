@@ -18,6 +18,6 @@ after_fork do |server, worker|
 end
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
-timeout 30
+timeout 20
 
 listen ENV['PORT']

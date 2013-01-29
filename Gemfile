@@ -35,6 +35,7 @@ gem 'fog'
 gem 'redis'
 gem 'redis-store'
 gem 'redis-rails'
+gem 'memcache-client'
 
 # Mixpanel
 # gem 'mixpanel'

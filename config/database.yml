@@ -49,9 +49,10 @@ linode: &linode
   encoding: unicode
   database: doubledate 
   username: doubledate
-  password: "never fly without your wings"
+  password: "never fly without your wing"
   allow_concurrency: true
-  pool: 15
+  host: db-1
+  pool: 50
 
 production:
   <<: *linode
