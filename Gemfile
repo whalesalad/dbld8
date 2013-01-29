@@ -35,7 +35,9 @@ gem 'fog'
 gem 'redis'
 gem 'redis-store'
 gem 'redis-rails'
-gem 'memcache-client'
+
+gem 'kgio'
+gem 'dalli'
 
 # Mixpanel
 # gem 'mixpanel'
@@ -68,6 +70,7 @@ group :assets do
 end
 
 group :production do
+  gem 'memcachier'
   gem 'unicorn'
   gem 'newrelic_rpm'
 end
