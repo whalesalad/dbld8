@@ -12,7 +12,7 @@
 class UserPhoto < ActiveRecord::Base
   attr_accessible :image
   
-  belongs_to :user
+  belongs_to :user, :touch => true
 
   validates_presence_of :image, :user_id
 
