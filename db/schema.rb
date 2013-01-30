@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130127155820) do
+ActiveRecord::Schema.define(:version => 20130129232555) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -70,6 +70,8 @@ ActiveRecord::Schema.define(:version => 20130127155820) do
     t.boolean  "unlocked",    :default => false
   end
 
+  add_index "engagements", ["activity_id"], :name => "index_engagements_on_activity_id"
+  add_index "engagements", ["ignored"], :name => "index_engagements_on_ignored"
   add_index "engagements", ["user_id", "activity_id"], :name => "index_engagements_on_user_id_and_activity_id", :unique => true
   add_index "engagements", ["user_id"], :name => "index_engagements_on_user_id"
   add_index "engagements", ["wing_id", "activity_id"], :name => "index_engagements_on_wing_id_and_activity_id", :unique => true
@@ -159,7 +161,10 @@ ActiveRecord::Schema.define(:version => 20130127155820) do
     t.datetime "updated_at",                   :null => false
   end
 
+  add_index "message_proxies", ["message_id"], :name => "index_message_proxies_on_message_id"
+  add_index "message_proxies", ["unread"], :name => "index_message_proxies_on_unread"
   add_index "message_proxies", ["user_id", "message_id"], :name => "index_message_proxies_on_user_id_and_message_id", :unique => true
+  add_index "message_proxies", ["user_id"], :name => "index_message_proxies_on_user_id"
 
   create_table "messages", :force => true do |t|
     t.integer  "user_id"

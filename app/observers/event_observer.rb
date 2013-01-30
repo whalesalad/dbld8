@@ -7,13 +7,12 @@ class EventObserver < ActiveRecord::Observer
       # Send notifications for this event, if the event has any
       event.notify() if event.respond_to?(:notify)
 
-      # Track the event with Segment.io
-      # DISABLED
-      # Analytics.track({
-      #   :user_id => event.user.uuid,
-      #   :event => event.to_s,
-      #   :properties => event.properties
-      # })
+      # Track the Event
+      Analytics.track(
+        user_id: event.user.uuid,
+        event: event.human_name,
+        properties: event.properties
+      )
     end
   end
 

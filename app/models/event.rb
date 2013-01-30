@@ -55,8 +55,11 @@ class Event < ActiveRecord::Base
   end
 
   def to_s
-    return type if type == 'Event'
-    type.gsub('Event', '')
+    self.class.model_name.gsub('Event', '')
+  end
+
+  def human_name
+    to_s.titleize
   end
 
   def slug

@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
     :through => :participating_engagements,
     :source => :activity
 
-  default_scope includes(:location, :profile_photo)
+  # default_scope includes(:location, :profile_photo)
 
   def on_init
     self.interested_in ||= interested_in_from_gender(gender)
@@ -198,6 +198,17 @@ class User < ActiveRecord::Base
 
   def primary_device_token
     devices.first.token if devices.any?
+  end
+
+  # segment.io traits
+  def traits
+    { 
+      created: created_at,
+      email: email,
+      firstName: first_name,
+      lastName: last_name,
+      name: full_name 
+    }
   end
 
   private

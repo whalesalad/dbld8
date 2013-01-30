@@ -86,7 +86,7 @@ class Activity < ActiveRecord::Base
     # If we specify anytime, ignore it to include everything
     params.delete :happening if !!(params[:happening] =~ /anytime/i)
 
-    tire.search(:load => { :include => [:user, :wing, :location] }, :per_page => 30) do
+    tire.search(:load => { :include => [:location, {:user => [:profile_photo, :location]}, {:wing => [:profile_photo, :location]}] }, :per_page => 30) do
       # Match title/details
       query { string(params[:query]) } if params[:query].present?
       

@@ -1,6 +1,6 @@
 require 'koala'
 
-class UserAuthenticator::FacebookUserAuthenticator < UserAuthenticator
+class FacebookUserAuthenticator < UserAuthenticator
   def initialize(params)
     super(params)
 
@@ -21,6 +21,7 @@ class UserAuthenticator::FacebookUserAuthenticator < UserAuthenticator
         }
       else
         update_access_token
+        track_user_auth
       end
     end
   end

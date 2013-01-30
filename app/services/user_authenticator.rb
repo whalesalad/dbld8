@@ -8,9 +8,9 @@ class UserAuthenticator
 
   def self.from_params(params)
     if params.has_key? :facebook_access_token
-      return UserAuthenticator::FacebookUserAuthenticator.new params
+      return FacebookUserAuthenticator.new params
     elsif (params.keys & %w(email password)).count == 2
-      return UserAuthenticator::EmailUserAuthenticator.new params
+      return EmailUserAuthenticator.new params
     end
 
     self.new params, "You must specify either an email/password " \
@@ -23,6 +23,13 @@ class UserAuthenticator
 
   def find_or_create_token
     AuthToken.find_or_create_by_user_id(user.id)
+  end
+
+  def track_user_auth
+    # Identify the user
+    Analytics.identify(user_id: user.uuid, traits: user.traits)
+    # Track the authentication
+    Analytics.track(user_id: user.uuid, event: 'User Login')
   end
 end
 

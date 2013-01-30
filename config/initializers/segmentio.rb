@@ -1,1 +1,1 @@
-#Analytics.init(secret: 'fi31zj6ejhs4amywwgsh')
+Analytics.init(secret: 'fi31zj6ejhs4amywwgsh')

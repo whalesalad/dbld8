@@ -17,7 +17,7 @@ class AcceptedWingInviteEvent < Event
   alias friendship related
 
   def coin_value
-    10 # when you accept a friendship, you earn 10 points
+    10
   end
 
   def detail_string

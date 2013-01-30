@@ -13,6 +13,9 @@ class ActivitiesController < BaseActivitiesController
 
     @activities = Activity.search(params)
     # @activities = Activity.includes(:location, :user, :wing, :engagements).search(params)
+
+    # @activities = Activity.includes(:location, :user, :wing, :engagements)
+    
     respond_with @activities
   end
 
@@ -61,7 +64,7 @@ class ActivitiesController < BaseActivitiesController
   private
 
   def base_activities
-    Activity.includes(:user, :wing, :location)
+    Activity.includes(:location, :user => [:profile_photo, :location], :wing => [:profile_photo, :location])
   end
 
   def activity_id

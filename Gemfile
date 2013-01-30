@@ -39,18 +39,15 @@ gem 'redis-rails'
 gem 'kgio'
 gem 'dalli'
 
-# Mixpanel
-# gem 'mixpanel'
+# Mixpanel // Segment.io
+gem 'analytics-ruby'
 
 # Background Jobbin'
 gem 'sidekiq'
 gem 'slim'
 gem 'sinatra', :require => nil
 
-# gem 'resque', :require => "resque/server"
-
 # Images, File Handling
-# gem 'rmagick'
 gem 'mini_magick'
 gem 'carrierwave'
 
