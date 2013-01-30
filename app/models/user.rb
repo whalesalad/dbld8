@@ -100,8 +100,6 @@ class User < ActiveRecord::Base
     :through => :participating_engagements,
     :source => :activity
 
-  # default_scope includes(:location, :profile_photo)
-
   def on_init
     self.interested_in ||= interested_in_from_gender(gender)
   end

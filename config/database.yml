@@ -4,7 +4,7 @@ development:
   adapter: postgresql
   encoding: unicode
   database: doubledate
-  pool: 10
+  pool: 5
   username: michael
   password:
 

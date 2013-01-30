@@ -18,11 +18,13 @@ module Concerns
       has_many :direct_friends, 
         :through => :friendships, 
         :conditions => { :'friendships.approved' => true },
+        :include => [:profile_photo, :location],
         :source => :friend
       
       has_many :inverse_friends, 
         :through => :inverse_friendships, 
         :conditions => { :'friendships.approved' => true },
+        :include => [:profile_photo, :location],
         :source => :user
 
       # Friends I have asked to be mine
