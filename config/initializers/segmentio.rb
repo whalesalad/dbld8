@@ -1,4 +1,6 @@
-Analytics.init(
-  secret: 'fi31zj6ejhs4amywwgsh', 
-  on_error: Proc.new {|s,m| puts "[ANALYTICS] Error! Status: #{s}, Message: #{m}"}
-)
+if Rails.env.development?
+  $segmentio = Analytics.init(
+    secret: Rails.configuration.segment_io_secret,
+    on_error: Rails.configuration.segment_io_error
+  )
+end

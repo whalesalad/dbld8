@@ -13,6 +13,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp
+/lib/analytics-ruby
 
 /public/system/*
 /public/assets/*

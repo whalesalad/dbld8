@@ -15,6 +15,12 @@ after_fork do |server, worker|
   # the following is *required* for Rails + "preload_app true",
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
+
+  defined?(AnalyticsRuby) and
+    $segmentio = Analytics.init(
+      secret: Rails.configuration.segment_io_secret,
+      on_error: Rails.configuration.segment_io_error
+    )
 end
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)

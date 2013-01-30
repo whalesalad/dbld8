@@ -8,7 +8,7 @@ class EventObserver < ActiveRecord::Observer
       event.notify() if event.respond_to?(:notify)
 
       # Track the Event
-      Analytics.track(
+      $segmentio.track(
         user_id: event.user.uuid,
         event: event.human_name,
         properties: event.properties
