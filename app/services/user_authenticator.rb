@@ -26,6 +26,8 @@ class UserAuthenticator
   end
 
   def track_user_auth
+    Rails.logger.info "[ANALYTICS] User #{user.id} logged in. Idenfiying + tracking login."
+    
     # Identify the user
     Analytics.identify(user_id: user.uuid, traits: user.traits)
     # Track the authentication
