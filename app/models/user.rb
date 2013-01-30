@@ -205,7 +205,11 @@ class User < ActiveRecord::Base
       email: email,
       firstName: first_name,
       lastName: last_name,
-      name: full_name 
+      name: full_name,
+      gender: gender,
+      birthday: birthday,
+      location: location.location_name,
+      country: location.country.un_locode
     }
   end
 

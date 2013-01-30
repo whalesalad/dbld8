@@ -12,7 +12,6 @@ class EmailUserAuthenticator < UserAuthenticator
     # Try and authenticate the user that we found
     if user && user.authenticate(params[:password])
       @user = user
-      track_user_auth
     else
       @error = "The password specified was incorrect."
     end

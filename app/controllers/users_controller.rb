@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
     if auth.authenticated?
       @token = auth.find_or_create_token
+      track_user_auth(auth.user)
       render json: @token and return
     end
     
@@ -78,6 +79,16 @@ class UsersController < ApplicationController
     end
     
     render 'home/invite'
+  end
+
+  def track_user_auth(user)
+    Rails.logger.info "[ANALYTICS] User #{user.id} logged in. Idenfiying + tracking login."
+
+    # Identify the user
+    $segmentio.identify(user_id: user.uuid, traits: user.traits.merge({ '$ip' => request.remote_ip }))
+
+    # Track the authentication
+    $segmentio.track(user_id: user.uuid, event: 'User Login')
   end
 
 end

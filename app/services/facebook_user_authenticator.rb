@@ -21,7 +21,6 @@ class FacebookUserAuthenticator < UserAuthenticator
         }
       else
         update_access_token
-        track_user_auth
       end
     end
   end

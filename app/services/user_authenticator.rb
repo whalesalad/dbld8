@@ -24,14 +24,4 @@ class UserAuthenticator
   def find_or_create_token
     AuthToken.find_or_create_by_user_id(user.id)
   end
-
-  def track_user_auth
-    Rails.logger.info "[ANALYTICS] User #{user.id} logged in. Idenfiying + tracking login."
-
-    # Identify the user
-    $segmentio.identify(user_id: user.uuid, traits: user.traits)
-    # Track the authentication
-    $segmentio.track(user_id: user.uuid, event: 'User Login')
-  end
 end
-
