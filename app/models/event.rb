@@ -43,6 +43,12 @@ class Event < ActiveRecord::Base
     "#{slug}_event".classify.constantize.new
   end
 
+  def self.clean_notifications
+    self.all.each do |e|
+      e.notifications.destroy_all if e.related.nil?
+    end
+  end
+
   def has_enough_coins
     unless user.can_spend?(coin_value)
       errors.add(:user, "does not have enough coins to perform this event.")
@@ -106,11 +112,7 @@ class Event < ActiveRecord::Base
   end
 
   def related_admin_path
-    if related.respond_to? :admin_path
-      related.admin_path
-    else
-      [:admin, related]
-    end
+    [:admin, related]
   end
 
   def reset_initial_values!

@@ -16,17 +16,16 @@ DoubleDate::Application.routes.draw do
     get 'mine', :on => :collection
     get 'engaged', :on => :collection
 
-    # Resources for the date owner
-    resources :engagements do
-      # allows an owner/wing to unlock an engagement
-      post 'unlock', :on => :member
-      resources :messages
-    end
-
     # Singular resource for the user interested
     resource :engagement do
       resources :messages
     end
+  end
+
+  resources :engagements do
+    # allows an owner/wing to unlock an engagement
+    post 'unlock', :on => :member
+    resources :messages
   end
 
   # ME!

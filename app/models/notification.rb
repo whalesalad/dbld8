@@ -77,7 +77,10 @@ class Notification < ActiveRecord::Base
   end
 
   def callback_str
-    "doubledate://#{target.class.model_name.parameterize}/#{target.id}"
+    # if it's a message, point to the engagement
+    # if it's a wing invite, point to wings or the user
+
+    "doubledate://#{related.class.model_name.parameterize}/#{related.id}"
   end
 
   def related
@@ -86,8 +89,7 @@ class Notification < ActiveRecord::Base
 
   def related_admin_path
     if message?
-      # admin_activity_engagement_path
-      [:admin, related.engagement.activity, related.engagement]
+      [:admin, related.engagement]
     else
       target.related_admin_path
     end

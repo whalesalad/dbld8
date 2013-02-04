@@ -1,12 +1,19 @@
-class EngagementsController < BaseActivitiesController
+class EngagementsController < ApplicationController
   respond_to :json
 
-  before_filter :get_activity
   before_filter :get_engagement, :only => [:show, :unlock, :destroy]
-  before_filter :activity_participants_only, :only => [:index, :update]
+  # before_filter :activity_participants_only, :only => [:index, :update]
 
   def index
-    @engagements = @activity.engagements
+    # @engagements = engagements
+
+    # Engagements
+    # engagement.user = me
+    # engagement.wing = me
+    # engagement.activity.wing = me
+    # engagement.activity.user = me
+    @engagements = Engagement.for_user(@authenticated_user)
+
     respond_with @engagements
   end
 
@@ -89,10 +96,6 @@ class EngagementsController < BaseActivitiesController
   end
 
   private
-
-  def activity_id
-    params[:activity_id]
-  end
 
   def engagement_id
     params[:id]

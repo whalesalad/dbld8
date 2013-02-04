@@ -23,6 +23,13 @@ class Engagement < ActiveRecord::Base
 
   default_scope order('engagements.updated_at DESC')
 
+# :include => [:location, :user => [:profile_photo, :location], :wing => [:profile_photo, :location]],
+  scope :for_user, lambda {|user|
+    select('distinct(engagements.id)')
+      .includes(:activity, :user => [:profile_photo, :location], :wing => [:profile_photo, :location])
+      .where('activities.user_id = ? OR activities.wing_id = ? OR engagements.user_id = ? OR engagements.wing_id = ?', user.id, user.id, user.id, user.id)
+  }
+
   # I want all engagements that have message proxies with unread = true
   scope :unread_for, lambda {|user|
     joins(:message_proxies).where('message_proxies.user_id' => user.id).where('message_proxies.unread' => true)
@@ -87,10 +94,6 @@ class Engagement < ActiveRecord::Base
   def unlock!
     self.unlocked = true
     save!
-  end
-
-  def admin_path
-    [:admin, activity, self]
   end
 
   def as_json(options={})
