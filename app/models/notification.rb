@@ -24,6 +24,9 @@ class Notification < ActiveRecord::Base
   # before_create :set_callback
   default_scope order('created_at DESC')
 
+  scope :unread, where(:unread => true)
+  scope :read, where(:unread => false)
+
   belongs_to :user
   
   belongs_to :target, 

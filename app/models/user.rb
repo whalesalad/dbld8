@@ -103,6 +103,17 @@ class User < ActiveRecord::Base
     :through => :participating_engagements,
     :source => :activity
 
+  # Messages
+  has_many :message_proxies
+  
+  has_many :messages, 
+    :through => :message_proxies
+
+  has_many :unread_messages,
+    :through => :message_proxies,
+    :source => 'message',
+    :conditions => {'message_proxies.unread' => true}
+
   def on_init
     self.interested_in ||= interested_in_from_gender(gender)
   end

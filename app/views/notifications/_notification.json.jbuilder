@@ -1,4 +1,4 @@
-cache notification do
+json.cache! notification do |json|
   json.(notification, :id, :uuid)
   json.notification notification.to_s
   json.push notification.push?
