@@ -9,8 +9,9 @@ json.(@user, :email, :first_name, :last_name, :gender,
 
 json.invite_path user_invitation_path(@user.invite_slug)
 
-json.unread_notifications @user.notifications.unread.count
-json.unread_messages @user.unread_messages.count
+json.unread_notifications_count @user.notifications.unread.count
+json.unread_messages_count @user.unread_messages.count
+json.pending_wings_count @user.pending_friends.count
 
 json.cache! @user do |json|
   if @user.location.present?
