@@ -13,7 +13,6 @@ class ActivitiesController < BaseActivitiesController
 
     @activities = Activity.search(params)
     # @activities = Activity.includes(:location, :user, :wing, :engagements).search(params)
-
     # @activities = Activity.includes(:location, :user, :wing, :engagements)
     
     respond_with @activities
@@ -43,17 +42,20 @@ class ActivitiesController < BaseActivitiesController
     @activity.user = @authenticated_user
 
     if @activity.save
-      respond_with @activity, :status => :created, :location => @activity
+      respond_with(@activity, 
+        :status => :created, 
+        :location => @activity, 
+        :template => 'activities/show')
     else
-      respond_with @activity, :status => :unprocessable_entity
+      respond_with(@activity, :status => :unprocessable_entity)
     end
   end
 
   def update
     if @activity.update_attributes(params[:activity])
-      respond_with @activity
+      respond_with(@activity, :template => 'activities/show')
     else
-      respond_with @activity, :status => :unprocessable_entity
+      respond_with(@activity, :status => :unprocessable_entity)
     end
   end
 
