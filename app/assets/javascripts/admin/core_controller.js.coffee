@@ -1,11 +1,13 @@
 //= require bootstrap
 //= require admin/users_controller
+//= require admin/engagements_controller 
 
 root = (exports ? this)
 
 class root.CoreController
   ROUTES:
     'admin/users': UsersController
+    'admin/engagements': EngagementsController
 
   constructor: () ->
     $.ajaxSetup beforeSend: (xhr) ->
@@ -13,6 +15,7 @@ class root.CoreController
 
     # Autoload JS functionality based upon the controller (body id)
     controller_slug = $("body").attr("id").split("-")[0]
+    
     if controller_slug of @ROUTES
       try
         new @ROUTES[controller_slug]

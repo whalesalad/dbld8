@@ -68,7 +68,7 @@
                       %span.label.label-warning Ignored
                     - elsif engagement.unlocked?
                       %span.label.label-info Unlocked
-                    = link_to engagement.participant_names, admin_activity_engagement_path(@activity, engagement)
+                    = link_to engagement.participant_names, admin_engagement_path(engagement)
                   %span.object-detail 
                     Sent #{l engagement.created_at, :format => :long}
 

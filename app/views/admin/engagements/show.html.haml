@@ -8,10 +8,10 @@
       = @engagement.participant_names
 
   %h1 
-    #{@engagement.participant_names}, Engagement for "#{@activity}"
+    Engagement for "#{@activity}"
   
   %h3.object-meta 
-    Engagement ##{@engagement.id}, Created #{l @engagement.created_at, :format => :long} (#{time_ago_in_words(@engagement.created_at)} ago)
+    By #{@engagement.participant_names}, Created #{time_ago_in_words(@engagement.created_at)} ago
 
   %hr/
 
@@ -27,25 +27,50 @@
           %dt Unlocked?
           %dd= yesno(@engagement.unlocked)
 
-        %h4 Engagement
-        %dl.dl-horizontal
-          %dt Creator
+          %dt Engagement User
           %dd #{link_to @engagement.user, admin_user_path(@engagement.user)}
 
-          %dt Wingman
+          %dt Engagement Wing
           %dd #{link_to @engagement.wing, admin_user_path(@engagement.wing)}
 
-        %h4 Activity
-        %dl.dl-horizontal
-          %dt Creator
+          %dt Activity User
           %dd #{link_to @activity.user, admin_user_path(@activity.user)}
 
-          %dt Wingman
+          %dt Activity Wing
           %dd #{link_to @activity.wing, admin_user_path(@activity.wing)}        
         
 
       .form-actions
-        = link_to "Delete Engagement", admin_activity_engagement_path(@activity, @engagement), :method => :delete, :confirm => "Are you sure you want to delete this engagement?", :class => 'btn btn-danger'
+        - unless @engagement.unlocked?
+          = link_to "Unlock", '#unlock-modal', :class => 'btn btn-primary', :data => { :toggle => 'modal' }
+        = link_to "Delete Engagement", admin_engagement_path(@engagement), :method => :delete, :confirm => "Are you sure you want to delete this engagement?", :class => 'btn btn-danger'
+
+      - unless @engagement.unlocked?
+        #unlock-modal.modal.hide.fade
+          .modal-header
+            %button{ :class => 'close', 'data-dismiss' => 'modal', 'aria-hidden' => 'true' }
+              &times;
+            %h3 Unlock this Engagement
+          .modal-body
+            %p Who would you like to unlock this engagement as?
+            
+            .row-fluid
+              .span6
+                .div{ :align => 'center' }
+                  %p
+                    = image_tag @activity.user.photo.thumb, :class => 'img-rounded', :width => '100px'
+                  %p
+                    = link_to @activity.user, '#', :class => 'btn btn-primary unlock-engagement', :data => { :engagement => @engagement.id, :user => @activity.wing.id }
+
+              .span6
+                .div{ :align => 'center' }
+                  %p
+                    = image_tag @activity.wing.photo.thumb, :class => 'img-rounded', :width => '100px'
+                  %p 
+                    = link_to @activity.wing, '#', :class => 'btn btn-primary unlock-engagement', :data => { :engagement => @engagement.id, :user => @activity.wing.id }
+
+          .modal-footer
+            = link_to 'Cancel', '#', :class => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'
 
     .span7
       %ul.nav.nav-tabs.location-tabs

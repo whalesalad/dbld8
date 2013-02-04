@@ -190,14 +190,6 @@ class User < ActiveRecord::Base
     'BUILD'
   end
 
-  def trigger(slug, related=nil)
-    UserAction.create_from_user_and_slug(self, slug, related)
-  end
-
-  def primary_device_token
-    devices.first.token if devices.any?
-  end
-
   # segment.io traits
   def traits
     { 

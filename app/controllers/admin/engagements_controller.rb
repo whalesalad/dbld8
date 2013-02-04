@@ -1,35 +1,46 @@
 class Admin::EngagementsController < AdminController
-  before_filter :get_activity
+  respond_to :json, :only => [:unlock]
   before_filter :get_engagement, :except => [:index]
 
-  def index
-    @activities = Activity.all
-  end
-
-  def engaged
-    @activities = Activity.engaged
-  end
-
-  def expired
-    @activities = Activity.expired
-  end
-
   def show
-    # respond_with
+    @activity = @engagement.activity
+  end
+
+  def unlock
+    @engagement = Engagement.find(params[:id])
+    @unlock_user = User.find_by_id(params[:user_id])
+
+    if @unlock_user.nil?
+      render json: { error: 'The user could not be found.' }
+    end
+
+    unlocker = UnlockEngagementService.new(@engagement, @unlock_user)
+
+    unless unlocker.unlockable?
+      return json_error "The current user cannot unlock this engagement."
+    end
+
+    # If the engagement was already unlocked
+    if @engagement.unlocked?
+      return json_error "This engagement has already been unlocked"
+    end
+
+    # Finally, let's unlock this beast.
+    if unlocker.unlock!
+      render json: { unlocked: true } and return
+    else
+      return json_error "An error ocurred unlocking this engagement."
+    end
   end
 
   def destroy
-    @activity.destroy
-    redirect_to admin_activities_path, :flash => { :success => "Successfully deleted activity #{@activity.to_s}." }
+    @engagement.destroy
+    redirect_to admin_activity_path(@engagement.activity), :flash => { :success => "Successfully deleted engagement #{@engagement.to_s}." }
   end
 
   private
 
-  def get_activity
-    @activity = Activity.find_by_id(params[:activity_id])
-  end
-
   def get_engagement
-    @engagement = @activity.engagements.find(params[:id])
+    @engagement = Engagement.find(params[:id])
   end
 end

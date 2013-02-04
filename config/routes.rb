@@ -73,10 +73,11 @@ DoubleDate::Application.routes.draw do
     resources :activities, :only => [:index, :show] do
       get 'engaged', :on => :collection
       get 'expired', :on => :collection
+    end
 
-      resources :engagements, :only => [:index, :show] do
-        resources :messages, :only => [:index, :show]
-      end
+    resources :engagements, :only => [:index, :show, :destroy] do
+      resources :messages, :only => [:index, :show]
+      post 'unlock', :on => :member
     end
 
     resources :facebook_invites, :only => [:index] do

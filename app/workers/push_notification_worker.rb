@@ -11,8 +11,6 @@ class PushNotificationWorker
     notification = Notification.find_by_id(n_id)
 
     if notification && notification.pushable?
-      # return unless notification.user.primary_device_token.present?
-
       # Need to loop the user's devices and make notifications for each device
       notification.user.devices.each do |device|
         push_notification = Grocer::Notification.new(

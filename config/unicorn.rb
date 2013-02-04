@@ -17,7 +17,7 @@ after_fork do |server, worker|
     ActiveRecord::Base.establish_connection
 
   defined?(AnalyticsRuby) and
-    $segmentio = Analytics.init(
+    Analytics.init(
       secret: Rails.configuration.segment_io_secret,
       on_error: Rails.configuration.segment_io_error
     )

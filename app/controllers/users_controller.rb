@@ -85,10 +85,10 @@ class UsersController < ApplicationController
     Rails.logger.info "[ANALYTICS] User #{user.id} logged in. Idenfiying + tracking login."
 
     # Identify the user
-    $segmentio.identify(user_id: user.uuid, traits: user.traits.merge({ '$ip' => request.remote_ip }))
+    Analytics.identify(user_id: user.uuid, traits: user.traits.merge({ '$ip' => request.remote_ip }))
 
     # Track the authentication
-    $segmentio.track(user_id: user.uuid, event: 'User Login')
+    Analytics.track(user_id: user.uuid, event: 'User Login')
   end
 
 end
