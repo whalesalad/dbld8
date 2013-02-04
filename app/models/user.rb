@@ -46,7 +46,10 @@ class User < ActiveRecord::Base
   has_many :events, :dependent => :nullify
 
   # Notifications
-  has_many :notifications, :dependent => :destroy
+  has_many :notifications, 
+    :dependent => :destroy,
+    :include => [:target]  
+  
   has_many :devices, :dependent => :destroy
 
   belongs_to :location, :counter_cache => true

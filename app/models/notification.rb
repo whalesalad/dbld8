@@ -22,10 +22,12 @@ class Notification < ActiveRecord::Base
   attr_accessible :user, :message_proxy, :event, :push, :unread, :callback
 
   # before_create :set_callback
-  default_scope order('created_at DESC').includes(:user, :target)
+  default_scope order('created_at DESC')
 
   belongs_to :user
-  belongs_to :target, :polymorphic => true
+  
+  belongs_to :target, 
+    :polymorphic => true
 
   def message?
     target_type == 'MessageProxy'
@@ -43,7 +45,7 @@ class Notification < ActiveRecord::Base
     if target.related.present?
       # NEW ACTIVITY
       if target.is_a?(NewActivityEvent) && user == related.wing
-        return "You're #{related.user.first_name}'s wing on #{related.user.gender_posessive} DoubleDate \"#{related}\"."
+        return "You're #{related.user.first_name}'s wing on #{related.user.gender_posessive} DoubleDate \"#{related}\""
       end
 
       # NEW ENGAGEMENT
@@ -60,11 +62,11 @@ class Notification < ActiveRecord::Base
       end
 
       if target.is_a?(SentWingInviteEvent)
-        return "#{related.user} invited you to be #{related.user.gender_posessive} wing."
+        return "#{related.user} invited you to be #{related.user.gender_posessive} wing"
       end
 
       if target.is_a?(RecruitedWingEvent)
-        return "#{related.friend} accepted your wing invitation!"
+        return "#{related.friend} accepted your wing invitation"
       end
     end
 
@@ -72,7 +74,7 @@ class Notification < ActiveRecord::Base
   end
 
   def callback_str
-    "dbld8://#{target.class.model_name.parameterize}/#{target.id}"
+    "doubledate://#{target.class.model_name.parameterize}/#{target.id}"
   end
 
   def related

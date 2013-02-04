@@ -5,7 +5,9 @@ class EventObserver < ActiveRecord::Observer
       Rails.logger.debug("Event created #{event.id}, trying to create a notification now.")
       
       # Send notifications for this event, if the event has any
-      event.notify() if event.respond_to?(:notify)
+      if event.respond_to?(:notify) && event.related.present?
+        event.notify()
+      end
 
       # Track the Event
       Analytics.track(
@@ -14,6 +16,12 @@ class EventObserver < ActiveRecord::Observer
         properties: event.properties
       )
     end
+
+    # If a commit occured and related is nil, destroy the events
+    if event.related.nil?
+      event.notifications.destroy_all
+    end
+
   end
 
 end
