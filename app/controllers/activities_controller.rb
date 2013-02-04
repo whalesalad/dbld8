@@ -19,14 +19,11 @@ class ActivitiesController < BaseActivitiesController
   end
 
   def mine
-    # @activities = @authenticated_user.my_activities
-    @activities = base_activities.for_user(@authenticated_user)
+    @activities = @authenticated_user.activities
     respond_with(@activities, :template => 'activities/index')
   end
 
   def engaged
-    # My activities that have engagements
-    # Activities that I am a wing on that have engagements
     @activities = base_activities.for_user_with_engagements(@authenticated_user)
     respond_with(@activities, :template => 'activities/index')
   end
