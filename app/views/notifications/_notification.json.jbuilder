@@ -3,7 +3,7 @@ json.cache! notification do |json|
   json.notification notification.to_s
   json.push notification.push?
   json.unread notification.unread?
-  json.callback notification.callback_str
+  json.callback_url notification.callback_url
   json.created_at notification.created_at
 end
 

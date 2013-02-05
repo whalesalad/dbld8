@@ -76,7 +76,7 @@ class Notification < ActiveRecord::Base
     "Notification from #{target}"
   end
 
-  def callback_str
+  def callback_url
     # if it's a message, point to the engagement
     # if it's a wing invite, point to wings or the user
     # target_object = message? ? related.engagement : related
