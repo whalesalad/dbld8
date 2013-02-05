@@ -1,6 +1,8 @@
+- content_for :title, 'Events'
+
 .page-header
   %h1
-    Events
+    = yield :title
     %small #{pluralize(@events.count, 'Event')} Total
 
 

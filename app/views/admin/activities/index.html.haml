@@ -1,3 +1,5 @@
+- content_for :title, @title || 'Activities'
+
 .page-header
   .btn-group.pull-right
     = link_to 'All', admin_activities_path, :class => 'active btn'
@@ -5,7 +7,7 @@
     = link_to 'Expired', expired_admin_activities_path, :class => 'btn'
 
   %h1
-    All Activities
+    = yield(:title)
     %small #{pluralize(@activities.count, 'Activity')} Total
 
 - if @activities.present?

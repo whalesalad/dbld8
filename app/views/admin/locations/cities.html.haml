@@ -1,3 +1,5 @@
+- content_for :title, @title || 'Locations'
+
 .page-header
   .btn-group.pull-right
     = link_to 'All', admin_locations_path, :class => 'btn'
@@ -5,7 +7,7 @@
     = link_to 'Venues', venues_admin_locations_path, :class => 'btn'
 
   %h1
-    City Locations
+    = yield :title
     %small #{pluralize(@locations.count, 'City')} Total
 
 = render 'location_list'

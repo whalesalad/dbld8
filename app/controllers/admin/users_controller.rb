@@ -6,11 +6,11 @@ class Admin::UsersController < AdminController
   end
 
   def show
-    # respond_with
+
   end
 
   def photos
-    # show all the photos for the user
+    
   end
 
   def destroy

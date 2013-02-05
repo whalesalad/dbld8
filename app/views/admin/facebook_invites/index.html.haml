@@ -1,6 +1,8 @@
+- content_for :title, 'Facebook Invites'
+
 .page-header
   %h1
-    All Facebook Invites
+    = yield :title
     %small #{pluralize(@invites.count, 'Invite')} Total
 
 - if @invites.present?

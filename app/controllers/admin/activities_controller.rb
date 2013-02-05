@@ -2,14 +2,17 @@ class Admin::ActivitiesController < AdminController
   before_filter :get_activity, :only => [:show, :edit, :update, :destroy]
 
   def index
+    @title = 'Activities'
     @activities = base_activities.all
   end
 
   def engaged
+    @title = 'Engaged Activities'
     @activities = base_activities.engaged
   end
 
   def expired
+    @title = 'Expired Activities'
     @activities = base_activities.expired
   end
 
