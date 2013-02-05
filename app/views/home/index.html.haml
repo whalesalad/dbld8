@@ -5,14 +5,12 @@
 
     %title= full_title(yield(:title))
     
-    = stylesheet_link_tag    "application", :media => "all"
-    - # = csrf_meta_tags
-    - # = yield(:head)
+    = stylesheet_link_tag "application", :media => "all"
   
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
   
     #home-wrapper
+      %h1 
+        DoubleDate
+      
       %p Why would you want one when you can have two?
-      %p
-        %b
-          %code ETA//EOD@1356411600

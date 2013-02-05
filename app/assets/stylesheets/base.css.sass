@@ -1,9 +1,10 @@
-@import "bootstrap"
+@import 'include/fonts'
 
 body
   background: #222
   color: #EEE
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+  -webkit-font-smoothing: antialiased
 
 #home-wrapper
   width: 400px
@@ -13,29 +14,15 @@ body
   text-align: center
   border-radius: 10px
   border-bottom: 1px solid rgba(255,255,255,0.1)
+  text-shadow: 0 2px 2px #000
+  h1
+    font-family: "Harry-Fat"
+    text-transform: lowercase
+    font-size: 60px
+    margin-bottom: 20px
 
 #wrapper
   padding: 20px 10%
-
-.user-list
-  table
-    width: 100%
-    border-collapse: collapse
-    thead
-      text-align: left
-      border-bottom: 1px dotted #444
-    
-    thead, tr
-      td, th
-        line-height: 30px
-
-section.user-detail 
-  section.debug
-    background: #000
-    padding: 20px
-    border-radius: 10px
-    color: #00de88
-
 
 a
   color: #FF005A
@@ -51,22 +38,21 @@ a
   background:
     position: 50% 50%
     size: $size + px
-  border: 2px solid #FFF
-  +border-radius($size/2 + px)
-  +box-shadow(0 2px 8px rgba(0, 0, 0, .8))
-
-img.user-round-photo
-  border: 3px solid #FFF
+  border: 1px solid #111
+  border-radius: 10px
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .8)
 
 section#invite
-  width: 400px
   margin: 0 auto
   text-align: center
+  
   h3, p
     text-shadow: 0 2px 2px #000
+  
   h3
     font-size: 24px
     line-height: 30px
     margin-bottom: 20px
+  
   p.description
     margin: 0 0 20px 0
