@@ -34,7 +34,7 @@ class EngagementsController < ApplicationController
       # Finally, respond
       respond_with @engagement, 
         :status => :created, 
-        :location => activity_engagement_path(@activity, @engagement), 
+        :location => engagement_path(@engagement), 
         :template => 'engagements/show' and return
     end
     

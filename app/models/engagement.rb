@@ -23,7 +23,6 @@ class Engagement < ActiveRecord::Base
 
   default_scope order('engagements.updated_at DESC')
 
-# :include => [:location, :user => [:profile_photo, :location], :wing => [:profile_photo, :location]],
   scope :for_user, lambda {|user|
     select('distinct(engagements.id)')
       .includes(:activity, :user => [:profile_photo, :location], :wing => [:profile_photo, :location])

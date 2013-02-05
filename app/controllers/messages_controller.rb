@@ -29,7 +29,7 @@ class MessagesController < EngagementsController
 
     if @message.save
       respond_with @message, :status => :created, 
-        :location => activity_engagement_messages_path(@activity, @engagement),
+        :location => engagement_messages_path(@engagement),
         :template => 'messages/show'
     else
       respond_with @message, :status => :unprocessable_entity
