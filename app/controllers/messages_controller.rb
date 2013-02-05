@@ -9,6 +9,11 @@ class MessagesController < EngagementsController
 
   def index
     @messages = @engagement.messages.includes(:user)
+
+    if params.has_key?('unread') && params[:unread]
+      @messages = @messages.unread_for(@authenticated_user)
+    end
+
     respond_with @messages
   end
 
@@ -28,7 +33,8 @@ class MessagesController < EngagementsController
     })
 
     if @message.save
-      respond_with @message, :status => :created, 
+      respond_with @message,
+        :status => :created, 
         :location => engagement_messages_path(@engagement),
         :template => 'messages/show'
     else

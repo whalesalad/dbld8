@@ -42,9 +42,6 @@ class EngagementsController < ApplicationController
   end
 
   def show
-    # A user needs to be one of the four allowed to see this.
-    return unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
-
     respond_with @engagement
   end
 
@@ -78,7 +75,6 @@ class EngagementsController < ApplicationController
       if @engagement.destroy
         respond_with(:nothing => true) and return
       end
-
     # if the user is the owner of the activity, set status to ignored
     elsif @engagement.activity.allowed?(@authenticated_user, :owner)
       if @engagement.ignore!
@@ -96,11 +92,7 @@ class EngagementsController < ApplicationController
   end
 
   def get_activity
-    # @activity = nil
-
-    # if params[:activity_id].present?
     @activity = Activity.find_by_id(params[:activity_id])
-    # end
   end
 
   def get_engagement
