@@ -2,12 +2,13 @@
 %html
   %head
     %meta{ :content => "width=device-width", :name => "viewport" }
-    %link{ :rel => 'shortcut icon', :href => asset_path('favicon.png') }
-
     %title= full_title(yield(:title))
+    
+    %link{ :rel => 'icon', :type => 'image/x-icon', :href => asset_path('favicon.png') }
 
     = stylesheet_link_tag "admin/admin", :media => "all"
     = csrf_meta_tags
+
     = yield(:head)
 
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
