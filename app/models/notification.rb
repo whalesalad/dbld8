@@ -80,7 +80,7 @@ class Notification < ActiveRecord::Base
     # if it's a message, point to the engagement
     # if it's a wing invite, point to wings or the user
     # target_object = message? ? related.engagement : related
-    "doubledate://#{target.notification_url}"
+    "#{Rails.configuration.ios_prefix}://#{target.notification_url}"
   end
 
   def related

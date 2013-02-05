@@ -1,6 +1,6 @@
 - provide :title, (@user) ? "Join #{@user.first_name} on DoubleDate!" : "Grab a friend and DoubleDate"
 
-- dd_url = (@user) ? "doubledate://invite?#{@user.invite_slug}" : "doubledate://welcome"
+- dd_url = (@user) ? "#{Rails.configuration.ios_prefix}://invite/#{@user.invite_slug}" : "#{Rails.configuration.ios_prefix}://welcome"
 
 - content_for :head do
   %meta{ :name => 'apple-itunes-app', :content => "app-id=#{Rails.configuration.app_id}, app-argument=#{dd_url}" }
