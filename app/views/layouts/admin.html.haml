@@ -14,6 +14,7 @@
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container-fluid
+          = link_to 'DoubleDate', admin_path, :class => 'brand'
           %ul.nav
             %li.active= link_to 'Home', admin_path
             %li= link_to 'API Docs (Github)', 'https://github.com/whalesalad/dbld8/wiki', :target => '_blank'

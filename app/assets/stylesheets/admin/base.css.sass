@@ -1,7 +1,21 @@
+@import url("//hello.myfonts.net/count/25ab47")
 @import "bootstrap"
+
+@font-face
+  font-family: 'Harry'
+  src: font-url('harry-fat.eot')
+  src: font-url('harry-fat?#iefix') format("embedded-opentype"), font-url('harry-fat.woff') format("woff"), font-url('harry-fat.ttf') format("truetype")
 
 body 
   padding-top: 60px
+  -webkit-font-smoothing: antialiased
+
+.navbar
+  text-shadow: 0 -1px 0 #000
+  a.brand
+    font-family: "Harry"
+    text-transform: lowercase
+    font-size: 26px
 
 .sidebar-nav
   padding: 5px 0

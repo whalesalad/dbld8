@@ -17,9 +17,7 @@ DoubleDate::Application.routes.draw do
     get 'engaged', :on => :collection
 
     # Singular resource for the user interested
-    resource :engagement do
-      resources :messages
-    end
+    resource :engagement
   end
 
   resources :engagements do

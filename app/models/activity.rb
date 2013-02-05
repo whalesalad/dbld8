@@ -25,7 +25,7 @@ class Activity < ActiveRecord::Base
 
   validates_presence_of :title, :details, :wing_id, :location_id
 
-  default_scope order('activities.updated_at DESC')
+  default_scope order('updated_at DESC')
 
   scope :with_engagements, joins(:engagements).group('activities.id').having('COUNT(engagements.id) > 0')
   

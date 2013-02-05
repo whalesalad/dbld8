@@ -5,19 +5,14 @@ class EngagementsController < ApplicationController
   # before_filter :activity_participants_only, :only => [:index, :update]
 
   def index
-    # @engagements = engagements
-
-    # Engagements
-    # engagement.user = me
-    # engagement.wing = me
-    # engagement.activity.wing = me
-    # engagement.activity.user = me
     @engagements = Engagement.for_user(@authenticated_user)
-
     respond_with @engagements
   end
 
   def create
+    # TODO XXXX FIXME
+    # @activity = Activity.find_by_id
+
     if @activity.engagements.find_for_user_or_wing(@authenticated_user).exists?
       return json_unauthorized "You or your wing have already engaged in this activity."
     end
@@ -80,13 +75,14 @@ class EngagementsController < ApplicationController
   end
 
   def destroy
+    # if the user is the owner of the engagement, actually delete it.
     if @engagement.allowed?(@authenticated_user, :owner)
-      # if the user is the owner of the engagement, actually delete it.
       if @engagement.destroy
         respond_with(:nothing => true) and return
       end
-    elsif @activity.allowed?(@authenticated_user, :owner)
-      # if the user is the owner of the activity, set status to ignored
+
+    # if the user is the owner of the activity, set status to ignored
+    elsif @engagement.activity.allowed?(@authenticated_user, :owner)
       if @engagement.ignore!
         respond_with(:nothing => true) and return
       end
@@ -102,14 +98,16 @@ class EngagementsController < ApplicationController
   end
 
   def get_engagement
-    @engagement = if @activity.allowed?(@authenticated_user, :owners)
-      if engagement_id.nil?
-        return json_error "As a date creator/wing, please request /engagements instead."
-      end
-      @activity.engagements.find_by_id(engagement_id)
-    else
-      @activity.engagements.find_for_user_or_wing(@authenticated_user.id).first
-    end
+
+
+    # @engagement = if @activity.allowed?(@authenticated_user, :owners)
+    #   if engagement_id.nil?
+    #     return json_error "As a date creator/wing, please request /engagements instead."
+    #   end
+    #   @activity.engagements.find_by_id(engagement_id)
+    # else
+    #   @activity.engagements.find_for_user_or_wing(@authenticated_user.id).first
+    # end
 
     return json_not_found "You have not engaged in this activity yet, "\
       "or the engagement was not found." if @engagement.nil?
