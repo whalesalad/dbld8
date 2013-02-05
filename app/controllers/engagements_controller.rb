@@ -1,8 +1,9 @@
 class EngagementsController < ApplicationController
   respond_to :json
 
+  before_filter :get_activity, :only => [:show]
   before_filter :get_engagement, :only => [:show, :unlock, :destroy]
-  # before_filter :activity_participants_only, :only => [:index, :update]
+  before_filter :participants_only, :only => [:show, :destroy]
 
   def index
     @engagements = Engagement.for_user(@authenticated_user)
@@ -10,9 +11,6 @@ class EngagementsController < ApplicationController
   end
 
   def create
-    # TODO XXXX FIXME
-    # @activity = Activity.find_by_id
-
     if @activity.engagements.find_for_user_or_wing(@authenticated_user).exists?
       return json_unauthorized "You or your wing have already engaged in this activity."
     end
@@ -97,25 +95,28 @@ class EngagementsController < ApplicationController
     params[:id]
   end
 
-  def get_engagement
+  def get_activity
+    # @activity = nil
 
-
-    # @engagement = if @activity.allowed?(@authenticated_user, :owners)
-    #   if engagement_id.nil?
-    #     return json_error "As a date creator/wing, please request /engagements instead."
-    #   end
-    #   @activity.engagements.find_by_id(engagement_id)
-    # else
-    #   @activity.engagements.find_for_user_or_wing(@authenticated_user.id).first
+    # if params[:activity_id].present?
+    @activity = Activity.find_by_id(params[:activity_id])
     # end
+  end
 
+  def get_engagement
+    @engagement = if @activity.nil?
+      Engagement.find_by_id(engagement_id)
+    else
+      @activity.engagements.find_for_user_or_wing(@authenticated_user).first
+    end
+    
     return json_not_found "You have not engaged in this activity yet, "\
       "or the engagement was not found." if @engagement.nil?
   end
 
   # only activity.participants can view index
-  def engagement_owners_only
-    return unauthorized! unless @engagement.allowed?(@authenticated_user, :owners)
+  def participants_only
+    return unauthorized! unless @engagement.allowed?(@authenticated_user, :all)
   end
 
 end

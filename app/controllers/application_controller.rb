@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
     @authenticated_user || nil
   end
 
+  def unauthorized!
+    json_unauthorized "The authenticated user does not have permission to do this."
+  end
+
   private
 
   def require_token_auth

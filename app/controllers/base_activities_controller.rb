@@ -19,7 +19,4 @@ class BaseActivitiesController < ApplicationController
     return unauthorized! unless @activity.allowed?(@authenticated_user, :all)
   end
 
-  def unauthorized!
-    json_unauthorized "The authenticated user does not have permission to do this."
-  end
 end
