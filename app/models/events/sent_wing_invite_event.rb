@@ -24,4 +24,8 @@ class SentWingInviteEvent < Event
     # Send notification to the friend who was invited
     notifications.create(:user => friendship.friend, :push => true)
   end
+
+  def notification_url
+    "wings/#{user.id}"
+  end
 end

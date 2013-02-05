@@ -53,6 +53,10 @@ class Message < ActiveRecord::Base
     proxy_for(a_user).read! unless a_user.nil?
   end
 
+  def notification_url
+    "#{engagement.notification_url}/#{super}"
+  end
+
   def as_json(options={})
     'BUILD'
   end

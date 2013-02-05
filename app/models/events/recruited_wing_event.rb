@@ -29,4 +29,8 @@ class RecruitedWingEvent < Event
     # that their friend accepted + they earned some points!
     notifications.create(:user => user, :push => true)
   end
+
+  def notification_url
+    "wings/#{friendship.friend.id}"
+  end
 end

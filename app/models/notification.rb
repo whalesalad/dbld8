@@ -79,8 +79,8 @@ class Notification < ActiveRecord::Base
   def callback_str
     # if it's a message, point to the engagement
     # if it's a wing invite, point to wings or the user
-
-    "doubledate://#{related.class.model_name.parameterize}/#{related.id}"
+    # target_object = message? ? related.engagement : related
+    "doubledate://#{target.notification_url}"
   end
 
   def related

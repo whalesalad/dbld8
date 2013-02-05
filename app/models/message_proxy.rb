@@ -36,4 +36,8 @@ class MessageProxy < ActiveRecord::Base
     create_notification(:user => user, :push => true, :unread => unread) unless owners_proxy?
   end
 
+  def notification_url
+    message.notification_url
+  end
+
 end

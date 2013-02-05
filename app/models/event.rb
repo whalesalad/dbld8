@@ -129,6 +129,14 @@ class Event < ActiveRecord::Base
     0
   end
 
+  def notification_url
+    if related?
+      related.notification_url
+    else
+      super
+    end
+  end
+
   def properties
     properties = { cost: cost_to_s, slug: slug }
     
