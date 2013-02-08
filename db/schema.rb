@@ -13,7 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20130129232555) do
 
-  add_extension "hstore"
   add_extension "uuid-ossp"
 
   create_table "activities", :force => true do |t|
@@ -77,7 +76,8 @@ ActiveRecord::Schema.define(:version => 20130129232555) do
   add_index "engagements", ["wing_id", "activity_id"], :name => "index_engagements_on_wing_id_and_activity_id", :unique => true
   add_index "engagements", ["wing_id"], :name => "index_engagements_on_wing_id"
 
-  create_table "events", :force => true do |t|
+  create_table "events", :id => false, :force => true do |t|
+    t.integer  "id",                          :null => false
     t.integer  "user_id"
     t.string   "type"
     t.integer  "coins"
@@ -188,6 +188,17 @@ ActiveRecord::Schema.define(:version => 20130129232555) do
     t.datetime "updated_at",                       :null => false
     t.integer  "target_id"
     t.string   "target_type", :default => "Event"
+  end
+
+  create_table "user_actions", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "type"
+    t.integer  "coins"
+    t.integer  "related_id"
+    t.string   "related_type"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "karma",        :default => 0
   end
 
   create_table "user_photos", :force => true do |t|
