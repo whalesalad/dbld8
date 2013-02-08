@@ -92,8 +92,16 @@ class EngagementsController < ApplicationController
     params[:id]
   end
 
+  def activity_id
+    if params[:engagement] && params[:engagement][:activity_id]
+      params[:engagement][:activity_id]
+    else
+      params[:activity_id]
+    end
+  end
+
   def get_activity
-    @activity = Activity.find_by_id(params[:activity_id])
+    @activity = Activity.find_by_id(activity_id)
   end
 
   def get_engagement
