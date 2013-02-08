@@ -1,7 +1,7 @@
 class EngagementsController < ApplicationController
   respond_to :json
 
-  before_filter :get_activity, :only => [:show]
+  before_filter :get_activity, :only => [:show, :create, :destroy]
   before_filter :get_engagement, :only => [:show, :unlock, :destroy]
   before_filter :participants_only, :only => [:show, :destroy]
 
@@ -21,10 +21,11 @@ class EngagementsController < ApplicationController
       return json_error "You must include a message body with your engagement."
     end
 
-    params[:engagement][:user_id] = @authenticated_user.id
+    @engagement = @activity.engagements.new(params[:engagement])
+    @engagement.user = @authenticated_user
 
     ActiveRecord::Base.transaction do
-      @engagement = @activity.engagements.create(params[:engagement])
+      @engagement.save
 
       # Send the first message for this engagement
       # I'd like to hook this to the after_create event
