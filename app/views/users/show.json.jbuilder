@@ -13,7 +13,7 @@ json.unread_notifications_count @user.notifications.unread.count
 json.unread_messages_count @user.unread_messages.count
 json.pending_wings_count @user.pending_friends.count
 
-json.cache! @user do |json|
+json.cache! [:long_user, @user] do |json|
   if @user.location.present?
     json.location do
       json.partial! @user.location

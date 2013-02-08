@@ -17,7 +17,7 @@ class SentWingInviteEvent < Event
   alias friendship related
 
   def detail_string
-    "#{user} invited #{friendship.friend}"
+    "#{user} invited #{related? ? friendship.friend : "a user"}"
   end
 
   def notify

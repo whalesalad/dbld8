@@ -21,6 +21,6 @@ class AcceptedWingInviteEvent < Event
   end
 
   def detail_string
-    "#{user} accepted #{friendship.user||"someone"}'s wing invite"
+    "#{user} accepted #{related? ? friendship.user : "a user"}'s wing invite"
   end
 end

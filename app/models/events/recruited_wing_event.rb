@@ -21,7 +21,7 @@ class RecruitedWingEvent < Event
   end
 
   def detail_string
-    "#{user} recruited #{friendship.friend}"
+    "#{user} recruited #{related? ? friendship.friend : "a user"}"
   end
 
   def notify
