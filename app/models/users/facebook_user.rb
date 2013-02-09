@@ -118,6 +118,16 @@ class FacebookUser < User
     ]
 
     self.single = !taken_status.include?(me['relationship_status'])
+
+    if self.location.blank? && me.has_key?('location')
+      fb_location = facebook_graph.get_object(me['location']['id'])
+      
+      begin
+        self.location = Geonames.first_for(fb_location['location']['latitude'], fb_location['location']['longitude'])
+      rescue
+        #
+      end
+    end
   end
 
   def has_facebook_invite?

@@ -13,15 +13,15 @@ json.unread_notifications_count @user.notifications.unread.count
 json.unread_messages_count @user.unread_messages.count
 json.pending_wings_count @user.pending_friends.count
 
-json.cache! [:long_user, @user] do |json|
-  if @user.location.present?
-    json.location do
-      json.partial! @user.location
-    end
+# json.cache! ['long_user', @user] do |json|
+if @user.location.present?
+  json.location do
+    json.partial! @user.location
   end
-
-  json.photo @user.photo
 end
+
+json.photo @user.photo
+# end
 
 json.interests @user.interests_matching_with(@authenticated_user) do |interest|
   json.(interest, :id, :name, :matched)

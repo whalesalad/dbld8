@@ -3,7 +3,9 @@ module Concerns
     extend ActiveSupport::Concern
 
     included do
-      has_many :events, :as => :related, :dependent => :nullify
+      has_many :events, 
+        :as => :related,
+        :dependent => :nullify
     end
   end
 end

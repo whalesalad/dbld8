@@ -31,4 +31,8 @@ module Geonames
     return response
   end
 
+  def self.first_for(latitude=nil, longitude=nil)
+    self.cities_near(latitude, longitude).sort_by { 'population' }.first
+  end
+
 end

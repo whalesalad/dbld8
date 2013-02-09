@@ -49,7 +49,11 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      respond_with(@user, :status => :created, :location => user_path(@user), 
+      @authenticated_user = @user
+      
+      respond_with(@user, 
+        :status => :created, 
+        :location => user_path(@user), 
         :template => 'users/show')
     else
       respond_with(@user, status: :unprocessable_entity)

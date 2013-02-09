@@ -50,6 +50,8 @@ class LocationsController < ApplicationController
   def ensure_latlng
     if (params.keys & %w(latitude longitude)).empty?
       json_error "Please specify latitude and longitude parameters."
+    elsif (params[:latitude] + params[:longitude]).to_i < 1
+      json_error "Please specify valid latitude and longitude parameters. lat: #{params[:latitude]}, lng: #{params[:longitude]} are invalid."
     else
       @latitude = params[:latitude]
       @longitude = params[:longitude]

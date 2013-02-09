@@ -43,8 +43,6 @@ class Location < ActiveRecord::Base
   # Class Methods
   class << self
     def find_cities_near(latitude, longitude)
-      require 'geonames'
-
       results = Array.new
 
       cities = Geonames.cities_near(latitude, longitude)
@@ -71,8 +69,6 @@ class Location < ActiveRecord::Base
     end
 
     def find_venues_near(latitude, longitude, query=nil)
-      require 'foursquare'
-
       params = { 
         :ll => "#{latitude},#{longitude}", 
         :radius => '90000', 
@@ -182,8 +178,6 @@ class Location < ActiveRecord::Base
 
   def foursquare_venue
     return false unless venue?
-    
-    require 'foursquare'
     @foursquare_venue ||= Foursquare::Venue.find(foursquare_id, self)
   end
 

@@ -52,7 +52,8 @@ class User < ActiveRecord::Base
   
   has_many :devices, :dependent => :destroy
 
-  belongs_to :location, :counter_cache => true
+  belongs_to :location, 
+    :counter_cache => true
 
   has_and_belongs_to_many :interests
 
@@ -84,14 +85,16 @@ class User < ActiveRecord::Base
   has_many :participating_activities, 
     :include => [:location, :user => [:profile_photo, :location], :wing => [:profile_photo, :location]],
     :class_name => "Activity", 
-    :foreign_key => "wing_id"
+    :foreign_key => "wing_id",
+    :dependent => :destroy
 
   has_many :engagements, 
     :dependent => :destroy
   
   has_many :participating_engagements, 
     :class_name => "Engagement",
-    :foreign_key => "wing_id"
+    :foreign_key => "wing_id",
+    :dependent => :destroy
 
   has_many :engaged_activities, 
     :include => [:user, :wing, :location],
@@ -104,7 +107,8 @@ class User < ActiveRecord::Base
     :source => :activity
 
   # Messages
-  has_many :message_proxies
+  has_many :message_proxies,
+    :dependent => :destroy
   
   has_many :messages, 
     :through => :message_proxies
@@ -206,7 +210,7 @@ class User < ActiveRecord::Base
 
   # segment.io traits
   def traits
-    { 
+    t = { 
       created: created_at,
       email: email,
       firstName: first_name,
@@ -214,9 +218,14 @@ class User < ActiveRecord::Base
       name: full_name,
       gender: gender,
       birthday: birthday,
-      location: location.location_name,
-      country: location.country.un_locode
     }
+
+    if location.present?
+      t[:location] = location.location_name
+      t[:country] = location.country.un_locode
+    end
+
+    return t
   end
 
   private
