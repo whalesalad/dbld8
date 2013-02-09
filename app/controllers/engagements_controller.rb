@@ -57,13 +57,13 @@ class EngagementsController < ApplicationController
 
     # If the engagement was already unlocked
     if @engagement.unlocked?
-      return json_error "This engagement has already been unlocked"
+      return json_error "This engagement has already been unlocked."
     end
 
     # Finally, let's unlock this beast.
     if unlocker.unlock!
       respond_with @engagement,
-        :location => activity_engagement_path(@activity, @engagement), 
+        :location => engagement_path(@engagement), 
         :template => 'engagements/show' and return
     else
       return json_error "An error ocurred unlocking this engagement."
