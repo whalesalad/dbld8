@@ -68,8 +68,7 @@ end
 
 group :production do
   gem 'memcachier'
-  gem 'unicorn'
-  gem 'newrelic_rpm'
+  gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end
 
 group :development, :test do
