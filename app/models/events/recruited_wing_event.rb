@@ -30,6 +30,10 @@ class RecruitedWingEvent < Event
     notifications.create(:user => user, :push => true)
   end
 
+  def photos
+    [friendship.friend.photo] if related.present?
+  end
+
   def notification_url
     "wings/#{friendship.friend.id}"
   end

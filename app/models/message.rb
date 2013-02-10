@@ -53,6 +53,10 @@ class Message < ActiveRecord::Base
     proxy_for(a_user).read! unless a_user.nil?
   end
 
+  def photos
+    engagement.photos
+  end
+
   def notification_url
     "#{engagement.notification_url}/#{super}"
   end

@@ -40,4 +40,8 @@ class MessageProxy < ActiveRecord::Base
     message.notification_url
   end
 
+  def photos
+    message.photos
+  end
+
 end

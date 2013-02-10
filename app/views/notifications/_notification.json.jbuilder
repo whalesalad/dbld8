@@ -4,6 +4,7 @@ json.cache! notification do |json|
   json.push notification.push?
   json.unread notification.unread?
   json.callback_url notification.callback_url
+  json.photos notification.photos
   json.created_at notification.created_at
 end
 

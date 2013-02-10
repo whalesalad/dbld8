@@ -129,6 +129,10 @@ class Event < ActiveRecord::Base
     0
   end
 
+  def photos
+    related.photos if related?
+  end
+
   def notification_url
     if related?
       related.notification_url

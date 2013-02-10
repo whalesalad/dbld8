@@ -109,6 +109,10 @@ class Notification < ActiveRecord::Base
     save!
   end
 
+  def photos
+    target.photos
+  end
+
   def set_callback
     # self.callback ||= 
     # if event.related.is_a?(Activity), open the activity
