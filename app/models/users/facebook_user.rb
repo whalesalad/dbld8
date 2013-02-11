@@ -152,9 +152,7 @@ class FacebookUser < User
   def get_large_facebook_photo
     q = "select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")"
     result = facebook_graph.fql_query(q)
-    if result.any? && result[0].has_key?('src_big')
-      result[0]['src_big'] 
-    end
+    result[0]['src_big'] if result.any? && result[0].has_key?('src_big')
   end
 
 end

@@ -28,8 +28,11 @@ DoubleDate::Application.routes.draw do
 
   # ME!
   resource :me, :controller => "me" do
+    
     # User Photos
-    resource :photo, :controller => 'user_photo', :only => [:show, :create]
+    resource :photo, :controller => 'user_photo', :only => [:show, :create] do
+      post 'pull_facebook', :on => :collection
+    end
 
     # resources :notifications
     get 'notifications', :on => :member
