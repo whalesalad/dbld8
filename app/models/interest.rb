@@ -21,11 +21,31 @@ class Interest < ActiveRecord::Base
 
   has_and_belongs_to_many :users
 
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+
+  mapping do
+    indexes :id, :index => :not_analyzed
+    indexes :name, type: 'string', analyzer: 'snowball'
+  end
+
+  def self.search(params)
+    tire.search(:per_page => 50) do
+      if params[:query].present?
+        query { match :name, params[:query], type: 'phrase_prefix' } 
+      end
+    end
+  end
+
   def to_s
     name
   end
 
   def as_json(options={})
     result = super({ :only => [:id, :name] })
+  end
+
+  def to_indexed_json
+    self.to_json
   end
 end

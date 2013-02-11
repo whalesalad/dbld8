@@ -5,11 +5,18 @@ class InterestsController < ApplicationController
   respond_to :json
 
   def index
-    @interests = Interest.find(:all)
-
-    if params[:query]
-      @interests = Interest.where('name ~* ?', params[:query])
+    @interests = if params[:query]
+      Interest.where('name ~* ?', params[:query])
+    else
+      Interest.find(:all)
     end
+
+    # Elasticsearch
+    # @interests = if params[:query]
+    #   Interest.search(params)
+    # else
+    #   Interest.limit(50)
+    # end
 
     respond_with @interests
   end
