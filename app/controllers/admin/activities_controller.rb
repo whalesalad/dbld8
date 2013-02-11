@@ -22,7 +22,9 @@ class Admin::ActivitiesController < AdminController
 
   def destroy
     @activity.destroy
-    redirect_to admin_activities_path, :flash => { :success => "Successfully deleted activity #{@activity.to_s}." }
+    
+    redirect_to admin_activities_path, 
+      :flash => { :success => "Successfully deleted activity #{@activity.to_s}." }
   end
 
   private

@@ -67,7 +67,7 @@ DoubleDate::Application.routes.draw do
 
     resources :friendships
     
-    resources :activities, :only => [:index, :show] do
+    resources :activities, :only => [:index, :show, :destroy] do
       get 'engaged', :on => :collection
       get 'expired', :on => :collection
     end
