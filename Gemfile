@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby "1.9.3"
 gem 'foreman'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'pg'
 gem 'haml'
