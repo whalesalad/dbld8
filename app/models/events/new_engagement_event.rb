@@ -51,14 +51,17 @@ class NewEngagementEvent < Event
   end
 
   def notify
-    # Send notification to [user, wing] on the Activity
-    # Jenny + Vanessa are interested in "DoubleDateName"
-    engagement.activity.participants.each do |u|
-      notifications.create(:user => u, :push => true)
-    end
+    # two events are created, so only do this if this is the creator event
+    if user == engagement.user
+      # Send notification to [user, wing] on the Activity
+      engagement.activity.participants.each do |u|
+        Rails.logger.debug "Sending an engagement event to #{u.id}:#{u.first_name}"
+        notifications.create(:user => u, :push => true)
+      end
 
-    # Send notification to the [wing] on the Engagement
-    # Vanessa picked you to be her wing on the DoubleDate "Hiking in Manoa Valley"
-    notifications.create(:user => engagement.wing, :push => true)
+      # Send notification to the [wing] on the Engagement
+      # Vanessa picked you to be her wing on the DoubleDate "Hiking in Manoa Valley"
+      notifications.create(:user => engagement.wing, :push => true)
+    end
   end
 end
