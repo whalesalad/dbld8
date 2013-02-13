@@ -36,4 +36,8 @@ class SentWingInviteEvent < Event
   def notification_url
     "wings/#{user.id}"
   end
+
+  def app_identifier
+    "Wing/#{user.id}"
+  end
 end

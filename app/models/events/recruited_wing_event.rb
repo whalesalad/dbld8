@@ -41,4 +41,8 @@ class RecruitedWingEvent < Event
   def notification_url
     "wings/#{friendship.friend.id}"
   end
+
+  def app_identifier
+    "Wing/#{friendship.friend.id}"
+  end
 end
