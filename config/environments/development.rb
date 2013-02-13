@@ -20,7 +20,8 @@ DoubleDate::Application.configure do
   config.consider_all_requests_local       = true
   
   # temporarily enabling caching
-  config.action_controller.perform_caching = false
+  config.cache_store = :redis_store, "redis://127.0.0.1:6379/10"
+  # config.action_controller.perform_caching = true
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false

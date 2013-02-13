@@ -44,8 +44,6 @@ DoubleDate::Application.configure do
 
   # Use a different cache store in production
   config.cache_store = :dalli_store
-  # config.cache_store = :redis_store, "#{ENV['OPENREDIS_URL'] || "redis://127.0.0.1:6379"}/1"
-
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   
