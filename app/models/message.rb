@@ -61,10 +61,6 @@ class Message < ActiveRecord::Base
     "#{engagement.notification_url}/#{super}"
   end
 
-  def app_identifier
-    "#{engagement.app_identifier}/#{super}"
-  end
-
   def as_json(options={})
     'BUILD'
   end

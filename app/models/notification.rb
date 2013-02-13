@@ -22,7 +22,6 @@ class Notification < ActiveRecord::Base
 
   attr_accessible :user, :message_proxy, :event, :push, :unread, :callback
 
-  # before_create :set_callback
   default_scope order('created_at DESC')
 
   scope :events, 
@@ -39,8 +38,7 @@ class Notification < ActiveRecord::Base
 
   belongs_to :user
   
-  belongs_to :target, 
-    :polymorphic => true
+  belongs_to :target, :polymorphic => true
 
   def message?
     target_type == 'MessageProxy'
@@ -60,8 +58,8 @@ class Notification < ActiveRecord::Base
     "Notification from #{target}"
   end
 
-  def app_identifier
-    target.app_identifier
+  def callback_url
+    "#{Rails.configuration.ios_prefix}://#{target.notification_url}"
   end
 
   def related
@@ -85,20 +83,12 @@ class Notification < ActiveRecord::Base
   end
 
   def pushed!
-    self.unread = false
     self.pushed = true
     save!
   end
 
   def photos
     target.photos
-  end
-
-  def set_callback
-    # self.callback ||= 
-    # if event.related.is_a?(Activity), open the activity
-    # if event.is_a?(NewActivityEvent)
-    # end
   end
 
   def push_notification

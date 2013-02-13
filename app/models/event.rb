@@ -134,15 +134,7 @@ class Event < ActiveRecord::Base
   end
 
   def notification_url
-    if related?
-      related.notification_url
-    else
-      super
-    end
-  end
-
-  def app_identifier
-    return related.app_identifier if related?
+    return related.notification_url if related?
     super
   end
 

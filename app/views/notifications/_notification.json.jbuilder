@@ -1,7 +1,7 @@
 json.cache! notification do |json|
   json.(notification, :id, :uuid)
   json.notification notification.to_s
-  json.app_identifier notification.app_identifier
+  json.callback_url notification.callback_url
   json.push notification.push?
   json.unread notification.unread?
   json.created_at notification.created_at
