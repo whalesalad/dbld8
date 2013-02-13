@@ -9,7 +9,7 @@ class MeController < ApplicationController
   end
 
   def notifications
-    @notifications = @authenticated_user.notifications
+    @notifications = @authenticated_user.notifications.events
     
     respond_with @notifications,
       :template => 'notifications/index'

@@ -30,6 +30,10 @@ class RecruitedWingEvent < Event
     notifications.create(:user => user, :push => true)
   end
 
+  def notification_string_for(user)
+    return "#{related.friend} accepted your wing invitation"
+  end
+
   def photos
     [friendship.friend.photo] if related.present?
   end

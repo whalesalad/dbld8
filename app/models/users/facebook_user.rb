@@ -141,7 +141,6 @@ class FacebookUser < User
   private
 
   def get_facebook_graph
-    require 'koala'
     Koala::Facebook::API.new facebook_access_token
   end
 

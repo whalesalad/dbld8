@@ -7,11 +7,11 @@ end
 json.(@user, :email, :first_name, :last_name, :gender, 
   :birthday, :age, :single, :interested_in, :bio, :total_coins, :total_karma)
 
-json.invite_path user_invitation_path(@user.invite_slug)
-
-json.unread_notifications_count @user.notifications.unread.count
+json.unread_notifications_count @user.notifications.events.unread.count
 json.unread_messages_count @user.unread_messages.count
 json.pending_wings_count @user.pending_friends.count
+
+json.invite_path user_invitation_path(@user.invite_slug)
 
 # json.cache! ['long_user', @user] do |json|
 if @user.location.present?

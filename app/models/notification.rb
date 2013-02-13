@@ -2,16 +2,17 @@
 #
 # Table name: notifications
 #
-#  id         :integer         not null, primary key
-#  uuid       :uuid            not null
-#  user_id    :integer         not null
-#  event_id   :integer         not null
-#  unread     :boolean         default(TRUE)
-#  push       :boolean         default(FALSE)
-#  pushed     :boolean         default(FALSE)
-#  callback   :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id          :integer         not null, primary key
+#  uuid        :uuid            not null
+#  user_id     :integer         not null
+#  unread      :boolean         default(TRUE)
+#  push        :boolean         default(FALSE)
+#  pushed      :boolean         default(FALSE)
+#  callback    :string(255)
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
+#  target_id   :integer
+#  target_type :string(255)     default("Event")
 #
 
 class Notification < ActiveRecord::Base
@@ -23,6 +24,15 @@ class Notification < ActiveRecord::Base
 
   # before_create :set_callback
   default_scope order('created_at DESC')
+
+  scope :events, 
+    where(:target_type => 'Event')
+    .includes({
+      :user => [:profile_photo]}, 
+      {
+        :target => [{ :related => [:user] }]
+      }
+    )
 
   scope :unread, where(:unread => true)
   scope :read, where(:unread => false)
@@ -43,44 +53,15 @@ class Notification < ActiveRecord::Base
   def to_s
     if message?
       return "#{related.user.first_name}: #{related.to_s}"
-    end
-
-    if target.related.present?
-      # NEW ACTIVITY
-      if target.is_a?(NewActivityEvent) && user == related.wing
-        return "You're #{related.user.first_name}'s wing on #{related.user.gender_posessive} DoubleDate \"#{related}\""
-      end
-
-      # NEW ENGAGEMENT
-      if target.is_a?(NewEngagementEvent)
-        # if the user is the engagement wing
-        if user == related.wing
-          return "#{related.user} picked you to be #{related.user.gender_posessive} wing on the DoubleDate \"#{related.activity}\""
-        end
-
-        # if the user is a participant
-        if related.activity.participant_ids.include?(user.id)
-          return "#{related.participant_names} are interested in \"#{related.activity}\""
-        end
-      end
-
-      if target.is_a?(SentWingInviteEvent)
-        return "#{related.user} invited you to be #{related.user.gender_posessive} wing"
-      end
-
-      if target.is_a?(RecruitedWingEvent)
-        return "#{related.friend} accepted your wing invitation"
-      end
+    elsif target.related.present?
+      return target.notification_string_for(user)  
     end
 
     "Notification from #{target}"
   end
 
-  def callback_url
-    # if it's a message, point to the engagement
-    # if it's a wing invite, point to wings or the user
-    # target_object = message? ? related.engagement : related
-    "#{Rails.configuration.ios_prefix}://#{target.notification_url}"
+  def app_identifier
+    target.app_identifier
   end
 
   def related

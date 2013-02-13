@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 # Por Heroku
-ruby "1.9.3"
 gem 'foreman'
 
 gem 'rails', '3.2.12'
@@ -13,6 +12,8 @@ gem 'faker'
 gem 'multi_json'
 gem 'oj'
 gem 'jbuilder'
+gem 'thin'
+gem 'typhoeus'
 
 # Postgres ext goodies
 gem 'postgres_ext'
@@ -73,7 +74,6 @@ end
 
 group :development, :test do
   gem 'bullet'
-  gem 'thin'
   gem 'quiet_assets'
   gem 'rspec-rails'
   gem 'cucumber'

@@ -141,6 +141,11 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def app_identifier
+    return related.app_identifier if related?
+    super
+  end
+
   def properties
     properties = { cost: cost_to_s, slug: slug }
     

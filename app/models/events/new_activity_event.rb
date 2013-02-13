@@ -24,6 +24,12 @@ class NewActivityEvent < Event
     "#{user} created #{activity||"an activity"}"
   end
 
+  def notification_string_for(user)
+    if user == activity.wing
+      "You're #{related.user.first_name}'s wing on #{related.user.gender_posessive} DoubleDate \"#{related}\""
+    end
+  end
+
   def notify
     # Send notification to wing
     notifications.create(:user => activity.wing, :push => true)

@@ -1,5 +1,3 @@
-require 'koala'
-
 class FacebookUserAuthenticator < UserAuthenticator
   def initialize(params)
     super(params)

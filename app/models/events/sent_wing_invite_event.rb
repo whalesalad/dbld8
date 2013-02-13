@@ -20,6 +20,10 @@ class SentWingInviteEvent < Event
     "#{user} invited #{related? ? friendship.friend : "a user"}"
   end
 
+  def notification_string_for(user)
+    return "#{friendship.user} invited you to be #{friendship.user.gender_posessive} wing"
+  end
+
   def notify
     # Send notification to the friend who was invited
     notifications.create(:user => friendship.friend, :push => true)

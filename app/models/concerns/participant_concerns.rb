@@ -23,7 +23,7 @@ module Concerns
     end
 
     def participant_names
-      participants.map{ |u| u.first_name }.join ' + '
+      participants.map{ |u| u.first_name }.join ' and '
     end
 
     def photos

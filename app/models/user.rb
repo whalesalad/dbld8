@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   # Notifications
   has_many :notifications, 
     :dependent => :destroy,
-    :include => [:target]  
+    :include => [:target]
   
   has_many :devices, :dependent => :destroy
 
