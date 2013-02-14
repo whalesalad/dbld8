@@ -8,13 +8,6 @@ class MeController < ApplicationController
       :template => 'users/show'
   end
 
-  def notifications
-    @notifications = @authenticated_user.notifications.events
-    
-    respond_with @notifications,
-      :template => 'notifications/index'
-  end
-
   def update
     resp = if @authenticated_user.update_attributes(params[:user])
       { :template => 'users/show' }

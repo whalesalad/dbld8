@@ -78,6 +78,11 @@ class Notification < ActiveRecord::Base
     !unread?
   end
 
+  def read!
+    self.unread = false
+    save!
+  end
+
   def pushable?
     push? && unread? && !pushed?
   end
