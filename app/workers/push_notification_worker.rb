@@ -18,7 +18,7 @@ class PushNotificationWorker
           alert: notification.to_s,
           badge: notification.user.notifications.unread.count,
           identifier: notification.id,
-          custom: { app_identifier: notification.callback_url }
+          custom: { callback_url: notification.callback_url }
         )
 
         APN_CONNECTION.push(push_notification)

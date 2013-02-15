@@ -7,7 +7,6 @@ class EngagementsController < ApplicationController
 
   def index
     @engagements = Engagement.for_user(@authenticated_user)
-    respond_with @engagements
   end
 
   def create
