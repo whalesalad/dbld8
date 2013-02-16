@@ -59,6 +59,8 @@ DoubleDate::Application.routes.draw do
     get 'venues', :on => :collection
   end
 
+  resources :packages, :controller => 'coin_packages', :only => [:index]
+
   # Admin
   namespace :admin do
     match '', :action => 'index'
