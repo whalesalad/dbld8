@@ -14,9 +14,7 @@
 #
 
 class RegistrationEvent < Event
-  def coin_value
-    1000
-  end
+  earns 1000
 
   def detail_string
     "#{user} joined DBLD8"

@@ -16,9 +16,7 @@
 class NewActivityEvent < Event
   alias activity related
   
-  def coin_value
-    10
-  end
+  earns 50
   
   def detail_string
     "#{user} created #{activity||"an activity"}"

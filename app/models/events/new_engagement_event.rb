@@ -16,9 +16,7 @@
 class NewEngagementEvent < Event
   alias engagement related
 
-  def coin_value
-    10
-  end
+  earns 10
 
   def participants
     if engagement.present?

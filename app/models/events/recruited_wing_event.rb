@@ -16,9 +16,7 @@
 class RecruitedWingEvent < Event
   alias friendship related
 
-  def coin_value
-    10 # when a wing accepts your invitation, you earn 10 points
-  end
+  earns 10
 
   def detail_string
     "#{user} recruited #{related? ? friendship.friend : "a user"}"

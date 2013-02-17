@@ -14,9 +14,7 @@
 #
 
 class ProfileCompletedEvent < Event
-  def coin_value
-    50
-  end
+  earns 50
 
   def detail_string
     "#{user} finished their profile"

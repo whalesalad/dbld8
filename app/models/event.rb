@@ -14,6 +14,10 @@
 #
 
 class Event < ActiveRecord::Base
+  class << self
+    attr_accessor :coin_value
+  end
+
   attr_accessible :user, :related
 
   before_validation :set_initial_values, :on => :create
@@ -23,14 +27,24 @@ class Event < ActiveRecord::Base
 
   default_scope order('created_at DESC')
   
-  # ERRORING OUT
-  # validate :has_enough_coins, :on => :create
+  validate :has_enough_coins, :on => :create
 
   has_many :notifications, 
     :as => :target,
     :dependent => :destroy
 
   belongs_to :related, :polymorphic => true
+
+  def self.earns(value)
+    self.coin_value = value
+  end
+
+  def self.spends(value)
+    self.coin_value = -value
+  end
+
+  # Set default coin_value up front.
+  earns 0
 
   def self.create_from_user_and_slug(user, slug, related=nil)
     event = self.from_slug(slug)
@@ -50,14 +64,14 @@ class Event < ActiveRecord::Base
   end
 
   def has_enough_coins
-    unless user.can_spend?(coin_value)
+    unless user.can_spend?(self.coin_value)
       errors.add(:user, "does not have enough coins to perform this event.")
     end
   end
 
   def set_initial_values
-    self.coins ||= coin_value
-    self.karma ||= karma_value
+    self.coins ||= self.coin_value
+    self.karma ||= self.karma_value
   end
 
   def to_s
@@ -119,10 +133,6 @@ class Event < ActiveRecord::Base
     self.coins = coin_value
     self.karma = karma_value
     save!
-  end
-
-  def coin_value
-    0
   end
 
   def karma_value

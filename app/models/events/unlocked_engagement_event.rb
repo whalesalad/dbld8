@@ -16,9 +16,7 @@
 class UnlockedEngagementEvent < Event
   alias engagement related
 
-  def coin_value
-    -50
-  end
+  spends 50
 
   def detail_string
     "#{user} unlocked an engagement from #{engagement||'a deleted engagement'}"
