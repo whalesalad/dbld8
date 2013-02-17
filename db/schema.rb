@@ -11,10 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130215152014) do
+ActiveRecord::Schema.define(:version => 20130217161427) do
 
-  add_extension "hstore"
   add_extension "uuid-ossp"
+  add_extension "hstore"
 
   create_table "activities", :force => true do |t|
     t.string   "title",       :null => false
@@ -227,10 +227,12 @@ ActiveRecord::Schema.define(:version => 20130215152014) do
     t.uuid     "uuid",                                                 :null => false
     t.string   "invite_slug"
     t.string   "type"
+    t.hstore   "features"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id", :unique => true
+  add_index "users", ["features"], :name => "index_users_on_features", :index_type => :gist
   add_index "users", ["invite_slug"], :name => "index_users_on_invite_slug", :unique => true
   add_index "users", ["location_id"], :name => "index_users_on_location_id"
   add_index "users", ["uuid"], :name => "index_users_on_uuid", :unique => true

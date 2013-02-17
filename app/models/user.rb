@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
   include Concerns::FriendConcerns
   include Concerns::UUIDConcerns
 
+  serialize :features, ActiveRecord::Coders::Hstore
+
   attr_accessible :email, :password, :first_name, :last_name, :birthday,
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
@@ -196,12 +198,21 @@ class User < ActiveRecord::Base
   end
 
   def total_karma
-    0
-    # actions.uncached { actions.sum :karma }
+    0 # actions.uncached { actions.sum :karma }
   end
 
   def can_spend?(amount)
     (total_coins - amount.abs) > 0
+  end
+
+  def max_activities_count
+    # will be 3 for everyone unless they 
+    # have unlocked 5 or 10
+    3
+  end
+
+  def activities_count
+    activities.count
   end
 
   def as_json(options={})
