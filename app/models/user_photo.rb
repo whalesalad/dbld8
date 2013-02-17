@@ -44,8 +44,8 @@ class UserPhoto < ActiveRecord::Base
     end
 
     def url
-      # "http://asset-#{rand(3) + 1}.dbld8.com/" + self.current_path
-      "https://db00q50qzosdc.cloudfront.net/" + self.current_path
+      "http://asset-#{rand(3) + 1}.dbld8.com/" + self.current_path
+      # "https://db00q50qzosdc.cloudfront.net/" + self.current_path
     end
 
     process :set_content_type

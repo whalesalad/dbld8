@@ -50,9 +50,9 @@ DoubleDate::Application.configure do
   # config.action_controller.asset_host = "http://static.dbld8.com"
   # config.action_controller.asset_host = "//#{Rails.configuration.fog['fog_directory']}"
   # config.action_controller.asset_host = "//s3.amazonaws.com/#{Rails.configuration.fog['fog_directory']}"
-  # config.action_controller.asset_host = "//asset-%d.dbld8.com"
+  config.action_controller.asset_host = "//asset-%d.dbld8.com"
   # config.action_controller.asset_host = "doubledate.s3.amazonaws.com"
-  config.action_controller.asset_host = "//db00q50qzosdc.cloudfront.net"
+  # config.action_controller.asset_host = "//db00q50qzosdc.cloudfront.net"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w(admin.js admin/admin.css)
