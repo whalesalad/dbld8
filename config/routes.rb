@@ -67,6 +67,7 @@ DoubleDate::Application.routes.draw do
     
     resources :users, :only => [:index, :show, :destroy] do
       get 'photos', :on => :member
+      get 'send_push', :on => :member
     end
 
     resources :friendships

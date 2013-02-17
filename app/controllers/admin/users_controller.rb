@@ -1,5 +1,5 @@
 class Admin::UsersController < AdminController
-  before_filter :get_user, :only => [:show, :photos, :edit, :update, :destroy]
+  before_filter :get_user, :except => [:index]
 
   def index
     @users = User.order('created_at DESC')
@@ -11,6 +11,14 @@ class Admin::UsersController < AdminController
 
   def photos
     
+  end
+
+  def send_push
+    notification_ids = @user.notifications.pluck(:id)
+
+    push = PushNotificationWorker.perform_async(notification_ids.sample, true)
+
+    render json: { push: push } and return
   end
 
   def destroy

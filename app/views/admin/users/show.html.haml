@@ -114,6 +114,7 @@
 
       .form-actions
         = link_to "Delete", admin_user_path(@user), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
+        = link_to "Send Push Notification", send_push_admin_user_path(@user), :class => 'btn send-push', :data => { :userid => @user.id }
 
     .span6
       %ul.nav.nav-tabs

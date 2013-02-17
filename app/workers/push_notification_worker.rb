@@ -7,10 +7,12 @@ class PushNotificationWorker
     gateway: Rails.configuration.apn_gateway
   )
 
-  def perform(n_id)
+  def perform(n_id, force=nil)
     notification = Notification.find_by_id(n_id)
 
-    if notification && notification.pushable?
+    do_send = (force.present?) ? true : notification.pushable?
+
+    if notification && do_send
       # Need to loop the user's devices and make notifications for each device
       notification.user.devices.each do |device|
         push_notification = Grocer::Notification.new(
@@ -24,7 +26,7 @@ class PushNotificationWorker
         APN_CONNECTION.push(push_notification)
       end
 
-      notification.pushed!
+      notification.pushed! unless force.present?
     end
   end
 end
