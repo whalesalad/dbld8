@@ -5,6 +5,7 @@ class UserObserver < ActiveRecord::Observer
       Rails.logger.info("[NEW USER] Created user #{user.id}. Welcome to DoubleDate, #{user.full_name}!")
       
       if user.is_a?(FacebookUser)
+        FacebookPhotoWorker.perform_async(user.id)
         FacebookInterestsWorker.perform_async(user.id)
       end
 
