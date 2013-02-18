@@ -23,6 +23,9 @@
 #
 
 class EmailUser < User
+  validates_uniqueness_of :email, 
+    :message => "A user already exists with this email address."
+  
   validates_presence_of :password, :email, :on => :create
 
   def default_thumb

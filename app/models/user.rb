@@ -67,8 +67,6 @@ class User < ActiveRecord::Base
   # Registration validation
   validates_presence_of :first_name, :last_name, :birthday, :gender
 
-  validates_uniqueness_of :email, :message => "A user already exists with this email address."
-
   validates_inclusion_of :gender,
     :in => GENDER_CHOICES,
     :message => "Field user.gender is required. Possible values are #{GENDER_CHOICES.join(', ')}."
