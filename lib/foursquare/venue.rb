@@ -50,8 +50,6 @@ module Foursquare
       unless location.nil?
         @location = location
       end
-
-      # @location.distance = distance
     end
 
     def to_s
@@ -127,7 +125,10 @@ module Foursquare
         :country => country_code
       }
 
-      Location.find_or_create_by_foursquare_id(params)
+      l = Location.find_or_create_by_foursquare_id(params)
+      
+      l.distance = distance
+      return l
     end
 
   end

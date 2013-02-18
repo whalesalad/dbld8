@@ -1,5 +1,8 @@
 $LOAD_PATH << File.dirname(__FILE__)
 
+require 'seeds/user_seed'
+require 'rake'
+
 #                        __       __      __        __
 #    ________  ___  ____/ /  ____/ /___ _/ /_____ _/ /
 #   / ___/ _ \/ _ \/ __  /  / __  / __ `/ __/ __ `/ / 
@@ -34,26 +37,15 @@ puts 'Seeding Locations...'
   Location.find_cities_and_venues_near(lat,lng)
 end
 
-puts 'Seeding CreditActions...'
-
-credit_actions = {
-  'registration' => 1000,
-  'activity_create' => -10
-}
-
-credit_actions.each do |slug, cost|
-  CreditAction.find_or_create_by_slug(:slug => slug, :cost => cost)
-end
-
 # do user seeds
-require 'seeds/user_seed'
-
 puts 'Seeding Users...'
 
 UserSeed.new()
 
 # connect users - create random friendships.
 # for every user, create 3 solidified friendships
+
+Rake.application['dbld8:attach_fake_photos'].invoke
 
 puts 'Building random friendships...'
 
@@ -64,3 +56,5 @@ all_users.each do |user|
   user.invite all_users.sample, true
   user.invite all_users.sample, false
 end
+
+Rake.application['dbld8:reconstruct_events'].invoke

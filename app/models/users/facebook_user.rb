@@ -108,9 +108,7 @@ class FacebookUser < User
       self[fb_attr] = me[fb_attr] if self.read_attribute(fb_attr).blank?
     end
 
-    if self.birthday.blank?
-      self.birthday = Date.strptime(me['birthday'], '%m/%d/%Y')
-    end
+    self.birthday ||= Date.strptime(me['birthday'], '%m/%d/%Y')
 
     taken_status = [
       'Engaged', 'Married', "It's complicated", 'In a relationship',
@@ -120,22 +118,22 @@ class FacebookUser < User
     self.single = !taken_status.include?(me['relationship_status'])
 
     if self.location.blank? && me.has_key?('location')
-      fb_location = facebook_graph.get_object(me['location']['id'])
-      
-      begin
-        self.location = Geonames.first_for(fb_location['location']['latitude'], fb_location['location']['longitude'])
-      rescue
-        #
+      facebook_location = facebook_graph.get_object(me['location']['id'])
+
+      # might want to background this process
+      self.location = Geonames.first_for(facebook_location['location']['latitude'], facebook_location['location']['longitude'])
+    end
+
+    if self.bio.blank?
+      self.bio = if me.has_key?('bio')
+        me['bio']
+      elsif me.has_key('about')
+        me['about']
+      else 
+        "I like to wear silly hats."
       end
     end
-  end
-
-  def has_facebook_invite?
-    target_facebook_invite.present?
-  end
-
-  def target_facebook_invite
-    @target_facebook_invite ||= inverse_facebook_invites.order('created_at DESC').first
+    
   end
 
   private

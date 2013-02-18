@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   # Password // Bcrypt
   has_secure_password
 
-  has_many :events, :dependent => :nullify
+  has_many :events, :dependent => :destroy
 
   # Notifications
   has_many :notifications, 
@@ -121,7 +121,11 @@ class User < ActiveRecord::Base
     :conditions => {'message_proxies.unread' => true}
 
   def on_init
-    self.interested_in ||= interested_in_from_gender(gender)
+    self.interested_in ||= interested_in_from_gender
+    
+    self.features = {
+      max_activities: 3
+    }
   end
   
   def to_s
@@ -157,7 +161,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def interested_in_from_gender(gender)
+  def interested_in_from_gender
     case gender
     when 'male' then 'girls'
     when 'female' then 'guys'

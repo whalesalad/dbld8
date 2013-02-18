@@ -13,10 +13,10 @@
 #  karma        :integer         default(0)
 #
 
-class RegistrationEvent < Event
-  earns 500
+class UnlockedTenActivitiesEvent < Event
+  spends 50
 
   def detail_string
-    "#{user} joined DBLD8"
+    "#{user} unlocked the ability to post 5 dates at a time."
   end
 end

@@ -43,29 +43,9 @@ class Location < ActiveRecord::Base
   # Class Methods
   class << self
     def find_cities_near(latitude, longitude)
-      results = Array.new
-
-      cities = Geonames.cities_near(latitude, longitude)
-
-      cities.each do |raw_location|
-        params = {
-          :geoname_id => raw_location['geonameId'],
-          :country => raw_location['countryCode'], 
-          :state => raw_location['adminCode1'],
-          :locality => raw_location['toponymName'],
-          :latitude => raw_location['lat'],
-          :longitude => raw_location['lng']
-        }
-
-        location = Location.find_or_create_by_geoname_id(params)
-        
-        # temporarily store distance for this result set. 
-        location.distance = raw_location['distance'].to_i * 1000
-
-        results.push location
-      end
-
+      results = Geonames.cities_near(latitude, longitude)
       results.sort_by! { |l| l.distance.to_i }
+      return results
     end
 
     def find_venues_near(latitude, longitude, query=nil)

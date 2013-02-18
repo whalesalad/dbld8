@@ -2,16 +2,25 @@
 # UserFeature(cost: 50, family: num_dates, level: 1, slug: post_5_dates)
 # UserFeature(cost: 50, family: num_dates, level: 2, slug: post_10_dates)
 
+# events:
+#   accepted_wing_invite: 10
+#   new_activity: 50
+#   new_engagement: 10
+#   profile_completed: 50
+#   recruited_wing: 10
+#   registration: 500
+#   unlocked_engagement: -50
+
 max_activities:
-  post_3_activities:
+  max_3_activities:
     level: 0
     cost: 0
     value: 3
-  post_5_activities:
+  max_5_activities:
     level: 1
     cost: 50
     value: 5
-  post_10_activities:
+  max_10_activities:
     level: 2
     cost: 50
     value: 10

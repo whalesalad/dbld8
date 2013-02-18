@@ -2,13 +2,8 @@ namespace :dbld8 do
   task :reconstruct_events => :environment do
     puts "Reconstructing events based on current data..."
 
-    puts "Destroying all events..."
-    Event.destroy_all
-
-    puts "Creating registration events"
-    User.all.each do |user|
-      RegistrationEvent.create(:user => user)
-    end
+    puts "Destroying all non-registration events..."
+    Event.destroy_all(['type != ?', 'RegistrationEvent'])
 
     puts "Creating friendship events..."
     Friendship.all.each do |friendship|

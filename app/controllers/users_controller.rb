@@ -27,8 +27,26 @@ class UsersController < ApplicationController
     respond_with @user
   end
 
-  # POST
   def create
+    unless params[:facebook_access_token].present?
+      return json_error "A facebook_access_token is required."
+    end
+
+    @user = FacebookUser.new
+    @user.accessible = [:facebook_access_token]
+
+    @user.facebook_access_token = params[:facebook_access_token]
+
+    resp = if @user.save!
+      { :status => :created, :location => user_path(@user), :template => 'users/show' }
+    else
+      { :status => :unprocessable_entity }
+    end
+
+    respond_with(@user, resp)
+  end
+
+  def old_create
     @user = if params[:user].has_key?(:facebook_id)
       FacebookUser.new
     else

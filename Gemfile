@@ -1,22 +1,21 @@
 source 'https://rubygems.org'
 
-# Por Heroku
-gem 'foreman'
-
 gem 'rails', '3.2.12'
 gem 'bcrypt-ruby', '~> 3.0.0'
-gem 'pg'
-gem 'activerecord-postgres-hstore'
 gem 'haml'
 gem 'countries'
 gem 'faker'
-gem 'multi_json'
-gem 'oj'
-gem 'jbuilder'
 gem 'thin'
 gem 'typhoeus'
 
-# Postgres ext goodies
+# JSON
+gem 'multi_json'
+gem 'oj'
+gem 'jbuilder'
+
+# DB
+gem 'pg'
+gem 'activerecord-postgres-hstore'
 gem 'postgres_ext'
 
 # GEO API Handling
@@ -38,6 +37,7 @@ gem 'redis'
 gem 'redis-store'
 gem 'redis-rails'
 
+# Memcached
 gem 'kgio'
 gem 'dalli'
 
@@ -53,7 +53,7 @@ gem 'sinatra', :require => nil
 gem 'mini_magick'
 gem 'carrierwave'
 
-# Monitoring
+# Assets
 gem 'asset_sync'
 
 # Push Notifications

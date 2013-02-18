@@ -20,8 +20,6 @@ class Event < ActiveRecord::Base
 
   attr_accessible :user, :related
 
-  before_validation :set_initial_values, :on => :create
-
   belongs_to :user
   validates_presence_of :user
 
@@ -43,8 +41,7 @@ class Event < ActiveRecord::Base
     self.coin_value = -value
   end
 
-  # Set default coin_value up front.
-  earns 0
+  after_initialize :set_initial_values
 
   def self.create_from_user_and_slug(user, slug, related=nil)
     event = self.from_slug(slug)
@@ -64,14 +61,16 @@ class Event < ActiveRecord::Base
   end
 
   def has_enough_coins
-    unless user.can_spend?(self.coin_value)
+    return if earns?
+    
+    unless user.can_spend?(self.coins)
       errors.add(:user, "does not have enough coins to perform this event.")
     end
   end
 
   def set_initial_values
-    self.coins ||= self.coin_value
-    self.karma ||= self.karma_value
+    self.coins ||= (self.class.coin_value || 0)
+    self.karma ||= (self.class.karma_value || 0)
   end
 
   def to_s
@@ -130,8 +129,8 @@ class Event < ActiveRecord::Base
   end
 
   def reset_initial_values!
-    self.coins = coin_value
-    self.karma = karma_value
+    self.coins = self.class.coin_value
+    self.karma = self.class.karma_value
     save!
   end
 

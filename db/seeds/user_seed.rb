@@ -33,7 +33,6 @@ class UserSeed
 
     # set interests
     u.interests = Interest.all.sample(7)
-
   end
 
   def email_from(first_name, last_name)
@@ -41,17 +40,11 @@ class UserSeed
   end
 
   def ages
-    (19..40).to_a
+    (19..32).to_a
   end
 
   def location_ids
     Location.cities.pluck(:id)
   end
 
-  # def interests
-  #   Interest.all.map do |interest|
-  #     (interest.users.count > 0) ? interest : nil
-  #   end.compact
-  # end
-  
 end

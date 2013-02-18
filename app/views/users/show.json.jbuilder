@@ -16,7 +16,6 @@ json.max_activities_count @user.max_activities_count
 
 json.invite_path user_invitation_path(@user.invite_slug)
 
-# json.cache! ['long_user', @user] do |json|
 if @user.location.present?
   json.location do
     json.partial! @user.location
@@ -24,8 +23,9 @@ if @user.location.present?
 end
 
 json.photo @user.photo
-# end
 
-json.interests @user.interests_matching_with(@authenticated_user) do |interest|
-  json.(interest, :id, :name, :matched)
+if @user.interests.any?
+  json.interests @user.interests_matching_with(@authenticated_user) do |interest|
+    json.(interest, :id, :name, :matched)
+  end
 end

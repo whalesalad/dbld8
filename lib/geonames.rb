@@ -28,11 +28,32 @@ module Geonames
     # eliminate unpopulated areas
     response.reject! { |city| city['population'] < 10 }
 
-    return response
+    results = response.map do |raw_location|
+      self.location_from_geonames(raw_location)
+    end
+
+    return results
   end
 
   def self.first_for(latitude=nil, longitude=nil)
     self.cities_near(latitude, longitude).sort_by { 'population' }.first
+  end
+
+  def self.location_from_geonames(geonames_data)
+    params = {
+      :geoname_id => geonames_data['geonameId'],
+      :country => geonames_data['countryCode'], 
+      :state => geonames_data['adminCode1'],
+      :locality => geonames_data['toponymName'],
+      :latitude => geonames_data['lat'],
+      :longitude => geonames_data['lng']
+    }
+
+    location = Location.find_or_create_by_geoname_id(params)
+    
+    location.distance = geonames_data['distance'].to_i * 1000
+
+    return location
   end
 
 end
