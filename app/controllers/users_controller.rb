@@ -34,18 +34,9 @@ class UsersController < ApplicationController
 
     @user = FacebookUser.new
     @user.accessible = [:facebook_access_token]
-
     @user.facebook_access_token = params[:facebook_access_token]
 
-    # resp = if @user.save!
-    #   # { :status => :created, :location => user_path(@user), :template => 'users/show' }
-    #   # { :}
     render json: { created: @user.save! } and return
-    # else
-    #   respond_with { :status => :unprocessable_entity }
-    # end
-
-    # render json: 
   end
 
   def old_create
