@@ -10,6 +10,8 @@ class PushNotificationWorker
   def perform(n_id, force=nil)
     notification = Notification.find_by_id(n_id)
 
+    return if notification.nil?
+
     do_send = (force.present?) ? true : notification.pushable?
 
     if notification && do_send
