@@ -136,12 +136,16 @@ class Location < ActiveRecord::Base
     latitude.present? && longitude.present?
   end
 
+  def str_point
+    "#{latitude},#{longitude}"
+  end
+
   def elasticsearch_point
     { lat: latitude, lon: longitude } if has_point?
   end
 
   def google_map_url
-    "http://maps.google.com/maps?q=#{latitude},+#{longitude}" if has_point?
+    "http://maps.google.com/maps?q=#{str_point}" if has_point?
   end
 
   def type

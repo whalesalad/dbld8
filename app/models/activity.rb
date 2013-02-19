@@ -18,7 +18,7 @@ class Activity < ActiveRecord::Base
   include Concerns::ParticipantConcerns
   include Concerns::EventConcerns
 
-  attr_accessor :age_bounds, :relationship
+  attr_accessor :age_bounds, :relationship, :interests
 
   attr_accessible :title, :details, :wing_id, 
     :location_id, :day_pref, :time_pref
@@ -73,22 +73,43 @@ class Activity < ActiveRecord::Base
   mapping do
     indexes :id, :index => :not_analyzed
     indexes :title, :analyzer => 'snowball', :boost => 100
+    indexes :point, :type => 'geo_point', :as => 'location.elasticsearch_point', :boost => 40
     indexes :details, :analyzer => 'snowball'
     indexes :location, :analyzer => 'snowball', :as => 'location.name'
     indexes :preferences, :as => 'day_time_preferences', :index_name => :preference
     indexes :created_at, :type => 'date'
-    indexes :point, :type => 'geo_point', :as => 'location.elasticsearch_point'
     indexes :min_age, :type => 'integer', :as => 'age_bounds.first'
     indexes :max_age, :type => 'integer', :as => 'age_bounds.last'
+    indexes :tags, :type => 'string', :analyzer => 'keyword', :as => 'interest_names'
   end
 
-  def self.search(params)
+  def self.search(params, user)
+    # require 'tire/queries/custom_filters_score'
+
+    Rails.logger.debug("Tire: #{params.inspect}")
+
     # If we specify anytime, ignore it to include everything
     params.delete :happening if !!(params[:happening] =~ /anytime/i)
 
     tire.search(:load => { :include => [:location, {:user => [:profile_photo, :location]}, {:wing => [:profile_photo, :location]}] }, :per_page => 30) do
       # Match title/details
       query { string(params[:query]) } if params[:query].present?
+
+      # query do
+      #   custom_filters_score do
+      #     query { terms :tags, user.interests.pluck('name') }
+      #     # filter do
+      #     #   filter :match_all
+      #     #   boost 1.1
+      #     # end
+      #     # filter do
+      #     #   filter :terms, :tags => user.interests.pluck('name')
+      #     #   boost 1.1
+      #     #   # script '_score * 2.0'
+      #     # end
+      #     score_mode 'total'
+      #   end
+      # end
       
       # Handles min/max age range
       filter :range, min_age: { gte: params[:min_age] } if params[:min_age].present?
@@ -98,23 +119,22 @@ class Activity < ActiveRecord::Base
       filter :terms, preferences: [params[:happening]] if params[:happening].present?
 
       # Handles filtering by proximity to a point
-      unless params[:point].nil? || params[:distance].nil?
-        filter :geo_distance, :distance => params[:distance], :point => params[:point]
-      end
+      distance = params[:distance] || '100km'
+      filter :geo_distance, :distance => distance, :point => params[:point]
+
+      # query do
+      #   terms :tags, user.interests.pluck('name'), minimum_match: 0
+      # end
 
       # Default sorting of newest for now.
-      sort = params[:sort] || 'newest'
-
-      case sort
-      when 'closest'
-        sort { by '_geo_distance' => { point: params[:point] }} unless params[:point].nil?  
+      case params[:sort]
+      # when 'closest'
+        # sort { by '_geo_distance' => { point: params[:point] }}
       when 'newest'
         sort { by :created_at, 'desc' }
       when 'oldest'
         sort { by :created_at, 'asc' }
       end
-
-      Rails.logger.debug("Tire: #{params.inspect}")
     end
   end
 
@@ -133,6 +153,14 @@ class Activity < ActiveRecord::Base
 
   def age_bounds
     @age_bounds ||= [user.age, wing.age].sort!
+  end
+
+  def interests
+    @interests ||= (user.interests + wing.interests).uniq
+  end
+
+  def interest_names
+    interests.collect { |i| i.name }
   end
 
   def allowed?(a_user, permission = :all)

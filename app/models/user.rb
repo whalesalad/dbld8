@@ -77,6 +77,7 @@ class User < ActiveRecord::Base
     :allow_blank => true
 
   validate :max_interests
+  validate :old_enough, :on => :create
 
   has_many :activities, 
     :include => [:location, :user => [:profile_photo, :location], :wing => [:profile_photo, :location]],
@@ -255,6 +256,12 @@ class User < ActiveRecord::Base
   def max_interests
     if interests(:reload).count > 10
       errors.add(:interests, 'A user can only have a maximum of 10 interests.')
+    end
+  end
+
+  def old_enough
+    if age < 17
+      errors.add(:age, 'You must be 17 or older to join DoubleDate.')
     end
   end
 

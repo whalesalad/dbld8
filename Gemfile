@@ -25,6 +25,7 @@ gem 'json'
 # Elasticsearch
 gem 'kaminari'
 gem 'tire'
+gem 'tire-contrib'
 
 # Facebook
 gem 'koala'

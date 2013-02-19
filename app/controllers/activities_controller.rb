@@ -8,10 +8,10 @@ class ActivitiesController < BaseActivitiesController
     params[:point] = if params[:latitude] && params[:longitude]
       "#{params[:latitude]},#{params[:longitude]}"
     else
-      "#{@authenticated_user.location.latitude},#{@authenticated_user.location.longitude}"
+      @authenticated_user.location.str_point
     end
 
-    @activities = Activity.search(params)
+    @activities = Activity.search(params, @authenticated_user)
     # @activities = Activity.includes(:location, :user, :wing, :engagements).search(params)
     # @activities = Activity.includes(:location, :user, :wing, :engagements)
     
