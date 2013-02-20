@@ -132,6 +132,9 @@ class FacebookUser < User
       else 
         "I like to wear silly hats."
       end
+
+      # Ensure max of 250 chars.
+      self.bio = self.bio[0..250]
     end
     
   end
