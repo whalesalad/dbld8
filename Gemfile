@@ -6,7 +6,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'countries'
 gem 'faker'
-gem 'thin'
+gem 'unicorn'
 gem 'typhoeus'
 
 # JSON
@@ -76,6 +76,7 @@ group :production do
 end
 
 group :development, :test do
+  gem 'thin'
   gem 'bullet'
   gem 'quiet_assets'
   gem 'rspec-rails'
