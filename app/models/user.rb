@@ -38,9 +38,8 @@ class User < ActiveRecord::Base
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
 
-  before_validation :on_init, :on => :create
-
-  after_create :set_invite_slug
+  before_validation :before_init, :on => :create
+  after_create :after_init, :on => :create
 
   # Password // Bcrypt
   has_secure_password
@@ -119,7 +118,7 @@ class User < ActiveRecord::Base
     :source => 'message',
     :conditions => {'message_proxies.unread' => true}
 
-  def on_init
+  def before_init
     self.interested_in ||= interested_in_from_gender
     
     self.features = {
@@ -238,8 +237,9 @@ class User < ActiveRecord::Base
     super + (accessible || [])
   end
 
-  def set_invite_slug
+  def after_init
     self.invite_slug = "#{created_at.to_i.to_s.reverse.chop}#{id}#{Random.rand(10)}"
+    self.create_token
     save!
   end
 
