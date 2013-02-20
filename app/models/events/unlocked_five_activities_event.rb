@@ -20,12 +20,13 @@ class UnlockedFiveActivitiesEvent < Event
     {
       slug: slug,
       cost: coin_value,
+      max_activities: 5,
       title: "Unlock 5 Dates",
       description: "Unlock the ability to post 5 DoubleDates at a time?"
     }
   end
 
   def detail_string
-    "#{user} unlocked the ability to post 5 dates at a time."
+    "#{user} unlocked the ability to post 5 dates at a time"
   end
 end
