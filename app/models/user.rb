@@ -41,6 +41,8 @@ class User < ActiveRecord::Base
   before_validation :before_init, :on => :create
   after_create :after_init, :on => :create
 
+  before_save :sanitize_bio 
+
   # Password // Bcrypt
   has_secure_password
 
@@ -125,7 +127,7 @@ class User < ActiveRecord::Base
       max_activities: 3
     }
   end
-  
+
   def to_s
     [first_name, last_name].join ' '
   end
@@ -205,6 +207,10 @@ class User < ActiveRecord::Base
 
   def can_spend?(amount)
     (total_coins - amount.abs) > 0
+  end
+
+  def sanitize_bio
+    self.bio = self.bio.gsub("\n", " ").gsub("\r", " ").squeeze(" ")[0..250]
   end
 
   def as_json(options={})
