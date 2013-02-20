@@ -47,11 +47,12 @@ heroku: &heroku
 linode: &linode
   adapter: postgresql
   encoding: unicode
+  host: blitzen
   database: doubledate 
   username: doubledate
   password: "never fly without your wings"
   allow_concurrency: true
-  port: 6432
+  port: 5432
   pool: 30
 
 production:
