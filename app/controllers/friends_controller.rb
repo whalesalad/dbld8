@@ -52,7 +52,7 @@ class FriendsController < ApplicationController
   def invite
     # this is so nasty.
     facebook_ids = if params.has_key?(:facebook_ids) && !params[:facebook_ids].nil?
-      params[:facebook_ids].map { |id| id if id.is_a? Fixnum }.compact 
+      params[:facebook_ids].map { |id| id if id.is_a?(Integer) }.compact 
     else
       []
     end
