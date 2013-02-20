@@ -44,14 +44,14 @@ class Event < ActiveRecord::Base
   after_initialize :set_initial_values
 
   def self.create_from_user_and_slug(user, slug, related=nil)
-    event = self.from_slug(slug)
+    event = self.from_slug(slug).new
     event.user = user
     event.related = related unless related.nil?
     event.save!
   end
 
   def self.from_slug(slug)
-    "#{slug}_event".classify.constantize.new
+    "#{slug}_event".classify.constantize
   end
 
   def self.clean_notifications
@@ -73,6 +73,10 @@ class Event < ActiveRecord::Base
     self.karma ||= (self.class.karma_value || 0)
   end
 
+  def self.slug
+    self.model_name.gsub('Event', '').underscore
+  end
+
   def to_s
     self.class.model_name.gsub('Event', '')
   end
@@ -82,7 +86,7 @@ class Event < ActiveRecord::Base
   end
 
   def slug
-    to_s.underscore
+    self.class.slug
   end
 
   def related?

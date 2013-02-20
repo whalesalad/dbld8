@@ -33,6 +33,12 @@ class ActivitiesController < BaseActivitiesController
   end
 
   def create
+    unlocker = MaxActivityUnlockerService.new(@authenticated_user)
+    
+    if unlocker.needs_unlock?
+      render json: { unlock_required: unlocker.next_unlock_event.json } and return
+    end
+
     @activity = Activity.new(params[:activity])
 
     # Set the user

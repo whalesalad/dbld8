@@ -11,9 +11,6 @@ json.unread_notifications_count @user.notifications.events.unread.count
 json.unread_messages_count @user.unread_messages.count
 json.pending_wings_count @user.pending_friends.count
 
-json.activities_count @user.activities_count
-json.max_activities_count @user.max_activities_count
-
 json.invite_path user_invitation_path(@user.invite_slug)
 
 if @user.location.present?

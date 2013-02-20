@@ -208,16 +208,6 @@ class User < ActiveRecord::Base
     (total_coins - amount.abs) > 0
   end
 
-  def max_activities_count
-    # will be 3 for everyone unless they 
-    # have unlocked 5 or 10
-    3
-  end
-
-  def activities_count
-    activities.count
-  end
-
   def as_json(options={})
     'BUILD'
   end

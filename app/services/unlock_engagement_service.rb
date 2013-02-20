@@ -7,7 +7,7 @@ class UnlockEngagementService
   end
 
   def unlock_cost
-    @unlock_cost ||= UnlockedEngagementEvent.new.coin_value
+    @unlock_cost ||= UnlockedEngagementEvent.coin_value
   end
 
   def activity

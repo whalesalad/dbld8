@@ -29,7 +29,9 @@ DoubleDate::Application.routes.draw do
 
   # ME!
   resource :me, :controller => "me" do
-    
+    get 'unlock(/:slug)' => 'me#check_unlock'
+    post 'unlock(/:slug)' => 'me#perform_unlock'
+
     # User Photos
     resource :photo, :controller => 'user_photo', :only => [:show, :create] do
       post 'pull_facebook', :on => :collection
