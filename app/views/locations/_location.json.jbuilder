@@ -1,7 +1,7 @@
 json.cache! location do |json|
   json.id location.id
 
-  json.(location, :type, :name)
+  json.(location, :type, :name, :latitude, :longitude)
 
   if location.venue?
     json.location_name location.location_name
