@@ -21,7 +21,11 @@ class SentWingInviteEvent < Event
   end
 
   def notification_string_for(user)
-    return "#{friendship.user} invited you to be #{friendship.user.gender_posessive} wing"
+    if friendship.approved?
+      "You accepted #{friendship.user}'s wing invitation! Woohoo!"
+    else
+      "#{friendship.user} invited you to be #{friendship.user.gender_posessive} wing"
+    end
   end
 
   def notify
