@@ -84,6 +84,7 @@ group :development, :test do
   gem 'json_spec'
   gem 'pry-rails'
   gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
+  gem 'capistrano'
 end
 
 group :test do

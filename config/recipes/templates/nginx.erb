@@ -1,0 +1,67 @@
+upstream unicorn {
+  server unix:/tmp/unicorn.<%= application %>.sock fail_timeout=0;
+}
+
+server {
+  listen 80 default deferred;
+
+  root <%= current_path %>/public;
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  try_files $uri/index.html $uri @unicorn;
+
+  location @unicorn {
+    proxy_set_header            X-Real-IP  $remote_addr;
+    proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header            Host $http_host;
+    proxy_redirect              off;
+    proxy_max_temp_file_size    0;
+    proxy_pass                  http://unicorn;
+  }
+    
+  error_page 500 502 503 504 /500.html;
+  client_max_body_size 1G;
+  keepalive_timeout 10;
+}
+
+server {
+  listen 443 default deferred;
+  root <%= current_path %>/public;
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  ssl on;
+  ssl_certificate       <%= current_path %>/cert/nginx_chain.crt;
+  ssl_certificate_key   <%= current_path %>/cert/nginx.key;
+
+  ssl_session_timeout 5m;
+
+  ssl_protocols SSLv3 TLSv1;
+  ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
+  ssl_prefer_server_ciphers on;
+
+  try_files $uri/index.html $uri @unicorn;
+
+  location @unicorn {
+    proxy_set_header            X-Real-IP  $remote_addr;
+    proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header            Host $http_host;
+    proxy_redirect              off;
+    proxy_max_temp_file_size    0;
+    proxy_set_header            X-Forwarded-Proto https;
+    proxy_pass                  http://unicorn;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  client_max_body_size 1G;
+  keepalive_timeout 10;
+}
