@@ -17,6 +17,26 @@ class RegistrationEvent < Event
   earns 500
 
   def detail_string
-    "#{user} joined DBLD8"
+    "#{user} joined DoubleDate"
+  end
+
+  def notification_string_for(user)
+    "Your Facebook friend #{self.user.first_name} just joined DoubleDate!"
+  end
+
+  def notify
+    friend_service = FacebookFriendService.new(user)
+
+    friend_service.already_users.each do |existing_user|
+      notifications.create(:user => existing_user, :push => true)
+    end
+  end
+
+  def photos
+    [user.photo]
+  end
+
+  def notification_url
+    "users/#{user.id}"
   end
 end

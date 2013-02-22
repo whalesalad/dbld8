@@ -79,10 +79,6 @@ class FacebookUser < User
     end
   end
 
-  def facebook_friends
-    facebook_graph.get_connections("me", "friends", { :fields => 'id,name,gender,location,picture' })
-  end
-
   def before_init
     # Set the password to some crap with their facebook_id
     # no one should ever know this.

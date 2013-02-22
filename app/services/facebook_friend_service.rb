@@ -8,7 +8,7 @@ class FacebookFriendService
 
   def facebook_friends
     # implement caching here to save this response
-    @facebook_friends ||= user.facebook_friends
+    @facebook_friends ||= user.facebook_graph.get_connections("me", "friends", { :fields => 'id,name,gender,location,picture' })
   end
 
   def facebook_friend_ids
