@@ -16,12 +16,6 @@ class EventObserver < ActiveRecord::Observer
         properties: event.properties
       )
     end
-
-    # If a commit occured and related is nil, destroy the events
-    if event.related.nil?
-      event.notifications.destroy_all
-    end
-
   end
 
 end
