@@ -15,8 +15,15 @@ namespace :deploy do
   desc "Install everything onto the server"
   task :install do
     run "#{sudo} apt-get -y update"
-    run "#{sudo} apt-get -y install python-software-properties curl git build-essential tklib zlib1g-dev libssl-dev libreadline-gplv2-dev libxml2 libxml2-dev libxslt1-dev"
+    run "#{sudo} apt-get -y install python-software-properties software-properties-common curl libcurl4-openssl-dev git build-essential tklib zlib1g-dev libssl-dev libreadline-gplv2-dev libxml2 libxml2-dev libxslt1-dev"
     run "#{sudo} mkdir -p #{deploy_to}"
     run "#{sudo} chown #{user}:admin #{deploy_to}"
+  end
+end
+
+namespace :status do
+  desc "Get free memory on all servers"
+  task :free do
+    run "free -m"
   end
 end

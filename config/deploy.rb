@@ -20,10 +20,12 @@ load "config/recipes/nginx"
 load "config/recipes/unicorn"
 load "config/recipes/postgresql"
 load "config/recipes/nodejs"
+load "config/recipes/redis"
 load "config/recipes/check"
 
 # server "rudolph.dbld8.com", :web, :app
-server "ec2-176-34-70-254.eu-west-1.compute.amazonaws.com", :web, :app
+# server "comet.dbld8.com", :web, :app
+server "donner.dbld8.com", :web, :app
 # server "blitzen.dbld8.com", :db, primary: true
 
 set :user, "doubledate"

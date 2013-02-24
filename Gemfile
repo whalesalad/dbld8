@@ -5,7 +5,6 @@ gem 'rails', '3.2.12'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'countries'
-gem 'faker'
 gem 'unicorn'
 gem 'typhoeus'
 
@@ -76,19 +75,19 @@ group :production do
 end
 
 group :development, :test do
-  gem 'thin'
-  gem 'bullet'
-  gem 'quiet_assets'
-  gem 'rspec-rails'
-  gem 'cucumber'
-  gem 'json_spec'
-  gem 'pry-rails'
-  gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
-  gem 'capistrano'
+  gem "thin"
+  gem "bullet"
+  gem "quiet_assets"
+  gem "rspec-rails"
+  gem "factory_girl_rails"
+  gem "json_spec"
+  gem "pry-rails"
+  gem "annotate", :git => "git://github.com/jeremyolliver/annotate_models.git", :branch => "rake_compatibility"
+  gem "capistrano"
 end
 
 group :test do
-  gem "factory_girl_rails"
   gem "capybara"
   gem "guard-rspec"
+  gem "faker"
 end
