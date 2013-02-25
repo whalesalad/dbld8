@@ -71,7 +71,7 @@ class MaxActivityUnlockerService
   end
 
   def next_unlock_index
-    return false if highest_level?
+    return nil if highest_level?
 
     # First unlock if we're at the lowest level
     return 0 if lowest_level?
@@ -81,12 +81,12 @@ class MaxActivityUnlockerService
   end
 
   def next_unlock_interval
-    false unless next_unlock_index
+    return false if next_unlock_index.nil?
     unlock_intervals[next_unlock_index]
   end
 
   def next_unlock_event
-    false unless next_unlock_index
+    return false if next_unlock_index.nil?
     unlock_events[next_unlock_index]
   end
 

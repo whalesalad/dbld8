@@ -21,6 +21,8 @@ end
 
 json.photo @user.photo
 
+json.features @user.features
+
 if @user.interests.any?
   json.interests @user.interests_matching_with(@authenticated_user) do |interest|
     json.(interest, :id, :name, :matched)

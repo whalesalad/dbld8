@@ -28,13 +28,13 @@ class MeController < ApplicationController
   # in this case, max_activities is the only allowed.
   def check_unlock
     if params[:slug] != 'max_activities'
-      json_error "At this time, a user can only unlock for 'max_activities'."
+      return json_error "At this time, a user can only unlock for 'max_activities'."
     end
 
     unlocker = MaxActivityUnlockerService.new(@authenticated_user)
 
     render json: { 
-      unlock_required: (unlocker.needs_unlock?) ? unlocker.next_unlock_event.json : false,
+      unlock: (unlocker.needs_unlock?) ? unlocker.next_unlock_event.json : false,
       activities_count: unlocker.activities_count,
       activities_allowed: unlocker.activities_allowed
     }
@@ -54,7 +54,11 @@ class MeController < ApplicationController
     unlock_event = unlocker.unlock!(params[:slug])
     
     if unlock_event
-      render json: { unlocked: true, unlock: unlock_event.class.json } and return
+      render json: { 
+        unlock: unlock_event.class.json,
+        activities_count: unlocker.activities_count,
+        activities_allowed: unlocker.activities_allowed
+      }
     else
       return json_error unlocker.errors.join(' ')
     end
