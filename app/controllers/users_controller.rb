@@ -29,6 +29,7 @@ class UsersController < ApplicationController
       return json_error "There was an API error from Facebook: #{exc}"
     else
       @user = User.find_by_facebook_id(me['id'])
+      
       if @user.nil?
         @user = FacebookUser.new
       end
