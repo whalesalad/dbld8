@@ -4,19 +4,14 @@ class InterestsController < ApplicationController
   
   respond_to :json
 
+  TOP_INTERESTS_COUNT = 20
+
   def index
-    @interests = if params[:query]
+    @interests = if params[:query].present?
       Interest.where('name ~* ?', params[:query])
     else
-      Interest.find(:all)
+      Interest.top(TOP_INTERESTS_COUNT)
     end
-
-    # Elasticsearch
-    # @interests = if params[:query]
-    #   Interest.search(params)
-    # else
-    #   Interest.limit(50)
-    # end
 
     respond_with @interests
   end

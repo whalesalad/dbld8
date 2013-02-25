@@ -84,8 +84,6 @@ class Activity < ActiveRecord::Base
   end
 
   def self.search(params, user)
-    # require 'tire/queries/custom_filters_score'
-
     Rails.logger.debug("Tire: #{params.inspect}")
 
     # If we specify anytime, ignore it to include everything
@@ -95,6 +93,7 @@ class Activity < ActiveRecord::Base
       # Match title/details
       query { string(params[:query]) } if params[:query].present?
 
+      # require 'tire/queries/custom_filters_score'
       # query do
       #   custom_filters_score do
       #     query { terms :tags, user.interests.pluck('name') }
@@ -120,7 +119,7 @@ class Activity < ActiveRecord::Base
 
       # Handles filtering by proximity to a point
       distance = params[:distance] || '200km'
-      filter :geo_distance, :distance => distance, :point => params[:point]
+      # filter :geo_distance, :distance => distance, :point => params[:point]
 
       # query do
       #   terms :tags, user.interests.pluck('name'), minimum_match: 0

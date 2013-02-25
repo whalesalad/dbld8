@@ -10,6 +10,9 @@
 #
 
 class Interest < ActiveRecord::Base
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+
   attr_accessible :facebook_id, :name
 
   attr_accessor :matched
@@ -19,10 +22,10 @@ class Interest < ActiveRecord::Base
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :facebook_id, :allow_nil => true
 
-  has_and_belongs_to_many :users
+  # validates length is at least 2 characters
+  # 
 
-  include Tire::Model::Search
-  include Tire::Model::Callbacks
+  has_and_belongs_to_many :users
 
   mapping do
     indexes :id, :index => :not_analyzed
@@ -35,6 +38,10 @@ class Interest < ActiveRecord::Base
         query { match :name, params[:query], type: 'phrase_prefix' } 
       end
     end
+  end
+
+  def self.top(x)
+    self.find(:all).sort_by { |interest| -interest.users.count }.first(x)
   end
 
   def to_s
