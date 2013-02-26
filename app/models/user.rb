@@ -149,8 +149,10 @@ class User < ActiveRecord::Base
   end
 
   def interest_names=(interest_names)
-    self.interests = interest_names.map do |name|
-      Interest.find_or_create_by_name(name.strip)
+    self.interests = if interest_names.nil?
+      []
+    else
+      interest_names.map { |n| Interest.find_or_create_by_name(n.strip) }
     end
   end
 
