@@ -1,3 +1,11 @@
+/ subtle header that will scroll with you as you go down the page
+/ always providing the download link
+
+/ at the bottom, the header disappears to reveal the large app logo and a big ass
+/ call-to-action. screenshot of the app or something, etc..
+
+/ lots of sparkles and glowy booya on a download button
+
 !!! 5
 %html
   %head
@@ -10,9 +18,37 @@
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
 
     %header
-      %h1 DoubleDate
+      .inner
+        %h1 DoubleDate
+        
+        %span.download
+          = link_to 'Download on the App Store', appstore_path
 
-      = link_to 'Download on the App Store', appstore_path
+    #content.home-features
+      
+      %section.feature.odd
+        .inner
+          .iphone
+          %section
+            %h2 Grab a Friend
+            %p Add some of your closest friends to be your wings. Only good times are ahead, you've got your wing with you.
+
+      %section.feature.even
+        .inner
+          
+          %section
+            %h2 Go Out
+            %p Create your own DoubleDate or explore ones that others have created nearby. Get things moving with group chat and then get into the real world. You better hurry though, a chat thread only lasts a few days.
+
+          .iphone
+
+      %section.feature.odd
+        .inner
+          .iphone
+          %section
+            %h2 Have Fun
+            %p Stop worrying and let the magic happen. We went back to basics and cut out the  stuff that dating sites think you need. No long profiles. No complex match percentages. DoubleDate isn't about romance, it's about having a good time.
+
   
 
 <!-- #{cluster_host} -->

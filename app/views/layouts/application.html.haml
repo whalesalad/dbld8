@@ -1,12 +1,14 @@
 !!! 5
 %html
   %head
-    %meta{ :content => "width=device-width", :name => "viewport" }
+    %meta{:charset => "utf-8"}
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    %meta{:content => "IE=7", "http-equiv" => "X-UA-Compatible"}
 
     %title= full_title(yield(:title))
     
     = stylesheet_link_tag    "application", :media => "all"
-    - # = csrf_meta_tags
+    = csrf_meta_tags
     = yield(:head)
   
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
