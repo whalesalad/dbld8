@@ -1,5 +1,9 @@
 @import 'include/fonts'
 
+*
+  margin: 0
+  padding: 0
+
 html
   width: 100%
   height: 100%
@@ -26,21 +30,21 @@ body.home
     width: 300px
     height: 260px
 
-  h1, h2
-    display: block
-    text-indent: -9999em
-    margin: 0 auto
+    h1, h2
+      display: block
+      text-indent: -9999em
+      margin: 0 auto
 
-  h1
-    width: 107px
-    height: 162px
-    background: image-url('logo-dd.png') 0 0 no-repeat
-    margin-bottom: 20px
+    h1
+      width: 107px
+      height: 162px
+      background: image-url('logo-dd.png') 0 0 no-repeat
+      margin-bottom: 20px
 
-  h2
-    width: 243px
-    height: 68px
-    background: image-url('logo-text.png') 0 0 no-repeat
+    h2
+      width: 243px
+      height: 68px
+      background: image-url('logo-text.png') 0 0 no-repeat
 
 
 a
@@ -48,30 +52,11 @@ a
   &:hover
     text-decoration: none
 
-.user-photo-wrapper
-  $size: 150
-  display: block
-  margin: 0 auto 20px auto
-  width: $size + px
-  height: $size + px
-  background:
-    position: 50% 50%
-    size: $size + px
-  border: 1px solid #111
-  border-radius: 10px
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .8)
+// 
 
-section#invite
-  margin: 0 auto
-  text-align: center
-  
-  h3, p
-    text-shadow: 0 2px 2px #000
-  
-  h3
-    font-size: 24px
-    line-height: 30px
-    margin-bottom: 20px
-  
-  p.description
-    margin: 0 0 20px 0
+body.home-new
+  background: #FFF
+
+  header
+    height: 80px
+    background: pink

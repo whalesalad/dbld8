@@ -1,0 +1,18 @@
+!!! 5
+%html
+  %head
+    %meta{ :content => "width=device-width", :name => "viewport" }
+
+    %title= full_title(yield(:title))
+    
+    = stylesheet_link_tag "application", :media => "all"
+  
+  %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
+
+    %header
+      %h1 DoubleDate
+
+      = link_to 'Download on the App Store', appstore_path
+  
+
+<!-- #{cluster_host} -->
