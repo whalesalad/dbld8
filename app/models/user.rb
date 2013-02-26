@@ -182,11 +182,6 @@ class User < ActiveRecord::Base
 
   def my_activities
     (activities + participating_activities + engaged_activities + engaged_participating_activities)
-    # mine = []
-    # activity_associations.each do |association|
-    #   self.send(association).each { |a| mine << a.update_relationship_as(self) }
-    # end
-    # mine
   end
 
   def my_activities_count

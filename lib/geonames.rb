@@ -7,7 +7,7 @@ module Geonames
   def self.default_params
     {
       :username => Rails.configuration.geonames_username,
-      :radius => 60,
+      :radius => 100,
       :maxRows => 200
     }
   end
@@ -26,7 +26,7 @@ module Geonames
     response = self.get "findNearbyPlaceNameJSON", :lat => latitude, :lng => longitude
 
     # eliminate unpopulated areas
-    response.reject! { |city| city['population'] < 10 }
+    response.reject! { |city| city['population'] < 1000 }
 
     results = response.map do |raw_location|
       self.location_from_geonames(raw_location)
