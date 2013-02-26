@@ -21,11 +21,12 @@ load "config/recipes/unicorn"
 load "config/recipes/postgresql"
 load "config/recipes/nodejs"
 load "config/recipes/redis"
+load "config/recipes/elasticsearch"
 load "config/recipes/check"
 
-# server "rudolph.dbld8.com", :web, :app
-# server "comet.dbld8.com", :web, :app
-server "donner.dbld8.com", :web, :app
+server "rudolph.dbld8.com", :web, :app, :search
+server "comet.dbld8.com", :web, :app, :search
+# server "donner.dbld8.com", :web, :app, :search
 # server "blitzen.dbld8.com", :db, primary: true
 
 set :user, "doubledate"

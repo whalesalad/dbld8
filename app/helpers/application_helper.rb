@@ -40,4 +40,9 @@ module ApplicationHelper
     (event.earns?) ? 'success' : 'important'
   end
 
+  def cluster_host
+    require 'socket'
+    Socket.gethostname
+  end
+
 end

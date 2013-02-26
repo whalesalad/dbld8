@@ -11,6 +11,13 @@ def set_default(name, *args, &block)
   set(name, *args, &block) unless exists?(name)
 end
 
+def run_rake(task, options={}, &block)
+  rake = fetch(:rake, 'rake')
+  rails_env = fetch(:rails_env, 'production')
+  command = "cd #{latest_release} && #{rake} #{task} RAILS_ENV=#{rails_env}"
+  run(command, options, &block)
+end
+
 namespace :deploy do
   desc "Install everything onto the server"
   task :install do
@@ -21,9 +28,17 @@ namespace :deploy do
   end
 end
 
-namespace :status do
-  desc "Get free memory on all servers"
-  task :free do
-    run "free -m"
+desc "Get free memory on all servers"
+task :free do
+  run "free -m"
+end
+
+desc "tail production log files" 
+task :tail, :roles => :app do
+  trap("INT") { puts 'Interupted'; exit 0; }
+  run "tail -f #{shared_path}/log/production.log" do |channel, stream, data|
+    puts  # for an extra line break before the host name
+    puts "#{channel[:host]}: #{data}" 
+    break if stream == :err
   end
 end
