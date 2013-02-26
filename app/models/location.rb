@@ -51,15 +51,15 @@ class Location < ActiveRecord::Base
     def find_venues_near(latitude, longitude, query=nil)
       params = { 
         :ll => "#{latitude},#{longitude}", 
-        :radius => '90000', 
-        :limit => 100 
+        :radius => '90000',
+        :limit => 100
       }
 
-      if query.nil?
-        params[:section] = 'topPicks'
-      else
-        params[:query] = query
-      end
+      
+        # params[:section] = 'topPicks'
+      # else
+      params[:query] = query if query.present?
+      # end
 
       # Toggle this sucker between explore / search
       venues = Foursquare::Venue.explore(params)
