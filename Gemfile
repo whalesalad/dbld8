@@ -72,7 +72,6 @@ group :assets do
 end
 
 group :production do
-  gem 'memcachier'
   gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end
 
