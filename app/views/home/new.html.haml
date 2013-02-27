@@ -22,11 +22,12 @@
         %h1 DoubleDate
         
         %span.download
-          = link_to 'Download on the App Store', appstore_path
+          = link_to appstore_path do
+            = image_tag 'appstore/download.svg', height: '50px'
 
     #content.home-features
       
-      %section.feature.odd
+      %section.feature.odd.first.horses
         .inner
           .iphone
           %section
@@ -35,14 +36,13 @@
 
       %section.feature.even
         .inner
-          
           %section
             %h2 Go Out
             %p Create your own DoubleDate or explore ones that others have created nearby. Get things moving with group chat and then get into the real world. You better hurry though, a chat thread only lasts a few days.
 
           .iphone
 
-      %section.feature.odd
+      %section.feature.odd.snorkel
         .inner
           .iphone
           %section

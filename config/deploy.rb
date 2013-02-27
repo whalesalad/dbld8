@@ -25,9 +25,9 @@ load "config/recipes/redis"
 load "config/recipes/elasticsearch"
 load "config/recipes/check"
 
-server "rudolph.dbld8.com", :web, :app
+server "rudolph.dbld8.com", :web, :app, :db, primary: true
 server "comet.dbld8.com", :web, :app
-server "blitzen.dbld8.com", :search, :db, primary: true
+server "blitzen.dbld8.com", :search, :db, no_release: true
 # server "donner.dbld8.com", :web, :app, :search
 
 set :user, "doubledate"

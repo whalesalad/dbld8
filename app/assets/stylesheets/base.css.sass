@@ -58,49 +58,57 @@ body.home-new
 
   header
     height: 80px
-    background: #CCC
+    background: image-url('home/header.png') 0 0 repeat-x
     line-height: 80px
-    text-shadow: 0 1px 0 #EEE
+    text-shadow: 0 1px 1px #000
+    position: fixed
+    width: 100%
+    z-index: 1000
 
     h1
-      color: #222
+      color: #FFF
       float: left
 
     span.download
       float: right
+      display: block
+      height: 60px
+      margin-top: 14px
       a
         color: #222
 
   #content
 
     section.feature
+      position: relative
 
       section
         padding: 40px 0
         @include span-columns(5)
+        text-shadow: 0 1px 2px rgba(0,0,0, 0.8)
 
         h2
-          margin-top: 110px
+          margin: 110px 0 20px 0
           font-size: 50px
           font-family: "HelveticaNeue-CondensedBold"
           text-transform: uppercase
-          line-height: golden-ratio(50px, 1)
-          color: $ddpink
+          color: #FFF
 
         p
-          font-size: 16px
-          line-height: golden-ratio(16px, 1)
-          color: #444
+          font-size: 22px
+          font-weight: bold
+          line-height: golden-ratio(22px, 1)
+          color: #FFF
 
       .iphone
         @include span-columns(5)
         @include pad
         background: $ddpink
-        height: 460px
+        height: 550px
         background: image-url('home/iphone-01.png') 50% 50px no-repeat
 
       &.even
-        background: #EEE
+        background: #FFF
 
         section
           text-align: right
@@ -111,3 +119,13 @@ body.home-new
 
         .iphone
           // background: $ddblue
+
+      &.first
+        padding-top: 80px
+
+      &.horses
+        background: image-url('bg/horses.jpg') bottom left no-repeat
+
+      &.snorkel
+        background: image-url('bg/snorkel.jpg') no-repeat center center fixed
+
