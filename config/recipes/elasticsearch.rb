@@ -34,7 +34,7 @@ namespace :elasticsearch do
 
   # desc "Reindex "
 
-  task :reindex, roles: :search do
+  task :reindex, roles: :app do
     run_rake "environment tire:import CLASS=Activity FORCE=true"
   end
 end
