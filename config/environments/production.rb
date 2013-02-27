@@ -2,7 +2,10 @@ DoubleDate::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Temporarily for foreman dbug
-  STDOUT.sync = true
+  # STDOUT.sync = true
+
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger.const_get('DEBUG')
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -34,7 +37,7 @@ DoubleDate::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
