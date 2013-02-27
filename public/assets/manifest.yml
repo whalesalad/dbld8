@@ -13,6 +13,10 @@ favicon.png: favicon-694538d1309d72ebbf5e918bac0605df.png
 favicon/index.png: favicon-694538d1309d72ebbf5e918bac0605df.png
 foursquare-mini.png: foursquare-mini-f013cc7768bfe530aa86ef6158de6e6a.png
 foursquare-mini/index.png: foursquare-mini-f013cc7768bfe530aa86ef6158de6e6a.png
+home/Untitled-2.png: home/Untitled-2-3f2185658d1c2499d8e3a2b9c201ebc1.png
+home/Untitled-2/index.png: home/Untitled-2-3f2185658d1c2499d8e3a2b9c201ebc1.png
+home/iphone-01.png: home/iphone-01-a5297ddce6d8346aa21ddef46a21dccf.png
+home/iphone-01/index.png: home/iphone-01-a5297ddce6d8346aa21ddef46a21dccf.png
 logo-dd.png: logo-dd-3d5d356669e6b8d21f520ff9a04256c0.png
 logo-dd/index.png: logo-dd-3d5d356669e6b8d21f520ff9a04256c0.png
 logo-text.png: logo-text-3ec4128e404c7ce1580365689876d587.png
@@ -25,8 +29,8 @@ application.js: application-d93593b3e91abbf6c82bb9b0b2e13731.js
 application/index.js: application-d93593b3e91abbf6c82bb9b0b2e13731.js
 admin/admin.css: admin/admin-03c3f1999315114cc3f4d29c9184bc64.css
 admin/admin/index.css: admin/admin-03c3f1999315114cc3f4d29c9184bc64.css
-application.css: application-cf4af55c65875c5607f4bed16da553d8.css
-application/index.css: application-cf4af55c65875c5607f4bed16da553d8.css
+application.css: application-d0f9984c09c9ed7352f78bd22b17070e.css
+application/index.css: application-d0f9984c09c9ed7352f78bd22b17070e.css
 jquery.min.map: jquery.min-6c267bfd2b3f36e6edccb2e584934c1c.map
 jquery/index.min.map: jquery.min-6c267bfd2b3f36e6edccb2e584934c1c.map
 glyphicons-halflings-white.png: glyphicons-halflings-white-6cccd17a7aed91dbc0157d343c68c0d9.png
