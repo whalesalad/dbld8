@@ -9,12 +9,12 @@ namespace :redis do
 
   %w[start stop restart].each do |command|
     desc "#{command} redis-server"
-    task command, roles: :web do
+    task command, roles: :search do
       run "#{sudo} service redis-server #{command}"
     end
   end
 
-  task :flush_cache, roles: :app do
+  task :flush_cache, roles: :search do
     run "redis-cli flushall"
   end
 end
