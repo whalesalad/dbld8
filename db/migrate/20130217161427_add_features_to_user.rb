@@ -6,7 +6,7 @@ class AddFeaturesToUser < ActiveRecord::Migration
     say_with_time "Setting default user features..." do
       User.reset_column_information
       User.all.each do |user|
-        user.features['max_activities'] = 'max_3_activities'
+        user.features['max_activities'] = '3'
         user.save!
       end
     end

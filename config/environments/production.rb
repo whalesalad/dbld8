@@ -5,7 +5,7 @@ DoubleDate::Application.configure do
   # STDOUT.sync = true
 
   config.logger = Logger.new(STDOUT)
-  config.logger.level = Logger.const_get('DEBUG')
+  config.logger.level = Logger.const_get('INFO')
 
   # Code is not reloaded between requests
   config.cache_classes = true
