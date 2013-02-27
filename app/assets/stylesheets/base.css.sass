@@ -240,9 +240,6 @@ body.users-invitation
       font-size: 20px
       display: block
       text-align: center
-      -webkit-animation-name: bluePulse
-      -webkit-animation-duration: 2s
-      -webkit-animation-iteration-count: infinite
 
   +desktop
     #lower-glass
@@ -257,11 +254,3 @@ body.users-invitation
   .lower-glass-shadow
     @include background-image(linear-gradient(transparent 0, rgba(0,0,0, 0.5) 100%))
     height: 150px
-
-@-webkit-keyframes bluePulse
-  from
-    box-shadow: 0 1px 0 rgba(255,255,255, 0.1)
-  50%
-    box-shadow: 0 0 10px $ddblue
-  to
-    box-shadow: 0 1px 0 rgba(255,255,255, 0.1)

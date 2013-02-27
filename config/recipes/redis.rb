@@ -14,7 +14,7 @@ namespace :redis do
     end
   end
 
-  task :flush_cache, roles: :search do
+  task :flush, roles: :search do
     run "redis-cli flushall"
   end
 end

@@ -24,7 +24,7 @@
 #lower-glass
   .glass-sheet#sheet-step1
     - if @user
-      = link_to "Join #{@user.first_name} on DoubleDate", dd_url, :class => 'action-btn'
+      = link_to "Accept Wing Invite", dd_url, :class => 'action-btn'
     - else
       = link_to "Get DoubleDate on the App Store", appstore_path, :class => 'action-btn'
 

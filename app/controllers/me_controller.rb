@@ -55,7 +55,7 @@ class MeController < ApplicationController
     
     if unlock_event
       render json: { 
-        unlock: unlock_event.class.json,
+        unlocked: true,
         activities_count: unlocker.activities_count,
         activities_allowed: unlocker.activities_allowed
       }
