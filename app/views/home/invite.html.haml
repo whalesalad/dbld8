@@ -5,27 +5,26 @@
 - content_for :head do
   %meta{ :name => 'apple-itunes-app', :content => "app-id=#{Rails.configuration.app_id}, app-argument=#{dd_url}" }
 
-%section#invite
-  %h3
+%header
+  %h1 
+    = link_to "DoubleDate", root_url
+
+#content  
+  .invite-landing
     - if @user
-      #{@user.first_name} wants you to be <br/>#{@user.gender_posessive} wing on DoubleDate!
-    - else
-      Why would you want one when you can have two?
+      .user-photo-wrapper
+        .inset
+        = image_tag @user.photo.medium.url, :class => 'user-photo'
+      %h3 #{@user.first_name} wants you to be #{@user.gender_posessive} wing on DoubleDate!
 
-  - if @user && @user.photo.present?
-    .user-photo-wrapper{ :style => "background-image: url(#{@user.photo.thumb.url})" }
 
-  %p.description
-    It's not all about love, it's about having a good time.
-    %br/
+#lower-glass
+  .glass-sheet#sheet-step1
     - if @user
-      Let's go have some fun on a DoubleDate.
+      = link_to "Join #{@user.first_name} on DoubleDate", dd_url, :class => 'action-btn'
     - else
-      Grab a friend and go have some fun on a DoubleDate.
+      = link_to "Get DoubleDate on the App Store", appstore_path, :class => 'action-btn'
 
-  - if @user
-    %p= link_to "Add #{@user.first_name} as a Wing", dd_url, :class => 'btn btn-primary btn-large'
-    %p.or OR
-
-  %p
-    = link_to "Get DoubleDate on the App Store", appstore_path, :class => 'btn'
+  / .lower-glass-sheet#sheet-step2
+  /   %p Looks like you need to get the app first
+  /   = link_to "Get DoubleDate on the App Store", appstore_path, :class => 'btn'
