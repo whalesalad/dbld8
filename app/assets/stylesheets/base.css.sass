@@ -7,6 +7,10 @@
   @media only screen and (max-width: 480px)
     @content
 
+=desktop
+  @media only screen and (min-width: 800px)
+    @content
+
 * 
   margin: 0
   padding: 0
@@ -135,81 +139,129 @@ body.home-new
       &.snorkel
         background: image-url('bg/snorkel.jpg') no-repeat center center fixed
 
-+iphone
-  body
-    background: image-url('mobile/bg-noise@2x.png')
-    @include background-size(50% 100%)
+// +iphone
+body.users-invitation
+  background: image-url('mobile/bg-noise@2x.png')
   
-  #wrapper
-    header
-      position: fixed
-      z-index: 1000
-      top: 0
-      width: 100%
-      padding: 6px 0 4px 0
-      height: 46px
-      background: image-url('mobile/bg-navbar@2x.png')
-      @include background-size(50% 100%)
+#wrapper
+  padding-bottom: 100px
+  header
+    position: fixed
+    z-index: 1000
+    top: 0
+    width: 100%
+    padding: 6px 0 4px 0
+    height: 46px
+    background: image-url('mobile/bg-navbar@2x.png')
+    @include background-size(50% 100%)
 
-      h1
-        a
+    h1
+      a
+        display: block
+        margin: 0 auto
+        width: 22px
+        height: 33px
+        text-indent: -999em
+        background: image-url('mobile/logo-navbar@2x.png') no-repeat
+        @include background-size(100%, 200%)
+
+  #content
+    padding: 50px 10px 10px 10px
+    color: #FFF
+
+    .invite-landing
+      text-align: center
+      
+      .user-photo-wrapper
+        position: relative
+        width: 90%
+        max-width: 640px
+        margin: 20px auto
+        border: 1px solid #000
+        @include box-shadow(0 2px 7px rgba(0,0,0, 0.8))
+
+        .inset
+          @include box-shadow(inset 0 0 0 1px rgba(255,255,255, 0.1))
+          position: absolute
+          height: 100%
+          width: 100%
+
+        img.user-photo
+          width: 100%
           display: block
-          margin: 0 auto
-          width: 22px
-          height: 33px
-          text-indent: -999em
-          background: image-url('mobile/logo-navbar@2x.png') no-repeat
-          @include background-size(100%, 200%)
 
-    #content
-      padding: 50px 10px 10px 10px
-      color: #FFF
+      h3, p
+        padding: 0 10%
+        text-shadow: 0 1px 1px #000
 
-      .invite-landing
-        text-align: center
-        
-        .user-photo-wrapper
-          position: relative
-          width: 90%
-          margin: 20px auto
-          border: 1px solid #000
-          @include box-shadow(0 2px 7px rgba(0,0,0, 0.8))
+      h3
+        display: block
+        margin: 0 0 20px 0
 
-          .inset
-            @include box-shadow(inset 0 0 0 1px rgba(255,255,255, 0.1))
-            position: absolute
-            height: 100%
-            width: 100%
+      p
+        font-size: 16px
+        line-height: 24px
 
-          img.user-photo
-            width: 100%
-            display: block
+      +desktop
+        h3, p
+          padding: 0 25%
 
         h3
-          padding: 0 10%
-          display: block
-          margin: 0 0 20px 0
+          font-size: 40px
 
+        p
+          font-size: 22px
+          line-height: 30px
+
+
+  #lower-glass, .lower-glass-shadow
+    bottom: 0
+    width: 100%
+    position: fixed
+
+
+  #lower-glass
+    padding: 20px
+    min-height: 80px
+    border-top: 1px solid rgba(255,255,255,0.3)
+    @include background-image(linear-gradient(rgba(255,255,255,0.2) 0, transparent 100%))
+
+    a.action-btn
+      line-height: 40px
+      box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.2)
+      box-shadow: 0 1px 0 rgba(255,255,255, 0.1)
+      @include background-image(linear-gradient(#0099c9 0, #008cc2 50%, #0082bb 51%, #0f7eb6 100%))
+      border: 3px solid #000
+      font-weight: bold
+      text-decoration: none
+      color: #FFF
+      text-shadow: 0 -1px 0 rgba(0,0,0,0.5)
+      border-radius: 10px
+      font-size: 20px
+      display: block
+      text-align: center
+      -webkit-animation-name: bluePulse
+      -webkit-animation-duration: 2s
+      -webkit-animation-iteration-count: infinite
+
+  +desktop
     #lower-glass
-      bottom: 0
-      width: 100%
-      position: fixed
-      min-height: 80px
-      background: image-url('mobile/bg-glass@2x.png') top left repeat-x
-      padding: 20px
-      @include background-size(50% 100%)
-
+      padding: 30px
+    
       a.action-btn
-        padding: 10px
-        @include box-shadow(inset 0 0 0 1px rgba(255,255,255, 0.2))
-        @include box-shadow(0 1px 0 rgba(255,255,255, 0.1))
-        @include linear-gradient(lighten($ddblue, 20), $ddblue)
-        border: 3px solid #000
-        font-weight: bold
-        text-decoration: none
-        color: #FFF
-        text-shadow: 0 -1px 0 rgba(0,0,0,0.5)
-        border-radius: 10px
-        font-size: 20px
-        display: block
-        text-align: center
+        width: 60%      
+        font-size: 30px
+        line-height: 60px
+        margin: 0 auto
+
+  .lower-glass-shadow
+    @include background-image(linear-gradient(transparent 0, rgba(0,0,0, 0.5) 100%))
+    height: 150px
+
+@-webkit-keyframes bluePulse
+  from
+    box-shadow: 0 1px 0 rgba(255,255,255, 0.1)
+  50%
+    box-shadow: 0 0 10px $ddblue
+  to
+    box-shadow: 0 1px 0 rgba(255,255,255, 0.1)

@@ -3,6 +3,11 @@ upstream unicorn {
 }
 
 server {
+  server_name  www.dbld8.com doubledateapp.com www.doubledateapp.com;
+  rewrite ^(.*) https://dbld8.com$1 permanent;
+}
+
+server {
   listen 80 default deferred;
 
   root <%= current_path %>/public;
