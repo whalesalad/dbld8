@@ -1,18 +1,3 @@
-# Sidekiq.configure_server do |config|
-#   config.
-# end
-
-module Sidekiq
-  def self.pusher
-    @pusher ||= self.establish_pusher
-  end
-
-  def self.establish_pusher
-    puts "Creating new Grocer APN connection..."
-    
-    Grocer.pusher(
-      certificate: Rails.root.join("cert/apn_#{Rails.env}.pem"),
-      gateway: "gateway.sandbox.push.apple.com"
-    )
-  end
+Sidekiq.configure_server do |config|
+  config.redis = { :url => 'redis://blitzen:6379/12', :namespace => 'sidekiq' }
 end

@@ -24,5 +24,9 @@ after_fork do |server, worker|
       secret: Rails.configuration.segment_io_secret,
       on_error: Rails.configuration.segment_io_error
     )
+
+  Sidekiq.configure_client do |config|
+    config.redis = { :url => 'redis://blitzen:6379/12', :namespace => 'sidekiq' }
+  end
 end
 

@@ -7,6 +7,9 @@ DoubleDate::Application.configure do
   config.logger = Logger.new(STDOUT)
   config.logger.level = Logger.const_get('INFO')
 
+  # configure tire for remote connection
+  Tire.configure { url "http://blitzen:9200" }
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -47,7 +50,7 @@ DoubleDate::Application.configure do
 
   # Use a different cache store in production
   # config.cache_store = :dalli_store
-  config.cache_store = :redis_store
+  config.cache_store = :redis_store, "redis://blitzen:6379/0/cache"
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   

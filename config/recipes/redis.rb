@@ -1,6 +1,6 @@
 namespace :redis do
   desc "Install latest stable release of redis"
-  task :install, roles: :app do
+  task :install, roles: :search do
     run "#{sudo} apt-add-repository -y ppa:chris-lea/redis-server"
     run "#{sudo} apt-get -y update"
     run "#{sudo} apt-get -y install redis-server"
@@ -17,5 +17,4 @@ namespace :redis do
   task :flush_cache, roles: :app do
     run "redis-cli flushall"
   end
-  after "deploy", "redis:flush_cache"
 end
