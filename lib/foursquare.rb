@@ -35,8 +35,7 @@ module Foursquare
   end
 
   def self.debug(label, data)
-    puts "=== [FOURSQUARE] #{label.upcase} ==="
-    puts data
-    puts "\n"    
+    Rails.logger.debug "=== [FOURSQUARE] #{label.upcase} ==="
+    Rails.logger.debug data
   end
 end
