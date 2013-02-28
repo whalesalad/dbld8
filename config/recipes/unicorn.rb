@@ -22,8 +22,9 @@ namespace :unicorn do
     task command, roles: :app do
       run "service #{unicorn_init} #{command}"
     end
-    after "deploy:#{command}", "unicorn:#{command}"
+    # after "deploy:#{command}", "unicorn:#{command}"
   end
-  
+
+  after "deploy:restart", "unicorn:upgrade"
 
 end
