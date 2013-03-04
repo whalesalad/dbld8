@@ -1,0 +1,18 @@
+- content_for :title, @title
+
+.page-header
+  %h1
+    = yield(:title)
+    %small #{pluralize(@packages.count, 'Package')} Total
+
+%p These are the coin packages map 1-to-1 with the in-app purchases defined in iTunes Connect.
+
+- if @packages.present?
+  = render 'packages_list'
+- else
+  %p 
+    %i
+      Currently, no coin packages are defined.
+
+.form-actions
+  = link_to "New Package", new_admin_coin_package_path, :class => 'btn btn-primary'

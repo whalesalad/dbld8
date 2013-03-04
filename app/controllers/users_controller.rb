@@ -42,10 +42,14 @@ class UsersController < ApplicationController
   end
 
   def invitation
-    @user = if params[:invite_slug]
-      User.find_by_invite_slug(params[:invite_slug])
-    else
-      false
+    @user = false
+    
+    if params[:invite_slug]
+      @user = User.find_by_invite_slug(params[:invite_slug])
+    end
+
+    if @user.nil?
+      @user = User.find_by_id(params[:invite_slug])
     end
 
     render 'home/invite'

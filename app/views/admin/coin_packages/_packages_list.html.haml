@@ -1,0 +1,17 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th Identifier
+      %th Reference Name
+      %th Value
+  
+  %tbody
+    - for package in @packages
+      %tr
+        %td 
+          = link_to package.identifier, edit_admin_coin_package_path(package)
+          - if package.popular?
+            %span.label.label-info
+              Popular
+        %td #{package.name}
+        %td +#{package.coins}

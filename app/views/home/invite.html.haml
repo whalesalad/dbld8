@@ -24,9 +24,9 @@
 #lower-glass
   .glass-sheet#sheet-step1
     - if @user
-      = link_to "Accept Wing Invite", dd_url, :class => 'action-btn'
+      = link_to "Accept Wing Invite", dd_url, :class => 'action-btn', :id => 'accept-invite-btn'
     - else
-      = link_to "Get DoubleDate on the App Store", appstore_path, :class => 'action-btn'
+      = link_to "Get DoubleDate", appstore_path, :class => 'action-btn', :id => 'download-app'
 
   / .lower-glass-sheet#sheet-step2
   /   %p Looks like you need to get the app first

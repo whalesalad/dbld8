@@ -1,0 +1,8 @@
+- provide :title, "Edit Coin Package"
+
+%section.user-detail
+  %h1= yield(:title)
+
+  .row-fluid
+    .span6
+      = render partial: 'form'

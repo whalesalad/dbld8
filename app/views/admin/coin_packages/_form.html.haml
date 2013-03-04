@@ -1,0 +1,26 @@
+= form_for([:admin, @package]) do |f|
+
+  %fieldset
+    - if @package.errors.any?
+      .alert.alert-error.alert-block
+        %h4 Please fix the following #{pluralize(@package.errors.count, "error")}:
+        - @package.errors.full_messages.each do |msg|
+          %ul
+            %li= msg
+
+    .field.title
+      = f.label :identifier, 'Apple Identifier'
+      = f.text_field :identifier
+
+    .field
+      = f.label :coins, 'Coin Value'
+      = f.text_field :coins
+
+    .field.checkfield
+      %label
+        = f.check_box :popular
+        Popular
+
+    .form-actions
+      = f.submit "Save Coin Package", :class => 'btn btn-primary'
+      = link_to 'Cancel', :back, :class => 'btn'

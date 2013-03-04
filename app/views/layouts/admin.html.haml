@@ -31,34 +31,34 @@
               %ul.nav.nav-list
                 / <li class="nav-header">List header</li>
                 %li.nav-header
-                  Internal Data
+                  Internal
 
                 %li{ :class => current_section?(:controller => "users") ? 'active' : '' }
-                  = link_to "#{glyphicon(:user)}Users".html_safe, admin_users_path
+                  = awesome_nav('user', "Users", admin_users_path) 
 
                 %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
-                  = link_to "#{glyphicon(:calendar)}Activities".html_safe, admin_activities_path
+                  = awesome_nav('coffee', "Activities", admin_activities_path)                 
 
                 %li{ :class => current_section?(:controller => 'events') ? 'active' : '' }
-                  = link_to "#{glyphicon('fire')}Events".html_safe, admin_events_path
+                  = awesome_nav('star', "Events", admin_events_path)
 
                 %li{ :class => current_section?(:controller => "friendships") ? 'active' : '' }
-                  = link_to "#{glyphicon(:heart)}Friendships".html_safe, admin_friendships_path
-
-                %li{ :class => current_section?(:controller => "facebook_invites") ? 'active' : '' }
-                  = link_to "#{glyphicon(:envelope)}Facebook Invites".html_safe, admin_facebook_invites_path
+                  = awesome_nav('group', "Friendships", admin_friendships_path)
 
                 %li{ :class => current_section?(:controller => 'interests') ? 'active' : '' }
-                  = link_to "#{glyphicon(:star)}Interests".html_safe, admin_interests_path
+                  = awesome_nav('tag', "Interests", admin_interests_path)
 
                 %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
-                  = link_to "#{glyphicon('map-marker')}Locations".html_safe, admin_locations_path
+                  = awesome_nav('map-marker', "Locations", admin_locations_path)
+
+                %li{ :class => current_section?(:controller => 'coin_packages') ? 'active' : '' }
+                  = awesome_nav('money', "Coin Packages", admin_coin_packages_path)
 
                 %li.nav-header
                   Services
 
                 %li
-                  = link_to "#{glyphicon('wrench')}Sidekiq".html_safe, admin_sidekiq_path
+                  = awesome_nav('cog', "Sidekiq", admin_sidekiq_path)
 
         .span10
           - if flash.present?

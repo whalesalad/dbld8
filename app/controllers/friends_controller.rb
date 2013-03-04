@@ -83,6 +83,35 @@ class FriendsController < ApplicationController
     }
   end
 
+  def connect
+    # will accept an invite
+    if params[:invite_slug].blank?
+      return json_error "An invite_slug must be specified."
+    end
+
+    invite_slug = params[:invite_slug].to_s
+    friend = User.find_by_invite_slug(invite_slug)
+
+    if friend.nil?
+      return json_error "A user could not be found for that invite_slug."
+    end
+
+    # automatically create a friendship between these two users
+    friendship = @authenticated_user.find_any_friendship_with(friend)
+
+    if friendship.nil?
+      friendship = Friendship.new(:user_id => friend.id, :friend_id => @authenticated_user.id)
+    end
+
+    friendship.approved = true
+
+    if friendship.save
+      # render_to_string(template: 'users/_user', locals: { user: friend }) and return
+    else
+      respond_with friendship, :status => 422
+    end
+  end
+
   private
 
   def get_friend_and_friendship

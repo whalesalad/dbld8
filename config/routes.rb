@@ -51,6 +51,8 @@ DoubleDate::Application.routes.draw do
 
       # /me/friends/invite { facebook_ids: 109234, 23492349, 29349234 }
       post 'invite', :on => :collection
+
+      post 'connect', :on => :collection
     end
   end
 
@@ -64,7 +66,8 @@ DoubleDate::Application.routes.draw do
     get 'venues', :on => :collection
   end
 
-  resources :packages, :controller => 'coin_packages', :only => [:index]
+  # resources :packages, :controller => 'coin_packages', :only => [:index]
+  resources :coin_packages, :path => 'packages', :only => [:index]
 
   get 'cron/(:task)' => 'cron#run_task'
 
@@ -104,6 +107,8 @@ DoubleDate::Application.routes.draw do
     resources :events, :only => [:index] do
       get 'page/:page', :action => :index, :on => :collection
     end
+
+    resources :coin_packages, :path => 'packages'
 
     require 'sidekiq/web'
     mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'

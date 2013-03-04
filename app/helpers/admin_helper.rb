@@ -23,6 +23,14 @@ module AdminHelper
     end
   end
 
+  def awesome(icon_name)
+    "<i class=\"icon-#{icon_name}\"></i>"
+  end
+
+  def awesome_nav(icon_name, label, url)
+    link_to "#{awesome(icon_name)}#{label}".html_safe, url
+  end
+
   def glyphicon(name, white = nil)
     c = "icon-#{name}"
     c += " icon-white" unless white.nil?
