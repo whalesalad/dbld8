@@ -1,1 +1,1 @@
-json.(coin_package, :identifier, :coins, :popular)
+json.(coin_package, :identifier, :name, :coins, :popular)
