@@ -13,7 +13,7 @@ namespace :dbld8 do
     ]
 
     packages.each do |package|
-      package[:identifier] = "#{package[:coins]}_coins"
+      package[:identifier] = "com.belluba.doubledate.#{package[:coins]}coins"
       CoinPackage.create(package)
     end
   end
