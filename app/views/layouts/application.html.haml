@@ -14,6 +14,10 @@
   
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }
   
+    - if params[:controller] == 'static'
+      %h1.logo
+        = link_to 'DoubleDate', root_path
+
     #wrapper
       = yield
     

@@ -6,6 +6,7 @@ class HomeController < ApplicationController
   end
 
   def new
-    
+    # this is the new homepage
   end
+
 end 

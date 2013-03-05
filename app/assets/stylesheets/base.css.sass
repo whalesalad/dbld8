@@ -273,3 +273,61 @@ body.users-invitation
 .lower-glass-shadow
   @include background-image(linear-gradient(transparent 0, rgba(0,0,0, 0.5) 100%))
   height: 150px
+
+// Static Pages
+
+body.static
+  background: #ff1178
+
+  h1.logo
+    text-align: center
+    a
+      width: 44px
+      height: 66px
+      display: inline-block
+      background: image-url("static/logo.png") 0 0 no-repeat
+      margin: 30px auto
+      text-indent: -9999em
+
+  #wrapper
+    border-radius: 5px
+    padding: 30px
+    background: #FFF
+    width: 700px
+    margin: 0 auto 50px auto
+    box-shadow: 0 2px 0 #b20c54
+
+    a
+      color: $ddblue
+      text-decoration: none
+      background: lighten($ddblue, 50)
+      margin: 0 -3px
+      padding: 0 3px
+      &:hover
+        background: $ddblue
+        color: #FFF
+
+    h1
+      color: #ff1178
+      font-size: 48px
+      margin-bottom: 25px
+      padding-bottom: 15px
+      border-bottom: 1px dotted #EEE
+
+    h3
+      font-size: 20px
+      text-transform: uppercase
+      margin: 0 0 1em 0
+      font-family: "HelveticaNeue-CondensedBold"
+      color: $ddblue
+
+    p, ol li, ul li
+      color: #444
+      font-size: 16px
+      line-height: 26px
+
+    p
+      margin-bottom: 2em
+
+    ol li, ul li
+      margin: 1em 3em

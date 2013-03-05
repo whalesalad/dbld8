@@ -3,6 +3,9 @@ DoubleDate::Application.routes.draw do
   # post 'users/create' => 'users#create_facebook_user', :as => 'create_user'
 
   get 'new' => 'home#new'
+  get 'about' => 'static#about'
+  get 'terms' => 'static#terms'
+  get 'privacy' => 'static#privacy'
 
   get 'invite(/:invite_slug)' => 'users#invitation', :as => 'user_invitation'
 
