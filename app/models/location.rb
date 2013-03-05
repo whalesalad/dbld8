@@ -29,7 +29,7 @@ class Location < ActiveRecord::Base
 
   attr_accessible :name, :latitude, :longitude, :facebook_id,
     :locality, :state, :country, :foursquare_id, :foursquare_icon,
-    :venue, :address, :geoname_id
+    :venue, :address, :geoname_id, :population
 
   has_many :users, :dependent => :nullify
   has_many :activities

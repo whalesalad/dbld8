@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130217161427) do
+ActiveRecord::Schema.define(:version => 20130305121517) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(:version => 20130217161427) do
     t.integer  "geoname_id"
     t.integer  "activities_count",              :default => 0
     t.string   "foursquare_icon"
+    t.integer  "population",       :limit => 8
   end
 
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true

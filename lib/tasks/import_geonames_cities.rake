@@ -43,7 +43,8 @@ namespace :dbld8 do
             :state => city[10],
             :locality => city[1],
             :latitude => city[4],
-            :longitude => city[5]
+            :longitude => city[5],
+            :population => city[14]
           }
 
           @locations << Location.find_or_create_by_geoname_id(params)
