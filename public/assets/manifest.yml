@@ -45,10 +45,12 @@ admin.js: admin-d93593b3e91abbf6c82bb9b0b2e13731.js
 admin/index.js: admin-d93593b3e91abbf6c82bb9b0b2e13731.js
 application.js: application-155203b7144128c2047da6377a6f613e.js
 application/index.js: application-155203b7144128c2047da6377a6f613e.js
-admin/admin.css: admin/admin-3c5ba3820a933c3b31ab6f56123ade66.css
-admin/admin/index.css: admin/admin-3c5ba3820a933c3b31ab6f56123ade66.css
-application.css: application-e53ee7b6a14b8a746d45ee0961d4f661.css
-application/index.css: application-e53ee7b6a14b8a746d45ee0961d4f661.css
+base.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
+base/index.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
+admin/admin.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
+admin/admin/index.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
+application.css: application-e5d37c5b22b497c732fc60259da08037.css
+application/index.css: application-e5d37c5b22b497c732fc60259da08037.css
 appstore/download.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 appstore/download/index.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 FontAwesome.otf: FontAwesome-468f83b63df32064983141584a19ff17.otf

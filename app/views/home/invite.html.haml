@@ -16,8 +16,15 @@
         .inset
         = image_tag @user.photo.medium.url, :class => 'user-photo'
       %h3 #{@user.first_name} wants you to be #{@user.gender_posessive} wing on DoubleDate!
+    - else
+      .missing
+        %h3 Missing Invite :(
+        %p DoubleDate couldn't find the user that sent you this invite.
 
-      %p DoubleDate is an exciting new way to get out and meet new people. It's free, so grab a friend, go out, and have fun.
+    %hr/
+    
+    %p DoubleDate is an exciting new way to get out and meet new people. It's free, so grab a friend, go out, and have fun.
+
 
 
 .lower-glass-shadow

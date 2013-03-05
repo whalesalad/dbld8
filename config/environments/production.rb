@@ -62,7 +62,7 @@ DoubleDate::Application.configure do
   config.action_controller.asset_host = "//db00q50qzosdc.cloudfront.net"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w(admin.js admin/admin.css)
+  config.assets.precompile += %w(admin.js admin/admin.css base.js)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
