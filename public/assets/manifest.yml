@@ -43,6 +43,8 @@ mobile/logo-navbar@2x.png: mobile/logo-navbar@2x-3808dd5e7cffc2793f79d1aedfa1529
 mobile/logo-navbar@2x/index.png: mobile/logo-navbar@2x-3808dd5e7cffc2793f79d1aedfa15298.png
 powered-by-foursquare.png: powered-by-foursquare-7844218b3a9434752a0600b00cecc61e.png
 powered-by-foursquare/index.png: powered-by-foursquare-7844218b3a9434752a0600b00cecc61e.png
+static/logo.png: static/logo-7f7f40fdf3f0e09b78adeede21277069.png
+static/logo/index.png: static/logo-7f7f40fdf3f0e09b78adeede21277069.png
 admin.js: admin-d93593b3e91abbf6c82bb9b0b2e13731.js
 admin/index.js: admin-d93593b3e91abbf6c82bb9b0b2e13731.js
 application.js: application-155203b7144128c2047da6377a6f613e.js
@@ -51,8 +53,8 @@ base.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
 base/index.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
 admin/admin.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
 admin/admin/index.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
-application.css: application-bf442fd6aba80af45f134b325fc9f9e4.css
-application/index.css: application-bf442fd6aba80af45f134b325fc9f9e4.css
+application.css: application-00fd64bf0d109d8434ffeae627d22dc6.css
+application/index.css: application-00fd64bf0d109d8434ffeae627d22dc6.css
 appstore/download.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 appstore/download/index.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 FontAwesome.otf: FontAwesome-468f83b63df32064983141584a19ff17.otf
