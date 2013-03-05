@@ -16,7 +16,9 @@ class UsersController < ApplicationController
     else
       @user = User.find_by_facebook_id(me['id'])
 
-      if @user.nil?
+      @new_user = @user.nil?
+      
+      if @new_user
         @user = FacebookUser.new
       end
 
@@ -24,7 +26,7 @@ class UsersController < ApplicationController
       @user.facebook_access_token = params[:facebook_access_token]
       
       if @user.save!
-        render json: @user.token and return
+        render json: @user.token.as_json.merge(new_user: @new_user) and return
       else
         respond_with(@user, status: :unprocessable_entity)
       end

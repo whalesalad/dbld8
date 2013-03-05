@@ -210,6 +210,22 @@ class User < ActiveRecord::Base
     self.bio = self.bio.gsub("\n", " ").gsub("\r", " ").squeeze(" ")[0..250]
   end
 
+  def unread_notifications_count
+    notifications.events.unread.count
+  end
+
+  def unread_messages_count
+    unread_messages.count
+  end
+
+  def pending_wings_count
+    pending_friends.count
+  end
+
+  def badge_count
+    unread_notifications_count + unread_messages_count + pending_wings_count
+  end
+
   def as_json(options={})
     'BUILD'
   end

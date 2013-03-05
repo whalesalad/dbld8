@@ -7,9 +7,10 @@ end
 json.(@user, :email, :first_name, :last_name, :gender, 
   :birthday, :age, :single, :interested_in, :bio, :total_coins, :total_karma)
 
-json.unread_notifications_count @user.notifications.events.unread.count
-json.unread_messages_count @user.unread_messages.count
-json.pending_wings_count @user.pending_friends.count
+json.unread_notifications_count @user.unread_notifications_count
+json.unread_messages_count @user.unread_messages_count
+json.pending_wings_count @user.pending_wings_count
+json.badge_count @user.badge_count
 
 json.invite_path user_invitation_path(@user.invite_slug)
 

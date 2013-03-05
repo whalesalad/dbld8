@@ -20,7 +20,7 @@ class PushNotificationWorker
         push_notification = Grocer::Notification.new(
           device_token: device.token, 
           alert: notification.to_s,
-          badge: notification.user.notifications.unread.count,
+          badge: notification.user.badge_count,
           identifier: notification.id,
           custom: { callback_url: notification.callback_url }
         )
