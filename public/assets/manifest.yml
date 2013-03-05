@@ -19,6 +19,8 @@ favicon.png: favicon-694538d1309d72ebbf5e918bac0605df.png
 favicon/index.png: favicon-694538d1309d72ebbf5e918bac0605df.png
 foursquare-mini.png: foursquare-mini-f013cc7768bfe530aa86ef6158de6e6a.png
 foursquare-mini/index.png: foursquare-mini-f013cc7768bfe530aa86ef6158de6e6a.png
+home/download.png: home/download-8bfd9b6af4e0ec0b80d2ba3a9ff44864.png
+home/download/index.png: home/download-8bfd9b6af4e0ec0b80d2ba3a9ff44864.png
 home/feature-overlay.png: home/feature-overlay-6e981b1f360963715cf61674ab7a6ef8.png
 home/feature-overlay/index.png: home/feature-overlay-6e981b1f360963715cf61674ab7a6ef8.png
 home/header.png: home/header-edec108557022c60eb7274eab87c746a.png
@@ -49,8 +51,8 @@ base.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
 base/index.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
 admin/admin.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
 admin/admin/index.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
-application.css: application-e5d37c5b22b497c732fc60259da08037.css
-application/index.css: application-e5d37c5b22b497c732fc60259da08037.css
+application.css: application-bf442fd6aba80af45f134b325fc9f9e4.css
+application/index.css: application-bf442fd6aba80af45f134b325fc9f9e4.css
 appstore/download.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 appstore/download/index.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 FontAwesome.otf: FontAwesome-468f83b63df32064983141584a19ff17.otf
