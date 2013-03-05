@@ -3,7 +3,7 @@ class LocationsController < ApplicationController
 
   skip_filter :require_token_auth, :only => [:index, :cities, :venues, :both, :show]
   
-  before_filter :ensure_latlng, :only  => [:both, :cities, :venues]
+  before_filter :ensure_latlng, :only  => [:both, :venues]
   before_filter :get_location, :only => [:show]
   
   def index
@@ -17,7 +17,14 @@ class LocationsController < ApplicationController
   end
 
   def cities
-    @locations = Location.find_cities_near(@latitude, @longitude)
+    ensure_latlng unless params[:query].present?
+    
+    @locations = if @latitude && @longitude
+      Location.find_cities_near(@latitude, @longitude)
+    else
+      Location.cities.where('name ~* ?', params[:query]).order('-population')
+    end
+
     respond_with @locations, :template => 'locations/index'
   end
 
@@ -49,9 +56,9 @@ class LocationsController < ApplicationController
 
   def ensure_latlng
     if (params.keys & %w(latitude longitude)).empty?
-      json_error "Please specify latitude and longitude parameters."
+      return json_error "Please specify latitude and longitude parameters, or a query parameter if searching for cities."
     elsif (params[:latitude] + params[:longitude]).to_i < 1
-      json_error "Please specify valid latitude and longitude parameters. lat: #{params[:latitude]}, lng: #{params[:longitude]} are invalid."
+      return json_error "Please specify valid latitude and longitude parameters. lat: #{params[:latitude]}, lng: #{params[:longitude]} are invalid."
     else
       @latitude = params[:latitude]
       @longitude = params[:longitude]

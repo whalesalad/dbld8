@@ -8,7 +8,7 @@ class Admin::LocationsController < AdminController
 
   def cities
     @title = 'Cities'
-    @locations = Location.cities.order('users_count DESC')
+    @locations = Location.cities.order('population DESC')
   end
 
   def venues
