@@ -27,6 +27,12 @@ class User < ActiveRecord::Base
   include Concerns::FriendConcerns
   include Concerns::UUIDConcerns
 
+  DEFAULT_BIOS = [
+    "I like to wear silly hats.",
+    "Writing my bio is so hard!",
+    "This line wasn't created by me, 250 characters was to much to handle and I should really change this."
+  ]
+
   serialize :features, ActiveRecord::Coders::Hstore
 
   attr_accessible :email, :password, :first_name, :last_name, :birthday,
@@ -41,7 +47,7 @@ class User < ActiveRecord::Base
   before_validation :before_init, :on => :create
   after_create :after_init, :on => :create
 
-  before_save :sanitize_bio 
+  before_save :sanitize_bio
 
   # Password // Bcrypt
   has_secure_password
@@ -207,7 +213,11 @@ class User < ActiveRecord::Base
   end
 
   def sanitize_bio
-    self.bio = self.bio.gsub("\n", " ").gsub("\r", " ").squeeze(" ")[0..250]
+    self.bio = if self.bio.empty?
+      User::DEFAULT_BIOS.sample
+    else
+      self.bio.gsub("\n", " ").gsub("\r", " ").squeeze(" ")[0..250]
+    end
   end
 
   def unread_notifications_count

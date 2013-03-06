@@ -126,7 +126,7 @@ class FacebookUser < User
       elsif me.has_key?('about')
         me['about']
       else 
-        "I like to wear silly hats."
+        User::DEFAULT_BIOS.sample
       end
 
       # Ensure max of 250 chars.
