@@ -15,9 +15,9 @@ class FacebookInvite < ActiveRecord::Base
   default_scope order('created_at DESC')
 
   # Queue up the sending of the invitation (writing on the wall)
-  after_commit :on => :create do |invite|
-    FacebookWallPostWorker.perform_async(invite.id)
-  end
+  # after_commit :on => :create do |invite|
+  #   FacebookWallPostWorker.perform_async(invite.id)
+  # end
 
   belongs_to :user
   
