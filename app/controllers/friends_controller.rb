@@ -17,6 +17,8 @@ class FriendsController < ApplicationController
     # Combine both lists, unapproved being first.
     @users = unapproved + approved
 
+    @users.sort_by { |u| u.first_name }
+
     respond_with @users, :template => 'users/index'
   end
 
