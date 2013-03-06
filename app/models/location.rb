@@ -117,6 +117,10 @@ class Location < ActiveRecord::Base
     end
 
     # International
+    unless locality.present?
+      return country.name
+    end
+    
     "#{locality}, #{country.name}"
   end
 
