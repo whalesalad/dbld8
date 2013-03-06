@@ -129,11 +129,11 @@ class User < ActiveRecord::Base
   end
 
   def to_s
-    [first_name, last_name].join ' '
+    first_name
   end
 
   def full_name
-    to_s
+    [first_name, last_name].join ' '
   end
 
   def status
