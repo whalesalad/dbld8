@@ -65,7 +65,12 @@ class Friendship < ActiveRecord::Base
 
   def check_for_approved_changes
     # Notification.send(...) if (self.published_changed? && self.published == true)
-    create_recruit_events! if self.approved_changed? && self.approved == true
+    if self.approved_changed? && self.approved == true
+      create_recruit_events!
+      notifications.each do |n|
+        n.read!
+      end
+    end
   end
 
   def as_json(options={})
