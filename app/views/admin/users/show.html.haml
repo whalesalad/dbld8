@@ -1,6 +1,6 @@
 %section.user-detail
   %h1
-    #{@user}
+    #{@user.full_name}
     %small
       #{@user.class} – ##{@user.id}
 
@@ -154,7 +154,7 @@
             - @user.friends.each do |friend|
               %li
                 %span.object-title
-                  = link_to friend, admin_user_path(friend)
+                  = link_to friend.full_name, admin_user_path(friend)
                 %span.object-detail
                   #{friend.location}
 
