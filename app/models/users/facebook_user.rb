@@ -123,7 +123,7 @@ class FacebookUser < User
     if self.bio.blank?
       self.bio = if me.has_key?('bio')
         me['bio']
-      elsif me.has_key('about')
+      elsif me.has_key?('about')
         me['about']
       else 
         "I like to wear silly hats."
