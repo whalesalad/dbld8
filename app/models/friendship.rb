@@ -68,7 +68,7 @@ class Friendship < ActiveRecord::Base
     if self.approved_changed? && self.approved == true
       create_recruit_events!
       notifications.each do |n|
-        n.read!
+        n.read! if n.user_id == friend_id
       end
     end
   end

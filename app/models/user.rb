@@ -30,7 +30,9 @@ class User < ActiveRecord::Base
   DEFAULT_BIOS = [
     "I like to wear silly hats.",
     "Writing my bio is so hard!",
-    "This line wasn't created by me, 250 characters was to much to handle and I should really change this."
+    "250 characters was to much to handle and I should really change this.",
+    "I love macaroni and cheese with mustard and vanilla combined. Seriously. This isn't my bio. I should change this.",
+    "I didn't write this ... it's some made up default line created by the awesome DoubleDate team!"
   ]
 
   serialize :features, ActiveRecord::Coders::Hstore
