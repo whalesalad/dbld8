@@ -93,23 +93,6 @@ class Activity < ActiveRecord::Base
       # Match title/details
       query { string(params[:query]) } if params[:query].present?
 
-      # require 'tire/queries/custom_filters_score'
-      # query do
-      #   custom_filters_score do
-      #     query { terms :tags, user.interests.pluck('name') }
-      #     # filter do
-      #     #   filter :match_all
-      #     #   boost 1.1
-      #     # end
-      #     # filter do
-      #     #   filter :terms, :tags => user.interests.pluck('name')
-      #     #   boost 1.1
-      #     #   # script '_score * 2.0'
-      #     # end
-      #     score_mode 'total'
-      #   end
-      # end
-      
       # Handles min/max age range
       filter :range, min_age: { gte: params[:min_age] } if params[:min_age].present?
       filter :range, max_age: { lte: params[:max_age] } if params[:max_age].present?
@@ -119,21 +102,8 @@ class Activity < ActiveRecord::Base
 
       # Handles filtering by proximity to a point
       distance = params[:distance] || '200km'
-      # filter :geo_distance, :distance => distance, :point => params[:point]
-
-      # query do
-      #   terms :tags, user.interests.pluck('name'), minimum_match: 0
-      # end
-
-      # Default sorting of newest for now.
-      case params[:sort]
-      # when 'closest'
-        # sort { by '_geo_distance' => { point: params[:point] }}
-      when 'newest'
-        sort { by :created_at, 'desc' }
-      when 'oldest'
-        sort { by :created_at, 'asc' }
-      end
+      filter :geo_distance, :distance => distance, :point => params[:point]
+      sort { by '_geo_distance' => { point: params[:point] }}
     end
   end
 
