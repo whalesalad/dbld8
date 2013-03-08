@@ -31,9 +31,7 @@ class FriendsController < ApplicationController
   end
 
   def destroy
-    if @friendship.destroy
-      respond_with(:nothing => true)
-    end
+    respond_with(:nothing => true) if @friendship.destroy
   end
 
   def facebook
@@ -66,10 +64,6 @@ class FriendsController < ApplicationController
     doubledate_users = FacebookUser.where(:facebook_id => facebook_ids)
 
     doubledate_users.each do |user|
-      # FIXME
-      # Right now we send an invite from current user => other user
-      # IF an invite exists already from other user, we should just approve it.
-      # Rare edge case but ... should be settled.
       @authenticated_user.invite(user)
     end
     
@@ -85,7 +79,8 @@ class FriendsController < ApplicationController
     }
   end
 
-  def connect
+  # Handles incoming invitations from regular users.
+  def invite_connect
     # will accept an invite
     if params[:invite_slug].blank?
       return json_error "An invite_slug must be specified."
@@ -99,19 +94,46 @@ class FriendsController < ApplicationController
     end
 
     # automatically create a friendship between these two users
-    friendship = @authenticated_user.find_any_friendship_with(friend)
+    friendship = friend.invite(@authenticated_user, true)
 
-    if friendship.nil?
-      friendship = Friendship.new(:user_id => friend.id, :friend_id => @authenticated_user.id)
-    end
+    # if friendship.nil?
+    #   friendship = Friendship.create(:user_id => friend.id, :friend_id => @authenticated_user.id)
+    # end
 
-    friendship.approved = true
+    friend.approved = friendship.approved
 
-    if friendship.save
-      # render_to_string(template: 'users/_user', locals: { user: friend }) and return
+    if friendship
+      respond_with friend, 
+        :location => user_path(friend),
+        :template => 'users/_user',
+        :locals => { :user => friend } and return
     else
       respond_with friendship, :status => 422
     end
+  end
+
+  # Handles connecting incoming app requests from Facebook
+  def request_connect
+    if params[:request_ids].blank?
+      return json_error "A string of Facebook request_ids must be specified."
+    end
+
+    fb_requests = @authenticated_user.facebook_graph.get_objects(params[:request_ids])
+
+    @users = []
+
+    fb_requests.each do |id, request|
+      if request.has_key?('from')
+        sender = FacebookUser.find_by_facebook_id(request['from']['id'])
+      end
+
+      if sender.present?
+        sender.invite(@authenticated_user)
+        @users << sender
+      end
+    end
+
+    respond_with @users, :template => 'users/index'
   end
 
   private

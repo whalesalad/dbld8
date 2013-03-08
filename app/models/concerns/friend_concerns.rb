@@ -44,15 +44,25 @@ module Concerns
 
     # Invite a friend if that friend is not this user and a friendship does not exist
     def invite(friend, approve = nil)
-      return false if friend == self || find_any_friendship_with(friend)
+      return false if friend == self
 
-      params = { :friend_id => friend.id }
-
-      if approve == true
-        params[:approved] = true
+      friendship = find_any_friendship_with(friend)
+      
+      if friendship.present?
+        friendship.approved = true
+      else
+        friendship = friendships.build({ :friend_id => friend.id })
       end
 
-      friendships.create(params)
+      if approve == true
+        friendship.approved = true
+      end
+
+      if friendship.save!
+        friendship
+      else
+        false
+      end
     end
 
     def invited?(friend)
@@ -69,7 +79,7 @@ module Concerns
 
     def find_any_friendship_with(user)
       user_id = (user.instance_of?(User)) ? user.id : user
-      (Friendship.where(:user_id => id, :friend_id => user.id).first || Friendship.where(:user_id => user.id, :friend_id => id).first)
+      Friendship.where(:user_id => id, :friend_id => user.id).first || Friendship.where(:user_id => user.id, :friend_id => id).first
     end
 
     def friends

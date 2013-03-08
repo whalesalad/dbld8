@@ -55,7 +55,9 @@ DoubleDate::Application.routes.draw do
       # /me/friends/invite { facebook_ids: 109234, 23492349, 29349234 }
       post 'invite', :on => :collection
 
-      post 'connect', :on => :collection
+      post 'invite_connect', :on => :collection
+      post 'request_connect', :on => :collection
+
     end
   end
 

@@ -19,6 +19,7 @@ class Friendship < ActiveRecord::Base
   attr_accessible :user_id, :friend_id, :approved
 
   after_update :check_for_approved_changes
+  after_commit :check_for_approved_on_create, :on => :create
   after_commit :create_invite_event!, :on => :create
   
   belongs_to :user
@@ -64,13 +65,16 @@ class Friendship < ActiveRecord::Base
   end
 
   def check_for_approved_changes
-    # Notification.send(...) if (self.published_changed? && self.published == true)
     if self.approved_changed? && self.approved == true
-      create_recruit_events!
+      create_recruit_events!  
       notifications.each do |n|
         n.read! if n.user_id == friend_id
       end
     end
+  end
+
+  def check_for_approved_on_create
+    create_recruit_events! if self.approved == true
   end
 
   def as_json(options={})
