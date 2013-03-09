@@ -96,10 +96,7 @@ class FriendsController < ApplicationController
     # automatically create a friendship between these two users
     friendship = friend.invite(@authenticated_user, true)
 
-    # if friendship.nil?
-    #   friendship = Friendship.create(:user_id => friend.id, :friend_id => @authenticated_user.id)
-    # end
-
+    # For the sake of the json response
     friend.approved = friendship.approved
 
     if friendship
@@ -127,8 +124,11 @@ class FriendsController < ApplicationController
         sender = FacebookUser.find_by_facebook_id(request['from']['id'])
       end
 
-      if sender.present?
-        sender.invite(@authenticated_user)
+      if sender.present? && sender.invite(@authenticated_user)
+        # Delete the object
+        @authenticated_user.facebook_graph.delete_object("#{request['id']}_#{@authenticated_user.facebook_id}")
+
+        # Add the friendshippies
         @users << sender
       end
     end
