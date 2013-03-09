@@ -131,7 +131,7 @@ class FriendsController < ApplicationController
         @users << sender
 
         # Delete the object
-        @authenticated_user.facebook_graph.delete_object("#{request['id']}_#{@authenticated_user.facebook_id}")
+        # @authenticated_user.facebook_graph.delete_object("#{request['id']}_#{@authenticated_user.facebook_id}")
       end
     end
 
