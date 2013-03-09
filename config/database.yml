@@ -35,16 +35,6 @@ test:
   username: michael
   password:
 
-heroku: &heroku
-  adapter:  postgresql
-  encoding: unicode
-  pool: 200
-  database: d2of6lgr3ci3p5
-  username: uc4n1quhfr1oot
-  password: pa4a6di2rsm93qfobhaeebb3tjc
-  host: ec2-54-243-28-75.compute-1.amazonaws.com
-  port: 5832
-
 linode: &linode
   adapter: postgresql
   encoding: unicode

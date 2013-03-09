@@ -1,7 +1,9 @@
-set_default(:postgresql_host, "localhost")
+db_config = Rails.configuration.database_configuration[Rails.env]
+
+set_default(:postgresql_host, db_config['host'] || 'localhost')
 set_default(:postgresql_user) { application }
-set_default(:postgresql_password) { Capistrano::CLI.password_prompt "PostgreSQL Password: " }
-set_default(:postgresql_database) { "#{application}_production" }
+set_default(:postgresql_password) { db_config['password'] }
+set_default(:postgresql_database) { db_config['database'] }
 
 namespace :postgresql do
   desc "Install PostgreSQL client on web servers"
@@ -10,6 +12,14 @@ namespace :postgresql do
     run "#{sudo} apt-get -y install postgresql-client-9.1 libpq-dev"
   end
   after "deploy:install", "postgresql:install_client"
+
+  desc "Setup pgpass file"
+  task :pgpass, roles: :app do
+    # hostname:port:database:username:password 
+    # template "nginx.erb", "/tmp/nginx_conf"
+    # run "#{sudo} mv /tmp/nginx_conf /etc/nginx/sites-enabled/#{application}"
+    # run "#{sudo} rm -f /etc/nginx/sites-enabled/default"
+  end
 
   # desc "Install the latest stable release of PostgreSQL."
   # task :install, roles: :db, only: {primary: true} do
