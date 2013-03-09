@@ -148,7 +148,7 @@
               %span.badge.badge-info #{@user.friends.count}
 
           - if @user.friends.blank?
-            %p #{@user.first_name} doesn't have any events.
+            %p #{@user.first_name} doesn't have any friends.
           
           %ul.generic-object-list
             - @user.friends.each do |friend|
