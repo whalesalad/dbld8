@@ -124,7 +124,9 @@ class FriendsController < ApplicationController
         sender = FacebookUser.find_by_facebook_id(request['from']['id'])
       end
 
-      if sender.present? && sender.invite(@authenticated_user)
+      if sender.present?
+        sender.invite(@authenticated_user)
+        
         # Delete the object
         @authenticated_user.facebook_graph.delete_object(request['id'])
 
