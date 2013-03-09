@@ -13,6 +13,7 @@ DoubleDate::Application.routes.draw do
 
   # Authentication
   post 'authenticate' => 'users#authenticate'
+  get 'logout' => 'users#logout'
 
   resources :users, :only => [:index, :show, :create] do
     get 'search', :on => :collection

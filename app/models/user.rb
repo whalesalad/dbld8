@@ -238,6 +238,11 @@ class User < ActiveRecord::Base
     unread_notifications_count + unread_messages_count + pending_wings_count
   end
 
+  def logout!
+    token.destroy
+    devices.destroy_all
+  end
+
   def as_json(options={})
     'BUILD'
   end

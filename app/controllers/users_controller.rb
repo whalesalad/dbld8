@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_filter :require_token_auth, :except => [:index, :show]
+  skip_filter :require_token_auth, :except => [:logout, :index, :show]
 
   before_filter :ensure_facebook_access_token, :only => [:authenticate, :create]
   after_filter :track_user_auth, :only => [:authenticate]
@@ -31,6 +31,13 @@ class UsersController < ApplicationController
         respond_with(@user, status: :unprocessable_entity)
       end
     end
+  end
+
+  def logout
+    # destroy the users authentication token
+    # remove the users push device tokens
+    @authenticated_user.logout!
+    render json: { logged_out: true } and return
   end
 
   def index

@@ -22,7 +22,10 @@ class PushNotificationWorker
           alert: notification.to_s,
           badge: notification.user.badge_count,
           identifier: notification.id,
-          custom: { callback_url: notification.callback_url }
+          custom: { 
+            callback_url: notification.callback_url,
+            nid: notification.id
+          }
         )
 
         APN_CONNECTION.push(push_notification)
