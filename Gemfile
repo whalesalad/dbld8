@@ -38,9 +38,8 @@ gem 'redis'
 gem 'redis-store'
 gem 'redis-rails'
 
-# Memcached
-gem 'kgio'
-gem 'dalli'
+# CRON
+gem 'whenever', require: false
 
 # Mixpanel // Segment.io
 gem 'analytics-ruby'

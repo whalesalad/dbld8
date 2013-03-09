@@ -18,6 +18,18 @@ class Engagement < ActiveRecord::Base
 
   attr_accessible :activity_id, :user_id, :wing_id
 
+  validates_presence_of :activity_id, :user_id, :wing_id
+
+  belongs_to :activity, :touch => true
+
+  validates_uniqueness_of :activity_id, 
+    :scope => [:user_id, :wing_id], 
+    :message => "You or your wing have already engaged in this activity."
+
+  # Messages!
+  has_many :messages, :dependent => :destroy
+  has_many :message_proxies, :through => :messages
+
   scope :ignored, where(:ignored => true)
   scope :not_ignored, where(:ignored => false)
 
@@ -34,18 +46,6 @@ class Engagement < ActiveRecord::Base
     joins(:message_proxies).where('message_proxies.user_id' => user.id).where('message_proxies.unread' => true)
   }
   
-  validates_uniqueness_of :activity_id, 
-    :scope => [:user_id, :wing_id], 
-    :message => "You or your wing have already engaged in this activity."
-
-  validates_presence_of :activity_id, :user_id, :wing_id
-
-  belongs_to :activity, :touch => true
-
-  # Messages!
-  has_many :messages, :dependent => :destroy
-  has_many :message_proxies, :through => :messages
-
   def send_initial_message(message)
     messages.create(:user => user, :message => message)
   end
@@ -64,6 +64,10 @@ class Engagement < ActiveRecord::Base
 
   def all_participant_ids
     (participant_ids | activity.participant_ids)
+  end
+
+  def engagement_messages
+    messages.where(:user_id => participant_ids)
   end
 
   def allowed?(a_user, permission = :all)
