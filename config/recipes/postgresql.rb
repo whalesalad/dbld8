@@ -1,9 +1,7 @@
-db_config = Rails.configuration.database_configuration[Rails.env]
-
-set_default(:postgresql_host, db_config['host'] || 'localhost')
+set_default(:postgresql_host, 'blitzen')
 set_default(:postgresql_user) { application }
-set_default(:postgresql_password) { db_config['password'] }
-set_default(:postgresql_database) { db_config['database'] }
+set_default(:postgresql_password) { "never fly without your wings" }
+set_default(:postgresql_database) { "doubledate" }
 
 namespace :postgresql do
   desc "Install PostgreSQL client on web servers"

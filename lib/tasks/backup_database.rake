@@ -13,7 +13,7 @@ namespace :pg do
     db_host = db_config['host'] || 'localhost'
 
     # Dump a compressed heroku-style backup
-    sh "PGPASSWORD=#{db_config['password']} pg_dump -h #{db_host} -Fc --no-acl --no-owner #{db_config['database']} > #{backup_file}"
+    sh "PGPASSWORD=\"#{db_config['password']}\" pg_dump -h #{db_host} -Fc --no-acl --no-owner #{db_config['database']} > #{backup_file}"
 
     # Push to S3
     send_to_amazon(backup_file)
