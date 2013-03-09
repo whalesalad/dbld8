@@ -1,6 +1,6 @@
 set :output, "#{path}/log/cron.log"
 
-every 1.hours do
+every :hour, :roles => :db do
   # run apn feedback worker
   runner "PushFeedbackWorker.perform_async"
 
