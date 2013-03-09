@@ -15,6 +15,7 @@
 require "bundler/capistrano"
 require "sidekiq/capistrano"
 
+set :whenever_roles, [:cron]
 set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
 
@@ -32,6 +33,8 @@ server "rudolph.dbld8.com", :web, :app, :db, primary: true
 server "comet.dbld8.com", :web, :app
 server "blitzen.dbld8.com", :search, :db, no_release: true
 # server "donner.dbld8.com", :web, :app, :search
+
+role :cron, 'rudolph.dbld8.com'
 
 set :user, "doubledate"
 set :application, "doubledate"
