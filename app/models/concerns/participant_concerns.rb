@@ -12,6 +12,12 @@ module Concerns
         user_id = user_id.id if user_id.is_a?(User) 
         where('user_id = ? OR wing_id = ?', user_id, user_id)
       end
+
+      def find_any_with_friendship(friendship)
+        user_id = friendship.user_id
+        friend_id = friendship.friend_id
+        where('user_id = ? AND wing_id = ? OR user_id = ? AND wing_id = ?', user_id, friend_id, friend_id, user_id)
+      end
     end
 
     def participants

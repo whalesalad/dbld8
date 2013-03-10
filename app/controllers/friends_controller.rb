@@ -31,6 +31,15 @@ class FriendsController < ApplicationController
   end
 
   def destroy
+    # ensure that you do not have any dates or engagements with this person.
+    has_activities = Activity.find_any_with_friendship(@friendship).any?
+    has_engagements = Engagement.find_any_with_friendship(@friendship).any?
+
+    if has_engagements || has_activities
+      friend = @friendship.not_you(@authenticated_user)
+      return json_error "You cannot remove #{friend} from your wings until your dates and messages with #{friend.pronoun} are cancelled."
+    end
+
     respond_with(:nothing => true) if @friendship.destroy
   end
 

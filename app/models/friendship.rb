@@ -77,6 +77,10 @@ class Friendship < ActiveRecord::Base
     create_recruit_events! if self.approved == true
   end
 
+  def not_you(u)
+    (u.id == user_id) ? friend : user
+  end
+
   def as_json(options={})
     'BUILD'
   end

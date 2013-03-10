@@ -183,6 +183,10 @@ class User < ActiveRecord::Base
     (gender == "male") ? "his" : "her"
   end
 
+  def pronoun
+    (gender == "male") ? "him" : "her"
+  end
+
   def activity_associations
     [:activities, :participating_activities, 
       :engaged_activities, :engaged_participating_activities]
