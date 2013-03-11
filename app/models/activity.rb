@@ -101,9 +101,9 @@ class Activity < ActiveRecord::Base
       filter :terms, preferences: [params[:happening]] if params[:happening].present?
 
       # Handles filtering by proximity to a point
-      distance = params[:distance] || '200km'
-      filter :geo_distance, :distance => distance, :point => params[:point]
-      sort { by '_geo_distance' => { point: params[:point] }}
+      # distance = params[:distance] || '200km'
+      # filter :geo_distance, :distance => distance, :point => params[:point]
+      # sort { by '_geo_distance' => { point: params[:point] }}
     end
   end
 
