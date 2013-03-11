@@ -5,9 +5,12 @@ json.updated_at engagement.updated_at
 json.updated_at_ago time_ago_in_words(engagement.updated_at)
 
 json.status engagement.status
-json.unlocked_at engagement.unlocked_at
-json.expires_at engagement.expires_at
-json.time_remaining distance_of_time_in_words_to_now(engagement.expires_at)
+
+if engagement.unlocked?
+  json.unlocked_at engagement.unlocked_at
+  json.expires_at engagement.expires_at
+  json.time_remaining distance_of_time_in_words_to_now(engagement.expires_at)
+end
 
 json.unread_count engagement.messages.unread_for(@authenticated_user).count
 

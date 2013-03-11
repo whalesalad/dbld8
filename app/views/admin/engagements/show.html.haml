@@ -22,10 +22,18 @@
         %h4 Basic Info
         %dl.dl-horizontal
           %dt Ignored?
-          %dd= yesno(@engagement.ignored)
+          %dd= yesno(@engagement.ignored?)
 
           %dt Unlocked?
-          %dd= yesno(@engagement.unlocked)
+          %dd
+            #{yesno(@engagement.unlocked?)}, #{@engagement.unlocked_at}
+
+
+          - if @engagement.unlocked?
+            %dt Expires
+            %dd
+              = @engagement.expires_at
+              (#{distance_of_time_in_words_to_now(@engagement.expires_at)} remain)
 
           %dt Engagement User
           %dd #{link_to @engagement.user, admin_user_path(@engagement.user)}
