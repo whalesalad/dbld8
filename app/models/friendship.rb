@@ -74,7 +74,9 @@ class Friendship < ActiveRecord::Base
   end
 
   def check_for_approved_on_create
-    create_recruit_events! if self.approved == true
+    if self.approved == true
+      create_recruit_events!
+    end
   end
 
   def not_you(u)

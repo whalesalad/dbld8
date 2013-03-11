@@ -4,20 +4,17 @@ class FriendsController < ApplicationController
   before_filter :get_friend_and_friendship, :only => [:update, :destroy]
   
   def index
-    # Get all approved wings
-    approved = @authenticated_user.friends.each do |friend|
-      friend.approved = true
+    @friendships = Friendship.find_for_user_or_friend(@authenticated_user)
+
+    @users = @friendships.map do |friendship|
+      user = friendship.not_you(@authenticated_user)
+      user.approved = friendship.approved
+      user.sort_date = friendship.created_at.to_i
+      user
     end
 
-    # Get all unapproved users
-    unapproved = @authenticated_user.pending_friends.each do |pending|
-      pending.approved = false
-    end
-
-    # Combine both lists, unapproved being first.
-    @users = unapproved + approved
-
-    @users.sort_by! { |u| u.first_name.downcase }
+    # Sort by the sort value
+    @users.sort_by! { |u| - u.sort_date }
 
     respond_with @users, :template => 'users/index'
   end
@@ -106,7 +103,7 @@ class FriendsController < ApplicationController
     friendship = friend.invite(@authenticated_user, true)
 
     # For the sake of the json response
-    friend.approved = friendship.approved
+    friendship.approved = friendship.approved
 
     if friendship
       respond_with friend, 

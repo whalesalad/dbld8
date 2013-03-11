@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
     :single, :interested_in, :gender, :bio, :interest_ids, :location,
     :interest_names, :location_id
 
-  attr_accessor :accessible, :approved
+  attr_accessor :accessible, :approved, :sort_date
 
   GENDER_CHOICES = %w(male female)
   INTEREST_CHOICES = %w(guys girls both)
