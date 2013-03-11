@@ -10,6 +10,7 @@
 #  updated_at  :datetime        not null
 #  ignored     :boolean         default(FALSE)
 #  unlocked    :boolean         default(FALSE)
+#  unlocked_at :datetime
 #
 
 class Engagement < ActiveRecord::Base

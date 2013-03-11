@@ -20,6 +20,7 @@
 #  uuid                  :uuid            not null
 #  invite_slug           :string(255)
 #  type                  :string(255)
+#  features              :hstore
 #
 
 class EmailUser < User

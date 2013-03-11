@@ -1,9 +1,5 @@
 class AddUnlockableToEngagement < ActiveRecord::Migration
-  def up
+  def change
     add_column :engagements, :unlocked, :boolean, :default => false
-  end
-
-  def down
-    remove_column :engagements, :unlocked
   end
 end
