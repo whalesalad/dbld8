@@ -102,9 +102,6 @@ class FriendsController < ApplicationController
     # automatically create a friendship between these two users
     friendship = friend.invite(@authenticated_user, true)
 
-    # For the sake of the json response
-    friendship.approved = friendship.approved
-
     if friendship
       respond_with friend, 
         :location => user_path(friend),

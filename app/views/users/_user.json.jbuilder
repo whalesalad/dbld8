@@ -12,6 +12,4 @@ json.cache! user do |json|
   json.photo user.photo
 end
 
-unless user.approved.nil?
-  json.approved user.approved
-end
+json.approved user.approved?

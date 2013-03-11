@@ -58,11 +58,7 @@ module Concerns
         friendship.approved = true
       end
 
-      if friendship.save!
-        friendship
-      else
-        false
-      end
+      return friendship.save! ? friendship : false
     end
 
     def invited?(friend)

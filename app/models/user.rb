@@ -252,6 +252,10 @@ class User < ActiveRecord::Base
     'BUILD'
   end
 
+  def approved?
+    approved != false
+  end
+
   # segment.io traits
   def traits
     t = { 
