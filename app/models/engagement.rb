@@ -17,6 +17,8 @@ class Engagement < ActiveRecord::Base
   include Concerns::ParticipantConcerns
   include Concerns::EventConcerns
 
+  EXPIRATION_DAYS = 5.days
+
   attr_accessible :activity_id, :user_id, :wing_id
 
   validates_presence_of :activity_id, :user_id, :wing_id
@@ -91,13 +93,25 @@ class Engagement < ActiveRecord::Base
     save!
   end
 
+  def expired?
+    unlocked_at.present? && unlocked_at < EXPIRATION_DAYS.ago
+  end
+
   def locked?
-    !unlocked
+    unlocked_at.blank? || expired?
+  end
+
+  def unlocked?
+    !locked?
   end
 
   def unlock!
-    self.unlocked = true
+    self.unlocked_at = Time.now
     save!
+  end
+
+  def expires_at
+    unlocked_at + EXPIRATION_DAYS
   end
 
   def as_json(options={})

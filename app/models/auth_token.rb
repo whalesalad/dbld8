@@ -16,6 +16,8 @@ class AuthToken < ActiveRecord::Base
   
   belongs_to :user
 
+  validates_presence_of :user
+
   def to_s
     token
   end
@@ -29,7 +31,7 @@ class AuthToken < ActiveRecord::Base
   def generate_token
     require 'openssl'
     digest = OpenSSL::Digest::Digest.new('sha1')
-    self.token = OpenSSL::HMAC.hexdigest(digest, self.user.created_at.to_s, "#{self.user.id}:dbld8")
+    self.token = OpenSSL::HMAC.hexdigest(digest, Time.now.to_i.to_s, "#{self.user.id}:dbld8")
   end
 
 end

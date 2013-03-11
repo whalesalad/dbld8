@@ -59,6 +59,9 @@ gem 'asset_sync'
 # Push Notifications
 gem 'grocer'
 
+# Apple purchase verification
+gem 'venice'
+
 # Gems used only for assets and not in production
 group :assets do
   gem 'sass-rails',   '~> 3.2'
