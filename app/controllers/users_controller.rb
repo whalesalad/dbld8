@@ -24,12 +24,9 @@ class UsersController < ApplicationController
 
       @user.accessible = [:facebook_access_token]
       @user.facebook_access_token = params[:facebook_access_token]
-
-      if @user.token.blank?
-        @user.create_token
-      end
       
       if @user.save!
+        @user.create_token if @user.token.blank?
         render json: @user.token.as_json.merge(new_user: @new_user) and return
       else
         respond_with(@user, status: :unprocessable_entity)
