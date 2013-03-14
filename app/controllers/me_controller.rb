@@ -33,11 +33,15 @@ class MeController < ApplicationController
 
     unlocker = MaxActivityUnlockerService.new(@authenticated_user)
 
-    render json: { 
+    payload = { 
       unlock: (unlocker.next_unlock_event) ? unlocker.next_unlock_event.json : false,
       activities_count: unlocker.activities_count,
       activities_allowed: unlocker.activities_allowed
     }
+
+    payload[:highest_level_reached] = true if unlocker.highest_level?
+
+    render json: payload 
   end
 
   # perform an unlock. requires a slug

@@ -34,9 +34,17 @@ class ActivitiesController < BaseActivitiesController
 
   def create
     unlocker = MaxActivityUnlockerService.new(@authenticated_user)
-    
+
     if unlocker.needs_unlock?
-      render json: { unlock_required: unlocker.next_unlock_event.json } and return
+      payload = { 
+        unlock: (unlocker.next_unlock_event) ? unlocker.next_unlock_event.json : false,
+        activities_count: unlocker.activities_count,
+        activities_allowed: unlocker.activities_allowed
+      }
+
+      payload[:highest_level_reached] = true if unlocker.highest_level?
+
+      render json: payload and return
     end
 
     @activity = Activity.new(params[:activity])

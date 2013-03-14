@@ -55,9 +55,8 @@ class Location < ActiveRecord::Base
         :radius => '90000',
         :limit => 100
       }
-
       
-        # params[:section] = 'topPicks'
+      # params[:section] = 'topPicks'
       # else
       params[:query] = query if query.present?
       # end

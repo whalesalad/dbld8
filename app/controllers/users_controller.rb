@@ -9,6 +9,13 @@ class UsersController < ApplicationController
   def authenticate
     graph = Koala::Facebook::API.new(params[:facebook_access_token])
 
+    # XXXXXXXXXX
+    if Rails.env.development?
+      @user = User.find_by_facebook_access_token(params[:facebook_access_token])
+      render json: @user.token.as_json.merge(new_user: @new_user) and return
+    end
+    # XXXXXXXXXX
+
     begin
       me = graph.get_object('me', { :fields => 'id' })
     rescue Koala::Facebook::APIError => exc
