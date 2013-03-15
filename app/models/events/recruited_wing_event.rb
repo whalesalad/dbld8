@@ -29,14 +29,24 @@ class RecruitedWingEvent < Event
   end
 
   def notification_string_for(user)
-    return "#{related.friend} accepted your wing invitation"
+    "#{related.friend} accepted your wing invitation"
+  end
+
+  def notification_url
+    "users/#{friendship.friend.id}"
+  end
+
+  def dialog
+    {
+      slug: "inform",
+      upper_text: "You Earned #{self.class.coin_value} Coins",
+      description: "#{related.friend.first_name} accepted your invite. You both earned #{self.class.coin_value} coins!",
+      dismiss_button: "Dismiss"
+    }
   end
 
   def photos
     [friendship.friend.photo] if related.present?
   end
 
-  def notification_url
-    "users/#{friendship.friend.id}"
-  end
 end

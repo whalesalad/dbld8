@@ -24,6 +24,10 @@ class RegistrationEvent < Event
     "Your Facebook friend #{self.user.first_name} just joined DoubleDate!"
   end
 
+  def notification_url
+    "users/#{user.id}"
+  end
+
   def notify
     friend_service = FacebookFriendService.new(user)
 
@@ -32,11 +36,17 @@ class RegistrationEvent < Event
     end
   end
 
-  def photos
-    [user.photo]
+  def dialog
+    {
+      slug: "invite_user",
+      upper_text: "Invite & Earn 10 Coins",
+      description: "Would you like to add #{self.user.first_name} as your wing?",
+      confirm_button: "Yes, Send Invite",
+      dismiss_button: "No, Thanks"
+    }
   end
 
-  def notification_url
-    "users/#{user.id}"
+  def photos
+    [user.photo]
   end
 end

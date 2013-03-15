@@ -96,6 +96,14 @@ class Notification < ActiveRecord::Base
     target.photos
   end
 
+  def has_dialog?
+    target.respond_to?(:dialog)
+  end
+
+  def dialog
+    (has_dialog?) ? target.dialog : nil
+  end
+
   def push_notification
     PushNotificationWorker.perform_async(self.id)
   end

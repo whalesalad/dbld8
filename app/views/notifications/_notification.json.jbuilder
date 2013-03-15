@@ -7,6 +7,10 @@ json.cache! notification do |json|
   json.created_at notification.created_at
 end
 
+if notification.has_dialog?
+  json.dialog notification.dialog
+end
+
 json.photos notification.photos
 
 json.created_at_ago time_ago_in_words(notification.created_at)
