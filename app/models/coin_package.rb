@@ -16,7 +16,7 @@ class CoinPackage < ActiveRecord::Base
   validates_uniqueness_of :identifier
 
   has_many :purchases,
-    foreign_key: 'coin_package_identifier',
+    foreign_key: 'identifier',
     primary_key: 'identifier',
     inverse_of: :coin_package
 

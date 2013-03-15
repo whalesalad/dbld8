@@ -10,14 +10,14 @@ class Purchase < ActiveRecord::Base
   after_commit :verify_async, :on => :create
   after_commit :create_purchase_event!, :on => :create
 
-  attr_accessible :coin_package_identifier, :receipt
+  attr_accessible :identifier, :receipt
   
-  validates_presence_of :user_id, :coin_package, :receipt
+  validates_presence_of :user_id, :identifier, :receipt
 
   belongs_to :user
 
   belongs_to :coin_package,
-    foreign_key: 'coin_package_identifier',
+    foreign_key: 'identifier',
     primary_key: 'identifier',
     class_name: 'CoinPackage',
     counter_cache: true,
@@ -43,13 +43,10 @@ class Purchase < ActiveRecord::Base
     end
   end
 
-  def identifier
-    coin_package_identifier
-  end
-
-  def receipt=(data)
-    self[:receipt] = Base64.encode64(data)
-  end
+  # If we are posting base64, we can skip this
+  # def receipt=(data)
+  #   self[:receipt] = Base64.encode64(data)
+  # end
 
   def verified_receipt
     @verified_receipt ||= Venice::Receipt.verify(receipt)

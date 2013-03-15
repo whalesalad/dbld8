@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130315202904) do
+ActiveRecord::Schema.define(:version => 20130315213544) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -204,15 +204,15 @@ ActiveRecord::Schema.define(:version => 20130315202904) do
   end
 
   create_table "purchases", :force => true do |t|
-    t.integer  "user_id",                 :null => false
-    t.string   "coin_package_identifier", :null => false
-    t.text     "receipt",                 :null => false
+    t.integer  "user_id",    :null => false
+    t.string   "identifier", :null => false
+    t.text     "receipt",    :null => false
     t.boolean  "verified"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
-  add_index "purchases", ["coin_package_identifier"], :name => "index_purchases_on_coin_package_identifier"
+  add_index "purchases", ["identifier"], :name => "index_purchases_on_coin_package_identifier"
   add_index "purchases", ["user_id"], :name => "index_purchases_on_user_id"
   add_index "purchases", ["verified"], :name => "index_purchases_on_verified"
 

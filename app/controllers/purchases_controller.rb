@@ -18,7 +18,7 @@ class PurchasesController < ApplicationController
     if @purchase.save
       respond_with(@purchase, 
         :status => :created, 
-        :location => @purchase,
+        :location => me_purchase_path(@purchase),
         :template => 'purchases/show')
     else
       respond_with(@purchase, :status => :unprocessable_entity)
