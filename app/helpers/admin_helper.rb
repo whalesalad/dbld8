@@ -39,11 +39,11 @@ module AdminHelper
 
   def purchase_status_label(status)
     case status
-    when 'verified'
+    when :verified
       'success'
-    when 'invalid'
+    when :invalid
       'important'
-    when 'pending'
+    when :pending
       'warning'
     end
   end

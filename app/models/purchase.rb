@@ -35,15 +35,17 @@ class Purchase < ActiveRecord::Base
   def status
     case verified
     when true
-      'verified'
+      :verified
     when false
-      'invalid'
+      :invalid
     when nil
-      'pending'
+      :pending
     end
   end
 
+  # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   # If we are posting base64, we can skip this
+  #
   # def receipt=(data)
   #   self[:receipt] = Base64.encode64(data)
   # end
