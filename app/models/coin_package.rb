@@ -2,12 +2,13 @@
 #
 # Table name: coin_packages
 #
-#  id         :integer         not null, primary key
-#  identifier :string(255)
-#  coins      :integer
-#  popular    :boolean         default(FALSE)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id              :integer         not null, primary key
+#  identifier      :string(255)
+#  coins           :integer
+#  popular         :boolean         default(FALSE)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  purchases_count :integer         default(0)
 #
 
 class CoinPackage < ActiveRecord::Base

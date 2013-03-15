@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 class ReceiptVerificationWorker
   include Sidekiq::Worker
 
@@ -10,10 +9,10 @@ class ReceiptVerificationWorker
       purchase.verify!
     end
 
-    if purchase.verified?
-      puts "✔ VERIFIED PURCHASE: #{purchase}" 
-    else
-      puts "✘ INVALID PURCHASE: #{purchase}"
-    end    
+    msg = (purchase.verified?) ? "✔ VERIFIED" : "✘ INVALID"
+    msg += " PURCHASE: #{purchase}"
+
+    Rails.logger.info msg
+    puts msg
   end
 end
