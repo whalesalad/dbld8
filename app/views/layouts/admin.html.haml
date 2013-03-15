@@ -52,7 +52,10 @@
                   = awesome_nav('map-marker', "Locations", admin_locations_path)
 
                 %li{ :class => current_section?(:controller => 'coin_packages') ? 'active' : '' }
-                  = awesome_nav('money', "Coin Packages", admin_coin_packages_path)
+                  = awesome_nav('barcode', "Coin Packages", admin_coin_packages_path)
+
+                %li{ :class => current_section?(:controller => 'purchases') ? 'active' : '' }
+                  = awesome_nav('money', "Purchases", admin_purchases_path)
 
                 %li.nav-header
                   Services
