@@ -44,7 +44,7 @@ DoubleDate::Application.routes.draw do
       post 'pull_facebook', :on => :collection
     end
 
-    resources :notifications, :only => [:index, :show]
+    resources :notifications, :only => [:index, :show, :destroy]
 
     # resource :device, :only => [:update, :destroy]
     put 'device' => 'me#update_device_token', :as => :update_device_token
