@@ -1,35 +1,4 @@
-<div id="fb-root"></div>
-<script>
-// Load the SDK Asynchronously
-(function(d){
-  var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement('script'); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js";
-  ref.parentNode.insertBefore(js, ref);
-}(document));
-
-// Init the SDK upon load
-window.fbAsyncInit = function() {
-  FB.init({ appId: '<%= facebook_app_id %>', channelUrl: "/channel.html", status: true, cookie: true, xfbml: true });
-
-  FB.Event.subscribe('auth.statusChange', fbAuthChange)
-
-  // respond to clicks on the login and logout links
-  $('a.fb-login').bind('click', function() {
-    permissions = [
-      'email', 'user_about_me', 'user_status', 'user_activities', 'user_birthday', 'user_interests',
-      'user_location', 'user_photos', 'user_relationships', 'user_relationship_details', 'friends_status', 'friends_location'];
-
-      FB.login(function(response) {
-        console.log(response)
-      }, { scope: permissions.join(',') });
-
-      return false;
-  });
-
-  $('#auth-logoutlink').bind('click', function() {
-    FB.logout();
-  });
-}
+<script type="text/javascript">
+  var analytics=analytics||[];analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);var r=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}},i=["identify","track","trackLink","trackForm","trackClick","trackSubmit","pageview","ab","alias","ready"];for(var s=0;s<i.length;s++)analytics[i[s]]=r(i[s])};
+  analytics.load("87kenlubi3");
 </script>
