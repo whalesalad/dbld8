@@ -39,6 +39,7 @@ class RegistrationEvent < Event
   def dialog
     {
       slug: "invite_user",
+      user_id: user.id,
       upper_text: "Invite & Earn 10 Coins",
       description: "Would you like to add #{self.user.first_name} as your wing?",
       confirm_button: "Yes, Send Invite",

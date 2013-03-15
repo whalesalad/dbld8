@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
-  skip_filter :require_token_auth, :except => [:logout, :index, :show]
+  skip_filter :require_token_auth, :except => [:logout, :index, :show, :invite]
 
   before_filter :ensure_facebook_access_token, :only => [:authenticate, :create]
+  before_filter :get_user, :only => [:show, :invite]
   after_filter :track_user_auth, :only => [:authenticate]
-  
+
   respond_to :json
 
   def authenticate
@@ -47,8 +48,12 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
     respond_with @user
+  end
+
+  def invite
+    @friendship = @authenticated_user.invite(@user)
+    render json: { success: !!@friendship }
   end
 
   def invitation
@@ -63,6 +68,16 @@ class UsersController < ApplicationController
     end
 
     render 'home/invite'
+  end
+
+  private
+
+  def get_user
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return json_not_found "The requested user was not found."
+    end
   end
 
   def ensure_facebook_access_token

@@ -17,6 +17,7 @@ DoubleDate::Application.routes.draw do
 
   resources :users, :only => [:index, :show, :create] do
     get 'search', :on => :collection
+    post 'invite', :on => :member
   end
 
   resources :activities do
