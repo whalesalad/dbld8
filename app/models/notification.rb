@@ -22,7 +22,7 @@ class Notification < ActiveRecord::Base
 
   attr_accessible :user, :message_proxy, :event, :push, :unread, :callback
 
-  default_scope order('created_at DESC')
+  default_scope order('unread DESC, created_at DESC')
 
   scope :events, 
     where(:target_type => 'Event')

@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
   respond_to :json
 
   def index
-    @notifications = base_query.events
+    @notifications = base_query.events.limit(20)
   end
 
   def show
