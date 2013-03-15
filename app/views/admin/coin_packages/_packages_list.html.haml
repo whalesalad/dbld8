@@ -4,6 +4,7 @@
       %th Identifier
       %th Reference Name
       %th Value
+      %th Purchases
   
   %tbody
     - for package in @packages
@@ -15,3 +16,4 @@
               Popular
         %td #{package.name}
         %td +#{package.coins}
+        %td #{package.purchases.size}

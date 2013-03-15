@@ -1,0 +1,1 @@
+json.(purchase, :id, :to_s, :status, :identifier, :coins, :created_at)

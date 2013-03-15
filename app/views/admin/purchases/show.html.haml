@@ -1,0 +1,111 @@
+%section.user-detail
+  .row-fluid
+    .span1
+      %br/
+      = image_tag @location.icon(88)
+    .span11
+      - if @location.venue?
+        %h1
+          #{@location.venue}
+          %small #{@location.location_name}
+        %h3.object-meta ID ##{@location.id} &mdash; Foursquare Venue
+      - else
+        %h1 #{@location}
+        %h3.object-meta ##{@location.id} &mdash; City
+
+  %hr/ 
+
+  .row-fluid
+    .span5
+    
+      %section.content-section
+        %h4 Location Info
+
+        %dl.dl-horizontal
+          %dt Location ID
+          %dd <code>#{@location.id}</code>
+
+          %dt Full Name
+          %dd #{@location.name}
+
+          - if @location.venue?
+            %dt Venue
+            %dd #{@location.venue}
+
+            %dt Address
+            %dd #{@location.address}
+
+          %dt Locality
+          %dd #{@location.locality}
+
+          %dt State
+          %dd #{@location.state}
+
+          %dt Country
+          %dd #{@location.country.name}
+
+          %dt Lat / Lng
+          %dd
+            %code
+              #{@location.latitude}, #{@location.longitude}
+            = link_to "Open in Google Maps", @location.google_map_url, :target => '_blank'
+
+          %dt Created
+          %dd #{@location.created_at}
+
+        - if @location.venue?
+          %section.content-section
+          %h4 Foursquare
+          
+          %p= image_tag 'powered-by-foursquare.png', :class => 'foursquare-brandmark'
+
+          %dl.dl-horizontal
+            %dt Forusquare ID
+            %dd <code>#{@location.foursquare_id}</code>
+
+            %dt Venue URL
+            %dd= link_to @location.foursquare_url, @location.foursquare_url, :target => "_blank"
+
+
+
+      .form-actions
+        = link_to "Delete", admin_location_path(@location), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
+
+    .span7
+      %ul.nav.nav-tabs.location-tabs
+        %li= link_to "Activities Here", '#activities-at-location', :data => { :toggle => 'tab' }
+        %li= link_to "Users", '#users-with-location', :data => { :toggle => 'tab' }
+        %li= link_to "Raw Object", '#raw-location-object', :data => { :toggle => 'tab' }
+      
+      %section.tab-content
+        .tab-panel#activities-at-location
+          - if @location.activities.exists?
+            %p There's #{pluralize(@location.activities.count, 'activity')} going on here.
+
+            %ul.activities-list
+              - @location.activities.each do |activity|
+                %li
+                  %span.activity-meta #{activity.user} & #{activity.wing}
+                  %span.activity-title #{link_to(activity.title, admin_activity_path(activity))}
+
+          - else
+            %p There are no activities ocurring with <b>#{@location}</b> as the location.
+
+        .tab-panel#users-with-location
+          - if @location.users.exists?
+            %p There's #{pluralize(@location.users_count, 'user')} with this location in their profile.
+
+            %ul.users-list
+              - @location.users.each do |user|
+                %li
+                  %span.user-name #{link_to(user, admin_user_path(user))}
+          - else
+            - if @location.city?
+              %p There are no users with <b>#{@location}</b> as their location.
+            - else
+              %p Users cannot make venues their location, only cities.
+
+
+        .tab-panel#raw-location-object
+          %h4 Raw Location Object
+          = debug @location

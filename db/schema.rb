@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130311105705) do
+ActiveRecord::Schema.define(:version => 20130315202904) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -44,9 +44,10 @@ ActiveRecord::Schema.define(:version => 20130311105705) do
   create_table "coin_packages", :force => true do |t|
     t.string   "identifier"
     t.integer  "coins"
-    t.boolean  "popular",    :default => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.boolean  "popular",         :default => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.integer  "purchases_count", :default => 0
   end
 
   add_index "coin_packages", ["identifier"], :name => "index_coin_packages_on_identifier", :unique => true
@@ -201,6 +202,19 @@ ActiveRecord::Schema.define(:version => 20130311105705) do
     t.integer  "target_id"
     t.string   "target_type", :default => "Event"
   end
+
+  create_table "purchases", :force => true do |t|
+    t.integer  "user_id",                 :null => false
+    t.string   "coin_package_identifier", :null => false
+    t.text     "receipt",                 :null => false
+    t.boolean  "verified"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "purchases", ["coin_package_identifier"], :name => "index_purchases_on_coin_package_identifier"
+  add_index "purchases", ["user_id"], :name => "index_purchases_on_user_id"
+  add_index "purchases", ["verified"], :name => "index_purchases_on_verified"
 
   create_table "user_photos", :force => true do |t|
     t.integer  "user_id"

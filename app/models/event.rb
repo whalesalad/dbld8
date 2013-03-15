@@ -18,7 +18,7 @@ class Event < ActiveRecord::Base
     attr_accessor :coin_value
   end
 
-  attr_accessible :user, :related
+  attr_accessible :user, :related, :coins
 
   belongs_to :user
   validates_presence_of :user

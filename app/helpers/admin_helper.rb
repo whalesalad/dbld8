@@ -37,4 +37,15 @@ module AdminHelper
     "<i class=\"#{c}\"></i>"
   end
 
+  def purchase_status_label(status)
+    case status
+    when 'verified'
+      'success'
+    when 'invalid'
+      'important'
+    when 'pending'
+      'warning'
+    end
+  end
+
 end

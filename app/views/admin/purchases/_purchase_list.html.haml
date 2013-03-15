@@ -1,0 +1,22 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th{ :width => '8%' } ID
+      %th{ :width => '12%' } Coins
+      %th{ :width => '20%' } User
+      %th{ :width => '20%' } Purchased
+      %th{ :width => '15%' } Status
+      %th{ :width => '25%' } Identifier
+  
+  %tbody
+    - for purchase in @purchases
+      %tr
+        %td #{purchase.id}
+        %td #{purchase.coins}
+        %td= link_to purchase.user.full_name, admin_user_path(purchase.user)
+        %td #{l purchase.created_at, :format => :medium}
+        %td
+          %span{ :class => "label label-#{purchase_status_label(purchase.status)}" }
+            #{purchase.status.capitalize}
+        
+        %td= link_to purchase.identifier, edit_admin_coin_package_path(purchase.coin_package)

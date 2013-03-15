@@ -61,7 +61,12 @@ class User < ActiveRecord::Base
   has_many :notifications, 
     :dependent => :destroy,
     :include => [:target]
-  
+
+  # Purchases
+  has_many :purchases,
+    :dependent => :destroy,
+    :include => [:coin_package]
+
   has_many :devices, :dependent => :destroy
 
   belongs_to :location, 

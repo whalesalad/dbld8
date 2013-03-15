@@ -46,6 +46,8 @@ DoubleDate::Application.routes.draw do
 
     resources :notifications, :only => [:index, :show, :destroy]
 
+    resources :purchases, :only => [:index, :create, :show]
+
     # resource :device, :only => [:update, :destroy]
     put 'device' => 'me#update_device_token', :as => :update_device_token
 
@@ -116,6 +118,8 @@ DoubleDate::Application.routes.draw do
     end
 
     resources :coin_packages, :path => 'packages'
+
+    resources :purchases
 
     require 'sidekiq/web'
     mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'
