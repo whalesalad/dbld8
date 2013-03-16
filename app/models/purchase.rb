@@ -12,6 +12,8 @@
 #
 
 class Purchase < ActiveRecord::Base
+  include Concerns::EventConcerns
+  
   attr_accessor :verified_receipt
 
   after_commit :verify_async, :on => :create
@@ -19,7 +21,9 @@ class Purchase < ActiveRecord::Base
 
   attr_accessible :identifier, :receipt
   
-  validates_presence_of :user_id, :identifier, :receipt
+  validates_presence_of :user_id, :receipt
+  validates_presence_of :coin_package, 
+    :message => "A valid coin package 'identifier' must be supplied."
 
   belongs_to :user
 
