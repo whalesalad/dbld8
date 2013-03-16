@@ -50,9 +50,6 @@ class Purchase < ActiveRecord::Base
     end
   end
 
-  # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  # If we are posting base64, we can skip this
-  #
   # def receipt=(data)
   #   self[:receipt] = Base64.encode64(data)
   # end

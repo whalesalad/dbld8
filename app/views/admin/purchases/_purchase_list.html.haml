@@ -1,7 +1,7 @@
 %table.table.table-striped
   %thead
     %tr
-      %th{ :width => '8%' } ID
+      %th{ :width => '10%' } ID
       %th{ :width => '12%' } Coins
       %th{ :width => '20%' } User
       %th{ :width => '20%' } Purchased
@@ -11,7 +11,7 @@
   %tbody
     - for purchase in @purchases
       %tr
-        %td #{purchase.id}
+        %td= link_to "Purchase #{purchase.id}", admin_purchase_path(purchase)
         %td #{purchase.coins}
         %td= link_to purchase.user.full_name, admin_user_path(purchase.user)
         %td #{l purchase.created_at, :format => :medium}
