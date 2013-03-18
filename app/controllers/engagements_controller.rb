@@ -82,7 +82,7 @@ class EngagementsController < ApplicationController
       end
     end
 
-    json_error "An error occured deleting this engagement."
+    json_error "Only an activity or engagement owner can delete/ignore an engagement."
   end
 
   private
