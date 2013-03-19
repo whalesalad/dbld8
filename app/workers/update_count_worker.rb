@@ -1,4 +1,4 @@
-class UpdateCounts
+class UpdateCountWorker
   include Sidekiq::Worker
 
   # example, user changes their location. 
