@@ -29,6 +29,8 @@ class UsersController < ApiController
       
       if @new_user
         @user = FacebookUser.new
+      else
+        @user.sync_facebook_data(me)
       end
 
       @user.accessible = [:facebook_access_token]

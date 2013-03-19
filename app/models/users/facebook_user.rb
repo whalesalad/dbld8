@@ -95,17 +95,13 @@ class FacebookUser < User
     super
   end
 
-  def bootstrap_facebook_data
-    me = facebook_graph.get_object('me')
-
-    self.facebook_id = me['id']
-
+  def sync_facebook_data(me)
     # Loop the below attributes, they map 1:1 with our own
     %w(email first_name last_name gender).each do |fb_attr|
-      self[fb_attr] = me[fb_attr] if self.read_attribute(fb_attr).blank?
+      self[fb_attr] = me[fb_attr]
     end
 
-    self.birthday ||= Date.strptime(me['birthday'], '%m/%d/%Y')
+    self.birthday = Date.strptime(me['birthday'], '%m/%d/%Y')
 
     taken_status = [
       'Engaged', 'Married', "It's complicated", 'In a relationship',
@@ -113,6 +109,14 @@ class FacebookUser < User
     ]
 
     self.single = !taken_status.include?(me['relationship_status'])
+  end
+
+  def bootstrap_facebook_data
+    me = facebook_graph.get_object('me')
+
+    self.facebook_id = me['id']
+
+    self.sync_facebook_data(me)
 
     if self.location.blank? && me.has_key?('location')
       facebook_location = facebook_graph.get_object(me['location']['id'])
@@ -133,7 +137,6 @@ class FacebookUser < User
       # Ensure max of 250 chars.
       self.bio = self.bio[0..250]
     end
-    
   end
 
   private
