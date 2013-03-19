@@ -7,7 +7,7 @@ DoubleDate::Application.routes.draw do
   get 'terms' => 'static#terms'
   get 'privacy' => 'static#privacy'
 
-  get 'invite(/:invite_slug)' => 'users#invitation', :as => 'user_invitation'
+  get 'invite(/:invite_slug)' => 'home#invite', :as => 'user_invitation'
 
   get 'appstore' => redirect(Rails.configuration.app_store_url), :as => 'appstore'
 

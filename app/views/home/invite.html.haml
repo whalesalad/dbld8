@@ -1,6 +1,6 @@
-- provide :title, (@user) ? "Join #{@user.first_name} on DoubleDate!" : "Grab a friend and DoubleDate"
+- provide :title, (@user.present?) ? "Join #{@user.first_name} on DoubleDate!" : "Grab a friend and DoubleDate"
 
-- dd_url = (@user) ? "#{Rails.configuration.ios_prefix}://invite/#{@user.invite_slug}" : "#{Rails.configuration.ios_prefix}://welcome"
+- dd_url = (@user.present?) ? "#{Rails.configuration.ios_prefix}://invite/#{@user.invite_slug}" : "#{Rails.configuration.ios_prefix}://welcome"
 
 - content_for :head do
   %meta{ :name => 'apple-itunes-app', :content => "app-id=#{Rails.configuration.app_id}, app-argument=#{dd_url}" }
@@ -11,7 +11,7 @@
 
 #content  
   .invite-landing
-    - if @user
+    - if @user.present?
       .user-photo-wrapper
         .inset
         = image_tag @user.photo.medium.url, :class => 'user-photo'
@@ -30,7 +30,7 @@
 .lower-glass-shadow
 #lower-glass
   .glass-sheet#sheet-step1
-    - if @user
+    - if @user.present?
       = link_to "Accept Wing Invite", dd_url, :class => 'action-btn', :id => 'accept-invite-btn'
     - else
       = link_to "Get DoubleDate", appstore_path, :class => 'action-btn', :id => 'download-app'

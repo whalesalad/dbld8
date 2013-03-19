@@ -6,6 +6,15 @@ class UsersController < ApiController
 
   after_filter :track_user_auth, :only => [:authenticate]
 
+  def index
+    @users = User.all
+    respond_with @users
+  end
+
+  def show
+    respond_with @user
+  end
+
   def authenticate
     graph = Koala::Facebook::API.new(params[:facebook_access_token])
 
@@ -35,38 +44,13 @@ class UsersController < ApiController
   end
 
   def logout
-    # destroy the users authentication token
-    # remove the users push device tokens
     @authenticated_user.logout!
     render json: { logged_out: true } and return
-  end
-
-  def index
-    @users = User.all
-    respond_with @users
-  end
-
-  def show
-    respond_with @user
   end
 
   def invite
     @friendship = @authenticated_user.invite(@user)
     render json: { success: !!@friendship }
-  end
-
-  def invitation
-    @user = false
-    
-    if params[:invite_slug]
-      @user = User.find_by_invite_slug(params[:invite_slug])
-    end
-
-    if @user.nil?
-      @user = User.find_by_id(params[:invite_slug])
-    end
-
-    render 'home/invite'
   end
 
   private
