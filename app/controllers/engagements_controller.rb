@@ -4,7 +4,9 @@ class EngagementsController < ApiController
   before_filter :participants_only, :only => [:show, :destroy]
 
   def index
-    @engagements = Engagement.for_user(@authenticated_user)
+    @engagements = Engagement.for_user(@authenticated_user).reject do |engagement|
+      engagement.ignored && engagement.activity.participant_ids.include?(@authenticated_user.id)
+    end
   end
 
   def create
