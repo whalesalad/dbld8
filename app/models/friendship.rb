@@ -28,7 +28,7 @@ class Friendship < ActiveRecord::Base
   belongs_to :user
   belongs_to :friend, :class_name => "User", :foreign_key => "friend_id"
   
-  validates_presence_of :user_id, :friend_id
+  validates_presence_of :user, :friend
 
   validate :unique_relationship?, :on => :create
   validate :user_is_not_inviting_himself?
@@ -39,6 +39,10 @@ class Friendship < ActiveRecord::Base
 
   def self.find_between_users(user_id, friend_id)
     where("(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)", user_id, friend_id, friend_id, user_id).first
+  end
+
+  def self.clean_all_facebook_notifications!
+    self.all.each { |f| f.clean_facebook_notifications! }
   end
 
   def unique_relationship?
