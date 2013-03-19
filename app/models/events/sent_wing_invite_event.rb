@@ -43,7 +43,6 @@ class SentWingInviteEvent < Event
 
   def dialog
     return nil unless friendship.approved?
-
     {
       slug: "inform",
       user_id: friendship.user.id,
