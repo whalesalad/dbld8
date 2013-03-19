@@ -43,8 +43,9 @@ class RegistrationEvent < Event
       coins: self.class.coin_value,
       upper_text: "Invite & Earn 10 Coins",
       description: "Would you like to add #{self.user.first_name} as your wing?",
-      confirm_button: "Yes, Send Invite",
-      dismiss_button: "No, Thanks"
+      confirm_text: "Yes, Send Invite",
+      confirm_url: "/users/#{user.id}/invite",
+      dismiss_text: "No, Thanks"
     }
   end
 
