@@ -21,6 +21,9 @@ class Friendship < ActiveRecord::Base
   after_update :check_for_approved_changes
   after_commit :check_for_approved_on_create, :on => :create
   after_commit :create_invite_event!, :on => :create
+
+  # Clean notifications
+  after_commit :clean_facebook_notifications!, :on => :create
   
   belongs_to :user
   belongs_to :friend, :class_name => "User", :foreign_key => "friend_id"
@@ -32,6 +35,10 @@ class Friendship < ActiveRecord::Base
 
   def self.find_for_user_or_friend(user_id)
     where('user_id = ? OR friend_id = ?', user_id, user_id)
+  end
+
+  def self.find_between_users(user_id, friend_id)
+    where("(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)", user_id, friend_id, friend_id, user_id).first
   end
 
   def unique_relationship?
@@ -85,6 +92,20 @@ class Friendship < ActiveRecord::Base
 
   def as_json(options={})
     'BUILD'
+  end
+
+  def clean_facebook_notifications!
+    notifications = []
+    
+    # Destroy the users notifications for the friend
+    user_reg = user.events.where(type: 'RegistrationEvent').first
+    notifications << user_reg.notifications.where(user_id: friend_id).first unless user_reg.nil?
+
+    # Destroy the friends notifications for the user
+    friend_reg = friend.events.where(type: 'RegistrationEvent').first
+    notifications << friend_reg.notifications.where(user_id: user_id).first unless friend_reg.nil?
+
+    notifications.compact.each { |n| n.destroy }
   end
 
   private
