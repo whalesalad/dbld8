@@ -72,7 +72,11 @@ class Engagement < ActiveRecord::Base
   end
 
   def status
-    unlocked? ? 'unlocked' : 'locked'
+    if was_unlocked?
+      unlocked? ? 'unlocked' : 'expired'
+    else
+      'locked'
+    end
   end
 
   def all_participants
