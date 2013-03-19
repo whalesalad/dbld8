@@ -42,7 +42,7 @@ class Friendship < ActiveRecord::Base
   end
 
   def unique_relationship?
-    unless self.find_between_users(user_id, friend_id).empty?
+    if self.class.find_between_users(user_id, friend_id).present?
       errors.add(:user_id, "a friendship between these users already exists.") 
     end
   end
