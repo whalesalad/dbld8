@@ -22,6 +22,9 @@ class Notification < ActiveRecord::Base
 
   attr_accessible :user, :message_proxy, :event, :push, :unread, :callback
 
+  belongs_to :user
+  belongs_to :target, :polymorphic => true
+
   default_scope order('unread DESC, created_at DESC')
 
   scope :events, 
@@ -33,12 +36,11 @@ class Notification < ActiveRecord::Base
       }
     )
 
+  scope :feed, where(:feed_item => true)
+  scope :hidden, where(:feed_item => false)
+
   scope :unread, where(:unread => true)
   scope :read, where(:unread => false)
-
-  belongs_to :user
-  
-  belongs_to :target, :polymorphic => true
 
   def message?
     target_type == 'MessageProxy'

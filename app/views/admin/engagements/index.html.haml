@@ -1,0 +1,39 @@
+- content_for :title, @title
+
+.page-header
+  %h1
+    = yield(:title)
+    %small #{pluralize(@engagements.count, 'Engagement')} Total
+
+- if @engagements.empty?
+  %p Aint got time fo dat
+
+- else
+  %table.table.table-striped
+    %thead
+      %tr
+        %th ID
+        %th Users
+        %th Activity
+        %th Created
+        %th Unlocked
+        %th Ignored
+    
+    %tbody
+      - for engagement in @engagements
+        %tr
+          %td #{engagement.id}
+          %td 
+            = link_to engagement.participants.join(" & "), [:admin, engagement]
+          %td 
+            %b
+              = link_to engagement.activity, [:admin, engagement.activity]
+            %br/
+            #{engagement.activity.location}
+          %td #{l engagement.created_at, :format => :medium}
+          %td #{engagement.status.capitalize}
+          %td 
+            - if engagement.ignored?
+              Ignored
+
+          

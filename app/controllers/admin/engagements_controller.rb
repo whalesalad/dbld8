@@ -1,6 +1,12 @@
 class Admin::EngagementsController < AdminController
   respond_to :json, :only => [:unlock]
+  
   before_filter :get_engagement, :except => [:index]
+
+  def index
+    @title = 'Engagements'
+    @engagements = Engagement.page(params[:page]).per(50)
+  end
 
   def show
     @activity = @engagement.activity

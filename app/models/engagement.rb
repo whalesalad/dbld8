@@ -38,6 +38,12 @@ class Engagement < ActiveRecord::Base
   scope :ignored, where(:ignored => true)
   scope :not_ignored, where(:ignored => false)
 
+  scope :unlocked, where("unlocked_at > ?", 5.days.ago)
+  scope :three_days_left, where(unlocked_at: 5.days.ago..2.days.ago)
+  scope :one_day_left, where(unlocked_at: 5.days.ago..4.days.ago)
+
+  scope :to_be_locked, where("unlocked_at < ?", 5.days.ago)
+
   default_scope order('engagements.updated_at DESC')
 
   scope :for_user, lambda {|user|
@@ -50,6 +56,11 @@ class Engagement < ActiveRecord::Base
   scope :unread_for, lambda {|user|
     joins(:message_proxies).where('message_proxies.user_id' => user.id).where('message_proxies.unread' => true)
   }
+
+  def self.expires_in(num_days)
+    # Find the dates that expire in the next 3 days, within current hour.
+    self.where("unlocked_at > ?", num_days.days.ago)
+  end
   
   def send_initial_message(message)
     messages.create(:user => user, :message => message)
