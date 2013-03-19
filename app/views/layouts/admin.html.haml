@@ -37,7 +37,10 @@
                   = awesome_nav('user', "Users", admin_users_path) 
 
                 %li{ :class => current_section?(:controller => 'activities') ? 'active' : '' }
-                  = awesome_nav('coffee', "Activities", admin_activities_path)                 
+                  = awesome_nav('coffee', "Activities", admin_activities_path)
+
+                %li{ :class => current_section?(:controller => 'engagements') ? 'active' : '' }
+                  = awesome_nav('envelope-alt', "Engagements", admin_engagements_path)                 
 
                 %li{ :class => current_section?(:controller => 'events') ? 'active' : '' }
                   = awesome_nav('star', "Events", admin_events_path)

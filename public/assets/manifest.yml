@@ -51,10 +51,10 @@ application.js: application-155203b7144128c2047da6377a6f613e.js
 application/index.js: application-155203b7144128c2047da6377a6f613e.js
 base.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
 base/index.js: base-ef8590abf7d3044f1163d959f83ae7ad.js
-admin/admin.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
-admin/admin/index.css: admin/admin-729b5f1d2fe4ad56e8f2f84688a7fe35.css
-application.css: application-1665aac1e7c69ba55ec92e06e003e9ba.css
-application/index.css: application-1665aac1e7c69ba55ec92e06e003e9ba.css
+admin/admin.css: admin/admin-9f0dca64d74ecbe76fdc89c7804dd407.css
+admin/admin/index.css: admin/admin-9f0dca64d74ecbe76fdc89c7804dd407.css
+application.css: application-57c842ae327b8db225f15c69fbc8e27d.css
+application/index.css: application-57c842ae327b8db225f15c69fbc8e27d.css
 appstore/download.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 appstore/download/index.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 FontAwesome.otf: FontAwesome-468f83b63df32064983141584a19ff17.otf

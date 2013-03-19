@@ -6,7 +6,7 @@
     %small #{pluralize(@engagements.count, 'Engagement')} Total
 
 - if @engagements.empty?
-  %p Aint got time fo dat
+  %p There aren't any engagements.
 
 - else
   %table.table.table-striped
@@ -24,14 +24,21 @@
         %tr
           %td #{engagement.id}
           %td 
-            = link_to engagement.participants.join(" & "), [:admin, engagement]
-          %td 
             %b
-              = link_to engagement.activity, [:admin, engagement.activity]
+              = link_to engagement.participants.join(" & "), [:admin, engagement]
+          %td 
+            = link_to engagement.activity, [:admin, engagement.activity]
             %br/
             #{engagement.activity.location}
           %td #{l engagement.created_at, :format => :medium}
-          %td #{engagement.status.capitalize}
+          
+          %td
+            #{engagement.status.capitalize}
+            - if engagement.unlocked?
+              %br/
+              %em
+                #{distance_of_time_in_words_to_now(engagement.expires_at)} remaining
+          
           %td 
             - if engagement.ignored?
               Ignored

@@ -35,16 +35,16 @@ class Engagement < ActiveRecord::Base
   has_many :messages, :dependent => :destroy
   has_many :message_proxies, :through => :messages
 
+  default_scope order('engagements.updated_at DESC')
+
   scope :ignored, where(:ignored => true)
   scope :not_ignored, where(:ignored => false)
 
-  scope :unlocked, where("unlocked_at > ?", 5.days.ago)
-  scope :three_days_left, where(unlocked_at: 5.days.ago..2.days.ago)
-  scope :one_day_left, where(unlocked_at: 5.days.ago..4.days.ago)
-
-  scope :to_be_locked, where("unlocked_at < ?", 5.days.ago)
-
-  default_scope order('engagements.updated_at DESC')
+  # Status, days remaining etc...
+  scope :unlocked, where("unlocked_at > ?", EXPIRATION_DAYS.ago)
+  scope :three_days_left, where(unlocked_at: EXPIRATION_DAYS.ago..2.days.ago)
+  scope :one_day_left, where(unlocked_at: EXPIRATION_DAYS.ago..4.days.ago)
+  scope :to_be_locked, where("unlocked_at < ?", EXPIRATION_DAYS.ago)
 
   scope :for_user, lambda {|user|
     select('distinct(engagements.id)')

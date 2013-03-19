@@ -17,7 +17,6 @@
 
   .row-fluid
     .span5
-      
       %section.content-section
         %h4 Basic Info
         %dl.dl-horizontal
@@ -26,7 +25,9 @@
 
           %dt Unlocked?
           %dd
-            #{yesno(@engagement.unlocked?)}, #{@engagement.unlocked_at}
+            #{yesno(@engagement.unlocked?)}
+            - if @engagement.unlocked?
+              , #{@engagement.unlocked_at}
 
 
           - if @engagement.unlocked?
@@ -47,11 +48,6 @@
           %dt Activity Wing
           %dd #{link_to @activity.wing, admin_user_path(@activity.wing)}        
         
-
-      .form-actions
-        - unless @engagement.unlocked?
-          = link_to "Unlock", '#unlock-modal', :class => 'btn btn-primary', :data => { :toggle => 'modal' }
-        = link_to "Delete Engagement", admin_engagement_path(@engagement), :method => :delete, :confirm => "Are you sure you want to delete this engagement?", :class => 'btn btn-danger'
 
       - unless @engagement.unlocked?
         #unlock-modal.modal.hide.fade
@@ -108,3 +104,10 @@
         .tab-panel#raw-object
           %h4 Raw Activity Object
           = debug @engagement
+
+  .row-fluid
+    .span12
+      .form-actions
+        - unless @engagement.unlocked?
+          = link_to "Unlock", '#unlock-modal', :class => 'btn btn-primary', :data => { :toggle => 'modal' }
+        = link_to "Delete Engagement", admin_engagement_path(@engagement), :method => :delete, :confirm => "Are you sure you want to delete this engagement?", :class => 'btn btn-danger'
