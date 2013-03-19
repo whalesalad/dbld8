@@ -147,12 +147,7 @@ class Engagement < ActiveRecord::Base
   def days_remaining
     delta = ((Time.now - unlocked_at) / 1.day).round
     days = (EXPIRATION_DAYS / 1.day)
-
-    if delta >= days
-      return 0
-    else
-      return days - delta
-    end
+    return (delta >= days) ? 0 : days - delta
   end
 
   def as_json(options={})
