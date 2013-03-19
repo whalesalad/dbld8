@@ -1,5 +1,5 @@
 class LocationsController < ApiController
-  before_filter :ensure_latlng, :only  => [:both, :venues]
+  before_filter :ensure_latlng, :only  => [:both, :current, :venues]
   before_filter :get_location, :only => [:show]
   
   def index
@@ -32,6 +32,11 @@ class LocationsController < ApiController
   def both
     @locations = Location.find_cities_and_venues_near(@latitude, @longitude, params[:query])
     respond_with @locations, :template => 'locations/index'
+  end
+
+  def current
+    @location = Location.find_cities_near(@latitude, @longitude).first
+    respond_with @location, :template => 'locations/show'
   end
 
   def show

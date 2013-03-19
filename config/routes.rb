@@ -73,6 +73,7 @@ DoubleDate::Application.routes.draw do
     get 'both', :on => :collection
     get 'cities', :on => :collection
     get 'venues', :on => :collection
+    get 'current', :on => :collection
   end
 
   # resources :packages, :controller => 'coin_packages', :only => [:index]

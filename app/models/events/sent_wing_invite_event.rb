@@ -22,7 +22,7 @@ class SentWingInviteEvent < Event
 
   def notification_string_for(user)
     if friendship.approved?
-      "You accepted #{friendship.user}'s wing invitation! Woohoo!"
+      "You accepted #{friendship.user}'s wing invite! Woohoo!"
     else
       "#{friendship.user} invited you to be #{friendship.user.gender_posessive} wing"
     end
@@ -39,6 +39,19 @@ class SentWingInviteEvent < Event
 
   def notification_url
     "users/#{friendship.user.id}"
+  end
+
+  def dialog
+    return nil unless friendship.approved?
+
+    {
+      slug: "inform",
+      user_id: friendship.user.id,
+      coins: AcceptedWingInviteEvent.coin_value,
+      upper_text: "You Earned #{AcceptedWingInviteEvent.coin_value} Coins",
+      description: "By accepted #{friendship.user}'s wing invite you both earned #{AcceptedWingInviteEvent.coin_value} coins!",
+      dismiss_text: "Dismiss"
+    }
   end
 
 end
