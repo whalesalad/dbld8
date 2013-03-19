@@ -5,7 +5,6 @@ DoubleDate::Application.configure do
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true
-    Bullet.disable_browser_cache = true
   end
 
   # In the development environment your application's code is reloaded on

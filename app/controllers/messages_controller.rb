@@ -1,6 +1,4 @@
 class MessagesController < EngagementsController
-  respond_to :json
-  
   # via EngagementsController
   before_filter :get_engagement, :participants_only
   

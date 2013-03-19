@@ -1,9 +1,6 @@
-class InterestsController < ApplicationController
-  skip_filter :require_token_auth, :only => [:index, :show]
+class InterestsController < ApiController
   before_filter :get_interest, :only => [:show]
   
-  respond_to :json
-
   TOP_INTERESTS_COUNT = 20
 
   def index

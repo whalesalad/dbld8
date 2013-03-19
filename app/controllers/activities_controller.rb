@@ -1,6 +1,4 @@
 class ActivitiesController < BaseActivitiesController
-  respond_to :json
-  
   before_filter :get_activity, :only => [:show, :update, :destroy]
   before_filter :activity_owner_only, :only => [:update, :destroy]
 

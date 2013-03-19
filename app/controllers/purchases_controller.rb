@@ -1,6 +1,4 @@
-class PurchasesController < ApplicationController
-  respond_to :json
-
+class PurchasesController < ApiController
   before_filter :get_purchase, :only => [:show]
 
   def index

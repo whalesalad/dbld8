@@ -1,12 +1,9 @@
-class MeController < ApplicationController  
-  respond_to :json
-  
+class MeController < ApiController
   before_filter :require_slug, :only => [:unlock, :check_unlock]
   before_filter :set_user
   
   def show
-    respond_with @user,
-      :template => 'users/show'
+    respond_with @user, :template => 'users/show'
   end
 
   def update

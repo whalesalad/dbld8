@@ -1,6 +1,4 @@
-class FriendsController < ApplicationController
-  respond_to :json
-  
+class FriendsController < ApiController
   before_filter :get_friend_and_friendship, :only => [:update, :destroy]
   
   def index

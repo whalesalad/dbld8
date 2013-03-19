@@ -78,8 +78,6 @@ DoubleDate::Application.routes.draw do
   # resources :packages, :controller => 'coin_packages', :only => [:index]
   resources :coin_packages, :path => 'packages', :only => [:index]
 
-  get 'cron/(:task)' => 'cron#run_task'
-
   # Admin
   namespace :admin do
     match '', :action => 'index'

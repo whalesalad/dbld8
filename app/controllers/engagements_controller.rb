@@ -1,6 +1,4 @@
-class EngagementsController < ApplicationController
-  respond_to :json
-
+class EngagementsController < ApiController
   before_filter :get_activity, :only => [:show, :create, :destroy]
   before_filter :get_engagement, :only => [:show, :unlock, :destroy]
   before_filter :participants_only, :only => [:show, :destroy]
@@ -24,7 +22,7 @@ class EngagementsController < ApplicationController
     @engagement.user = @authenticated_user
 
     ActiveRecord::Base.transaction do
-      @engagement.save
+      @engagement.save!
 
       # Send the first message for this engagement
       # I'd like to hook this to the after_create event

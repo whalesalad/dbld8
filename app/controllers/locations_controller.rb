@@ -1,16 +1,12 @@
-class LocationsController < ApplicationController
-  respond_to :json
-
-  skip_filter :require_token_auth, :only => [:index, :cities, :venues, :both, :show]
-  
+class LocationsController < ApiController
   before_filter :ensure_latlng, :only  => [:both, :venues]
   before_filter :get_location, :only => [:show]
   
   def index
     @locations = if params[:query]
-      Location.where('name ~* ?', params[:query])
+      Location.where('name ~* ?', params[:query]).limit(50)
     else
-      Location.find(:all)
+      Location.limit(50)
     end
 
     respond_with @locations

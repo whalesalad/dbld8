@@ -1,5 +1,4 @@
-class UserPhotoController < ApplicationController
-  respond_to :json
+class UserPhotoController < ApiController
 
   def show
     respond_with @authenticated_user.photo

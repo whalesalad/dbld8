@@ -1,11 +1,10 @@
-class UsersController < ApplicationController
-  skip_filter :require_token_auth, :except => [:logout, :index, :show, :invite]
-
-  before_filter :ensure_facebook_access_token, :only => [:authenticate, :create]
+class UsersController < ApiController
+  skip_filter :require_token_auth, :only => [:authenticate]
+  
+  before_filter :ensure_facebook_access_token, :only => [:authenticate]
   before_filter :get_user, :only => [:show, :invite]
-  after_filter :track_user_auth, :only => [:authenticate]
 
-  respond_to :json
+  after_filter :track_user_auth, :only => [:authenticate]
 
   def authenticate
     graph = Koala::Facebook::API.new(params[:facebook_access_token])

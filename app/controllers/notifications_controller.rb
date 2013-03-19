@@ -1,6 +1,4 @@
-class NotificationsController < ApplicationController
-  respond_to :json
-
+class NotificationsController < ApiController
   before_filter :get_notification, :only => [:show, :destroy]
   after_filter :mark_read, :only => [:show]
 

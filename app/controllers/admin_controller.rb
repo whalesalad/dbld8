@@ -1,8 +1,6 @@
 require 'date'
 
-class AdminController < ApplicationController
-  skip_filter :require_token_auth
-  
+class AdminController < ApplicationController  
   before_filter :force_ssl if Rails.env.production?
   before_filter :authenticate if Rails.env.production?
   

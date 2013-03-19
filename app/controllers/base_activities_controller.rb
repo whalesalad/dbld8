@@ -1,4 +1,4 @@
-class BaseActivitiesController < ApplicationController
+class BaseActivitiesController < ApiController
   private
 
   def get_activity

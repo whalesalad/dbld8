@@ -1,7 +1,5 @@
-class FriendshipsController < ApplicationController
-  respond_to :json
-
-  before_filter :find_friendship, :only => [:show, :update, :approve, :destroy]
+class FriendshipsController < ApiController
+  before_filter :find_friendship, :only => [:show]
 
   def index
     @friendships = Friendship.find_for_user_or_friend(@authenticated_user.id)    
@@ -31,11 +29,6 @@ class FriendshipsController < ApplicationController
       respond_with @friendship, :status => :unprocessable_entity
     end
   end
-
-  
-  def destroy
-    
-  end
   
   private
   
@@ -43,7 +36,7 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.find_by_id(params[:id])
 
     if @friendship.nil?
-      json_not_found("A friendship with an ID of #{params[:id]} could not be found.")
+      return json_not_found "A friendship with an ID of #{params[:id]} could not be found."
     end
   end
 

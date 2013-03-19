@@ -29,6 +29,8 @@ class Engagement < ActiveRecord::Base
     :scope => [:user_id, :wing_id], 
     :message => "You or your wing have already engaged in this activity."
 
+  validate :validate_unique_participants, :on => :create
+
   # Messages!
   has_many :messages, :dependent => :destroy
   has_many :message_proxies, :through => :messages
@@ -67,6 +69,14 @@ class Engagement < ActiveRecord::Base
 
   def all_participant_ids
     (participant_ids | activity.participant_ids)
+  end
+
+  def unique_participants?
+    all_participant_ids.uniq.size == 4
+  end
+
+  def validate_unique_participants
+    errors.add(:users, "An Engagement cannot contain users that belong to the Activity. All four users must be unique.") unless unique_participants?
   end
 
   def engagement_messages

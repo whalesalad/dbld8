@@ -1,6 +1,4 @@
-class CoinPackagesController < ApplicationController
-  skip_filter :require_token_auth
-  respond_to :json
+class CoinPackagesController < ApiController
 
   def index
     @coin_packages = CoinPackage.all
