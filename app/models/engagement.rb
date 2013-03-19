@@ -144,6 +144,17 @@ class Engagement < ActiveRecord::Base
     unlocked_at + EXPIRATION_DAYS
   end
 
+  def days_remaining
+    delta = ((Time.now - unlocked_at) / 1.day).round
+    days = (EXPIRATION_DAYS / 1.day)
+
+    if delta >= days
+      return 0
+    else
+      return days - delta
+    end
+  end
+
   def as_json(options={})
     "BUILD"
   end

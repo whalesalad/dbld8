@@ -14,6 +14,7 @@ if engagement.was_unlocked?
   else
     json.time_remaining distance_of_time_in_words_to_now(engagement.expires_at)
   end
+  json.days_remaining engagement.days_remaining
 end
 
 json.unread_count engagement.messages.unread_for(@authenticated_user).count
