@@ -42,7 +42,7 @@ class RecruitedWingEvent < Event
       user_id: related.friend.id,
       coins: self.class.coin_value,
       upper_text: "You Earned #{self.class.coin_value} Coins",
-      description: "#{related.friend.first_name} accepted your invite. You both earned #{self.class.coin_value} coins!",
+      description: "#{related.friend.first_name} accepted your wing invite and you both earned #{self.class.coin_value} coins!",
       dismiss_text: "Dismiss"
     }
   end

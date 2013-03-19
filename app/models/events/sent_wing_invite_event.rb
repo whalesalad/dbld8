@@ -48,7 +48,7 @@ class SentWingInviteEvent < Event
       user_id: friendship.user.id,
       coins: AcceptedWingInviteEvent.coin_value,
       upper_text: "You Earned #{AcceptedWingInviteEvent.coin_value} Coins",
-      description: "By accepted #{friendship.user}'s wing invite you both earned #{AcceptedWingInviteEvent.coin_value} coins!",
+      description: "You earned #{AcceptedWingInviteEvent.coin_value} coins for accepting #{friendship.user}'s wing invite!",
       dismiss_text: "Dismiss"
     }
   end
