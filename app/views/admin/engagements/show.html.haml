@@ -19,30 +19,32 @@
     .span5
       %section.content-section
         %h4 Basic Info
-        %dl.dl-horizontal
-          %dt Ignored?
-          %dd= yesno(@engagement.ignored?)
+        %dl
+          %dt Currently
+          %dd #{@engagement.status.capitalize}
 
-          %dt Unlocked?
-          %dd
-            #{yesno(@engagement.unlocked?)}
-            - if @engagement.unlocked?
-              , #{@engagement.unlocked_at}
-
-
+          %dt Ever Unlocked?
+          %dd 
+            #{yesno(@engagement.was_unlocked?)}
+            - if @engagement.was_unlocked?
+              , on #{l @engagement.unlocked_at, :format => :medium}
+        
           - if @engagement.unlocked?
             %dt Expires
             %dd
-              = @engagement.expires_at
-              (#{distance_of_time_in_words_to_now(@engagement.expires_at)} remain)
+              #{distance_of_time_in_words_to_now(@engagement.expires_at)} remaining — 
+              Expires #{l @engagement.expires_at, :format => :medium}
 
-          %dt Engagement User
+          %dt Ignored?
+          %dd= yesno(@engagement.ignored?)
+
+          %dt Engagement Creator
           %dd #{link_to @engagement.user, admin_user_path(@engagement.user)}
 
           %dt Engagement Wing
           %dd #{link_to @engagement.wing, admin_user_path(@engagement.wing)}
 
-          %dt Activity User
+          %dt Activity Creator
           %dd #{link_to @activity.user, admin_user_path(@activity.user)}
 
           %dt Activity Wing
