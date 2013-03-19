@@ -13,6 +13,7 @@
 #  updated_at  :datetime        not null
 #  target_id   :integer
 #  target_type :string(255)     default("Event")
+#  feed_item   :boolean         default(TRUE)
 #
 
 require 'spec_helper'

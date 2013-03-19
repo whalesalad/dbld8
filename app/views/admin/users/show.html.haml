@@ -179,7 +179,7 @@
             %p #{@user.first_name} does not have any notifications.
           
           %ul.generic-object-list
-            - @user.notifications.events.limit(30).each do |notification|
+            - @user.notifications.events.feed.limit(30).each do |notification|
               %li
                 %span.object-title
                   = link_to notification, url_for(notification.related_admin_path)

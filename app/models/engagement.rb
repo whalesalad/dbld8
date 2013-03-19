@@ -9,7 +9,6 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  ignored     :boolean         default(FALSE)
-#  unlocked    :boolean         default(FALSE)
 #  unlocked_at :datetime
 #
 
@@ -42,9 +41,11 @@ class Engagement < ActiveRecord::Base
 
   # Status, days remaining etc...
   scope :unlocked, where("unlocked_at > ?", EXPIRATION_DAYS.ago)
-  scope :three_days_left, where(unlocked_at: EXPIRATION_DAYS.ago..2.days.ago)
-  scope :one_day_left, where(unlocked_at: EXPIRATION_DAYS.ago..4.days.ago)
-  scope :to_be_locked, where("unlocked_at < ?", EXPIRATION_DAYS.ago)
+  scope :expired, where("unlocked_at < ?", EXPIRATION_DAYS.ago)
+  
+  scope :three_days_left, where(unlocked_at: 2.days.ago..(2.days.ago+1.hour))
+  scope :one_day_left, where(unlocked_at: 4.days.ago..(4.days.ago+1.hour))
+  scope :to_be_expired, where(unlocked_at: EXPIRATION_DAYS.ago..(EXPIRATION_DAYS.ago+1.hour))
 
   scope :for_user, lambda {|user|
     select('distinct(engagements.id)')
@@ -129,6 +130,10 @@ class Engagement < ActiveRecord::Base
   def unlock!
     self.unlocked_at = Time.now
     save!
+  end
+
+  def was_unlocked?
+    self.unlocked_at.present?
   end
 
   def expires_at

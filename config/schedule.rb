@@ -1,8 +1,8 @@
 set :output, "#{path}/log/cron.log"
 
-# every :hour, :roles => :cron do
-  
-# end
+every :hour, :roles => :cron do
+  rake "dbld8:expire_engagements"  
+end
 
 every 4.hours, :roles => :cron do
   # run apn feedback worker

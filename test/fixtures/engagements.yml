@@ -9,7 +9,6 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  ignored     :boolean         default(FALSE)
-#  unlocked    :boolean         default(FALSE)
 #  unlocked_at :datetime
 #
 

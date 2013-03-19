@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130319095207) do
+ActiveRecord::Schema.define(:version => 20130319111213) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -78,7 +78,6 @@ ActiveRecord::Schema.define(:version => 20130319095207) do
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.boolean  "ignored",     :default => false
-    t.boolean  "unlocked",    :default => false
     t.datetime "unlocked_at"
   end
 

@@ -1,7 +1,7 @@
 class EngagementExpireWorker
   include Sidekiq::Worker
   
-  def perform(event_id)
+  def perform(engagement_id, days_remaining)
     
   end
 end
