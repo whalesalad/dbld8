@@ -42,10 +42,9 @@ class Friendship < ActiveRecord::Base
   end
 
   def unique_relationship?
-    errors.add(:user_id, "a friendship between these users already exists.") unless 
-      self.class.where("(user_id = ? AND friend_id = ?) OR 
-                        (user_id = ? AND friend_id = ?)",
-                        user_id, friend_id, friend_id, user_id).empty?
+    unless self.find_between_users(user_id, friend_id).empty?
+      errors.add(:user_id, "a friendship between these users already exists.") 
+    end
   end
   
   def to_s
