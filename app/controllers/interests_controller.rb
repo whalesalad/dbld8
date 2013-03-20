@@ -1,4 +1,6 @@
 class InterestsController < ApiController
+  skip_filter :require_token_auth, :only => [:index]
+
   before_filter :get_interest, :only => [:show]
   
   TOP_INTERESTS_COUNT = 20
