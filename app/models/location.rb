@@ -173,15 +173,11 @@ class Location < ActiveRecord::Base
     "http://foursquare.com/v/#{foursquare_id}" if venue?
   end
 
-  def icon(size=256)
+  def icon(size, transparent=false)
     sizes = [32, 64, 88, 256]
     size = 256 unless sizes.include?(size)
-
     icon_url = foursquare_icon || "https://foursquare.com/img/categories/none_%s.png"
-
-    bg = foursquare_icon.present? ? 'bg_' : ''      
-
-    icon_url % "#{bg}#{size}"
+    icon_url % "#{(transparent) ? '' : 'bg_'}#{size}"
   end
 
   def as_json(options={})
