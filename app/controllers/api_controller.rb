@@ -38,6 +38,7 @@ class ApiController < ActionController::Base
   end
 
   def add_who_am_i_header
+    return unless @authenticated_user.present?
     response.headers['DBLD8-Who-Am-I'] = "#{@authenticated_user.full_name}, ID.#{@authenticated_user.id}"
   end
 

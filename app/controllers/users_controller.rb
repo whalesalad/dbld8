@@ -71,6 +71,8 @@ class UsersController < ApiController
   end
 
   def track_user_auth
+    Rails.logger.info("[AUTH] Login failure.") and return if @user.blank?
+
     Rails.logger.info "[ANALYTICS] User #{@user.id} logged in. Idenfiying + tracking login."
 
     # Identify the user

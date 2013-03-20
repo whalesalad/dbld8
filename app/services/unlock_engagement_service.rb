@@ -18,9 +18,13 @@ class UnlockEngagementService
     self.unlockable ||= can_unlock?
   end
 
+  def valid_permissions?
+    engagement.allowed?(user, :all)
+  end
+
   def can_unlock?
     # ensure the user is the owner or wing on the activity
-    return false unless activity.allowed?(user, :owners)
+    return false unless valid_permissions?
 
     # ensure that the user has at least X cost of whatever this event costs
     return false unless user.can_spend?(unlock_cost)

@@ -17,7 +17,11 @@ class EngagementExpiredEvent < Event
   alias engagement related
 
   def detail_string
-    "#{user}'s engagement ID:#{engagement.id} has expired"
+    if related.nil?
+      "#{user}'s deleted engagement expired"  
+    else
+      "#{user}'s engagement ID:#{engagement.id} has expired"
+    end
   end
 
   def notification_string_for(user)
