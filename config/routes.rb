@@ -54,6 +54,8 @@ DoubleDate::Application.routes.draw do
     # get list of friends
     # GET /me/friends
     resources :friends, :only => [:index, :update, :destroy] do
+      post 'approve' => :update, :on => :member
+
       get 'facebook', :on => :collection
 
       # /me/friends/invite { facebook_ids: 109234, 23492349, 29349234 }
@@ -61,7 +63,6 @@ DoubleDate::Application.routes.draw do
 
       post 'invite_connect', :on => :collection
       post 'request_connect', :on => :collection
-
     end
   end
 

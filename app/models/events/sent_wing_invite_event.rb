@@ -42,7 +42,10 @@ class SentWingInviteEvent < Event
   end
 
   def dialog
-    return nil unless friendship.approved?
+    (friendship.approved?) ? inform_dialog : approve_dialog
+  end
+
+  def inform_dialog
     {
       slug: "inform",
       user_id: friendship.user.id,
@@ -50,6 +53,18 @@ class SentWingInviteEvent < Event
       upper_text: "You Earned #{AcceptedWingInviteEvent.coin_value} Coins",
       description: "You earned #{AcceptedWingInviteEvent.coin_value} coins for accepting #{friendship.user}'s wing invite!",
       dismiss_text: "Dismiss"
+    }
+  end
+
+  def approve_dialog
+    {
+      slug: "accept_invite",
+      coins: RecruitedWingEvent.coin_value,
+      upper_text: "Accept & Earn #{RecruitedWingEvent.coin_value} Coins",
+      description: "Would you like to accept #{friendship.user}'s invitation?",
+      confirm_text: "Approve",
+      confirm_url: "/me/friends/#{friendship.user.id}/approve",
+      dismiss_text: "Ignore"
     }
   end
 

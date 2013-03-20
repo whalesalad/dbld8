@@ -3,7 +3,7 @@ class NotificationsController < ApiController
   after_filter :mark_read, :only => [:show]
 
   def index
-    @notifications = base_query.events.feed#.limit(20)
+    @notifications = base_query.events.feed.limit(20)
   end
 
   def show
