@@ -7,11 +7,11 @@ class MaxActivityUnlockerService
   end
 
   def unlock_intervals
-    [5, 10]
+    [5, 10, 50]
   end
 
   def unlock_events
-    [UnlockedFiveActivitiesEvent, UnlockedTenActivitiesEvent]
+    [UnlockedFiveActivitiesEvent, UnlockedTenActivitiesEvent, UnlockedFiftyActivitiesEvent]
   end
 
   def activities_allowed

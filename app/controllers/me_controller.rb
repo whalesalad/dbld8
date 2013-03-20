@@ -44,7 +44,7 @@ class MeController < ApiController
   # perform an unlock. requires a slug
   # unlocked_five_activities -or- unlocked_ten_activities
   def perform_unlock
-    allowed_unlocks = %w(unlocked_five_activities unlocked_ten_activities)
+    allowed_unlocks = %w(unlocked_five_activities unlocked_ten_activities unlocked_fifty_activities)
 
     unless allowed_unlocks.include?(params[:slug])
       return json_error "An invalid slug was specified. Only #{allowed_unlocks.join(', ')} are allowed."
