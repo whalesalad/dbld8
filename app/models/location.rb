@@ -76,11 +76,9 @@ class Location < ActiveRecord::Base
   end
 
   def self.get_foursquare_icons
-    self.venues.each do |location|
-      if location.foursquare_icon.blank?
-        location.foursquare_icon = location.foursquare_venue.icon
-        location.save!
-      end
+    self.venues.where(:foursquare_icon => nil).each do |location|
+      location.foursquare_icon = location.foursquare_venue.icon
+      location.save!
     end
   end
 
