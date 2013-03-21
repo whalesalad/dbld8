@@ -71,7 +71,6 @@ DoubleDate::Application.routes.draw do
 
   # Locations
   resources :locations, :only => [:index, :show] do
-    get 'both', :on => :collection
     get 'cities', :on => :collection
     get 'venues', :on => :collection
     get 'current', :on => :collection

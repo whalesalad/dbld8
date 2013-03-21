@@ -1,5 +1,5 @@
 class LocationsController < ApiController
-  before_filter :ensure_latlng, :only  => [:both, :current, :venues]
+  before_filter :set_point, :except => [:index, :show, :create]
   before_filter :get_location, :only => [:show]
   
   def index
@@ -13,24 +13,18 @@ class LocationsController < ApiController
   end
 
   def cities
-    ensure_latlng unless params[:query].present?
-    
-    @locations = if @latitude && @longitude
-      Location.find_cities_near(@latitude, @longitude)
-    else
-      Location.cities.where('name ~* ?', params[:query]).order('-population')
-    end
+    # @locations = if @latitude && @longitude
+    #   Location.find_cities_near(@latitude, @longitude)
+    # else
+    #   Location.cities.where('name ~* ?', params[:query]).order('-population')
+    # end
 
+    @locations = Location.search({ :point => @point, :kind => 'city', :query => params[:query] })
     respond_with @locations, :template => 'locations/index'
   end
 
   def venues
     @locations = Location.find_venues_near(@latitude, @longitude, params[:query])
-    respond_with @locations, :template => 'locations/index'
-  end
-
-  def both
-    @locations = Location.find_cities_and_venues_near(@latitude, @longitude, params[:query])
     respond_with @locations, :template => 'locations/index'
   end
 
@@ -55,15 +49,14 @@ class LocationsController < ApiController
   
   protected
 
-  def ensure_latlng
+  def set_point
     if (params.keys & %w(latitude longitude)).empty?
-      return json_error "Please specify latitude and longitude parameters, or a query parameter if searching for cities."
+      @point = @authenticated_user.location.str_point
     elsif (params[:latitude] + params[:longitude]).to_i < 1
       return json_error "Please specify valid latitude and longitude parameters. lat: #{params[:latitude]}, lng: #{params[:longitude]} are invalid."
-    else
-      @latitude = params[:latitude]
-      @longitude = params[:longitude]
     end
+    
+    @point ||= [params[:latitude], params[:longitude]].join ','
   end
 
   def get_location

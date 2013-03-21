@@ -24,50 +24,44 @@
         %dl.dl-horizontal
           %dt Location ID
           %dd 
-            %p
-              <code>#{@location.id}</code>
+            <code>#{@location.id}</code>
 
           %dt Full Name
           %dd 
-            %p
-              #{@location.name}
+            #{@location.name}
 
           - if @location.venue?
             %dt Venue
             %dd 
-              %p
-                #{@location.venue}
+              #{@location.venue}
 
             %dt Address
             %dd 
-              %p
-                #{@location.address}
+              #{@location.address}
 
           %dt Locality
           %dd 
-            %p
-              #{@location.locality}
+            #{@location.locality}
 
           %dt State
           %dd 
-            %p
-              #{@location.state}
+            #{@location.state}
 
           %dt Country
           %dd 
-            %p
-              #{@location.country.name}
+            #{@location.country.name}
 
-          %dt Point
+          %dt Latitude
           %dd
-            %p
-              %code
-                #{@location.latitude}, #{@location.longitude}
+            #{@location.latitude}
+
+          %dt Longitude
+          %dd
+            #{@location.longitude} 
 
           %dt Created
           %dd 
-            %p
-              #{@location.created_at}
+            #{@location.created_at}
 
         - if @location.venue?
           %section.content-section

@@ -24,11 +24,12 @@
 #
 
 class Location < ActiveRecord::Base
-  after_initialize :set_name
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
 
   attr_accessor :distance
 
-  attr_accessible :name, :latitude, :longitude, :facebook_id,
+  attr_accessible :latitude, :longitude, :facebook_id,
     :locality, :state, :country, :foursquare_id, :foursquare_icon,
     :venue, :address, :geoname_id, :population
 
@@ -41,38 +42,70 @@ class Location < ActiveRecord::Base
   validates_uniqueness_of :geoname_id, :allow_nil => :true
   validates_uniqueness_of :foursquare_id, :allow_nil => :true
 
-  # Class Methods
-  class << self
-    def find_cities_near(latitude, longitude)
-      results = Geonames.cities_near(latitude, longitude)
-      results.sort_by! { |l| l.distance.to_i }
-      return results
-    end
-
-    def find_venues_near(latitude, longitude, query=nil)
-      params = { 
-        :ll => "#{latitude},#{longitude}", 
-        :radius => '90000',
-        :limit => 100
+  def self.tire_settings
+    {
+      analysis: {
+        analyzer: {
+          ascii_analyzer: {
+            "tokenizer" => "lowercase",
+            "filter" => ["asciifolding", "stop"],
+            "type" => "custom"
+          }
+        }
       }
-      
-      # params[:section] = 'topPicks'
-      # else
-      params[:query] = query if query.present?
-      # end
+    }
+  end
 
-      # Toggle this sucker between explore / search
-      venues = Foursquare::Venue.explore(params)
+  settings self.tire_settings do
+    mapping do
+      indexes :id, :index => :not_analyzed
+      indexes :name, :type => 'string', :analyzer => 'ascii_analyzer', :as => 'name', :boost => 100
+      indexes :point, :type => 'geo_point', :as => 'elasticsearch_point'
+      indexes :venue, :analyzer => 'snowball'
+      indexes :address, :analyzer => 'snowball'
+      indexes :locality, :analyzer => 'snowball'
+      indexes :country, :analyzer => 'snowball', :as => 'short_country'
+      indexes :kind, :analyzer => 'keyword', :as => 'type'
+    end
+  end
 
-      return venues.map { |v| v.location }
+  def self.search(params={})
+    Rails.logger.debug("[TIRE SEARCH] #{self.model_name.human}: #{params.inspect}")
+
+    tire.search(:per_page => 30, :load => true) do
+      # Sort the results by proximity to point
+      sort { by '_geo_distance' => { point: params[:point] }} if params[:point].present?
+
+      # Query for name/address
+      if params[:query].present?
+        query { match [:name, :address], params[:query], type: 'phrase_prefix' }
+      end
+
+      # Only display those of a certain kind/type
+      filter(:term, :kind => params[:kind]) if params[:kind].present?
+    end
+  end
+
+  def self.find_cities_near(latitude, longitude)
+    self.search({ :point => "#{latitude},#{longitude}" })
+  end
+
+  def self.find_venues_near(latitude, longitude, query=nil)
+    params = { 
+      :ll => "#{latitude},#{longitude}", 
+      :radius => '90000',
+      :limit => 100
+    }
+    
+    # params[:section] = 'topPicks'
+    if query.present?
+      params[:query] = query
     end
 
-    def find_cities_and_venues_near(latitude, longitude, query=nil)
-      cities = find_cities_near(latitude, longitude)
-      venues = find_venues_near(latitude, longitude, query)
-      both = cities + venues
-      return both.sort_by! { |l| l.distance }
-    end
+    # Toggle this sucker between explore / search
+    venues = Foursquare::Venue.explore(params)
+
+    venues.map { |v| v.location }
   end
 
   def self.get_foursquare_icons
@@ -83,16 +116,11 @@ class Location < ActiveRecord::Base
   end
 
   def to_s
-    venue? ? venue : location_name
+    name
   end
   
-  # Sets the internal name, not really used.
-  def set_name
-    self.name = self.to_s
-  end
-
   def name
-    to_s
+    venue? ? venue : location_name
   end
 
   def full_name
@@ -181,10 +209,6 @@ class Location < ActiveRecord::Base
     sizes = [32, 64, 88, 256]
     size = 256 unless sizes.include?(size)
     foursquare_icon % "#{(transparent) ? '' : 'bg_'}#{size}"
-  end
-
-  def as_json(options={})
-    'BUILD'
   end
 
 end

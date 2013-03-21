@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130319111213) do
+ActiveRecord::Schema.define(:version => 20130321135121) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -141,7 +141,6 @@ ActiveRecord::Schema.define(:version => 20130319111213) do
   add_index "interests_users", ["user_id", "interest_id"], :name => "index_interests_users_on_user_id_and_interest_id"
 
   create_table "locations", :force => true do |t|
-    t.string   "name",                                         :null => false
     t.string   "locality"
     t.string   "state"
     t.string   "country"
@@ -163,7 +162,6 @@ ActiveRecord::Schema.define(:version => 20130319111213) do
   add_index "locations", ["facebook_id"], :name => "index_locations_on_facebook_id", :unique => true
   add_index "locations", ["foursquare_id"], :name => "index_locations_on_foursquare_id", :unique => true
   add_index "locations", ["geoname_id"], :name => "index_locations_on_geoname_id", :unique => true
-  add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "message_proxies", :force => true do |t|
     t.integer  "user_id"
