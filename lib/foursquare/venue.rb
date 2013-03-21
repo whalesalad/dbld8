@@ -126,8 +126,8 @@ module Foursquare
       }
 
       l = Location.find_or_create_by_foursquare_id(params)
-      
       l.distance = distance
+      
       return l
     end
 

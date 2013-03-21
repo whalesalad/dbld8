@@ -18,7 +18,7 @@ class Activity < ActiveRecord::Base
   include Concerns::ParticipantConcerns
   include Concerns::EventConcerns
 
-  attr_accessor :age_bounds, :relationship, :interests
+  attr_accessor :age_bounds, :relationship, :engagement, :interests
 
   attr_accessible :title, :details, :wing_id, 
     :location_id, :day_pref, :time_pref
@@ -145,6 +145,10 @@ class Activity < ActiveRecord::Base
     @relationship ||= get_relationship_for(a_user)
   end
 
+  def engagement(a_user=nil)
+    @engagement ||= engagements.find_for_user_or_wing(a_user.id).first
+  end
+
   def get_relationship_for(a_user=nil)
     unless a_user.nil?
       # IS_OWNER, IS_WING, IS_ENGAGED
@@ -152,7 +156,8 @@ class Activity < ActiveRecord::Base
       return IS_WING if a_user.id == wing_id
 
       # If you or your wing have an engagement, your'e engaged.
-      if engagements.find_for_user_or_wing(a_user.id).exists?
+      # if engagements.find_for_user_or_wing(a_user.id).exists?
+      if engagement(a_user).present?
         return IS_ENGAGED
       end
     end
