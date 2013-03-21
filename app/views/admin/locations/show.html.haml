@@ -2,16 +2,16 @@
   .row-fluid
     .span1
       %br/
-      = image_tag @location.icon(88)
+      = image_tag @location.icon(88) if @location.has_icon?
     .span11
       - if @location.venue?
         %h1
           #{@location.venue}
           %small #{@location.location_name}
-        %h3.object-meta ID ##{@location.id} &mdash; Foursquare Venue
+        %h4.object-meta ID ##{@location.id} &mdash; Foursquare Venue
       - else
         %h1 #{@location}
-        %h3.object-meta ##{@location.id} &mdash; City
+        %h4.object-meta ##{@location.id} &mdash; City
 
   %hr/ 
 
@@ -23,35 +23,51 @@
 
         %dl.dl-horizontal
           %dt Location ID
-          %dd <code>#{@location.id}</code>
+          %dd 
+            %p
+              <code>#{@location.id}</code>
 
           %dt Full Name
-          %dd #{@location.name}
+          %dd 
+            %p
+              #{@location.name}
 
           - if @location.venue?
             %dt Venue
-            %dd #{@location.venue}
+            %dd 
+              %p
+                #{@location.venue}
 
             %dt Address
-            %dd #{@location.address}
+            %dd 
+              %p
+                #{@location.address}
 
           %dt Locality
-          %dd #{@location.locality}
+          %dd 
+            %p
+              #{@location.locality}
 
           %dt State
-          %dd #{@location.state}
+          %dd 
+            %p
+              #{@location.state}
 
           %dt Country
-          %dd #{@location.country.name}
+          %dd 
+            %p
+              #{@location.country.name}
 
-          %dt Lat / Lng
+          %dt Point
           %dd
-            %code
-              #{@location.latitude}, #{@location.longitude}
-            = link_to "Open in Google Maps", @location.google_map_url, :target => '_blank'
+            %p
+              %code
+                #{@location.latitude}, #{@location.longitude}
 
           %dt Created
-          %dd #{@location.created_at}
+          %dd 
+            %p
+              #{@location.created_at}
 
         - if @location.venue?
           %section.content-section
@@ -59,16 +75,20 @@
           
           %p= image_tag 'powered-by-foursquare.png', :class => 'foursquare-brandmark'
 
-          %dl.dl-horizontal
+          %dl
             %dt Forusquare ID
             %dd <code>#{@location.foursquare_id}</code>
 
             %dt Venue URL
             %dd= link_to @location.foursquare_url, @location.foursquare_url, :target => "_blank"
 
-
+            %dt Venue Icon
+            %dd 
+              %code
+                = @location.icon
 
       .form-actions
+        = link_to "Open in Google Maps", @location.google_map_url, :target => '_blank', :class => 'btn'
         = link_to "Delete", admin_location_path(@location), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
 
     .span7

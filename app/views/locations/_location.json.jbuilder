@@ -11,6 +11,7 @@ json.cache! location do |json|
     json.icon location.icon(32, true)
   end
 
+  json.locality location.locality
   json.state location.state if location.american?
   json.country location.short_country
 end
