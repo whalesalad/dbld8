@@ -29,7 +29,7 @@ class LocationsController < ApiController
   end
 
   def current
-    @location = Location.find_cities_near(@latitude, @longitude).first
+    @location = Location.search({ :point => @point, :kind => 'city' }).first
     respond_with @location, :template => 'locations/show'
   end
 
