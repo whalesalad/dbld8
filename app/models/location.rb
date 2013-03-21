@@ -90,9 +90,9 @@ class Location < ActiveRecord::Base
     self.search({ :point => "#{latitude},#{longitude}" })
   end
 
-  def self.find_venues_near(latitude, longitude, query=nil)
+  def self.find_venues_near(point, query=nil)
     params = { 
-      :ll => "#{latitude},#{longitude}", 
+      :ll => point,
       :radius => '90000',
       :limit => 100
     }

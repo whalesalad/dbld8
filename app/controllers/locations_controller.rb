@@ -24,7 +24,7 @@ class LocationsController < ApiController
   end
 
   def venues
-    @locations = Location.find_venues_near(@latitude, @longitude, params[:query])
+    @locations = Location.find_venues_near(@point, params[:query])
     respond_with @locations, :template => 'locations/index'
   end
 
