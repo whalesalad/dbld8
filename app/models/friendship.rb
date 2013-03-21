@@ -63,6 +63,10 @@ class Friendship < ActiveRecord::Base
     # Determines whether or not the user passed can perform actions on this friendship.
     (inquiring_user.id == user.id) || (inquiring_user.id == friend.id)
   end
+
+  def unapproved?
+    !approved?
+  end
   
   def approve!(approving_user)
     return true if approved?

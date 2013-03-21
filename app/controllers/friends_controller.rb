@@ -5,11 +5,14 @@ class FriendsController < ApiController
     @friendships = Friendship.find_for_user_or_friend(@authenticated_user)
 
     @users = @friendships.map do |friendship|
+      # skip unapproved friendships that are not yours to approve
+      next if (friendship.user_id == @authenticated_user.id) && friendship.unapproved?
+      
       user = friendship.not_you(@authenticated_user)
       user.approved = friendship.approved
       user.sort_date = friendship.created_at.to_i
       user
-    end
+    end.compact
 
     # Sort by the sort value
     @users.sort_by! { |u| - u.sort_date }
