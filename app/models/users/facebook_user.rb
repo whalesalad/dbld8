@@ -35,7 +35,7 @@ class FacebookUser < User
     :foreign_key => "facebook_id",
     :primary_key => "facebook_id"
 
-  attr_accessor :facebook_graph, :large_facebook_photo, :target_facebook_invite
+  attr_accessor :facebook_graph, :me, :large_facebook_photo, :target_facebook_invite
 
   validates_presence_of :facebook_id, :facebook_access_token, :on => :create
 
@@ -64,7 +64,15 @@ class FacebookUser < User
   end
 
   def facebook_graph
-    @facebook_graph ||= get_facebook_graph
+    @facebook_graph ||= Koala::Facebook::API.new(facebook_access_token)
+  end
+
+  def me
+    @me ||= facebook_graph.get_object('me')
+  end
+
+  def facebook_photo(size=:large)
+    "https://graph.facebook.com/#{facebook_id}/picture?type=#{size}"
   end
 
   def large_facebook_photo
@@ -112,8 +120,6 @@ class FacebookUser < User
   end
 
   def bootstrap_facebook_data
-    me = facebook_graph.get_object('me')
-
     self.facebook_id = me['id']
 
     self.sync_facebook_data(me)
@@ -122,7 +128,7 @@ class FacebookUser < User
       facebook_location = facebook_graph.get_object(me['location']['id'])
 
       # might want to background this process
-      self.location = Geonames.first_for(facebook_location['location']['latitude'], facebook_location['location']['longitude'])
+      self.location = Location.find_cities_near(facebook_location['location']['latitude'], facebook_location['location']['longitude']).first
     end
 
     if self.bio.blank?
@@ -140,14 +146,6 @@ class FacebookUser < User
   end
 
   private
-
-  def get_facebook_graph
-    Koala::Facebook::API.new facebook_access_token
-  end
-
-  def facebook_photo(size=:large)
-    "https://graph.facebook.com/#{facebook_id}/picture?type=#{size}"
-  end
 
   def get_large_facebook_photo
     q = "select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")"

@@ -87,7 +87,7 @@ class Location < ActiveRecord::Base
   end
 
   def self.find_cities_near(latitude, longitude)
-    self.search({ :point => "#{latitude},#{longitude}" })
+    self.search({ :point => "#{latitude},#{longitude}", :kind => 'city' })
   end
 
   def self.find_venues_near(point, query=nil)
