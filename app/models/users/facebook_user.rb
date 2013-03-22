@@ -125,10 +125,13 @@ class FacebookUser < User
     self.sync_facebook_data(me)
 
     if self.location.blank? && me.has_key?('location')
-      facebook_location = facebook_graph.get_object(me['location']['id'])
-
-      # might want to background this process
-      self.location = Location.find_cities_near(facebook_location['location']['latitude'], facebook_location['location']['longitude']).first
+      begin
+        facebook_location = facebook_graph.get_object(me['location']['id']+'asdf')  
+        # might want to background this process
+        self.location = Location.find_cities_near(facebook_location['location']['latitude'], facebook_location['location']['longitude']).first
+      rescue Koala::Facebook::ClientError => e
+        Rails.logger.info "[Facebook Error] #{e}"
+      end
     end
 
     if self.bio.blank?
