@@ -16,7 +16,7 @@
 class RecruitedWingEvent < Event
   alias friendship related
 
-  earns 10
+  earns 50
 
   def detail_string
     "#{user} recruited #{related? ? friendship.friend : "a user"}"

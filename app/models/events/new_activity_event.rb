@@ -16,7 +16,8 @@
 class NewActivityEvent < Event
   alias activity related
   
-  earns 50
+  # Disable this
+  # earns 50
   
   def detail_string
     "#{user} created #{activity||"an activity"}"
