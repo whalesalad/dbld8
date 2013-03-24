@@ -15,6 +15,12 @@
 #
 
 class Activity < ActiveRecord::Base
+  DAY_PREFERENCES = %w(weekday weekend)
+  TIME_PREFERENCES = %w(day night)
+  SEARCH_RADIUS = "200km"
+  RELATIONSHIP_CHOICES = %w(open owner wing engaged)
+  IS_OPEN, IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
+
   include Concerns::ParticipantConcerns
   include Concerns::EventConcerns
 
@@ -48,9 +54,6 @@ class Activity < ActiveRecord::Base
   # Messages
   has_many :messages, :through => :engagements
 
-  DAY_PREFERENCES = %w(weekday weekend)
-  TIME_PREFERENCES = %w(day night)
-
   # Validate day preference
   validates_inclusion_of :day_pref, 
     :in => DAY_PREFERENCES, 
@@ -62,9 +65,6 @@ class Activity < ActiveRecord::Base
     :in => TIME_PREFERENCES, 
     :message => "Possible values for time_pref are #{TIME_PREFERENCES.join(', ')}.",
     :allow_blank => true
-
-  RELATIONSHIP_CHOICES = %w(open owner wing engaged)
-  IS_OPEN, IS_OWNER, IS_WING, IS_ENGAGED = RELATIONSHIP_CHOICES
 
   # Tire // Elasticsearch
   include Tire::Model::Search
@@ -100,9 +100,10 @@ class Activity < ActiveRecord::Base
       # Handles 'happening' = (weekday|weekend)
       filter :terms, preferences: [params[:happening]] if params[:happening].present?
 
-      # Handles filtering by proximity to a point
-      distance = params[:distance] || '200km'
-      filter :geo_distance, :distance => distance, :point => params[:point]
+      # Limit our results to the search radius
+      filter :geo_distance, :distance => SEARCH_RADIUS, :point => params[:point]
+
+      # Sort by proximity to the point
       sort { by '_geo_distance' => { point: params[:point] }}
     end
   end

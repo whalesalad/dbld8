@@ -61,6 +61,11 @@ class Notification < ActiveRecord::Base
     "Notification from #{target}"
   end
 
+  def shortened_s
+    s = to_s
+    (s.size > 80) ? "#{s[0..80]}..." : s
+  end
+
   def callback_url
     "#{Rails.configuration.ios_prefix}://#{target.notification_url}"
   end

@@ -17,7 +17,7 @@ class EngagementOneDayLeftEvent < Event
   alias engagement related
 
   def detail_string
-    "#{user}'s engagement ID:#{engagement.id} has one day remaining"
+    "#{user}'s engagement ID:#{(engagement.present?) ? engagement.id : 'nil'} has one day remaining"
   end
 
   def notification_string_for(user)

@@ -2,6 +2,10 @@ DoubleDate::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
   STDOUT.sync = true
 
+  config.redis_host = "localhost"
+  config.redis_port = 6379
+  config.redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
+
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true

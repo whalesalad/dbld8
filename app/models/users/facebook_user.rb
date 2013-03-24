@@ -150,6 +150,24 @@ class FacebookUser < User
 
   private
 
+  # def get_my_graph
+  #   k = redis_key('graph')
+  #   g = REDIS.get(k)
+    
+  #   if g.nil?
+  #     g = facebook_graph.get_object('me')
+  #   else
+  #     Rails.logger.info "[CACHE HIT!] Found #{k} in redis."
+  #     return JSON.parse(g)
+  #   end
+
+  #   REDIS.set(k, g.to_json)
+  #   # Expire after 6 minutes
+  #   REDIS.expire(k, 600)
+
+  #   return g
+  # end
+
   def get_large_facebook_photo
     q = "select src_big from photo where pid in (select cover_pid from album where owner=#{facebook_id} and name=\"Profile Pictures\")"
     result = facebook_graph.fql_query(q)

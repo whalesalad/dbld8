@@ -19,7 +19,7 @@ class PushNotificationWorker
       notification.user.devices.each do |device|
         push_notification = Grocer::Notification.new(
           device_token: device.token, 
-          alert: notification.to_s,
+          alert: notification.shortened_s,
           badge: notification.user.badge_count,
           identifier: notification.id,
           custom: { 
