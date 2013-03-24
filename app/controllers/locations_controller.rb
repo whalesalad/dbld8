@@ -1,6 +1,7 @@
 class LocationsController < ApiController
   before_filter :set_point, :except => [:index, :show, :create]
   before_filter :get_location, :only => [:show]
+  after_filter :set_empty_location, :only => [:current]
   
   def index
     @locations = if params[:query]
@@ -13,12 +14,6 @@ class LocationsController < ApiController
   end
 
   def cities
-    # @locations = if @latitude && @longitude
-    #   Location.find_cities_near(@latitude, @longitude)
-    # else
-    #   Location.cities.where('name ~* ?', params[:query]).order('-population')
-    # end
-
     @locations = Location.search({ :point => @point, :kind => 'city', :query => params[:query] })
     respond_with @locations, :template => 'locations/index'
   end
@@ -57,6 +52,14 @@ class LocationsController < ApiController
     end
     
     @point ||= [params[:latitude], params[:longitude]].join ','
+  end
+
+  # If the user does not have a location set, we will use this to do so.
+  def set_empty_location
+    if @authenticated_user.location.blank? && @location.present?
+      @authenticated_user.location = @location
+      @authenticated_user.save
+    end
   end
 
   def get_location
