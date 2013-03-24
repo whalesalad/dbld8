@@ -52,7 +52,7 @@ class SentWingInviteEvent < Event
       coins: AcceptedWingInviteEvent.coin_value,
       upper_text: "You Earned #{AcceptedWingInviteEvent.coin_value} Coins",
       description: "You earned #{AcceptedWingInviteEvent.coin_value} coins for accepting #{friendship.user}'s wing invite!",
-      dismiss_text: "Dismiss"
+      dismiss_text: "Close"
     }
   end
 
@@ -64,7 +64,7 @@ class SentWingInviteEvent < Event
       description: "Would you like to accept #{friendship.user}'s invitation?",
       confirm_text: "Approve",
       confirm_url: "/me/friends/#{friendship.user.id}/approve",
-      dismiss_text: "Ignore"
+      dismiss_text: "Close"
     }
   end
 
