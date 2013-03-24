@@ -9,7 +9,7 @@ class ActivitiesController < BaseActivitiesController
       @authenticated_user.location.str_point
     end
 
-    @activities = Activity.search(params, @authenticated_user)
+    @activities = Activity.search(params)
     respond_with @activities
   end
 

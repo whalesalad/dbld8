@@ -83,7 +83,7 @@ class Activity < ActiveRecord::Base
     indexes :tags, :type => 'string', :analyzer => 'keyword', :as => 'interest_names'
   end
 
-  def self.search(params, user)
+  def self.search(params)
     Rails.logger.debug("Tire: #{params.inspect}")
 
     # If we specify anytime, ignore it to include everything
@@ -101,7 +101,7 @@ class Activity < ActiveRecord::Base
       filter :terms, preferences: [params[:happening]] if params[:happening].present?
 
       # Limit our results to the search radius
-      filter :geo_distance, :distance => SEARCH_RADIUS, :point => params[:point]
+      filter :geo_distance, :distance => params[:distance] || SEARCH_RADIUS, :point => params[:point]
 
       # Sort by proximity to the point
       sort { by '_geo_distance' => { point: params[:point] }}
@@ -168,6 +168,19 @@ class Activity < ActiveRecord::Base
 
   def update_relationship_as(a_user)
     tap { |a| a.relationship = a.get_relationship_for(a_user) }
+  end
+
+  def nearby
+    results = Activity.search({ :point => location.str_point }).results
+    
+    results = if results.empty?
+      []
+    else
+      # Remove self
+      results.reject { |a| a.id == self.id }
+    end
+
+    return results
   end
 
 end

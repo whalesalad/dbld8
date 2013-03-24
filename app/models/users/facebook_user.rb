@@ -126,7 +126,7 @@ class FacebookUser < User
 
     if self.location.blank? && me.has_key?('location')
       begin
-        facebook_location = facebook_graph.get_object(me['location']['id']+'asdf')  
+        facebook_location = facebook_graph.get_object(me['location']['id'])
         # might want to background this process
         self.location = Location.find_cities_near(facebook_location['location']['latitude'], facebook_location['location']['longitude']).first
       rescue Koala::Facebook::ClientError => e

@@ -3,6 +3,10 @@ class ActivityObserver < ActiveRecord::Observer
   def after_commit(activity)
     if activity.send(:transaction_include_action?, :create)
       NewActivityEvent.create(:user => activity.user, :related => activity)
+
+      # Run this worker process in the background to see if there 
+      # are nearby dates and reward if not
+      NoDatesNearbyWorker.perform_async(activity.id)
     end
   end
 
