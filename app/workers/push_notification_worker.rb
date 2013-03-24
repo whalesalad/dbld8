@@ -24,6 +24,7 @@ class PushNotificationWorker
           identifier: notification.id,
           custom: { 
             callback_url: notification.callback_url,
+            has_dialog: notification.has_dialog?,
             nid: notification.id
           }
         )
