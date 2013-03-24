@@ -14,7 +14,12 @@ class LocationsController < ApiController
   end
 
   def cities
-    @locations = Location.search({ :point => @point, :kind => 'city', :query => params[:query] })
+    @locations = Location.search({ 
+      :point => @point, 
+      :kind => 'city', 
+      :query => params[:query], 
+      :distance => params[:distance] 
+    })
     respond_with @locations, :template => 'locations/index'
   end
 

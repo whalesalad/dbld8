@@ -2,6 +2,9 @@ class ActivitiesController < BaseActivitiesController
   before_filter :get_activity, :only => [:show, :update, :destroy]
   before_filter :activity_owner_only, :only => [:update, :destroy]
 
+  # [DISABLED] Check to see if we need to unlock
+  # before_filter :check_for_unlock, :only => [:create]
+
   def index
     params[:point] = if params[:latitude] && params[:longitude]
       "#{params[:latitude]},#{params[:longitude]}"
@@ -28,20 +31,6 @@ class ActivitiesController < BaseActivitiesController
   end
 
   def create
-    unlocker = MaxActivityUnlockerService.new(@authenticated_user)
-
-    if unlocker.needs_unlock?
-      payload = { 
-        unlock: (unlocker.next_unlock_event) ? unlocker.next_unlock_event.json : false,
-        activities_count: unlocker.activities_count,
-        activities_allowed: unlocker.activities_allowed
-      }
-
-      payload[:highest_level_reached] = true if unlocker.highest_level?
-
-      render json: payload and return
-    end
-
     @activity = Activity.new(params[:activity])
 
     # Set the user
@@ -77,6 +66,22 @@ class ActivitiesController < BaseActivitiesController
 
   def activity_id
     params[:id]
+  end
+
+  def check_for_unlock
+    unlocker = MaxActivityUnlockerService.new(@authenticated_user)
+
+    if unlocker.needs_unlock?
+      payload = { 
+        unlock: (unlocker.next_unlock_event) ? unlocker.next_unlock_event.json : false,
+        activities_count: unlocker.activities_count,
+        activities_allowed: unlocker.activities_allowed
+      }
+
+      payload[:highest_level_reached] = true if unlocker.highest_level?
+
+      render json: payload and return
+    end
   end
 
 end

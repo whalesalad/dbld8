@@ -72,13 +72,17 @@ class Location < ActiveRecord::Base
   def self.search(params={})
     Rails.logger.debug("[TIRE SEARCH] #{self.model_name.human}: #{params.inspect}")
 
-    tire.search(:per_page => 30, :load => true) do
+    tire.search(:per_page => 50, :load => true) do
       # Sort the results by proximity to point
       sort { by '_geo_distance' => { point: params[:point] }} if params[:point].present?
 
       # Query for name/address
       if params[:query].present?
         query { match [:name, :address], params[:query], type: 'phrase_prefix' }
+      end
+
+      if params[:distance].present?
+        filter :geo_distance, :distance => params[:distance], :point => params[:point]
       end
 
       # Only display those of a certain kind/type
