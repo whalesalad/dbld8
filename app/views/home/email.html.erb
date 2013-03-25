@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Welcome</title>
+  
+  <style type="text/css">
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1.logo {
+    width: 44px;
+    height: 66px;
+    display: inline-block;
+    background: url(<%= image_path('static/logo.png') %>) 0 0 no-repeat;
+    margin: 30px auto;
+    text-indent: -9999em;
+  }
+
+  table#wrapper-table {
+    border-collapse: collapse;
+  }
+
+  table#wrapper-table td {
+    vertical-align: top;
+  }
+
+  table#wrapper-table td.wrapper-nw,
+  table#wrapper-table td.wrapper-ne,
+  table#wrapper-table td.wrapper-sw,
+  table#wrapper-table td.wrapper-se {
+    width: 30px;
+  }
+
+  table#wrapper-table thead {
+    height: 130px;
+    overflow: hidden;
+  }
+
+  table#wrapper-table td.wrapper-nw {
+    height: 130px;
+    background: url(<%= image_path('email/wrapper-nw.png') %>) top left no-repeat;
+  }
+
+  table#wrapper-table td.wrapper-ne {
+    height: 130px;
+    background: url(<%= image_path('email/wrapper-ne.png') %>) top left no-repeat;
+  }
+
+  /* Header */
+  table#wrapper-table td.wrapper-n {
+    background: url(<%= image_path('email/wrapper-n.png') %>) top left repeat-x;
+    max-height: 130px;
+    overflow: hidden;
+    padding: 25px 0 0 0;
+  }
+
+  table#wrapper-table td.wrapper-n h2,
+  table#wrapper-table td.wrapper-n h3 {
+    text-shadow: 0 1px 0 #FFF;
+  }
+
+  table#wrapper-table td.wrapper-n h2 {
+    font-size: 48px;
+    color: #ff1178;
+    margin-bottom: 5px;
+  }
+
+  table#wrapper-table td.wrapper-n h3 {
+    color: #7d7d7d;
+    font-size: 20px;
+  }
+
+  /* Content */
+  table#wrapper-table tbody td.wrapper-mid {
+    padding: 30px;
+    background: #FFF;
+  }
+
+  table#wrapper-table tbody td.wrapper-mid p {
+    color: #444;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 1em;
+  }
+
+  table#wrapper-table tfoot tr {
+    height: 12px;
+  }
+
+  table#wrapper-table td.wrapper-sw,
+  table#wrapper-table td.wrapper-s,
+  table#wrapper-table td.wrapper-se {
+    height: 12px;
+  }
+
+  table#wrapper-table td.wrapper-sw {
+    background: url(<%= image_path('email/wrapper-sw.png') %>) 0 0 no-repeat;
+  }
+
+  table#wrapper-table td.wrapper-se {
+    background: url(<%= image_path('email/wrapper-se.png') %>) 0 0 no-repeat;
+  }
+
+  table#wrapper-table td.wrapper-s {
+    background: url(<%= image_path('email/wrapper-s.png') %>) top left repeat-x;
+  }
+
+  table tr#footer td {
+    width: 50%;
+    padding: 10px 30px;
+    color: #FFF;
+    font-size: 13px;
+  }
+
+  table tr#footer td p {
+    line-height: 20px;
+  }
+
+  table tr#footer td p a {
+    color: #FFF;
+    text-decoration: none;
+  }
+
+  table tr#footer td p a:hover {
+    opacity: 0.8;
+  }
+
+  table tr#footer td.footer-right {
+    text-align: right;
+  }
+
+  </style>
+</head>
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background: #ff1178">
+  <center>
+    
+    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="70%">
+      <tr id="header">
+        <td colspan="2" align="center" valign="top">
+          <h1 class="logo"><%= link_to 'DoubleDate', root_url %></h1>
+        </td>
+      </tr>
+      
+      <tr>
+        <td colspan="2">
+          <table id="wrapper-table" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+            <thead>
+              <tr>
+                <td class="wrapper-nw"></td>
+                <td class="wrapper-n">
+                  <%- if @title.present? %>
+                    <h2><%= @title %>!</h2>
+                  <%- end %>
+
+                  <%- if @subtitle.present? %>
+                    <h3><%= @subtitle %></h3>
+                  <%- end %>
+                </td>
+                <td class="wrapper-ne"></td>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="wrapper-mid" colspan="3">
+                  <p>We’re really happy that you joined the family at this early stage!</p>
+
+                  <p><b>500 Coins</b> are already yours as a BIG THANK YOU for being an early adopter and joining our beta. There are lots of cool features in the pipeline, and surely some bugs we haven’t squashed. We’re hoping you’ll go a little easy on us while we're taking our baby steps. </p>
+
+                  <p><b>In exchange for your patience and any hiccups</b> you might experience along the way to our 1.0 launch this summer, we’d like to make it up to you with a bunch of extra goodies. Expect lots of extras and sneak peaks at new features before anyone else. Come Summer, you'll be all set to rock our app in more ways then others!</p>
+
+                  <p><b>What is DoubleDate?</b> It's all about going out in real-life in a group of four to have fun. Grab a friend and create a DoubleDate, or explore what others have created nearby. Girls or guys, straight or gay, single or taken... it doesn't matter here. Instead of browsing profiles and judging others on their looks or info, you browse things to do. We've gone back to basics. Who knows, you might make some new friends or meet someone special. Either way, you'll have a good time with DoubleDate.</p>
+
+                  <p><b>What are Wings?</b> Your Wings are the friends that you go out with, and their essential to DoubleDate. We hope that you'll share it with your close friends to pull them into the fun. For every friend you add, we'll give both of you some extra coins.</p>
+
+                  <p><b>Whats next?</b> We’ve worked tremendously hard over the last few months to bring DoubleDate to life. Our first version is truly great, and we think you’ll really enjoy it. However, it’s far from perfect. Don't fear, we've got a ton in store for you. Trust us! You'll be having lots of fun with what we have planned.</p>
+
+                  <p>DoubleDate is the latest and greatest way to get out and have fun with your friends. Get ready for this summer to be more exciting then ever before!</p>
+
+                  <p><cite>&mdash; Marcus &amp; Michael, Founders of DoubleDate</cite></p>
+                </td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="wrapper-sw"></td>
+                <td class="wrapper-s">&nbsp;</td>
+                <td class="wrapper-se"></td>
+              </tr>
+            </tfoot>
+          </table>
+
+        </td>
+      </tr>
+
+      <tr id="footer">
+        <td class="footer-left">
+          <p><b>&copy; 2013 DoubleDate</b><br/>
+          <%= link_to 'Terms', terms_url %> • <%= link_to 'Privacy', privacy_url %> • <%= link_to 'Contact', '#' %></p>
+        </td>
+        <td class="footer-right">
+          <%= link_to(image_tag('email/text-logo.png'), root_url) %>
+        </td>
+      </tr>
+    </table>
+
+  </center>
+</body>
+</html>
