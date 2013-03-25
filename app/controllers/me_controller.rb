@@ -21,6 +21,16 @@ class MeController < ApiController
     respond_with @device
   end
 
+  # def ping
+  # Ping
+  # sending
+  #   - device token
+  #   - current location
+  #   - locale
+  # receiving
+  #   - various notification counts
+  # end
+
   # check to see if an unlock is required for a particular section
   # in this case, max_activities is the only allowed.
   def check_unlock

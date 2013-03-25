@@ -39,6 +39,8 @@ DoubleDate::Application.routes.draw do
     get 'unlock(/:slug)' => 'me#check_unlock'
     post 'unlock(/:slug)' => 'me#perform_unlock'
 
+    # post 'ping' => 'me#ping'
+
     # User Photos
     resource :photo, :controller => 'user_photo', :only => [:show, :create] do
       post 'pull_facebook', :on => :collection
