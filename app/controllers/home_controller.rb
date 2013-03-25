@@ -24,6 +24,8 @@ class HomeController < ApplicationController
 
     @title = "Hi #{@user.first_name}"
     @subtitle = "Welcome to DoubleDate!"
+    
+    render :layout => false
   end
 
 end 
