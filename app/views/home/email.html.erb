@@ -11,6 +11,12 @@
     padding: 0;
   }
 
+  table#outer-wrapper {
+    width: 80%;
+    max-width: 680px;
+    margin: 0;
+  }
+
   h1.logo {
     width: 44px;
     height: 66px;
@@ -20,97 +26,96 @@
     text-indent: -9999em;
   }
 
-  table#wrapper-table {
+  table#table-wrapper {
     border-collapse: collapse;
   }
 
-  table#wrapper-table td {
+  table#table-wrapper td {
     vertical-align: top;
   }
 
-  table#wrapper-table td.wrapper-nw,
-  table#wrapper-table td.wrapper-ne,
-  table#wrapper-table td.wrapper-sw,
-  table#wrapper-table td.wrapper-se {
+  table#table-wrapper td.wrapper-nw,
+  table#table-wrapper td.wrapper-ne,
+  table#table-wrapper td.wrapper-sw,
+  table#table-wrapper td.wrapper-se {
     width: 30px;
   }
 
-  table#wrapper-table thead {
+  table#table-wrapper thead {
     height: 130px;
     overflow: hidden;
   }
 
-  table#wrapper-table td.wrapper-nw {
+  table#table-wrapper td.wrapper-nw {
     height: 130px;
     background: url(<%= image_path('email/wrapper-nw.png') %>) top left no-repeat;
   }
 
-  table#wrapper-table td.wrapper-ne {
+  table#table-wrapper td.wrapper-ne {
     height: 130px;
     background: url(<%= image_path('email/wrapper-ne.png') %>) top left no-repeat;
   }
 
   /* Header */
-  table#wrapper-table td.wrapper-n {
+  table#table-wrapper td.wrapper-n {
     background: url(<%= image_path('email/wrapper-n.png') %>) top left repeat-x;
     max-height: 130px;
     overflow: hidden;
     padding: 25px 0 0 0;
   }
 
-  table#wrapper-table td.wrapper-n h2,
-  table#wrapper-table td.wrapper-n h3 {
+  table#table-wrapper td.wrapper-n h2,
+  table#table-wrapper td.wrapper-n h3 {
     text-shadow: 0 1px 0 #FFF;
   }
 
-  table#wrapper-table td.wrapper-n h2 {
+  table#table-wrapper td.wrapper-n h2 {
     font-size: 48px;
     color: #ff1178;
     margin-bottom: 5px;
   }
 
-  table#wrapper-table td.wrapper-n h3 {
+  table#table-wrapper td.wrapper-n h3 {
     color: #7d7d7d;
     font-size: 20px;
   }
 
   /* Content */
-  table#wrapper-table tbody td.wrapper-mid {
-    padding: 30px;
+  table#table-wrapper tbody td.wrapper-mid {
+    padding: 20px 30px;
     background: #FFF;
   }
 
-  table#wrapper-table tbody td.wrapper-mid p {
+  table#table-wrapper tbody td.wrapper-mid p {
     color: #444;
     font-size: 16px;
     line-height: 24px;
     margin-bottom: 1em;
   }
 
-  table#wrapper-table tfoot tr {
+  table#table-wrapper tfoot tr {
     height: 12px;
   }
 
-  table#wrapper-table td.wrapper-sw,
-  table#wrapper-table td.wrapper-s,
-  table#wrapper-table td.wrapper-se {
+  table#table-wrapper td.wrapper-sw,
+  table#table-wrapper td.wrapper-s,
+  table#table-wrapper td.wrapper-se {
     height: 12px;
   }
 
-  table#wrapper-table td.wrapper-sw {
+  table#table-wrapper td.wrapper-sw {
     background: url(<%= image_path('email/wrapper-sw.png') %>) 0 0 no-repeat;
   }
 
-  table#wrapper-table td.wrapper-se {
+  table#table-wrapper td.wrapper-se {
     background: url(<%= image_path('email/wrapper-se.png') %>) 0 0 no-repeat;
   }
 
-  table#wrapper-table td.wrapper-s {
+  table#table-wrapper td.wrapper-s {
     background: url(<%= image_path('email/wrapper-s.png') %>) top left repeat-x;
   }
 
   table tr#footer td {
-    width: 50%;
     padding: 10px 30px;
     color: #FFF;
     font-size: 13px;
@@ -129,8 +134,34 @@
     opacity: 0.8;
   }
 
-  table tr#footer td.footer-right {
+  table tr#footer .footer-left,
+  table tr#footer .footer-right {
+    float: left;
+    display: inline-block;
+    width: 50%;
+  }
+
+  table tr#footer .footer-right {
+    padding-top: 10px;
     text-align: right;
+  }
+
+  @media only screen and (max-width: 480px) { 
+    table[id=outer-wrapper] { 
+      width: 300px !important;
+    }
+
+    table#table-wrapper td.wrapper-n h2 {
+      font-size: 34px;
+    }
+
+    table tr#footer .footer-left,
+    table tr#footer .footer-right {
+      width: 100%;
+      display: block;
+      float: none;
+      text-align: left;
+    }
   }
 
   </style>
@@ -139,7 +170,7 @@
 <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background: #ff1178">
   <center>
     
-    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="70%">
+    <table id="outer-wrapper" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
       <tr id="header">
         <td colspan="2" align="center" valign="top">
           <h1 class="logo"><%= link_to 'DoubleDate', root_url %></h1>
@@ -148,7 +179,7 @@
       
       <tr>
         <td colspan="2">
-          <table id="wrapper-table" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+          <table id="table-wrapper" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
             <thead>
               <tr>
                 <td class="wrapper-nw"></td>
@@ -200,12 +231,14 @@
       </tr>
 
       <tr id="footer">
-        <td class="footer-left">
-          <p><b>&copy; 2013 DoubleDate</b><br/>
-          <%= link_to 'Terms', terms_url %> • <%= link_to 'Privacy', privacy_url %> • <%= link_to 'Contact', '#' %></p>
-        </td>
-        <td class="footer-right">
-          <%= link_to(image_tag('email/text-logo.png'), root_url) %>
+        <td colspan="2">
+          <div class="footer-left">
+            <p><b>&copy; 2013 DoubleDate</b><br/>
+            <%= link_to 'Terms', terms_url %> • <%= link_to 'Privacy', privacy_url %> • <%= link_to 'Contact', '#' %></p>
+          </div>
+          <div class="footer-right"
+            <%= link_to(image_tag('email/text-logo.png'), root_url) %>
+          </div>
         </td>
       </tr>
     </table>
