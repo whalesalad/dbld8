@@ -8,6 +8,8 @@ DoubleDate::Application.routes.draw do
   get 'privacy' => 'static#privacy', :as => 'privacy'
 
   get 'invite(/:invite_slug)' => 'home#invite', :as => 'user_invitation'
+
+  get 'email' => 'home#email'
   
   get 'appstore' => redirect(Rails.configuration.app_store_url), :as => 'appstore'
 

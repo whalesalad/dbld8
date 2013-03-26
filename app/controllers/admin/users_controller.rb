@@ -14,7 +14,9 @@ class Admin::UsersController < AdminController
   end
 
   def send_push
-    notification_ids = @user.notifications.pluck(:id)
+    notification_ids = @user.notifications.map do |n|
+      n.id if n.has_dialog?
+    end.compact
 
     push = PushNotificationWorker.perform_async(notification_ids.sample, true)
 

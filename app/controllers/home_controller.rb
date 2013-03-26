@@ -18,4 +18,10 @@ class HomeController < ApplicationController
     end
   end
 
+  def email
+    @user = User.order('RANDOM()').first
+    @subject = "Welcome to DoubleDate Beta!"
+    render :layout => false, :template => 'user_mailer/welcome_email'
+  end
+
 end 

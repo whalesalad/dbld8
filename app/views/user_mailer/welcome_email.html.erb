@@ -12,73 +12,10 @@
   }
 
   body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  table#outer-wrapper {
-    width: 80%;
-    max-width: 680px;
-    margin: 0;
-  }
-
-  h1.logo {
-    width: 44px;
-    height: 66px;
-    display: inline-block;
-    background: url(<%= image_path('email/upper-logo.png') %>) 0 0 no-repeat;
-    margin: 30px auto;
-    text-indent: -9999em;
-  }
-
-  table#table-wrapper {
-    border-collapse: collapse;
-  }
-
-  table#table-wrapper td {
-    vertical-align: top;
-  }
-
-  table#table-wrapper td.wrapper-nw,
-  table#table-wrapper td.wrapper-ne,
-  table#table-wrapper td.wrapper-sw,
-  table#table-wrapper td.wrapper-se {
-    width: 30px;
-  }
-
-  table#table-wrapper thead {
-    height: 130px;
-    overflow: hidden;
-  }
-
-  table#table-wrapper td.wrapper-nw {
-    height: 130px;
-    background: url(<%= image_path('email/wrapper-nw.png') %>) top left no-repeat;
-  }
-
-  table#table-wrapper td.wrapper-ne {
-    height: 130px;
-    background: url(<%= image_path('email/wrapper-ne.png') %>) top left no-repeat;
-  }
-
   /* Header */
-  table#table-wrapper td.wrapper-n {
-    background: url(<%= image_path('email/wrapper-n.png') %>) top left repeat-x;
-    max-height: 130px;
-    overflow: hidden;
-    padding: 25px 0 0 0;
-  }
-
-  table#table-wrapper td.wrapper-n h2,
-  table#table-wrapper td.wrapper-n h3 {
-    text-shadow: 0 1px 0 #FFF;
-  }
-
-  table#table-wrapper td.wrapper-n h2 {
-    font-size: 48px;
-    color: #ff1178;
-    margin-bottom: 5px;
-  }
 
   table#table-wrapper td.wrapper-n h3 {
     color: #7d7d7d;
@@ -157,37 +94,37 @@
          only screen and (min-resolution: 120dpi) {
     
     h1.logo {
-      background-image: url(<%= image_path('email/upper-logo@2x.png') %>);
+      background-image: url(<%= image_path('email/upper-logo@2x.png') %>) !important;
       background-size: 44px 66px;
     }
 
     table#table-wrapper td.wrapper-nw {
-      background-image: url(<%= image_path('email/wrapper-nw@2x.png') %>);
+      background-image: url(<%= image_path('email/wrapper-nw@2x.png') %>) !important;
       background-size: 30px 130px;
     }
 
     table#table-wrapper td.wrapper-ne {
-      background-image: url(<%= image_path('email/wrapper-ne@2x.png') %>);
+      background-image: url(<%= image_path('email/wrapper-ne@2x.png') %>) !important;
       background-size: 30px 130px;
     }
 
     table#table-wrapper td.wrapper-sw {
-      background-image: url(<%= image_path('email/wrapper-sw@2x.png') %>);
+      background-image: url(<%= image_path('email/wrapper-sw@2x.png') %>) !important;
       background-size: 30px 12px;
     }
 
     table#table-wrapper td.wrapper-se {
-      background-image: url(<%= image_path('email/wrapper-se@2x.png') %>);
+      background-image: url(<%= image_path('email/wrapper-se@2x.png') %>) !important;
       background-size: 30px 12px;
     }
 
     table#table-wrapper td.wrapper-s {
-      background-image: url(<%= image_path('email/wrapper-s@2x.png') %>);
+      background-image: url(<%= image_path('email/wrapper-s@2x.png') %>) !important;
       background-size: 1px 12px;
     }
 
     table tr#footer .footer-right {
-      background-image: url(<%= image_path('email/text-logo@2x.png') %>);
+      background-image: url(<%= image_path('email/text-logo@2x.png') %>) !important;
       background-size: 111px 19px;
     }
   }  
@@ -219,13 +156,13 @@
   </style>
 </head>
 
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background: #ff1178">
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background: #ff1178; font-family: HelveticaNeue, Helvetica, Arial, sans-serif;">
   <center>
     
-    <table id="outer-wrapper" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+    <table id="outer-wrapper" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="width: 80%; max-width: 680px; margin: 0;">
       <tr id="header">
         <td colspan="2" align="center" valign="top">
-          <h1 class="logo"><%= link_to 'DoubleDate', root_url %></h1>
+          <h1 class="logo" style="width: 44px; height: 66px; display: inline-block; background: url(<%= image_path('email/upper-logo.png') %>) 0 0 no-repeat; margin: 30px auto; text-indent: -9999em;"><%= link_to 'DoubleDate', root_url %></h1>
         </td>
       </tr>
       
@@ -234,12 +171,12 @@
           <table id="table-wrapper" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
             <thead>
               <tr>
-                <td class="wrapper-nw"></td>
-                <td class="wrapper-n">
-                  <h2>Hi <%= @user.first_name %>,</h2>
-                  <h3><%= @subject %></h3>
+                <td class="wrapper-nw" width="30px" height="130px" style="background: url(<%= image_path('email/wrapper-nw.png') %>) top left no-repeat;"></td>
+                <td class="wrapper-n" valign="top" style="background: url(<%= image_path('email/wrapper-n.png') %>) top left repeat-x; max-height: 130px; overflow: hidden; padding: 25px 0 0 0;">
+                  <h2 style="font-size: 48px; color: #ff1178; margin-bottom: 5px; text-shadow: 0 1px 0 #FFF;">Hi <%= @user.first_name %>,</h2>
+                  <h3 style="text-shadow: 0 1px 0 #FFF;"><%= @subject %></h3>
                 </td>
-                <td class="wrapper-ne"></td>
+                <td class="wrapper-ne" width="30px" height="130px" style="background: url(<%= image_path('email/wrapper-ne.png') %>) top left no-repeat;"></td>
               </tr>
             </thead>
 
@@ -267,9 +204,9 @@
 
             <tfoot>
               <tr>
-                <td class="wrapper-sw"></td>
+                <td class="wrapper-sw" width="30px"></td>
                 <td class="wrapper-s">&nbsp;</td>
-                <td class="wrapper-se"></td>
+                <td class="wrapper-se" width="30px"></td>
               </tr>
             </tfoot>
           </table>
