@@ -93,8 +93,8 @@
               <tr>
                 <td class="wrapper-nw" width="30px" height="130px" style="background: url(<%= image_path('email/wrapper-nw.png') %>) top left no-repeat;"></td>
                 <td class="wrapper-n" valign="top" style="background: url(<%= image_path('email/wrapper-n.png') %>) top left repeat-x; max-height: 130px; overflow: hidden; padding: 25px 0 0 0; text-shadow: 0 1px 0 #FFF;">
-                  <h2 style="font-size: 48px; color: #ff1178; margin-bottom: 5px;">Hi <%= @user.first_name %>,</h2>
-                  <h3 style="color: #7d7d7d; font-size: 20px;"><%= @subject %></h3>
+                  <h2 style="font-size: 48px; color: #ff1178; margin: 0 0 5px; 0">Hi <%= @user.first_name %>,</h2>
+                  <h3 style="color: #7d7d7d; font-size: 20px; margin: 0;"><%= @subject %></h3>
                 </td>
                 <td class="wrapper-ne" width="30px" height="130px" style="background: url(<%= image_path('email/wrapper-ne.png') %>) top left no-repeat;"></td>
               </tr>
@@ -105,7 +105,7 @@
                 <td class="wrapper-mid" colspan="3" style="padding: 20px 30px; background: #FFF; color: #444; font-size: 16px; line-height: 24px;" background="#FFF">
                   <p style="margin-bottom: 1em;">We're happy that you joined the family at this early stage!</p>
 
-                  <p style="margin-bottom: 1em;"><b>500 Coins</b> are already yours as a BIG THANK YOU for being an early adopter and joining our beta. There are lots of cool features in the pipeline, and surely some bugs we haven’t squashed. We’re hoping you’ll go a little easy on us while we're taking our baby steps. </p>
+                  <p style="margin-bottom: 1em;"><b><%= RegistrationEvent::coin_value %> Coins</b> are already yours as a BIG THANK YOU for being an early adopter and joining our beta. There are lots of cool features in the pipeline, and surely some bugs we haven’t squashed. We’re hoping you’ll go a little easy on us while we're taking our baby steps. </p>
 
                   <p style="margin-bottom: 1em;"><b>In exchange for your patience and any hiccups</b> you might experience along the way to our 1.0 launch this summer, we’d like to make it up to you with a bunch of extra goodies. Expect lots of extras and sneak peaks at new features before anyone else. Come Summer, you'll be all set to rock our app in more ways then others!</p>
 
