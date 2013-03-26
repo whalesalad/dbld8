@@ -14,7 +14,7 @@
 
 require "bundler/capistrano"
 require "sidekiq/capistrano"
-require 'hipchat/capistrano'
+# require 'hipchat/capistrano'
 
 set :whenever_roles, [:cron]
 set :whenever_command, "bundle exec whenever"
@@ -36,11 +36,11 @@ server "blitzen.dbld8.com", :search, :db, no_release: true
 # server "donner.dbld8.com", :web, :app, :search
 
 # HIPCHAT
-set :hipchat_token, "ebcfbcc0b86138e2d0e4e563cb553e"
-set :hipchat_room_name, "DoubleDate"
-set :hipchat_announce, false
-set :hipchat_color, 'green'
-set :hipchat_failed_color, 'red'
+# set :hipchat_token, "ebcfbcc0b86138e2d0e4e563cb553e"
+# set :hipchat_room_name, "DoubleDate"
+# set :hipchat_announce, false
+# set :hipchat_color, 'green'
+# set :hipchat_failed_color, 'red'
 
 role :cron, 'rudolph.dbld8.com'
 
