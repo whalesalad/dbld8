@@ -24,7 +24,6 @@
 #
 
 class User < ActiveRecord::Base
-  # Handles friendships between users (wings)
   include Concerns::FriendConcerns
   include Concerns::UUIDConcerns
 
@@ -49,7 +48,7 @@ class User < ActiveRecord::Base
 
   before_validation :before_init, :on => :create
   after_create :after_init, :on => :create
-  # after_commit :send_welcome_email, :on => :create
+  after_commit :send_welcome_email, :on => :create
 
   before_save :sanitize_bio
 
