@@ -9,8 +9,6 @@ DoubleDate::Application.routes.draw do
 
   get 'invite(/:invite_slug)' => 'home#invite', :as => 'user_invitation'
   
-  get 'email(/:email_slug)' => 'home#email'  
-
   get 'appstore' => redirect(Rails.configuration.app_store_url), :as => 'appstore'
 
   # Authentication

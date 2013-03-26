@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
 
   before_validation :before_init, :on => :create
   after_create :after_init, :on => :create
+  # after_commit :send_welcome_email, :on => :create
 
   before_save :sanitize_bio
 
@@ -279,6 +280,10 @@ class User < ActiveRecord::Base
     end
 
     return t
+  end
+
+  def send_welcome_email
+    UserMailer.delay.welcome_email(self)
   end
 
   private

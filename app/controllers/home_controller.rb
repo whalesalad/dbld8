@@ -18,14 +18,4 @@ class HomeController < ApplicationController
     end
   end
 
-  def email
-    @email = (params[:email_slug].present?) ? params[:email_slug] : 'welcome'
-    @user = User.unscoped.order("RANDOM()").first
-
-    @title = "Hi #{@user.first_name},"
-    @subject = "Welcome to DoubleDate Beta!"
-
-    render :layout => false
-  end
-
 end 
