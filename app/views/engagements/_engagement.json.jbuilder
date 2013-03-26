@@ -6,6 +6,8 @@ json.updated_at_ago time_ago_in_words(engagement.updated_at)
 
 json.status engagement.status
 
+json.display_name you_or_wing_name_for_engagement(engagement)
+
 if engagement.was_unlocked?
   json.unlocked_at engagement.unlocked_at
   json.expires_at engagement.expires_at
