@@ -15,19 +15,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Header */
-
-  table#table-wrapper td.wrapper-n h3 {
-    color: #7d7d7d;
-    font-size: 20px;
-  }
-
   /* Content */
-  table#table-wrapper tbody td.wrapper-mid {
-    padding: 20px 30px;
-    background: #FFF;
-  }
-
   table#table-wrapper tbody td.wrapper-mid p {
     color: #444;
     font-size: 16px;
@@ -35,58 +23,12 @@
     margin-bottom: 1em;
   }
 
-  table#table-wrapper tfoot tr {
-    height: 12px;
-  }
-
-  table#table-wrapper td.wrapper-sw,
-  table#table-wrapper td.wrapper-s,
-  table#table-wrapper td.wrapper-se {
-    height: 12px;
-  }
-
-  table#table-wrapper td.wrapper-sw {
-    background: url(<%= image_path('email/wrapper-sw.png') %>) 0 0 no-repeat;
-  }
-
-  table#table-wrapper td.wrapper-se {
-    background: url(<%= image_path('email/wrapper-se.png') %>) 0 0 no-repeat;
-  }
-
-  table#table-wrapper td.wrapper-s {
-    background: url(<%= image_path('email/wrapper-s.png') %>) top left repeat-x;
-  }
-
-  table tr#footer td {
-    padding: 10px 30px;
-    color: #FFF;
-    font-size: 13px;
-  }
-
-  table tr#footer td p {
-    line-height: 20px;
-  }
-
   table tr#footer td p a {
-    color: #FFF;
-    text-decoration: none;
+    color: #FFF; text-decoration: none;
   }
 
   table tr#footer td p a:hover {
     opacity: 0.8;
-  }
-
-  table tr#footer .footer-left,
-  table tr#footer .footer-right {
-    float: left;
-    display: inline-block;
-    width: 50%;
-  }
-
-  table tr#footer .footer-right {
-    display: block;
-    height: 35px;
-    background: url(<%= image_path('email/text-logo.png') %>) 100% 50% no-repeat;
   }
 
   @media only screen and (-webkit-min-device-pixel-ratio: 1.3),
@@ -135,12 +77,12 @@
     }
 
     table#table-wrapper td.wrapper-n h2 {
-      margin-top: 10px;
-      font-size: 34px;
+      margin-top: 10px !important;
+      font-size: 34px !important;
     }
 
     table#table-wrapper td.wrapper-n h3 {
-      font-size: 16px;
+      font-size: 16px !important;
     }
 
     table tr#footer .footer-left,
@@ -172,9 +114,9 @@
             <thead>
               <tr>
                 <td class="wrapper-nw" width="30px" height="130px" style="background: url(<%= image_path('email/wrapper-nw.png') %>) top left no-repeat;"></td>
-                <td class="wrapper-n" valign="top" style="background: url(<%= image_path('email/wrapper-n.png') %>) top left repeat-x; max-height: 130px; overflow: hidden; padding: 25px 0 0 0;">
-                  <h2 style="font-size: 48px; color: #ff1178; margin-bottom: 5px; text-shadow: 0 1px 0 #FFF;">Hi <%= @user.first_name %>,</h2>
-                  <h3 style="text-shadow: 0 1px 0 #FFF;"><%= @subject %></h3>
+                <td class="wrapper-n" valign="top" style="background: url(<%= image_path('email/wrapper-n.png') %>) top left repeat-x; max-height: 130px; overflow: hidden; padding: 25px 0 0 0; text-shadow: 0 1px 0 #FFF;">
+                  <h2 style="font-size: 48px; color: #ff1178; margin-bottom: 5px;">Hi <%= @user.first_name %>,</h2>
+                  <h3 style="color: #7d7d7d; font-size: 20px;"><%= @subject %></h3>
                 </td>
                 <td class="wrapper-ne" width="30px" height="130px" style="background: url(<%= image_path('email/wrapper-ne.png') %>) top left no-repeat;"></td>
               </tr>
@@ -182,7 +124,7 @@
 
             <tbody>
               <tr>
-                <td class="wrapper-mid" colspan="3">
+                <td class="wrapper-mid" colspan="3" style="padding: 20px 30px; background: #FFF;" background="#FFF">
                   <p>We're happy that you joined the family at this early stage!</p>
 
                   <p><b>500 Coins</b> are already yours as a BIG THANK YOU for being an early adopter and joining our beta. There are lots of cool features in the pipeline, and surely some bugs we haven’t squashed. We’re hoping you’ll go a little easy on us while we're taking our baby steps. </p>
@@ -204,9 +146,9 @@
 
             <tfoot>
               <tr>
-                <td class="wrapper-sw" width="30px"></td>
-                <td class="wrapper-s">&nbsp;</td>
-                <td class="wrapper-se" width="30px"></td>
+                <td class="wrapper-sw" height="12px" width="30px" style="background: url(<%= image_path('email/wrapper-sw.png') %>) 0 0 no-repeat;"></td>
+                <td class="wrapper-s" height="12px" style="background: url(<%= image_path('email/wrapper-s.png') %>) 0 0 repeat-x;">&nbsp;</td>
+                <td class="wrapper-se" height="12px" width="30px" style="background: url(<%= image_path('email/wrapper-se.png') %>) 0 0 no-repeat;"></td>
               </tr>
             </tfoot>
           </table>
@@ -215,12 +157,12 @@
       </tr>
 
       <tr id="footer">
-        <td colspan="2">
-          <div class="footer-left">
-            <p><b>&copy; 2013 DoubleDate</b><br/>
+        <td colspan="2" style="padding: 10px 30px; color: #FFF; font-size: 13px;">
+          <div class="footer-left" style="float: left; display: inline-block; width: 50%;">
+            <p style="line-height: 20px;"><b>&copy; 2013 DoubleDate</b><br/>
             <%= link_to 'Terms', terms_url %> • <%= link_to 'Privacy', privacy_url %> • <%= mail_to 'Contact', 'hello@dbld8.com' %></p>
           </div>
-          <div class="footer-right"></div>
+          <div class="footer-right" style="float: left; display: inline-block; width: 50%; display: block; height: 35px; background: url(<%= image_path('email/text-logo.png') %>) 100% 50% no-repeat;"></div>
         </td>
       </tr>
       <tr>
