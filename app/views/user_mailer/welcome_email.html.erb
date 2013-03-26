@@ -66,11 +66,11 @@
 
     table tr#footer .footer-left,
     table tr#footer .footer-right {
-      width: 100%;
-      display: block;
-      float: none;
-      text-align: left;
-      background-position: 0 50%;
+      width: 100% !important;
+      display: block !important;
+      float: none !important;
+      text-align: left !important;
+      background-position: 0 50% !important;
     }
   }
   </style>
@@ -136,6 +136,8 @@
 
       <tr id="footer">
         <td colspan="2" style="padding: 10px 30px; color: #FFF; font-size: 13px;">
+          <div class="footer-right" style="float: right; display: inline-block; width: 50%; display: block; height: 35px; background: url(<%= image_path('email/text-logo.png') %>) 100% 50% no-repeat;"></div>
+
           <div class="footer-left" style="float: left; display: inline-block; width: 50%;">
             <p style="line-height: 20px;">
               <b>&copy; 2013 DoubleDate</b> — <%= link_to 'dbld8.com', root_url, :style => "color: #FFF; text-decoration: none;" %><br/>
@@ -144,7 +146,7 @@
               <%= mail_to 'hello@dbld8.com', 'Contact Us', :style => "color: #FFF; text-decoration: none;" %>
             </p>
           </div>
-          <div class="footer-right" style="float: left; display: inline-block; width: 50%; display: block; height: 35px; background: url(<%= image_path('email/text-logo.png') %>) 100% 50% no-repeat;"></div>
+          
         </td>
       </tr>
       <tr>
