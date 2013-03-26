@@ -23,7 +23,7 @@ class HomeController < ApplicationController
     @user = User.unscoped.order("RANDOM()").first
 
     @title = "Hi #{@user.first_name},"
-    @subtitle = "Welcome to DoubleDate Beta!"
+    @subject = "Welcome to DoubleDate Beta!"
 
     render :layout => false
   end
