@@ -13,6 +13,12 @@ module Concerns
       after_destroy :clean_orphaned_events_and_notifications
     end
 
+    def destroy_all_notifications!
+      events.each do |e|
+        e.notifications.delete_all
+      end
+    end
+
     private
 
     def clean_orphaned_events_and_notifications      
@@ -22,5 +28,6 @@ module Concerns
         e.save!
       end
     end
+
   end
 end

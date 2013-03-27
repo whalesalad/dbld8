@@ -62,6 +62,12 @@ class Engagement < ActiveRecord::Base
     # Find the dates that expire in the next 3 days, within current hour.
     self.where("unlocked_at > ?", num_days.days.ago)
   end
+
+  def self.clean_ignored!
+    self.ignored.each do |eng|
+      eng.destroy_all_notifications!
+    end
+  end
   
   def send_initial_message(message)
     messages.create(:user => user, :message => message)
@@ -116,6 +122,7 @@ class Engagement < ActiveRecord::Base
 
   def ignore!
     self.ignored = true
+    self.destroy_all_notifications!
     save!
   end
 
