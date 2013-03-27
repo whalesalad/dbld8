@@ -24,37 +24,40 @@ interests = [
 puts 'Seeding Interests...'
 
 interests.each { |i| Interest.create(:name => i) }
+
+# Import Geonames Cities
+Rake.application['dbld8:import_geonames_cities'].invoke
   
-# Let's get some cities and venues...
-WASHINGTONDC = [38.8951118, -77.0363658]
-OREBRO = [59.2741206163838, 15.2066016197205]
-SANTAMONICA = [34.0172423358256, -118.49820792675]
-WAIKIKI = [21.2764980618893, -157.827744483948]
+# # Let's get some cities and venues...
+# WASHINGTONDC = [38.8951118, -77.0363658]
+# OREBRO = [59.2741206163838, 15.2066016197205]
+# SANTAMONICA = [34.0172423358256, -118.49820792675]
+# WAIKIKI = [21.2764980618893, -157.827744483948]
 
-puts 'Seeding Locations...'
+# puts 'Seeding Locations...'
 
-[WASHINGTONDC, OREBRO, SANTAMONICA, WAIKIKI].each do |lat,lng|
-  Location.find_cities_and_venues_near(lat,lng)
-end
+# [WASHINGTONDC, OREBRO, SANTAMONICA, WAIKIKI].each do |lat,lng|
+#   Location.find_cities_and_venues_near(lat,lng)
+# end
 
-# do user seeds
-puts 'Seeding Users...'
+# # do user seeds
+# puts 'Seeding Users...'
 
-UserSeed.new()
+# UserSeed.new()
 
-# connect users - create random friendships.
-# for every user, create 3 solidified friendships
+# # connect users - create random friendships.
+# # for every user, create 3 solidified friendships
 
-Rake.application['dbld8:attach_fake_photos'].invoke
+# Rake.application['dbld8:attach_fake_photos'].invoke
 
-puts 'Building random friendships...'
+# puts 'Building random friendships...'
 
-all_users = User.find(:all)
+# all_users = User.find(:all)
 
-all_users.each do |user|
-  user.invite all_users.sample, true
-  user.invite all_users.sample, true
-  user.invite all_users.sample, false
-end
+# all_users.each do |user|
+#   user.invite all_users.sample, true
+#   user.invite all_users.sample, true
+#   user.invite all_users.sample, false
+# end
 
-Rake.application['dbld8:reconstruct_events'].invoke
+# Rake.application['dbld8:reconstruct_events'].invoke
