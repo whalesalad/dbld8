@@ -10,7 +10,7 @@ class HomeController < ApplicationController
 
   def invite
     if params[:invite_slug].present?
-      @user = User.find_by_invite_slug()
+      @user = User.find_by_invite_slug(params[:invite_slug])
     end
 
     if @user.nil?
