@@ -16,7 +16,7 @@
 class NewEngagementEvent < Event
   alias engagement related
 
-  earns 10
+  earns 0
 
   def participants
     if engagement.present?
