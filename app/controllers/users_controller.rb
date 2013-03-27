@@ -39,7 +39,8 @@ class UsersController < ApiController
       if @user.save!
         @authenticated_user = @user
         @user.create_token if @user.token.blank?
-        render json: @user.token.as_json.merge(new_user: @new_user) and return
+        # XXXXXXXXX
+        render json: @user.token.as_json.merge(new_user: true) and return
       else
         respond_with(@user, status: :unprocessable_entity)
       end
