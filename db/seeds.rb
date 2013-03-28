@@ -27,6 +27,8 @@ interests.each { |i| Interest.create(:name => i) }
 
 # Import Geonames Cities
 Rake.application['dbld8:import_geonames_cities'].invoke
+
+Rake.application['dbld8:setup_coin_packages'].invoke
   
 # # Let's get some cities and venues...
 # WASHINGTONDC = [38.8951118, -77.0363658]
