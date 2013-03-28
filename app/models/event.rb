@@ -14,8 +14,11 @@
 #
 
 class Event < ActiveRecord::Base
+  @coin_value = 0
+  @karma_value = 0
+
   class << self
-    attr_accessor :coin_value
+    attr_accessor :coin_value, :karma_value
   end
 
   attr_accessible :user, :related, :coins
@@ -33,12 +36,20 @@ class Event < ActiveRecord::Base
 
   belongs_to :related, :polymorphic => true
 
+  def self.coin_value
+    @coin_value ||= 0
+  end
+
+  def self.karma_value
+    @karma_value ||= 0
+  end
+
   def self.earns(value)
-    self.coin_value = value
+    @coin_value = value
   end
 
   def self.spends(value)
-    self.coin_value = -value
+    @coin_value = -value
   end
 
   after_initialize :set_initial_values
@@ -69,8 +80,14 @@ class Event < ActiveRecord::Base
   end
 
   def set_initial_values
-    self.coins ||= (self.class.coin_value || 0)
-    self.karma ||= (self.class.karma_value || 0)
+    self.coins ||= self.class.coin_value
+    self.karma ||= self.class.karma_value
+  end
+
+  def reset_initial_values!
+    self.coins = self.class.coin_value
+    self.karma = self.class.karma_value
+    save!
   end
 
   def self.slug
@@ -130,16 +147,6 @@ class Event < ActiveRecord::Base
 
   def related_admin_path
     [:admin, related]
-  end
-
-  def reset_initial_values!
-    self.coins = self.class.coin_value
-    self.karma = self.class.karma_value
-    save!
-  end
-
-  def karma_value
-    0
   end
 
   def photos
