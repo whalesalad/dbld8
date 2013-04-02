@@ -2,14 +2,14 @@ DoubleDate::Application.routes.draw do
   # post 'users/build' => 'users#build_facebook_user', :as => 'build_user'
   # post 'users/create' => 'users#create_facebook_user', :as => 'create_user'
 
-  get 'new' => 'home#new'
+  # get 'new' => 'home#new'
   get 'about' => 'static#about', :as => 'about'
   get 'terms' => 'static#terms', :as => 'terms'
   get 'privacy' => 'static#privacy', :as => 'privacy'
 
   get 'invite(/:invite_slug)' => 'home#invite', :as => 'user_invitation'
 
-  get 'email' => 'home#email'
+  # get 'email' => 'home#email'
   
   get 'appstore' => redirect(Rails.configuration.app_store_url), :as => 'appstore'
 
