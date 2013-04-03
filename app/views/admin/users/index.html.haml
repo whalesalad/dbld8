@@ -16,24 +16,21 @@
       %th Gender
       %th Status
       %th Created
+      %th Last Activity
 
   %tbody
     - for user in @users
-      %tr{ :class => user.is_a?(FacebookUser) ? 'info' : '' }
+      %tr
         %td #{user.id}
         %td
           = image_tag user.photo.thumb, :class => 'img-rounded', :width => "40px", :height => "40px"
         %td 
-          %b
-            #{link_to user.full_name, admin_user_path(user)}
-          - if user.is_a?(FacebookUser)
-            %span.badge.badge-info
-              Facebook
+          %b #{link_to user.full_name, admin_user_path(user)}
           %br/
-          %small
-            #{user.location}
+          %small #{user.location}
         %td #{user.email}
         %td #{user.age}
         %td #{user.gender.titlecase}
         %td #{user.status}
         %td #{l user.created_at, :format => :medium}
+        %td #{time_ago_in_words(user.updated_at)} ago

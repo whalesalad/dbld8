@@ -30,7 +30,7 @@ class Admin::ActivitiesController < AdminController
   private
 
   def base_activities
-    Activity.includes(:user, :wing, :location, {:engagements => [:user, :wing]})
+    Activity.includes(:user, :wing, :location, {:engagements => [:user, :wing]}).unscoped.order('created_at DESC')
   end
 
   def get_activity

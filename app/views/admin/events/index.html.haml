@@ -3,7 +3,7 @@
 .page-header
   %h1
     = yield :title
-    %small #{pluralize(@events.count, 'Event')} Total
+    %small Showing #{@events.count} of #{Event.count}
 
 
 %table.table.table-striped

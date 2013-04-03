@@ -8,7 +8,7 @@
 
   %h1
     = yield(:title)
-    %small #{pluralize(@activities.count, 'Activity')} Total
+    %small Showing #{@activities.count} of #{Activity.count}
 
 - if @activities.present?
   = render 'activity_list'

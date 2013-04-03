@@ -3,7 +3,7 @@
 .page-header
   %h1
     = yield(:title)
-    %small #{pluralize(@engagements.count, 'Engagement')} Total
+    %small Showing #{@engagements.count} of #{Engagement.count}
 
 - if @engagements.empty?
   %p There aren't any engagements.

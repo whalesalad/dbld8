@@ -8,6 +8,7 @@
       %th Preference
       %th Engagements
       %th Created
+      %th Last Activity
   
   %tbody
     - for activity in @activities
@@ -26,3 +27,4 @@
         %td #{activity.preference}
         %td #{activity.engagements.count}
         %td #{l activity.created_at, :format => :medium}
+        %td #{time_ago_in_words(activity.updated_at)} ago
