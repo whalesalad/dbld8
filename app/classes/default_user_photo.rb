@@ -27,7 +27,7 @@ class DefaultUserPhoto
       :thumb => thumb,
       :small => small,
       :medium => medium,
-      :note => "This user does not have a photo."
+      :note => I18n.t('misc.no_user_photo')
     }
   end
 end

@@ -18,7 +18,10 @@ class AcceptedWingInviteEvent < Event
 
   earns 50
   
-  def detail_string
-    "#{user} accepted #{related? ? friendship.user : "a user"}'s wing invite"
+  def detail_string_params
+    { 
+      user_name: user,
+      friend_name: related? ? friendship.user : "a user" 
+    }
   end
 end

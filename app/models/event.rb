@@ -137,8 +137,18 @@ class Event < ActiveRecord::Base
     "#{prefix}#{coins.abs}"
   end
 
+  def get_detail_string
+    if self.respond_to?(:detail_string_params)
+      I18n.t("events.#{slug}", detail_string_params)
+    elsif self.respond_to?(:detail_string)
+      detail_string
+    else
+      "Missing detail string for #{slug}.".upcase
+    end
+  end
+
   def detail
-    s = [detail_string]
+    s = [get_detail_string]
     s << "and #{cost_string}" unless free?
     "#{s.join(' ')}."
   end

@@ -15,6 +15,14 @@ class ApiController < ActionController::Base
     render json: { :error => error_message }, :status => 404 and return
   end
 
+  def json_record_not_found(m, id)
+    return json_not_found(t('api.not_found', model: m.model_name.humanize, id: id))
+  end
+
+  def json_missing_parameter(param)
+    return json_not_found(t('api.missing_parameter', param: param))
+  end
+
   def json_unauthorized(error_message)
     render json: { :error => error_message }, :status => 401 and return
   end
@@ -24,7 +32,7 @@ class ApiController < ActionController::Base
   end
 
   def unauthorized!
-    json_unauthorized "The authenticated user does not have permission to do this."
+    json_unauthorized t('api.unauthorized')
   end
 
   def set_point

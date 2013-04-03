@@ -21,7 +21,7 @@ class MessagesController < EngagementsController
 
   def create
     unless @engagement.unlocked?
-      return json_error "This engagement must be unlocked before replying."
+      return json_error t('message.engagement_not_unlocked')
     end
 
     @message = @engagement.messages.new({
@@ -41,8 +41,7 @@ class MessagesController < EngagementsController
 
   def destroy
     unless @message.allowed?(@authenticated_user, :all)
-      return json_unauthorized "The authenticated user does not have "\
-      "permission to delete this message."
+      return json_unauthorized t('message.destroy_error')
     end
 
     respond_with(:nothing => true) if @message.destroy
@@ -55,8 +54,11 @@ class MessagesController < EngagementsController
   end
 
   def get_message
-    @message = @engagement.messages.find_by_id(params[:id])
-    json_not_found "The requested message was not found." if @message.nil?
+    begin
+      @message = @engagement.messages.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return json_record_not_found(Message, params[:id])
+    end
   end
 
   def mark_messages_read

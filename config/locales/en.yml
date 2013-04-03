@@ -2,7 +2,52 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  yes: "Yes"
+  no: "No"
+  you: "You"
+
+  welcome_email:
+    subject: "Welcome to DoubleDate Beta!"
+
+  misc:
+    no_user_photo: "This user does not have a photo."
+
+  api:
+    unauthorized: "The authenticated user does not have permission to do this."
+    not_found: "The requested %{model} with ID: %{id} could not be found."
+    missing_parameter: "The '%{param}' parameter is required."
+
+  activity: 
+    not_found: "The requested activity was not found."
+
+  engagement:
+    not_found: "You have not engaged in this activity yet, or the engagement was not found."
+    already_engaged: "You or your wing have already engaged in this activity."
+    no_message: "You must include a message with your engagement."
+    current_user_cannot_unlock: "The current user cannot unlock this engagement."
+    already_unlocked: "This engagement has already been unlocked."
+    unlock_error: "An error ocurred unlocking this engagement."
+    destroy_error: "Only an activity or engagement owner can delete/ignore an engagement."
+
+  message:
+    engagement_not_unlocked: "This engagement must be unlocked before replying."
+    destroy_error: "The authenticated user does not have permission to delete this message."
+
+  friendship:
+    not_found: "A friendship doesn't exist between the authenticated user and <User ID:%{user_id}>"
+    approve_error: "You do not have permission to approve this friendship."
+    cannot_destroy: "You cannot remove %{name} from your wings until your dates and messages with %{him_or_her} are cancelled."
+    invalid_facebook_ids: "Please specify an valid array of facebook_ids of users to invite."
+    invalid_invite_slug_error: "A user could not be found for that invite_slug."
+
+  location:
+    invalid_lat_lng: "Please specify valid latitude and longitude parameters."
+
+  users:
+    facebook_auth_error: "There was an API error from Facebook: %{facebook_error}"
+
+  events:
+    accepted_wing_invite: "%{user_name} accepted %{friend_name}'s wing invite"
 
   time:
     formats:

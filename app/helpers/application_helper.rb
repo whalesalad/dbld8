@@ -27,12 +27,9 @@ module ApplicationHelper
     DoubleDate::FACEBOOK_APP_ID
   end
 
-  def unread_message_for
-
-  end
-
   def yesno(b)
-    b ? 'Yes' : 'No'
+    x = b ? :yes : :no
+    t(x)
   end
 
   def badge_for_event(event)

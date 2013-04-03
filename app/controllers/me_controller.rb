@@ -82,7 +82,7 @@ class MeController < ApiController
   end
 
   def require_slug
-    json_error "The 'slug' parameter is required." unless params[:slug].present?
+    return json_missing_parameter('slug') unless params[:slug].present?
   end
 
 end
