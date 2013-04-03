@@ -147,6 +147,15 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def related_to_s(klass=nil)
+    class_name = klass.nil? ? "object" : klass.model_name.humanize
+    s = if related.nil?
+      "deleted #{class_name}"
+    else
+      "<#{class_name} ID:#{related.id}>"
+    end
+  end
+
   def detail
     s = [get_detail_string]
     s << "and #{cost_string}" unless free?
@@ -168,6 +177,14 @@ class Event < ActiveRecord::Base
   def notification_url
     return related.notification_url if related?
     super
+  end
+
+  def nt(s, params=nil)
+    if s.nil?
+      I18n.t("notifications.#{self.slug}", params)
+    else
+      I18n.t(s, params.merge(scope: [:notifications, self.slug]))
+    end
   end
 
   def properties

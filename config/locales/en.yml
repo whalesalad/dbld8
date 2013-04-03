@@ -48,6 +48,14 @@ en:
 
   events:
     accepted_wing_invite: "%{user_name} accepted %{friend_name}'s wing invite"
+    engagement_expired: "%{user_name}'s %{engagement} expired"
+    engagement_one_day_left: "%{user_name}'s %{engagement} has 24 hours remaining"
+    new_activity: "%{user_name} created %{activity}"
+  
+  notifications:
+    engagement_expired: "Your chat with %{users} for %{activity} has expired."
+    engagement_one_day_left: "Your chat with %{users} for %{activity} has 24 hours remaining."
+    new_activity: "You're %{activity_creator_name}'s wing on %{his_or_her} DoubleDate %{activity_title}"
 
   time:
     formats:

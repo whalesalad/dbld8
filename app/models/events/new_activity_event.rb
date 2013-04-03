@@ -16,13 +16,20 @@
 class NewActivityEvent < Event
   alias activity related
   
-  def detail_string
-    "#{user} created #{activity||"an activity"}"
+  def detail_string_params
+    {
+      user_name: user,
+      activity: related_to_s(Activity)
+    }
   end
 
   def notification_string_for(user)
     if user == activity.wing
-      "You're #{related.user.first_name}'s wing on #{related.user.gender_posessive} DoubleDate \"#{related}\""
+      nt(nil,
+        activity_creator_name: activity.user.first_name,
+        his_or_her: activity.user.gender_posessive,
+        activity_title: activity.to_s
+      )
     end
   end
 
