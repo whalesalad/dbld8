@@ -26,7 +26,7 @@ class Engagement < ActiveRecord::Base
 
   validates_uniqueness_of :activity_id, 
     :scope => [:user_id, :wing_id], 
-    :message => "You or your wing have already engaged in this activity."
+    :message => I18n.t('engagements.already_engaged')
 
   validate :validate_unique_participants, :on => :create
 

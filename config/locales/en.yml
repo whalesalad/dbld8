@@ -37,11 +37,21 @@ en:
     invalid_facebook_ids: "Please specify an valid array of facebook_ids of users to invite."
     invalid_invite_slug_error: "A user could not be found for that invite_slug."
 
+  interests:
+    maximum_reached: "A user can only have a maximum of 10 interests."
+
   locations:
     invalid_lat_lng: "Please specify valid latitude and longitude parameters."
 
   users:
     facebook_auth_error: "There was an API error from Facebook: %{facebook_error}"
+    single: "Single"
+    taken: "Taken"
+    posessive_his: "his"
+    posessive_her: "her"
+    pronoun_him: "him"
+    pronoun_her: "her"
+    age_limit_message: "You must be 17 or older to join DoubleDate."
 
   events:
     accepted_wing_invite: "%{user_name} accepted %{friend_name}'s wing invite"
@@ -84,6 +94,8 @@ en:
     accept_invite:
       upper_text: "Accept & Earn %{coins} Coins"
       description: "Would you like to accept %{user_name}'s invitation?"
+
+  coins: "%{coins} Coins"
 
   time:
     formats:
