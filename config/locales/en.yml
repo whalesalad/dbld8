@@ -51,11 +51,18 @@ en:
     engagement_expired: "%{user_name}'s %{engagement} expired"
     engagement_one_day_left: "%{user_name}'s %{engagement} has 24 hours remaining"
     new_activity: "%{user_name} created %{activity}"
+    new_engagement: "%{participants} engaged in %{activity}"
+    no_dates_nearby: "%{user_name} posted a DoubleDate in an empty area"
   
   notifications:
     engagement_expired: "Your chat with %{users} for %{activity} has expired."
     engagement_one_day_left: "Your chat with %{users} for %{activity} has 24 hours remaining."
     new_activity: "You're %{activity_creator_name}'s wing on %{his_or_her} DoubleDate %{activity_title}"
+    new_engagement:
+      for_wing: "%{engagement_creator} picked you to be %{his_or_her} wing on the DoubleDate %{activity}"
+      for_activity_users: "%{engagement_users} are interested in %{activity}"
+    no_dates_nearby: "You earned %{coins} coins for posting a DoubleDate in an empty area!"
+
 
   time:
     formats:

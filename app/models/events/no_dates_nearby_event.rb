@@ -3,12 +3,12 @@ class NoDatesNearbyEvent < Event
 
   earns 50
 
-  def detail_string
-    "#{user} posted a DoubleDate in an empty area"
+  def detail_string_params
+    { user_name: user.to_s }
   end
 
   def notification_string_for(user)
-    "You earned #{coins} coins for posting a DoubleDate in an empty area!"
+    nt(nil, coins: coins)
   end
 
   def notify
