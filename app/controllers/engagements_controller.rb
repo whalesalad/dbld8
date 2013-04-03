@@ -11,13 +11,13 @@ class EngagementsController < ApiController
 
   def create
     if @activity.engagements.find_for_user_or_wing(@authenticated_user).exists?
-      return json_unauthorized t('engagement.already_engaged')
+      return json_unauthorized t('engagements.already_engaged')
     end
 
     message_body = params[:engagement].delete(:message)
 
     if message_body.nil?
-      return json_error t('engagement.no_message')
+      return json_error t('engagements.no_message')
     end
 
     @engagement = @activity.engagements.new(params[:engagement])
@@ -51,12 +51,12 @@ class EngagementsController < ApiController
 
     # If the user is unable to unlock
     unless unlocker.unlockable?
-      return json_error t('engagement.current_user_cannot_unlock')
+      return json_error t('engagements.current_user_cannot_unlock')
     end
 
     # If the engagement was already unlocked
     if @engagement.unlocked?
-      return json_error t('engagement.already_unlocked')
+      return json_error t('engagements.already_unlocked')
     end
 
     # Finally, let's unlock this beast.
@@ -65,7 +65,7 @@ class EngagementsController < ApiController
         :location => engagement_path(@engagement), 
         :template => 'engagements/show' and return
     else
-      return json_error t('engagement.unlock_error')
+      return json_error t('engagements.unlock_error')
     end
   end
 
@@ -82,7 +82,7 @@ class EngagementsController < ApiController
       end
     end
 
-    json_error t('engagement.destroy_error')
+    json_error t('engagements.destroy_error')
   end
 
   private
@@ -110,7 +110,7 @@ class EngagementsController < ApiController
       @activity.engagements.find_for_user_or_wing(@authenticated_user).first
     end
     
-    return json_not_found t('engagement.not_found') if @engagement.nil?
+    return json_not_found t('engagements.not_found') if @engagement.nil?
   end
 
   # only activity.participants can view index

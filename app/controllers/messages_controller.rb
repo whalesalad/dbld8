@@ -21,7 +21,7 @@ class MessagesController < EngagementsController
 
   def create
     unless @engagement.unlocked?
-      return json_error t('message.engagement_not_unlocked')
+      return json_error t('messages.engagement_not_unlocked')
     end
 
     @message = @engagement.messages.new({
@@ -41,7 +41,7 @@ class MessagesController < EngagementsController
 
   def destroy
     unless @message.allowed?(@authenticated_user, :all)
-      return json_unauthorized t('message.destroy_error')
+      return json_unauthorized t('messages.destroy_error')
     end
 
     respond_with(:nothing => true) if @message.destroy

@@ -29,7 +29,7 @@ class RecruitedWingEvent < Event
   end
 
   def notification_string_for(user)
-    "#{related.friend} accepted your wing invitation"
+    nt(nil, friend: friendship.friend)
   end
 
   def notification_url
@@ -41,9 +41,9 @@ class RecruitedWingEvent < Event
       slug: "inform",
       user_id: related.friend.id,
       coins: self.class.coin_value,
-      upper_text: "You Earned #{coins} Coins",
-      description: "#{related.friend.first_name} accepted your wing invite and you both earned #{coins} coins!",
-      dismiss_text: "Close"
+      upper_text: I18n.t('dialogs.earned_coins_text', coins: coins),
+      description: I18n.t('dialogs.recruited_wing_invite', user_name: related.friend.first_name, coins: coins),
+      dismiss_text: I18n.t('dialogs.close_text')
     }
   end
 

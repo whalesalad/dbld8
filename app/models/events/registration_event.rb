@@ -16,12 +16,12 @@
 class RegistrationEvent < Event
   earns 500
 
-  def detail_string
-    "#{user} joined DoubleDate"
+  def detail_string_params
+    { user_name: self.user.first_name }
   end
 
   def notification_string_for(user)
-    "Your Facebook friend #{self.user.first_name} just joined DoubleDate!"
+    nt(nil, friend_name: self.user.first_name)
   end
 
   def notification_url
@@ -30,7 +30,6 @@ class RegistrationEvent < Event
 
   def notify
     friend_service = FacebookFriendService.new(user)
-
     friend_service.already_users.each do |existing_user|
       notifications.create(:user => existing_user, :push => true)
     end
@@ -41,11 +40,11 @@ class RegistrationEvent < Event
       slug: "invite_user",
       user_id: user.id,
       coins: RecruitedWingEvent.coin_value,
-      upper_text: "Invite & Earn #{RecruitedWingEvent.coin_value} Coins",
-      description: "Would you like to add #{self.user.first_name} as your wing?",
-      confirm_text: "Yes, Send Invite",
       confirm_url: "/users/#{user.id}/invite",
-      dismiss_text: "No, Thanks"
+      upper_text: I18n.t('dialogs.invite_user.upper_text', coins: RecruitedWingEvent.coin_value),
+      description: I18n.t('dialogs.invite_user.description', friend_name: self.user.first_name),
+      confirm_text: I18n.t('dialogs.invite_user.confirm_text'),
+      dismiss_text: I18n.t('dialogs.invite_user.dismiss_text')
     }
   end
 

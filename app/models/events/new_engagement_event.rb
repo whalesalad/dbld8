@@ -36,17 +36,17 @@ class NewEngagementEvent < Event
 
   def notification_string_for(user)
     if user == engagement.wing
-      nt(:for_wing,
+      return nt(:for_wing,
         engagement_creator: engagement.user,
         his_or_her: engagement.user.gender_posessive,
-        activity: engagement.activity
+        activity: engagement.activity.to_s
       )
     end
 
     if engagement.activity.participant_ids.include?(user.id)
-      nt(:for_activity_users, 
+      return nt(:for_activity_users, 
         engagement_users: engagement.participant_names,
-        activity: engagement.activity
+        activity: engagement.activity.to_s
       )
     end
   end

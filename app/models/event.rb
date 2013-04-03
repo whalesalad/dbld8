@@ -96,16 +96,16 @@ class Event < ActiveRecord::Base
     self.model_name.gsub('Event', '').underscore
   end
 
+  def slug
+    self.class.slug
+  end
+
   def to_s
     self.class.model_name.gsub('Event', '')
   end
 
   def human_name
     to_s.titleize
-  end
-
-  def slug
-    self.class.slug
   end
 
   def related?
@@ -181,9 +181,9 @@ class Event < ActiveRecord::Base
 
   def nt(s, params=nil)
     if s.nil?
-      I18n.t("notifications.#{self.slug}", params)
+      I18n.t("notifications.#{slug}", params)
     else
-      I18n.t(s, params.merge(scope: [:notifications, self.slug]))
+      I18n.t(s, params.merge(scope: [:notifications, slug]))
     end
   end
 

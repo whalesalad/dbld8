@@ -25,7 +25,7 @@ class FriendsController < ApiController
       render json: { approved: true } and return
     end
     
-    json_error t('friendship.approve_error')
+    json_error t('friendships.approve_error')
   end
 
   def destroy
@@ -35,7 +35,7 @@ class FriendsController < ApiController
 
     if has_engagements || has_activities
       friend = @friendship.not_you(@authenticated_user)      
-      return json_error t('friendship.cannot_destroy', name: friend, him_or_her: friend.pronoun)
+      return json_error t('friendships.cannot_destroy', name: friend, him_or_her: friend.pronoun)
     end
 
     respond_with(:nothing => true) if @friendship.destroy
@@ -65,7 +65,7 @@ class FriendsController < ApiController
     end
 
     unless facebook_ids.size > 0
-      return json_error t('friendship.invalid_facebook_ids')
+      return json_error t('friendships.invalid_facebook_ids')
     end
 
     doubledate_users = FacebookUser.where(:facebook_id => facebook_ids)
@@ -97,7 +97,7 @@ class FriendsController < ApiController
     friend = User.find_by_invite_slug(invite_slug)
 
     if friend.nil?
-      return json_error t('friendship.invalid_invite_slug_error')
+      return json_error t('friendships.invalid_invite_slug_error')
     end
 
     # automatically create a friendship between these two users
@@ -154,7 +154,7 @@ class FriendsController < ApiController
     @friendship = @authenticated_user.find_any_friendship_with(@friend)
 
     if @friendship.nil?
-      return json_not_found t('friendship.not_found', user_id: params[:id])
+      return json_not_found t('friendships.not_found', user_id: params[:id])
     end
   end
 
