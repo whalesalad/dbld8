@@ -9,9 +9,9 @@ DoubleDate::Application.routes.draw do
 
   get 'invite(/:invite_slug)' => 'home#invite', :as => 'user_invitation'
 
-  # get 'email' => 'home#email'
-  
   get 'appstore' => redirect(Rails.configuration.app_store_url), :as => 'appstore'
+  get 'download' => redirect(Rails.configuration.app_store_url), :as => 'download'
+  get 'itunes' => redirect(Rails.configuration.app_store_url), :as => 'itunes'
 
   # Authentication
   post 'authenticate' => 'users#authenticate'
