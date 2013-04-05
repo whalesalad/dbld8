@@ -3,7 +3,7 @@ class ApiController < ActionController::Base
   
   before_filter :require_token_auth
   after_filter :add_who_am_i_header if Rails.env.development?
-
+  
   # rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   rescue_from ActiveRecord::RecordInvalid, :with => :record_invalid
 

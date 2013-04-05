@@ -7,6 +7,7 @@ gem 'haml'
 gem 'countries'
 gem 'unicorn'
 gem 'typhoeus'
+gem 'rack-contrib'
 
 # JSON
 gem 'multi_json'
