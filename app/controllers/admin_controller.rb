@@ -1,8 +1,8 @@
 require 'date'
 
 class AdminController < ApplicationController  
-  before_filter :force_ssl if Rails.env.production?
-  before_filter :authenticate if Rails.env.production?
+  before_filter :force_ssl unless Rails.env.development?
+  before_filter :authenticate unless Rails.env.development?
   
   layout 'admin'
 
