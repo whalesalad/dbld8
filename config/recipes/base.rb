@@ -42,3 +42,8 @@ task :tail, :roles => :app do
     break if stream == :err
   end
 end
+
+desc "Gimme dat uname bro"
+task :uname do
+  run "uname -a"
+end

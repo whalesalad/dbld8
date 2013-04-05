@@ -12,13 +12,24 @@
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
 
-require "bundler/capistrano"
-require "sidekiq/capistrano"
-# require 'hipchat/capistrano'
+# HIPCHAT
+# set :hipchat_token, "ebcfbcc0b86138e2d0e4e563cb553e"
+# set :hipchat_room_name, "DoubleDate"
+# set :hipchat_announce, false
+# set :hipchat_color, 'green'
+# set :hipchat_failed_color, 'red'
 
 set :whenever_roles, [:cron]
 set :whenever_command, "bundle exec whenever"
+
+set :stages, %w(production staging)
+set :default_stage, "staging"
+
+require "bundler/capistrano"
+require "sidekiq/capistrano"
 require "whenever/capistrano"
+require "capistrano/ext/multistage"
+# require 'hipchat/capistrano'
 
 load "config/recipes/base"
 load "config/recipes/rbenv"
@@ -30,19 +41,11 @@ load "config/recipes/redis"
 load "config/recipes/elasticsearch"
 load "config/recipes/check"
 
-server "rudolph.dbld8.com", :web, :app, :db, primary: true
-server "comet.dbld8.com", :web, :app
-server "blitzen.dbld8.com", :search, :db, no_release: true
+# server "rudolph.dbld8.com", :web, :app, :db, primary: true
+# server "comet.dbld8.com", :web, :app
+# server "blitzen.dbld8.com", :search, :db, no_release: true
 # server "donner.dbld8.com", :web, :app, :search
-
-# HIPCHAT
-# set :hipchat_token, "ebcfbcc0b86138e2d0e4e563cb553e"
-# set :hipchat_room_name, "DoubleDate"
-# set :hipchat_announce, false
-# set :hipchat_color, 'green'
-# set :hipchat_failed_color, 'red'
-
-role :cron, 'rudolph.dbld8.com'
+# role :cron, 'rudolph.dbld8.com'
 
 set :user, "doubledate"
 set :application, "doubledate"
@@ -50,7 +53,6 @@ set :deploy_to, "/srv/doubledate"
 set :deploy_via, :remote_cache
 set :use_sudo, false
 
-# set :scm, "git"
 set :branch, "master"
 set :repository, "git@github.com:whalesalad/dbld8.git"
 

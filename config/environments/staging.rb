@@ -1,7 +1,7 @@
 DoubleDate::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  config.redis_host = "blitzen"
+  config.redis_host = "localhost"
   config.redis_port = 6379
   config.redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
 
@@ -9,7 +9,7 @@ DoubleDate::Application.configure do
   config.logger.level = Logger.const_get('INFO')
 
   # configure tire for remote connection
-  Tire.configure { url "http://blitzen:9200" }
+  Tire.configure { url "http://localhost:9200" }
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -41,7 +41,7 @@ DoubleDate::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  config.log_level = :info
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
