@@ -3,6 +3,7 @@
   %head
     %meta{ :content => "width=device-width", :name => "viewport" }
     %meta{ :name => "google-site-verification", :content => "6o8aTsEOlPquPfLBsCgWhmZCnEyfTp6Ngey0EI2ke0s" }
+    %meta{ :name => 'apple-itunes-app', :content => "app-id=#{Rails.configuration.app_id}" }
 
     %title= full_title(yield(:title))
     
@@ -14,7 +15,6 @@
       %h1 DoubleDate
       %h2 Grab a friend • Go out • Have fun 
 
-    / - if 1 == 0
     #lower-glass
       = link_to "Download", itunes_url, :class => 'download-btn'
 
