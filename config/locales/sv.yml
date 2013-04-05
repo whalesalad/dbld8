@@ -86,10 +86,10 @@ sv:
       confirm_text: "Ja, Bjud in"
       dismiss_text: "Nej, Tack"
     accepted_wing_invite:
-      upper_text: "Du tjände %{coins} mynt"
+      upper_text: "Du tjänade %{coins} mynt"
       description: "Du tjänade %{coins} mynt när du accepterade %{user_name}'s wing förfrågan!"
     accept_invite:
-      upper_text: "Acceptera & få %{coins} mynt"
+      upper_text: "Acceptera & tjäna %{coins} mynt"
       description: "Vill du acceptera %{user_name}'s förfrågan?"
 
   coins: "%{coins} Mynt"
