@@ -69,7 +69,7 @@ sv:
       for_activity_users: "%{engagement_users} är intresserade utav %{activity}"
     no_dates_nearby: "Du tjänade %{coins} mynt för att du var först att skapa en DoubleDate här!"
     recruited_wing: "%{friend} accepterade din wing förfrågan!"
-    registration: "Din Facebook vän #{friend_name} finns nu också på DoubleDate!"
+    registration: "Din Facebook vän %{friend_name} finns nu också på DoubleDate!"
     sent_wing_invite:
       invited: "%{user_name} bjöd in dig att bli %{his_or_her} wing"
       approved: "Du har accepterat %{user_name}'s wing förfrågan! Woohoo!"

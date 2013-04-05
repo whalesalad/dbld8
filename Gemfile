@@ -8,6 +8,7 @@ gem 'countries'
 gem 'unicorn'
 gem 'typhoeus'
 gem 'rack-contrib'
+gem 'rails-i18n'
 
 # JSON
 gem 'multi_json'
