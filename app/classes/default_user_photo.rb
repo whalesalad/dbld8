@@ -1,6 +1,6 @@
 class DefaultUserPhoto
   attr_accessor :user, :thumb, :small, :medium
-
+  
   def initialize(user)
     @user = user
   end
@@ -14,6 +14,10 @@ class DefaultUserPhoto
   end
 
   def medium
+    small
+  end
+
+  def image
     small
   end
 

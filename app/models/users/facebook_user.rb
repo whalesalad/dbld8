@@ -48,8 +48,8 @@ class FacebookUser < User
       return DefaultUserPhoto.new(self)
     end
 
-    if profile_photo.blank?
-      return fetch_facebook_photo
+    if profile_photo.nil?
+      return fetch_facebook_photo || DefaultUserPhoto.new(self)
     end
     
     profile_photo
