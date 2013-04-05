@@ -1,4 +1,4 @@
-set_default :elasticsearch_version, '0.20.5'
+set_default :elasticsearch_version, '0.20.6'
 set_default :elasticsearch_download_path, "http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-#{elasticsearch_version}.tar.gz"
 set_default :elasticsearch_path, "/usr/local/share/elasticsearch"
 
