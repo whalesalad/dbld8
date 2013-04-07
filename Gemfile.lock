@@ -208,6 +208,8 @@ GEM
       atomic (~> 1.0)
       avl_tree (~> 1.1.2)
       hitimes (~> 1.1)
+    metriks-middleware (2.1.0)
+      metriks (~> 0.9.9)
     mime-types (1.22)
     mini_magick (3.5.0)
       subexec (~> 0.2.1)
@@ -421,6 +423,7 @@ DEPENDENCIES
   librato-rails
   lograge
   metriks
+  metriks-middleware
   mini_magick
   multi_json
   neat

@@ -5,8 +5,13 @@ DoubleDate::Application.configure do
   config.redis_port = 6379
   config.redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
 
-  # config.logger = Logger.new(STDOUT)
-  # config.logger.level = Logger.const_get('INFO')
+  Metriks::Reporter::LibratoMetrics.new(
+    Rails.configuration.librato['user'], 
+    Rails.configuration.librato['token'], 
+    source: Rails.configuration.hostname,
+    on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
+  ).start
+  config.middleware.use Metriks::Middleware
 
   config.lograge.enabled = true
 

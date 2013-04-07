@@ -41,8 +41,7 @@ module ApplicationHelper
   end
 
   def cluster_host
-    require 'socket'
-    Socket.gethostname
+    Rails.configuration.hostname
   end
 
 end

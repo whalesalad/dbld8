@@ -26,8 +26,12 @@ after_fork do |server, worker|
     ActiveRecord::Base.establish_connection
 
   if defined?(Metriks::Reporter::LibratoMetrics)
-    reporter = Metriks::Reporter::LibratoMetrics.new(Rails.configuration.librato['user'], Rails.configuration.librato['token'], on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") })
-    reporter.start
+    Metriks::Reporter::LibratoMetrics.new(
+      Rails.configuration.librato['user'], 
+      Rails.configuration.librato['token'], 
+      source: Rails.configuration.hostname,
+      on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
+    ).start
   end
 
   defined?(AnalyticsRuby) and
