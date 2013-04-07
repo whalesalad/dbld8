@@ -1,4 +1,5 @@
 class ActivitiesController < BaseActivitiesController
+  before_filter :set_point, :only => [:index]
   before_filter :get_activity, :only => [:show, :update, :destroy]
   before_filter :activity_owner_only, :only => [:update, :destroy]
 
@@ -6,13 +7,7 @@ class ActivitiesController < BaseActivitiesController
   # before_filter :check_for_unlock, :only => [:create]
 
   def index
-    params[:point] = if params[:latitude] && params[:longitude]
-      "#{params[:latitude]},#{params[:longitude]}"
-    else
-      @authenticated_user.location.str_point
-    end
-
-    @activities = Activity.search(params)
+    @activities = Activity.search(params.merge({ point: @point }))
     respond_with @activities
   end
 

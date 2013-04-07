@@ -27,6 +27,16 @@ class ApiController < ActionController::Base
     json_unauthorized "The authenticated user does not have permission to do this."
   end
 
+  def set_point
+    if (params.keys & %w(latitude longitude)).empty?
+      @point = authenticated_user.location.present? ? @authenticated_user.location.str_point : nil
+    elsif (params[:latitude] + params[:longitude]).to_i < 1
+      return json_error "Please specify valid latitude and longitude parameters. lat: #{params[:latitude]}, lng: #{params[:longitude]} are invalid."
+    else
+      @point = [params[:latitude], params[:longitude]].join ','
+    end
+  end
+
   private
 
   def require_token_auth
