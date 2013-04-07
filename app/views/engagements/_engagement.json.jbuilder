@@ -1,12 +1,12 @@
 json.(engagement, :id, :created_at)
 json.created_at_ago time_ago_in_words(engagement.created_at)
-
 json.updated_at engagement.updated_at
 json.updated_at_ago time_ago_in_words(engagement.updated_at)
 
 json.status engagement.status
-
 json.display_name you_or_wing_name_for_engagement(engagement)
+
+json.unread_count engagement.messages.unread_for(@authenticated_user).count
 
 if engagement.was_unlocked?
   json.unlocked_at engagement.unlocked_at
@@ -19,25 +19,24 @@ if engagement.was_unlocked?
   json.days_remaining engagement.days_remaining
 end
 
-json.unread_count engagement.messages.unread_for(@authenticated_user).count
-
 if engagement.messages.first.present?
   json.primary_message engagement.messages.first.message
 end
 
-json.user do
-  json.partial! 'users/user', user: engagement.user
-end
-json.wing do
-  json.partial! 'users/user', user: engagement.wing
-end
-
-json.activity do
-  json.(engagement.activity, :id, :title)
+json.cache! engagement do |json|
   json.user do
-    json.partial! 'users/user', user: engagement.activity.user
+    json.partial! 'users/user', user: engagement.user
   end
   json.wing do
-    json.partial! 'users/user', user: engagement.activity.wing
+    json.partial! 'users/user', user: engagement.wing
+  end
+  json.activity do
+    json.(engagement.activity, :id, :title)
+    json.user do
+      json.partial! 'users/user', user: engagement.activity.user
+    end
+    json.wing do
+      json.partial! 'users/user', user: engagement.activity.wing
+    end
   end
 end

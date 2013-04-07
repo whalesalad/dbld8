@@ -13,6 +13,9 @@ gem 'multi_json'
 gem 'oj'
 gem 'jbuilder'
 
+# cache digests, nested caching
+gem 'cache_digests'
+
 # DB
 gem 'pg'
 gem 'activerecord-postgres-hstore'

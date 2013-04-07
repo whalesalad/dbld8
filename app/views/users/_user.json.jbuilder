@@ -1,4 +1,4 @@
-json.cache! [:short_user, user] do |json|
+json.cache! user do |json|
   json.(user, :id, :full_name, :first_name, :age, :gender, :total_karma)
 
   if user.is_a? FacebookUser

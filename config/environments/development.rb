@@ -24,6 +24,7 @@ DoubleDate::Application.configure do
   
   # temporarily enabling caching
   # config.cache_store = :redis_store, "redis://127.0.0.1:6379/10"
+  # config.cache_store = :dalli_store
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send

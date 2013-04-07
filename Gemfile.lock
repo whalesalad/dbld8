@@ -68,6 +68,8 @@ GEM
     builder (3.0.4)
     bullet (4.5.0)
       uniform_notifier
+    cache_digests (0.2.0)
+      actionpack (>= 3.2)
     capistrano (2.14.2)
       highline
       net-scp (>= 1.0.0)
@@ -377,6 +379,7 @@ DEPENDENCIES
   bootstrap-sass (~> 2.2.2.0)
   bourbon
   bullet
+  cache_digests
   capistrano
   capybara
   carrierwave
