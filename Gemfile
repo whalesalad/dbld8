@@ -34,6 +34,8 @@ gem 'koala'
 gem 'fog'
 
 # Redis // Caching
+gem 'dalli'
+
 gem 'redis'
 gem 'redis-store'
 gem 'redis-rails'
