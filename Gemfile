@@ -81,6 +81,7 @@ end
 
 group :production, :staging do
   gem "librato-rails"
+  gem "metriks"
   gem "lograge"
   gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end

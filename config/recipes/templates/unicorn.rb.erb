@@ -8,8 +8,6 @@ timeout 30
 preload_app true
 
 before_fork do |server, worker|
-  # the following is highly recomended for Rails + "preload_app true"
-  # as there's no need for the master process to hold a connection
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
 
@@ -24,9 +22,11 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
-  # the following is *required* for Rails + "preload_app true",
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
+
+  defined?(Metriks::Reporter::LibratoMetrics) and
+    Metriks::Reporter::LibratoMetrics.new('michael@belluba.com', '788db90fc16c0f1cfab15ff693010f95b72db2c9462bcf930a37f185d5662ffc').start
 
   defined?(AnalyticsRuby) and
     Analytics.init(
