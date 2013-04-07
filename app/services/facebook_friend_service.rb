@@ -12,7 +12,7 @@ class FacebookFriendService
   end
 
   def facebook_friend_ids
-    @facebook_friend_ids ||= facebook_friends.map {|f| f['id'].to_i }
+    @facebook_friend_ids ||= facebook_friends.nil? ? [] : facebook_friends.map {|f| f['id'].to_i }
   end
 
   def ignore_ids

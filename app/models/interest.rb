@@ -22,9 +22,6 @@ class Interest < ActiveRecord::Base
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :facebook_id, :allow_nil => true
 
-  # validates length is at least 2 characters
-  # 
-
   has_and_belongs_to_many :users
 
   mapping do
@@ -33,7 +30,7 @@ class Interest < ActiveRecord::Base
   end
 
   def self.search(params)
-    tire.search(:per_page => 50) do
+    tire.search(:per_page => 50, :load => true) do
       if params[:query].present?
         query { match :name, params[:query], type: 'phrase_prefix' } 
       end

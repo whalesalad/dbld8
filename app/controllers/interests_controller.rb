@@ -6,12 +6,12 @@ class InterestsController < ApiController
   TOP_INTERESTS_COUNT = 20
 
   def index
-    @interests = if params[:query].present?
-      Interest.where('name ~* ?', params[:query])
-    else
-      Interest.top(TOP_INTERESTS_COUNT)
-    end
-
+    # @interests = if params[:query].present?
+    #   Interest.where('name ~* ?', params[:query])
+    # else
+    #   Interest.top(TOP_INTERESTS_COUNT)
+    # end
+    @interests = Interest.search({ query: params[:query].presence })
     respond_with @interests
   end
 
