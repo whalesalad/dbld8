@@ -1,25 +1,12 @@
-# set :application, "set your application name here"
-# set :repository,  "set your repository location here"
-
-# set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
-
-# role :web, "your web-server here"                          # Your HTTP server, Apache/etc
-# role :app, "your app-server here"                          # This may be the same as your `Web` server
-# role :db,  "your primary db-server here", :primary => true # This is where Rails migrations will run
-# role :db,  "your slave db-server here"
-
-# if you want to clean up old releases on each deploy uncomment this:
-# after "deploy:restart", "deploy:cleanup"
-
 # HIPCHAT
+# require 'hipchat/capistrano'
 # set :hipchat_token, "ebcfbcc0b86138e2d0e4e563cb553e"
 # set :hipchat_room_name, "DoubleDate"
 # set :hipchat_announce, false
 # set :hipchat_color, 'green'
 # set :hipchat_failed_color, 'red'
 
-set :whenever_roles, [:cron]
+set :whenever_roles, [:cron, :app]
 set :whenever_command, "bundle exec whenever"
 
 set :stages, %w(production staging)
@@ -29,7 +16,6 @@ require "bundler/capistrano"
 require "sidekiq/capistrano"
 require "whenever/capistrano"
 require "capistrano/ext/multistage"
-# require 'hipchat/capistrano'
 
 load "config/recipes/base"
 load "config/recipes/rbenv"
@@ -40,12 +26,6 @@ load "config/recipes/nodejs"
 load "config/recipes/redis"
 load "config/recipes/elasticsearch"
 load "config/recipes/check"
-
-# server "rudolph.dbld8.com", :web, :app, :db, primary: true
-# server "comet.dbld8.com", :web, :app
-# server "blitzen.dbld8.com", :search, :db, no_release: true
-# server "donner.dbld8.com", :web, :app, :search
-# role :cron, 'rudolph.dbld8.com'
 
 set :user, "doubledate"
 set :application, "doubledate"
