@@ -79,8 +79,9 @@ group :assets do
   gem 'neat'
 end
 
-group :production do
-  gem 'newrelic_rpm'
+group :production, :staging do
+  gem "librato-rails"
+  gem "lograge"
   gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end
 

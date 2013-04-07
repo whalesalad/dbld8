@@ -11,6 +11,9 @@ DoubleDate::Application.configure do
     Bullet.bullet_logger = true
   end
 
+  # Lograge
+  # config.lograge.enabled = true
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
@@ -20,10 +23,8 @@ DoubleDate::Application.configure do
   config.whiny_nils = true
 
   # Show full error reports and disable caching
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   
-  # temporarily enabling caching
-  # config.cache_store = :redis_store, "redis://127.0.0.1:6379/10"
   # config.cache_store = :dalli_store
   config.action_controller.perform_caching = false
 

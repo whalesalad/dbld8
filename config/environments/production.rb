@@ -5,8 +5,10 @@ DoubleDate::Application.configure do
   config.redis_port = 6379
   config.redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
 
-  config.logger = Logger.new(STDOUT)
-  config.logger.level = Logger.const_get('INFO')
+  # config.logger = Logger.new(STDOUT)
+  # config.logger.level = Logger.const_get('INFO')
+
+  config.lograge.enabled = true
 
   # configure tire for remote connection
   Tire.configure { url "http://blitzen:9200" }
@@ -15,7 +17,7 @@ DoubleDate::Application.configure do
   config.cache_classes = true
 
   # Full error reports are disabled and caching is turned on
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)

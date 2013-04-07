@@ -1,7 +1,6 @@
 class MessagesController < EngagementsController
   # via EngagementsController
   before_filter :get_engagement, :participants_only
-  
   before_filter :get_message, :only => [:show, :destroy]
   after_filter :mark_messages_read, :only => [:index]
 
