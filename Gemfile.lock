@@ -201,6 +201,7 @@ GEM
     net-ssh (2.6.6)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    newrelic_rpm (3.5.6.46)
     nokogiri (1.5.6)
     oj (2.0.10)
     pg (0.14.1)
@@ -395,6 +396,7 @@ DEPENDENCIES
   mini_magick
   multi_json
   neat
+  newrelic_rpm
   oj
   pg
   postgres_ext
