@@ -2,7 +2,7 @@ class Admin::UsersController < AdminController
   before_filter :get_user, :except => [:index]
 
   def index
-    @users = User.order('created_at DESC')
+    @users = User.includes(:location, :profile_photo).order('created_at DESC').page(params[:page]).per(30)
   end
 
   def show

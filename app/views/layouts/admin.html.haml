@@ -47,9 +47,6 @@
                 %li{ :class => current_section?(:controller => "friendships") ? 'active' : '' }
                   = awesome_nav('group', "Friendships", admin_friendships_path)
 
-                %li{ :class => current_section?(:controller => 'interests') ? 'active' : '' }
-                  = awesome_nav('tag', "Interests", admin_interests_path)
-
                 %li{ :class => current_section?(:controller => 'locations') ? 'active' : '' }
                   = awesome_nav('map-marker', "Locations", admin_locations_path)
 
