@@ -1,6 +1,6 @@
 set :output, "#{path}/log/cron.log"
 
-every 1.minute, :roles => :app do
+every 15.minutes, :roles => :app do
   command "#{path}/script/librato"
 end
 
