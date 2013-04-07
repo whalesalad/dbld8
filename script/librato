@@ -1,0 +1,22 @@
+#!/bin/bash
+
+LIBRATO_USERID="michael@belluba.com"
+LIBRATO_TOKEN="788db90fc16c0f1cfab15ff693010f95b72db2c9462bcf930a37f185d5662ffc"
+
+cpu=$(ps aux | awk '{s=s+$3}; END{print s}')
+mem=$(ps aux | awk '{s=s+$4}; END{print s}')
+host=$(hostname)
+
+echo "%CPU: ${cpu} %MEM: ${mem}"
+
+# Curl dat yo
+curl \
+ --silent \
+ -u ${LIBRATO_USERID}:${LIBRATO_TOKEN} \
+ -d "gauges[0][name]=CPU" \
+ -d "gauges[0][value]=${cpu}" \
+ -d "gauges[0][source]=${host}" \
+ -d "gauges[1][name]=MEM" \
+ -d "gauges[1][value]=${mem}" \
+ -d "gauges[1][source]=${host}" \
+-X POST https://metrics-api.librato.com/v1/metrics;
