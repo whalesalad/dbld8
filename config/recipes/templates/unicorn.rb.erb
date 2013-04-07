@@ -26,7 +26,7 @@ after_fork do |server, worker|
     ActiveRecord::Base.establish_connection
 
   defined?(Metriks::Reporter::LibratoMetrics) and
-    Metriks::Reporter::LibratoMetrics.new('michael@belluba.com', '788db90fc16c0f1cfab15ff693010f95b72db2c9462bcf930a37f185d5662ffc').start
+    Metriks::Reporter::LibratoMetrics.new(Rails.configuration.librato['user'], Rails.configuration.librato['token']).start
 
   defined?(AnalyticsRuby) and
     Analytics.init(

@@ -79,7 +79,7 @@ group :assets do
   gem 'neat'
 end
 
-group :production, :staging do
+group :production do
   gem "librato-rails"
   gem "metriks"
   gem "lograge"
