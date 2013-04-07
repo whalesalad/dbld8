@@ -81,7 +81,7 @@ class Location < ActiveRecord::Base
         query { match [:name, :address], params[:query], type: 'phrase_prefix' }
       end
 
-      if params[:distance].present?
+      if params[:distance].present? && params[:point].present?
         filter :geo_distance, :distance => params[:distance], :point => params[:point]
       end
 

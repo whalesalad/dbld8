@@ -1,7 +1,7 @@
 class LocationsController < ApiController
   before_filter :set_point, :except => [:index, :show, :create]
   before_filter :get_location, :only => [:show]
-  after_filter :set_empty_location, :only => [:current]
+  after_filter  :set_empty_location, :only => [:current]
   
   def index
     @locations = if params[:query]
@@ -51,12 +51,12 @@ class LocationsController < ApiController
 
   def set_point
     if (params.keys & %w(latitude longitude)).empty?
-      @point = @authenticated_user.location.str_point
+      @point = authenticated_user.location.present? ? @authenticated_user.location.str_point : nil
     elsif (params[:latitude] + params[:longitude]).to_i < 1
       return json_error "Please specify valid latitude and longitude parameters. lat: #{params[:latitude]}, lng: #{params[:longitude]} are invalid."
+    else
+      @point = [params[:latitude], params[:longitude]].join ','
     end
-    
-    @point ||= [params[:latitude], params[:longitude]].join ','
   end
 
   # If the user does not have a location set, we will use this to do so.
