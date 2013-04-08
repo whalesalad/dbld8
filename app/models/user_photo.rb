@@ -91,6 +91,7 @@ class UserPhoto < ActiveRecord::Base
     result[:thumb] = image.thumb.url
     result[:small] = image.small.url
     result[:medium] = image.medium.url
+    result[:original] = image.url
     result
   end
   
