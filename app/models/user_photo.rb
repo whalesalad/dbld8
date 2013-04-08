@@ -86,13 +86,15 @@ class UserPhoto < ActiveRecord::Base
     image.medium
   end
 
+  # KISS KISS
   def as_json(options={})
-    result = super({ :only => [:id] })
-    result[:thumb] = image.thumb.url
-    result[:small] = image.small.url
-    result[:medium] = image.medium.url
-    result[:original] = image.url
-    result
+    {
+      id: id,
+      thumb: image.thumb.url,
+      small: image.small.url,
+      medium: image.medium.url,
+      original: image.url
+    }
   end
   
 end
