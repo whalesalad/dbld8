@@ -45,6 +45,10 @@ class Interest < ActiveRecord::Base
     name
   end
 
+  def matched
+    @matched ||= false
+  end
+
   def as_json(options={})
     result = super({ :only => [:id, :name] })
   end
@@ -52,4 +56,5 @@ class Interest < ActiveRecord::Base
   def to_indexed_json
     self.to_json
   end
+
 end
