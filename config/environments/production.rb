@@ -1,3 +1,7 @@
+# require 'metriks'
+# require 'metriks/middleware'
+# require 'metriks/reporter/librato_metrics'
+
 DoubleDate::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -5,13 +9,23 @@ DoubleDate::Application.configure do
   config.redis_port = 6379
   config.redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
 
-  Metriks::Reporter::LibratoMetrics.new(
-    Rails.configuration.librato['user'], 
-    Rails.configuration.librato['token'], 
-    source: Rails.configuration.hostname,
-    on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
-  ).start
-  config.middleware.use Metriks::Middleware
+  # Metriks::Reporter::LibratoMetrics.new(
+  #   Rails.configuration.librato['user'], 
+  #   Rails.configuration.librato['token'], 
+  #   source: Rails.configuration.hostname,
+  #   on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
+  # ).start
+  # config.middleware.use Metriks::Middleware
+
+  # add this to the unicorn
+  # if defined?(Metriks::Reporter::LibratoMetrics)
+  #   Metriks::Reporter::LibratoMetrics.new(
+  #     Rails.configuration.librato['user'], 
+  #     Rails.configuration.librato['token'], 
+  #     source: Rails.configuration.hostname,
+  #     on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
+  #   ).start
+  # end
 
   config.lograge.enabled = true
 

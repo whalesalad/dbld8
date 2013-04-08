@@ -25,15 +25,6 @@ after_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
 
-  if defined?(Metriks::Reporter::LibratoMetrics)
-    Metriks::Reporter::LibratoMetrics.new(
-      Rails.configuration.librato['user'], 
-      Rails.configuration.librato['token'], 
-      source: Rails.configuration.hostname,
-      on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
-    ).start
-  end
-
   defined?(AnalyticsRuby) and
     Analytics.init(
       secret: Rails.configuration.segment_io_secret,
