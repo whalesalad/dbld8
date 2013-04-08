@@ -5,9 +5,9 @@ LIBRATO_TOKEN="788db90fc16c0f1cfab15ff693010f95b72db2c9462bcf930a37f185d5662ffc"
 
 cpu=$(ps aux | awk '{s=s+$3}; END{print s}')
 mem=$(ps aux | awk '{s=s+$4}; END{print s}')
-host=$(hostname)
+host=api-$(hostname)
 
-echo "%CPU: ${cpu} %MEM: ${mem}"
+echo "%CPU: ${cpu} %MEM: ${mem} %HOST: ${host}"
 
 # Curl dat yo
 curl \
