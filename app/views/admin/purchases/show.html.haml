@@ -28,10 +28,13 @@
         Receipt Data
         %small — verified from Apple
 
-      %dl
-        - @purchase.verified_receipt.to_h.each do |key, value|
-          %dt #{key}
-          %dd #{value}
+      - if @purchase.verified_receipt
+        %dl
+          - @purchase.verified_receipt.to_h.each do |key, value|
+            %dt #{key}
+            %dd #{value}
+      - else
+        %p Invalid purchase!
 
     / .form-actions
     / = link_to "Delete", admin_purchase_path(@purchase), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
