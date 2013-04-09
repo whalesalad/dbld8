@@ -24,6 +24,7 @@ load "config/recipes/unicorn"
 load "config/recipes/postgresql"
 load "config/recipes/nodejs"
 load "config/recipes/redis"
+load "config/recipes/memcached"
 load "config/recipes/elasticsearch"
 load "config/recipes/check"
 
