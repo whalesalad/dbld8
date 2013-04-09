@@ -27,6 +27,14 @@ class ApiController < ActionController::Base
     render json: { :error => error_message }, :status => 401 and return
   end
 
+  def require_params(*args)
+    params = args.shift
+    missing = args.map { |a| a unless params.has_key?(a) }.compact
+    if missing.any?
+      return json_not_found("The [#{missing.join(', ')}] parameters are required.")
+    end
+  end
+
   def authenticated_user
     @authenticated_user || nil
   end

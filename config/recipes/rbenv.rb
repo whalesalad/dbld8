@@ -1,4 +1,5 @@
-set_default :ruby_version, "1.9.3-p385"
+# set_default :ruby_version, "1.9.3-p385"
+set_default :ruby_version, "2.0.0-p0"
 
 namespace :rbenv do
   desc "Install rbenv, Ruby, and the Bundler gem"
@@ -24,9 +25,16 @@ GEMRC
     run "mv /tmp/gemrc ~/.gemrc"
 
     run "gem install bundler"
-    
     run "rbenv rehash"
   end
-
   after "deploy:install", "rbenv:install"
+
+  task :upgrade, roles: :app do
+    run "cd ~/.rbenv/plugins/ruby-build && git pull"
+    run "rbenv install #{ruby_version}"
+    run "rbenv global #{ruby_version}"
+    run "gem install bundler"
+    run "rbenv rehash"
+  end
+  
 end

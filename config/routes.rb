@@ -47,7 +47,7 @@ DoubleDate::Application.routes.draw do
     # post 'ping' => 'me#ping'
 
     # User Photos
-    resource :photo, :controller => 'user_photo', :only => [:show, :create] do
+    resource :photo, :controller => 'user_photo', :only => [:show, :create, :update] do
       post 'pull_facebook', :on => :collection
     end
 

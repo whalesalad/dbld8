@@ -10,11 +10,13 @@
 #
 
 class UserPhoto < ActiveRecord::Base
-  attr_accessible :image
+  attr_accessible :image, :crop_x, :crop_y, :crop_w, :crop_h
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   
   belongs_to :user, :touch => true
+  validates_presence_of :image, :user
 
-  validates_presence_of :image, :user_id
+  after_update :crop_image
 
   default_scope order("created_at DESC")
 
@@ -23,20 +25,16 @@ class UserPhoto < ActiveRecord::Base
   end
 
   class UserPhotoUploader < CarrierWave::Uploader::Base
-    # include CarrierWave::RMagick
     include CarrierWave::MiniMagick
     include CarrierWave::MimeTypes
 
-    # User S3 for file storage
     storage :fog
 
-    # Override the directory where uploaded files will be stored.
-    # This is a sensible default for uploaders that are meant to be mounted:
     def store_dir
       "user/#{model.user.uuid}/photos"
     end
 
-    def filename 
+    def filename
       if original_filename 
         @name ||= Digest::MD5.hexdigest(File.dirname(current_path))
         "#{@name}.#{file.extension}"
@@ -44,12 +42,44 @@ class UserPhoto < ActiveRecord::Base
     end
 
     def url
-      if Rails.env.development?
-        return "http://static-test.dbld8.com/" + self.current_path
+      return "http://static-test.dbld8.com/#{self.current_path}" if Rails.env.development?
+      "http://asset-#{rand(3)+1}.dbld8.com/#{self.current_path}"
+    end
+
+    def crop_and_resize_to_fill(width, height, gravity = 'Center')
+      image = MiniMagick::Image.read(read)
+
+      if model.should_crop?
+        crop_width = model.crop_w.to_i
+        crop_height = model.crop_h.to_i
+        crop_x = model.crop_x.to_i
+        crop_y = model.crop_y.to_i
+        image.crop "#{crop_width}x#{crop_height}+#{crop_x}+#{crop_y}"
       end
 
-      "http://asset-#{rand(3) + 1}.dbld8.com/" + self.current_path
-      # "https://db00q50qzosdc.cloudfront.net/" + self.current_path
+      # This is borrowed from CarrierWave's internal source.
+      # carrierwave.rubyforge.org/rdoc/classes/CarrierWave/MiniMagick.html
+      cols, rows = image[:dimensions]
+      image.combine_options do |cmd|
+        if width != cols || height != rows
+          scale_x = width/cols.to_f
+          scale_y = height/rows.to_f
+          if scale_x >= scale_y
+            cols = (scale_x * (cols + 0.5)).round
+            rows = (scale_x * (rows + 0.5)).round
+            cmd.resize "#{cols}"
+          else
+            cols = (scale_y * (cols + 0.5)).round
+            rows = (scale_y * (rows + 0.5)).round
+            cmd.resize "x#{rows}"
+          end
+        end
+        cmd.gravity gravity
+        cmd.background "rgba(0,235,255,0.0)"
+        cmd.extent "#{width}x#{height}" if cols != width || rows != height
+      end
+
+      image.write(current_path)
     end
 
     process :set_content_type
@@ -59,20 +89,27 @@ class UserPhoto < ActiveRecord::Base
     end
 
     version :small do
-      process :resize_to_fill => [320, 200, 'North']
+      process :crop_and_resize_to_fill => [320, 200, 'North']
     end
 
     version :medium do
-      process :resize_to_fill => [640, 400, 'North']
+      process :crop_and_resize_to_fill => [640, 400, 'North']
     end
 
     def extension_white_list
       %w(jpg jpeg gif png)
     end
-
   end
 
   mount_uploader :image, UserPhotoUploader
+
+  def should_crop?
+    crop_x.present? && crop_y.present?
+  end
+
+  def crop_image
+    image.recreate_versions! if should_crop?
+  end
 
   def thumb
     image.thumb

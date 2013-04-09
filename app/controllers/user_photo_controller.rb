@@ -1,14 +1,40 @@
 class UserPhotoController < ApiController
+  before_filter :get_photo, :only => [:show, :update]
 
   def show
-    respond_with @authenticated_user.photo
+    respond_with @photo
   end
 
   def create
     @photo = UserPhoto.new
+    
+    if params[:crop_x].present?
+      @photo.crop_x = params[:crop_x]
+      @photo.crop_y = params[:crop_y]
+      @photo.crop_w = params[:crop_w]
+      @photo.crop_h = params[:crop_h]
+    end
+
     @photo.image = params[:image]
+
     @photo.user = @authenticated_user
     
+    resp = if @photo.save
+      { :status => :created, :location => :me_photo }
+    else
+      { :status => :unprocessable_entity }
+    end
+
+    respond_with(@photo, resp)
+  end
+
+  def update
+    require_params(params[:user_photo], :crop_x, :crop_y, :crop_w, :crop_h)
+    
+    # render json: params[:user_photo] and return
+
+    @photo.update_attributes(params[:user_photo])
+
     resp = if @photo.save
       { :status => :created, :location => :me_photo }
     else
@@ -21,6 +47,12 @@ class UserPhotoController < ApiController
   def pull_facebook
     @photo = @authenticated_user.fetch_facebook_photo
     respond_with @photo, :status => :created, :location => :me_photo
+  end
+
+  protected
+
+  def get_photo
+    @photo = @authenticated_user.photo
   end
 
 end
