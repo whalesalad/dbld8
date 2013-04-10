@@ -79,12 +79,17 @@ class FacebookUser < User
     @large_facebook_photo ||= get_large_facebook_photo
   end
 
+  def build_facebook_photo
+    fb_photo = build_profile_photo
+    fb_photo.remote_image_url = large_facebook_photo
+    return fb_photo
+  end
+
   def fetch_facebook_photo
     if large_facebook_photo
-      p = build_profile_photo
-      p.remote_image_url = large_facebook_photo
-      p.save!
-      p
+      fb_photo = build_facebook_photo
+      fb_photo.save!
+      fb_photo
     end
   end
 

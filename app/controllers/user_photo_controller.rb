@@ -50,8 +50,7 @@ class UserPhotoController < ApiController
 
   # Sets the user's current photo to their facebook photo
   def pull_facebook
-    @photo = @authenticated_user.build_profile_photo
-    @photo.remote_image_url = large_facebook_photo
+    @photo = @authenticated_user.build_facebook_photo
 
     if params[:crop_x].present?
       @photo.crop_x = params[:crop_x]
