@@ -53,6 +53,9 @@ body.home-index
       height: 68px
       background: image-url('logo-text.png') 0 0 no-repeat
 
+  footer
+    display: none
+
 
 a
   &:hover
@@ -275,7 +278,6 @@ body.home-invite
   height: 150px
 
 // Static Pages
-
 body.static
   background: #ff1178
 
@@ -290,11 +292,11 @@ body.static
       text-indent: -9999em
 
   #wrapper
+    margin: 0 auto
+    width: 800px
     border-radius: 5px
     padding: 30px 100px
     background: #FFF
-    width: 800px
-    margin: 0 auto 50px auto
     box-shadow: 0 2px 0 #b20c54
 
     a
@@ -329,3 +331,20 @@ body.static
 
     ol li, ul li
       margin: 1em 3em
+
+
+footer
+  width: 740px
+  background: image-url('email/text-logo.png') 100% 50% no-repeat
+  padding: 15px 0
+  color: #FFF
+  font-size: 13px
+  margin: 0 auto 30px auto
+  p
+    line-height: 20px
+    color: #FFF
+    a
+      color: #FFF
+      text-decoration: none
+      &:hover
+        opacity: 0.8
