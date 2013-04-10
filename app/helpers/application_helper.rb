@@ -23,10 +23,6 @@ module ApplicationHelper
     title.empty? ? base : "#{base} &mdash; #{title}".html_safe
   end
 
-  def facebook_app_id
-    DoubleDate::FACEBOOK_APP_ID
-  end
-
   def yesno(b)
     x = b ? :yes : :no
     t(x)
