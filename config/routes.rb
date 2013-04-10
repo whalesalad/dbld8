@@ -48,6 +48,9 @@ DoubleDate::Application.routes.draw do
 
     # User Photos
     resource :photo, :controller => 'user_photo', :only => [:show, :create, :update] do
+      # get the users current facebook photo
+      get 'facebook', :on => :collection
+
       post 'pull_facebook', :on => :collection
     end
 

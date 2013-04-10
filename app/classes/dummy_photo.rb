@@ -31,3 +31,19 @@ class DefaultUserPhoto
     }
   end
 end
+
+class DummyPhoto
+  attr_accessor :photo
+
+  def initialize(photo)
+    @photo = photo
+  end
+
+  def to_s
+    @photo
+  end
+
+  def url
+    @photo
+  end
+end

@@ -31,8 +31,6 @@ class UserPhotoController < ApiController
   def update
     require_params(params[:user_photo], :crop_x, :crop_y, :crop_w, :crop_h)
     
-    # render json: params[:user_photo] and return
-
     @photo.update_attributes(params[:user_photo])
 
     resp = if @photo.save
@@ -44,6 +42,13 @@ class UserPhotoController < ApiController
     respond_with(@photo, resp)
   end
 
+  # Returns the user's current facebook photo
+  def facebook
+    @photo = LargeFacebookPhoto.new(@authenticated_user)
+    respond_with @photo
+  end
+
+  # Sets the user's current photo to their facebook photo
   def pull_facebook
     @photo = @authenticated_user.fetch_facebook_photo
     respond_with @photo, :status => :created, :location => :me_photo
