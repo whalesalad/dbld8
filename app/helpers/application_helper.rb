@@ -41,4 +41,21 @@ module ApplicationHelper
     Rails.configuration.hostname
   end
 
+  def app_invite_url_for_user(user)
+    prefix = "#{Rails.configuration.ios_prefix}://"
+    if user.present?
+      prefix + "invite/#{@user.invite_slug}"
+    else
+      prefix + "welcome"
+    end
+  end
+
+  def smart_app_bar_content
+    content = [ "app-id=#{Rails.configuration.app_id}" ]
+    if @user.present?
+      content << "app-argument=#{app_invite_url_for_user(@user)}"
+    end
+    content.join ", "
+  end
+
 end

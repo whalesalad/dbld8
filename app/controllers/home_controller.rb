@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    render :layout => false
+    # render :layout => false
   end
 
   def new
@@ -16,12 +16,6 @@ class HomeController < ApplicationController
     if @user.nil?
       @user = User.find_by_id(params[:invite_slug])
     end
-  end
-
-  def email
-    @user = User.order('RANDOM()').first
-    @subject = "Welcome to DoubleDate Beta!"
-    render :layout => false, :template => 'user_mailer/welcome_email'
   end
 
 end 
