@@ -44,9 +44,9 @@ class UserPhoto < ActiveRecord::Base
     end
 
     def url
-      # if Rails.env.development?
-      #   return "http://static-test.dbld8.com/" + self.current_path
-      # end
+      if Rails.env.development?
+        return "http://static-test.dbld8.com/" + self.current_path
+      end
 
       "http://asset-#{rand(3) + 1}.dbld8.com/" + self.current_path
       # "https://db00q50qzosdc.cloudfront.net/" + self.current_path
@@ -59,11 +59,11 @@ class UserPhoto < ActiveRecord::Base
     end
 
     version :small do
-      process :resize_to_fill => [320, 200]
+      process :resize_to_fill => [320, 200, 'North']
     end
 
     version :medium do
-      process :resize_to_fill => [640, 400]
+      process :resize_to_fill => [640, 400, 'North']
     end
 
     def extension_white_list

@@ -2,7 +2,7 @@ class FriendsController < ApiController
   before_filter :get_friend_and_friendship, :only => [:update, :destroy]
   
   def index
-    @friendships = Friendship.find_for_user_or_friend(@authenticated_user)
+    @friendships = Friendship.includes(:user, :friend).find_for_user_or_friend(@authenticated_user)
 
     @users = @friendships.map do |friendship|
       # skip unapproved friendships that are not yours to approve
