@@ -50,7 +50,7 @@ class UserPhotoController < ApiController
 
   # Sets the user's current photo to their facebook photo
   def pull_facebook
-    @photo = @authenticated_user.build_facebook_photo
+    @photo = @authenticated_user.build_profile_photo
 
     if params[:crop_x].present?
       @photo.crop_x = params[:crop_x]
@@ -58,6 +58,8 @@ class UserPhotoController < ApiController
       @photo.crop_w = params[:crop_w]
       @photo.crop_h = params[:crop_h]
     end
+
+    @photo.image = MiniMagick::Image.open(@authenticated_user.large_facebook_photo)
 
     resp = if @photo.save
       { :status => :created, :location => :me_photo }
