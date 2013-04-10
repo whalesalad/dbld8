@@ -2,9 +2,10 @@ en:
   yes: "Yes"
   no: "No"
   you: "You"
+  coins: "%{coins} Coins"
 
   welcome_email:
-    subject: "Welcome to DoubleDate Beta!"
+    subject: "Welcome to DoubleDate!"
 
   home:
     invite:
@@ -102,8 +103,6 @@ en:
     accept_invite:
       upper_text: "Accept & Earn %{coins} Coins"
       description: "Would you like to accept %{user_name}'s invitation?"
-
-  coins: "%{coins} Coins"
 
   time:
     formats:

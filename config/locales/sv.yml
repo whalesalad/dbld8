@@ -2,9 +2,21 @@ sv:
   yes: "Ja"
   no: "Nej"
   you: "Du"
+  coins: "%{coins} Mynt"
 
   welcome_email:
     subject: "Välkommen till DoubleDate!"
+
+  home:
+    invite:
+      title: "Join %{user_name} on DoubleDate!"
+      alt_title: "Grab a friend and DoubleDate"
+      primary_text: "%{user_name} wants you to be %{his_or_her} wing on DoubleDate!"
+      secondary_text: "DoubleDate is an exciting new way to get out and meet new people. It's free, so grab a friend, go out, and have fun."
+      accept_invite: "Accept Wing Invite"
+      get_doubledate: "Get DoubleDate"
+      missing: "Missing Invite"
+      missing_detail: "DoubleDate couldn't find the user that sent you this invite."
 
   misc:
     no_user_photo: "Den här personen har tyvärr inget foto."
@@ -90,9 +102,7 @@ sv:
       description: "Du tjänade %{coins} mynt när du accepterade %{user_name}'s wing förfrågan!"
     accept_invite:
       upper_text: "Acceptera & tjäna %{coins} mynt"
-      description: "Vill du acceptera %{user_name}'s förfrågan?"
-
-  coins: "%{coins} Mynt"
+      description: "Vill du acceptera %{user_name}'s förfrågan?"  
 
   time:
     formats:
