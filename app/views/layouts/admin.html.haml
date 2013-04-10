@@ -1,14 +1,15 @@
 !!! 5
 %html
   %head
-    %meta{:content => "user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width", :name => "viewport"}    
-    %title= admin_title(yield(:title))
+    %meta{ charset: "utf-8" }
+    %meta{ name: "viewport", content: "user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" }
     
+    %title= admin_title(yield(:title))
+
     %link{ :rel => 'icon', :type => 'image/x-icon', :href => asset_path('favicon.png') }
 
     = stylesheet_link_tag "admin/admin", :media => "all"
     = csrf_meta_tags
-
     = yield(:head)
 
   %body{ :id => "#{params[:controller]}-section", :class => "#{body_class(yield(:extra_body_classes))}" }

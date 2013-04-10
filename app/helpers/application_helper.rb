@@ -14,7 +14,7 @@ module ApplicationHelper
     if page_title.empty?
       base_title
     else
-      "#{base_title} &bull; #{page_title}".html_safe
+      "#{page_title} &mdash; #{base_title}".html_safe
     end
   end
 
