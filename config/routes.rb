@@ -17,6 +17,9 @@ DoubleDate::Application.routes.draw do
   post 'authenticate' => 'users#authenticate'
   get 'logout' => 'users#logout'
 
+  # Feeds
+  get 'feed/:slug' => 'feed#index', slug: /\w+/
+
   resources :users, :only => [:index, :show, :create] do
     get 'search', :on => :collection
     post 'invite', :on => :member
