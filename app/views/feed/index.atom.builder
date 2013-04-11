@@ -1,5 +1,5 @@
 atom_feed do |feed|
-  feed.title("Recent #{@model.model_name.human}")
+  feed.title("DoubleDate: Last #{@items.count} #{@model.model_name.human.pluralize}")
   feed.updated(@items.first.created_at) if @items.any?
 
   @items.each do |item|
