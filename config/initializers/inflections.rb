@@ -15,5 +15,5 @@
 # end
 
 ActiveSupport::Inflector.inflections do |inflect|
-  inflect.irregular 'wingman', 'wingmen'
+  inflect.uncountable 'feedback'
 end

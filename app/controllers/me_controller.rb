@@ -21,6 +21,20 @@ class MeController < ApiController
     respond_with @device
   end
 
+  def receive_feedback
+    if params[:message].blank?
+      return json_error "The 'message' parameter is a required field."
+    end
+    
+    @feedback = @user.feedback_submissions.build(message: params[:message])
+
+    if @feedback.save
+      render json: { success: true }, :status => :created and return
+    else
+      render json: { success: false }, :status => :unprocessable_entity and return
+    end
+  end
+
   # def ping
   # Ping
   # sending

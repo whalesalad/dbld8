@@ -132,6 +132,11 @@ class User < ActiveRecord::Base
     :source => 'message',
     :conditions => {'message_proxies.unread' => true}
 
+  # Feedback
+  has_many :feedback_submissions, 
+    :class_name => "Feedback",
+    :dependent => :destroy
+
   def before_init
     self.interested_in ||= interested_in_from_gender
     

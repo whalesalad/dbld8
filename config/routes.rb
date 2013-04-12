@@ -61,6 +61,9 @@ DoubleDate::Application.routes.draw do
     # resource :device, :only => [:update, :destroy]
     put 'device' => 'me#update_device_token', :as => :update_device_token
 
+    # Endpoint to receive feedback for a user
+    post 'feedback' => 'me#receive_feedback', :as => :receive_feedback
+
     # get list of friends
     # GET /me/friends
     resources :friends, :only => [:index, :update, :destroy] do
