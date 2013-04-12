@@ -6,7 +6,7 @@
         = (@activity.location.venue?) ? 'at' : 'in'
         #{@activity.location}
   
-  %h3.object-meta ##{@activity.id}, Created #{l @activity.created_at, :format => :long} (#{time_ago_in_words(@activity.created_at)} ago)
+  %h4.object-meta ##{@activity.id}, Created #{l @activity.created_at, :format => :long} (#{time_ago_in_words(@activity.created_at)} ago)
 
   %hr/
 

@@ -133,9 +133,10 @@ DoubleDate::Application.routes.draw do
 
     resources :purchases
 
+    resources :feedback
+
     require 'sidekiq/web'
     mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'
-    # mount Resque::Server, :at => 'resque', :as => 'resque'
   end
 
   # Home

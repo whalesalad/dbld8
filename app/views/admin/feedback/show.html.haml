@@ -1,0 +1,30 @@
+%section.purchase-detail
+  %h1
+    Feedback Object
+    %small
+      from #{@feedback.user.full_name}
+  %h4.object-meta ID ##{@feedback.id}, Created #{time_ago_in_words(@feedback.created_at)} ago on #{l @feedback.created_at, :format => :long}
+
+  %hr/ 
+
+  .row-fluid
+    .span6
+      %blockquote
+        = simple_format(@feedback.message)
+
+    .span6
+      %p= image_tag @feedback.user.photo.small, :class => 'img-rounded'
+
+      %h4= @feedback.user.full_name
+      %p
+        User for #{time_ago_in_words(@feedback.user.created_at)}
+        - if @feedback.user.location.present?
+          %br/
+          from <b>#{link_to @feedback.user.location, admin_location_path(@feedback.user.location)}</b>
+
+      %p
+        = link_to "View User Profile", admin_user_path(@feedback.user), :class => "btn"
+
+
+    / .form-actions
+    / = link_to "Delete", admin_purchase_path(@purchase), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
