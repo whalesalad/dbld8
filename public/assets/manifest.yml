@@ -83,8 +83,8 @@ application.js: application-dc9a8b23a4c79a4934d3d64cf1146042.js
 application/index.js: application-dc9a8b23a4c79a4934d3d64cf1146042.js
 base.js: base-eccd09579f607112bc5617d12b5741df.js
 base/index.js: base-eccd09579f607112bc5617d12b5741df.js
-admin/admin.css: admin/admin-9f0dca64d74ecbe76fdc89c7804dd407.css
-admin/admin/index.css: admin/admin-9f0dca64d74ecbe76fdc89c7804dd407.css
+admin/admin.css: admin/admin-03fa14b8e6d5832916b26e7a7fa1b3a3.css
+admin/admin/index.css: admin/admin-03fa14b8e6d5832916b26e7a7fa1b3a3.css
 application.css: application-101563584e41153bb7b7a5ab0b5954e1.css
 application/index.css: application-101563584e41153bb7b7a5ab0b5954e1.css
 appstore/download.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
