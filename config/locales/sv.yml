@@ -104,6 +104,11 @@ sv:
       upper_text: "Acceptera & tjäna %{coins} mynt"
       description: "Vill du acceptera %{user_name}'s förfrågan?"  
 
+  default_bios:
+    - "My bio is empty. I should write one!"
+    - "Writing a bio is tough! I should change this."
+    - "250 characters was too much to handle. I should really change this."
+  
   time:
     formats:
       medium: '%b %d, %Y'

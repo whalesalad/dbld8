@@ -103,6 +103,11 @@ en:
     accept_invite:
       upper_text: "Accept & Earn %{coins} Coins"
       description: "Would you like to accept %{user_name}'s invitation?"
+  
+  default_bios:
+    - "My bio is empty. I should write one!"
+    - "Writing a bio is tough! I should change this."
+    - "250 characters was too much to handle. I should really change this."
 
   time:
     formats:

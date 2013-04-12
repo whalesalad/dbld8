@@ -27,11 +27,7 @@ class User < ActiveRecord::Base
   include Concerns::FriendConcerns
   include Concerns::UUIDConcerns
 
-  DEFAULT_BIOS = [
-    "I like to wear silly hats.",
-    "Writing a bio is tough! I should change this.",
-    "250 characters was too much to handle. I should really change this."
-  ]
+  DEFAULT_BIOS = I18n.t('default_bios')
 
   serialize :features, ActiveRecord::Coders::Hstore
 

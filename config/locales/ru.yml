@@ -1,10 +1,22 @@
-ru:
+en:
   yes: "Yes"
   no: "No"
   you: "You"
+  coins: "%{coins} Coins"
 
   welcome_email:
-    subject: "Welcome to DoubleDate Beta!"
+    subject: "Welcome to DoubleDate!"
+
+  home:
+    invite:
+      title: "Join %{user_name} on DoubleDate!"
+      alt_title: "Grab a friend and DoubleDate"
+      primary_text: "%{user_name} wants you to be %{his_or_her} wing on DoubleDate!"
+      secondary_text: "DoubleDate is an exciting new way to get out and meet new people. It's free, so grab a friend, go out, and have fun."
+      accept_invite: "Accept Wing Invite"
+      get_doubledate: "Get DoubleDate"
+      missing: "Missing Invite"
+      missing_detail: "DoubleDate couldn't find the user that sent you this invite."
 
   misc:
     no_user_photo: "This user does not have a photo."
@@ -91,8 +103,11 @@ ru:
     accept_invite:
       upper_text: "Accept & Earn %{coins} Coins"
       description: "Would you like to accept %{user_name}'s invitation?"
-
-  coins: "%{coins} Coins"
+  
+  default_bios:
+    - "My bio is empty. I should write one!"
+    - "Writing a bio is tough! I should change this."
+    - "250 characters was too much to handle. I should really change this."
 
   time:
     formats:
