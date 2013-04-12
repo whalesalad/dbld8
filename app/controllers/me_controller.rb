@@ -1,6 +1,8 @@
 class MeController < ApiController
   before_filter :require_slug, :only => [:unlock, :check_unlock]
   before_filter :set_user
+
+  after_filter :set_locale, :only => [:update_device_token]
   
   def show
     respond_with @user, :template => 'users/show'

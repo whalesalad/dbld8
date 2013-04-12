@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130412140341) do
+ActiveRecord::Schema.define(:version => 20130412170117) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(:version => 20130412140341) do
     t.string   "invite_slug"
     t.string   "type"
     t.hstore   "features"
+    t.string   "locale"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

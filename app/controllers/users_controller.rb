@@ -48,6 +48,7 @@ class UsersController < ApiController
 
   def logout
     @authenticated_user.logout!
+    Analytics.track(user_id: @authenticated_user.uuid, event: 'User Logout')
     render json: { logged_out: true } and return
   end
 
@@ -72,7 +73,6 @@ class UsersController < ApiController
 
   def track_user_auth
     Rails.logger.info("[AUTH] Login failure.") and return if @user.blank?
-
     Rails.logger.info "[ANALYTICS] User #{@user.id} logged in. Idenfiying + tracking login."
 
     # Identify the user

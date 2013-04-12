@@ -21,6 +21,7 @@
 #  invite_slug           :string(255)
 #  type                  :string(255)
 #  features              :hstore
+#  locale                :string(255)
 #
 
 class FacebookUser < User

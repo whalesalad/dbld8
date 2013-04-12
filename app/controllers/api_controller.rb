@@ -53,6 +53,14 @@ class ApiController < ActionController::Base
     end
   end
 
+  def set_locale
+    user = @user || @authenticated_user
+    if user.present?
+      Rails.logger.debug "[LOCALE] Setting locale for #{user} (#{user.id})."
+      user.update_attribute(:locale, I18n.locale)
+    end
+  end
+
   private
 
   def require_token_auth
