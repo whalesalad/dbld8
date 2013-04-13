@@ -387,7 +387,6 @@ DEPENDENCIES
   hipchat
   jbuilder
   jquery-rails
-  json
   json_spec
   kaminari
   koala

@@ -25,7 +25,6 @@ gem 'postgres_ext'
 
 # GEO API Handling
 gem 'rest-client'
-gem 'json'
 
 # Elasticsearch
 gem 'kaminari'
