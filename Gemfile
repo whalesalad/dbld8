@@ -80,7 +80,6 @@ group :assets do
 end
 
 group :production do
-  gem "librato-rails"
   gem "lograge"
   gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end

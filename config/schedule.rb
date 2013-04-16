@@ -1,8 +1,9 @@
 set :output, "#{path}/log/cron.log"
 
-every 1.minutes, :roles => :app do
-  command "#{path}/script/librato"
-end
+# Librato
+# every 1.minutes, :roles => :app do
+#   command "#{path}/script/librato"
+# end
 
 every :hour, :roles => :cron do
   rake "dbld8:expire_engagements"  
