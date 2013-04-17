@@ -12,4 +12,9 @@ namespace :memcached do
       run "#{sudo} service memcached #{command}"
     end
   end
+
+  desc "Get the stats of memcached."
+  task :stats, roles: :app do
+    run "echo stats | nc 127.0.0.1 11211"
+  end
 end
