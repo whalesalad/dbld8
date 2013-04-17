@@ -1,72 +1,72 @@
 ru:
-  yes: "Yes"
-  no: "No"
-  you: "You"
-  coins: "%{coins} Coins"
+  yes: "Да"
+  no: "Нет"
+  you: "Вы"
+  coins: "%{coins} Монет"
 
   welcome_email:
-    subject: "Welcome to DoubleDate!"
+    subject: "Добро пожаловать в DoubleDate!"
 
   home:
     invite:
-      title: "Join %{user_name} on DoubleDate!"
-      alt_title: "Grab a friend and DoubleDate"
-      primary_text: "%{user_name} wants you to be %{his_or_her} wing on DoubleDate!"
-      secondary_text: "DoubleDate is an exciting new way to get out and meet new people. It's free, so grab a friend, go out, and have fun."
-      accept_invite: "Accept Wing Invite"
-      get_doubledate: "Get DoubleDate"
-      missing: "Missing Invite"
-      missing_detail: "DoubleDate couldn't find the user that sent you this invite."
+      title: "Присоединись к %{user_name} на DoubleDate!"
+      alt_title: "Приведи друга и начни DoubleDate"
+      primary_text: "%{user_name} желает быть %{his_or_her} другом на DoubleDate!"
+      secondary_text: "DoubleDate это увлекательный новый способ встретить людей. Пригласи друзей, выйди и повеселись."
+      accept_invite: "Принять Дружеское Приглашение"
+      get_doubledate: "Получить DoubleDate"
+      missing: "Пропущенные Приглашения"
+      missing_detail: "DoubleDate не может найти друга который прислал это приглашение"
 
   misc:
-    no_user_photo: "This user does not have a photo."
+    no_user_photo: "У пользователя нет фото."
 
   api:
-    unauthorized: "The authenticated user does not have permission to do this."
-    not_found: "The requested %{model} with ID: %{id} could not be found."
-    missing_parameter: "The '%{param}' parameter is required."
+    unauthorized: "Авторизованный пользователь не имеет прав делать это. "
+    not_found: "Запрашиваемое %{model} с ID: %{id} не может быть найдено."
+    missing_parameter: "'%{param}' поле необходимо."
 
   engagements:
-    not_found: "You have not engaged in this activity yet, or the engagement was not found."
-    already_engaged: "You or your wing have already engaged in this activity."
-    no_message: "You must include a message with your engagement."
-    current_user_cannot_unlock: "The current user cannot unlock this engagement."
-    already_unlocked: "This engagement has already been unlocked."
-    unlock_error: "An error ocurred unlocking this engagement."
-    destroy_error: "Only an activity or engagement owner can delete/ignore an engagement."
+    not_found: "Вы не привлечены к этому событию, или приглашение не была найдено."
+    already_engaged: "Вы или Ваш друг уже привлечены к этому событие."
+    no_message: "Вы должны приложить сообщение к Вашему приглашению."
+    current_user_cannot_unlock: "Текущий пользователь не может открыть это приглашение."
+    already_unlocked: "Приглашение было открыто."
+    unlock_error: "Ошибка при открытии приглашения."
+    destroy_error: "Только инициатор события или приглашения может удалить/пропустить его."
 
   messages:
-    engagement_not_unlocked: "This engagement must be unlocked before replying."
-    destroy_error: "The authenticated user does not have permission to delete this message."
+    engagement_not_unlocked: "Это приглашение должно быть открыто перед ответом на него."
+    destroy_error: "Авторизованный пользователь не имеет прав удалять это сообщение."
 
   friendships:
-    not_found: "A friendship doesn't exist between the authenticated user and <User ID:%{user_id}>"
-    approve_error: "You do not have permission to approve this friendship."
-    cannot_destroy: "You cannot remove %{name} from your wings until your dates and messages with %{him_or_her} are cancelled."
-    invalid_facebook_ids: "Please specify an valid array of facebook_ids of users to invite."
-    invalid_invite_slug_error: "A user could not be found for that invite_slug."
+    not_found: "Дружба не найдена между авторизованным пользователем и <User ID:%{user_id}>"
+    approve_error: "У Вас нет полномочий одобрить эту дружбу."
+    cannot_destroy: "Вы не можете удалить %{name} из списка Ваших друзей пока ваши встречи и приглашения с %{him_or_her}  не удалены."
+    invalid_facebook_ids: "Пожалуйста, укажите достоверные facebook_ids пользователей для запроса."
+    invalid_invite_slug_error: "Пользователь не может быть найден для данного invite_slug."
 
   interests:
-    maximum_reached: "A user can only have a maximum of 10 interests."
+    maximum_reached: "Пользователь может иметь максимум 10 интересов."
 
   locations:
-    invalid_lat_lng: "Please specify valid latitude and longitude parameters."
+    invalid_lat_lng: "Пожалуйста, введите достоверные ширину и долготу."
 
   users:
-    facebook_auth_error: "There was an API error from Facebook: %{facebook_error}"
-    single: "Single"
-    taken: "Taken"
+    facebook_auth_error: "Ошибка Facebook: %{facebook_error}"
+    single: "Одинокий"
+    taken: "Женат"
     posessive_his: "his"
     posessive_her: "her"
     pronoun_him: "him"
     pronoun_her: "her"
-    age_limit_message: "You must be 17 or older to join DoubleDate."
+    age_limit_message: "Вам должно исполнится 17 лет для входа в DoubleDate."
 
   events:
-    accepted_wing_invite: "%{user_name} accepted %{friend_name}'s wing invite"
-    engagement_expired: "%{user_name}'s %{engagement} expired"
-    engagement_one_day_left: "%{user_name}'s %{engagement} has 24 hours remaining"
-    new_activity: "%{user_name} created %{activity}"
+    accepted_wing_invite: "%{user_name} подтвердил %{friend_name} приглашение дружить"
+    engagement_expired: "%{user_name} %{engagement} истекло"
+    engagement_one_day_left: "%{user_name} %{engagement} осталось 24 часа до завершения"
+    new_activity: "%{user_name} создал %{activity}"
     new_engagement: "%{participants} engaged in %{activity}"
     no_dates_nearby: "%{user_name} posted a DoubleDate in an empty area"
     purchase: "%{user_name} purchased %{identifier}"
