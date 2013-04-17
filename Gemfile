@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'foreman'
 gem 'rails', '3.2.12'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
@@ -40,9 +39,6 @@ gem 'fog'
 # Memcached
 gem 'dalli'
 
-# CRON
-gem 'whenever', require: false
-
 # Mixpanel // Segment.io
 gem 'analytics-ruby'
 
@@ -55,14 +51,14 @@ gem 'sinatra', :require => nil
 gem 'mini_magick'
 gem 'carrierwave'
 
-# Assets
-gem 'asset_sync'
-
 # Push Notifications
 gem 'grocer'
 
 # Apple purchase verification
 gem 'venice'
+
+gem 'whenever', require: false
+gem 'asset_sync', require: false
 
 # Gems used only for assets and not in production
 group :assets do
