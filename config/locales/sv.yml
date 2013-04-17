@@ -62,11 +62,11 @@ sv:
     registration: "%{user_name} gick med i DoubleDate."
   notifications:
     engagement_expired: "Din chatt med %{users} angående %{activity} har utgått."
-    engagement_one_day_left: "Din chatt med %{users} angående %{activity} har 24 timmar kvar."
+    engagement_one_day_left: "Din chatt med %{users} angående: %{activity} har 24 timmar kvar."
     new_activity: "Du är %{activity_creator_name}'s kompis på %{his_or_her} DoubleDate: %{activity_title}"
     new_engagement:
-      for_wing: "%{engagement_creator} valde dig att vara %{his_or_her} kompis på DoubleDaten: %{activity}"
-      for_activity_users: "%{engagement_users} är intresserade utav %{activity}"
+      for_wing: "%{engagement_creator} valde dig att vara %{his_or_her} kompis på DoubleDate: %{activity}"
+      for_activity_users: "%{engagement_users} är intresserade utav: %{activity}"
     no_dates_nearby: "Du tjänade %{coins} mynt för att du var först att skapa en DoubleDate i detta område!"
     recruited_wing: "%{friend} accepterade din vänförfrågan!"
     registration: "Din Facebook vän %{friend_name} finns nu också på DoubleDate!"
@@ -78,7 +78,7 @@ sv:
     close_text: "Stäng"
     approve_text: "Godkänn"
     earned_coins_text: "Du tjänade %{coins} mynt"
-    recruited_wing_invite: "%{user_name} accepterade din vänförfrågan och ni båda tjänade %{coins} mynt!"
+    recruited_wing_invite: "GRYMT!! %{user_name} accepterade din vänförfrågan och ni båda tjänade %{coins} mynt!"
     invite_user:
       upper_text: "Bjud in & tjäna %{coins} mynt"
       description: "Vill du lägga till %{friend_name} som din vän?"
@@ -86,7 +86,7 @@ sv:
       dismiss_text: "Nej, Tack"
     accepted_wing_invite:
       upper_text: "Du tjänade %{coins} mynt"
-      description: "Du tjänade %{coins} mynt när du accepterade %{user_name}'s vänförfrågan!"
+      description: "HÄRLIGT!! Du tjänade %{coins} mynt när du accepterade %{user_name}'s vänförfrågan!"
     accept_invite:
       upper_text: "Acceptera & tjäna %{coins} mynt"
       description: "Vill du acceptera %{user_name}'s förfrågan?"
