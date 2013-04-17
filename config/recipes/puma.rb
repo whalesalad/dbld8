@@ -20,6 +20,9 @@ namespace :puma do
   #   run "#{sudo} mv /tmp/puma_init /etc/init.d/#{puma_init}"
   #   run "#{sudo} update-rc.d -f #{puma_init} defaults"
   # end
+
+  # make this directory
+  # /srv/doubledate/shared/sockets/
   
   desc 'Start Puma'
   task :start, roles: :app do
