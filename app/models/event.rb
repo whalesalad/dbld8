@@ -27,6 +27,8 @@ class Event < ActiveRecord::Base
   validates_presence_of :user
 
   default_scope order('created_at DESC')
+
+  scope :not_registrations, where("type != 'RegistrationEvent'")
   
   validate :has_enough_coins, :on => :create
 

@@ -36,12 +36,8 @@ gem 'koala'
 # S3 // AWS
 gem 'fog'
 
-# Redis // Caching
+# Memcached
 gem 'dalli'
-
-gem 'redis'
-gem 'redis-store'
-gem 'redis-rails'
 
 # CRON
 gem 'whenever', require: false
