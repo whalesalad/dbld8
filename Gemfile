@@ -6,7 +6,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'countries'
 gem 'unicorn'
-gem 'typhoeus'
+# gem 'typhoeus'
 
 # JSON
 gem 'multi_json'
