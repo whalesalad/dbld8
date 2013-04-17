@@ -4,21 +4,26 @@ gem 'rails', '3.2.12'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'countries'
-gem 'unicorn'
 gem 'typhoeus'
 gem 'rack-contrib'
 gem 'rails-i18n'
 
 # JSON
 gem 'multi_json'
-gem 'oj'
 gem 'jbuilder'
+
+platforms :ruby do
+  gem 'oj'
+  gem 'pg'
+end
+platforms :jruby do
+  gem 'activerecord-jdbcpostgresql-adapter'
+end
 
 # cache digests, nested caching
 gem 'cache_digests'
 
 # DB
-gem 'pg'
 gem 'activerecord-postgres-hstore'
 gem 'postgres_ext'
 
@@ -73,6 +78,13 @@ group :assets do
 end
 
 group :production do
+  platforms :ruby do
+    gem 'unicorn'
+  end
+  platforms :jruby do
+    gem "puma"
+    gem 'jruby-openssl'
+  end
   gem "lograge"
   gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end
