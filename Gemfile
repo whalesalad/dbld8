@@ -6,6 +6,7 @@ gem 'haml'
 gem 'countries'
 gem 'rack-contrib'
 gem 'rails-i18n'
+gem 'unicorn'
 
 # JSON
 gem 'multi_json'
@@ -71,7 +72,6 @@ group :assets do
 end
 
 group :production do
-  gem 'unicorn'
   gem "lograge"
   gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end
