@@ -63,7 +63,7 @@ gem 'grocer'
 gem 'venice'
 
 gem 'whenever', require: false
-gem 'asset_sync', require: false
+gem 'asset_sync'
 
 # Gems used only for assets and not in production
 group :assets do

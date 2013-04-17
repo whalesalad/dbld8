@@ -169,6 +169,7 @@ GEM
     hike (1.2.2)
     hipchat (0.8.0)
       httparty
+      httparty
     httparty (0.11.0)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
