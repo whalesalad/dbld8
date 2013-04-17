@@ -4,7 +4,6 @@ gem 'rails', '3.2.12'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'countries'
-gem 'typhoeus'
 gem 'rack-contrib'
 gem 'rails-i18n'
 
