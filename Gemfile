@@ -6,7 +6,6 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'countries'
 gem 'unicorn'
-# gem 'typhoeus'
 
 # JSON
 gem 'multi_json'
@@ -14,7 +13,7 @@ gem 'oj'
 gem 'jbuilder'
 
 # cache digests, nested caching
-gem 'cache_digests'
+gem 'cache_digests', '0.2.0'
 
 # DB
 gem 'pg'
