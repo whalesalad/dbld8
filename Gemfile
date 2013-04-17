@@ -10,19 +10,13 @@ gem 'rails-i18n'
 # JSON
 gem 'multi_json'
 gem 'jbuilder'
-
-platforms :ruby do
-  gem 'oj'
-  gem 'pg'
-end
-platforms :jruby do
-  gem 'activerecord-jdbcpostgresql-adapter'
-end
+gem 'oj'
 
 # cache digests, nested caching
 gem 'cache_digests'
 
 # DB
+gem 'pg'
 gem 'activerecord-postgres-hstore'
 gem 'postgres_ext'
 
@@ -77,13 +71,7 @@ group :assets do
 end
 
 group :production do
-  platforms :ruby do
-    gem 'unicorn'
-  end
-  platforms :jruby do
-    gem "puma"
-    gem 'jruby-openssl'
-  end
+  gem 'unicorn'
   gem "lograge"
   gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 end

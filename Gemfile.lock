@@ -39,10 +39,6 @@ GEM
       activesupport (= 3.2.12)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-jdbc-adapter (1.2.9)
-    activerecord-jdbcpostgresql-adapter (1.2.9)
-      activerecord-jdbc-adapter (~> 1.2.9)
-      jdbc-postgres (>= 9.1, < 9.3)
     activerecord-postgres-hstore (0.7.6)
       activerecord (>= 3.1)
       pg-hstore (>= 1.1.5)
@@ -69,7 +65,6 @@ GEM
     bcrypt-ruby (3.0.1-java)
     bootstrap-sass (2.2.2.0)
       sass (~> 3.2)
-    bouncy-castle-java (1.5.0147)
     bourbon (3.1.3)
       sass (>= 3.2.0)
       thor
@@ -173,13 +168,10 @@ GEM
     jbuilder (1.3.0)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
-    jdbc-postgres (9.2.1002.1)
     journey (1.0.4)
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jruby-openssl (0.8.7)
-      bouncy-castle-java (>= 1.5.0147)
     json (1.7.7)
     json (1.7.7-java)
     json_spec (1.1.1)
@@ -241,8 +233,6 @@ GEM
       spoon (~> 0.0)
     pry-rails (0.2.2)
       pry (>= 0.9.10)
-    puma (1.6.3-java)
-      rack (~> 1.2)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.4.5)
@@ -378,7 +368,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-jdbcpostgresql-adapter
   activerecord-postgres-hstore
   analytics-ruby
   annotate!
@@ -404,7 +393,6 @@ DEPENDENCIES
   hipchat
   jbuilder
   jquery-rails
-  jruby-openssl
   json_spec
   kaminari
   koala
@@ -416,7 +404,6 @@ DEPENDENCIES
   pg
   postgres_ext
   pry-rails
-  puma
   quiet_assets
   rack-contrib
   rails (= 3.2.12)
