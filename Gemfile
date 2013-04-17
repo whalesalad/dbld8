@@ -14,7 +14,7 @@ gem 'jbuilder'
 gem 'oj'
 
 # cache digests, nested caching
-gem 'cache_digests'
+gem 'cache_digests', '0.2.0'
 
 # DB
 gem 'pg'
