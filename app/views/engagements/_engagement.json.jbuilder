@@ -23,7 +23,7 @@ if engagement.messages.first.present?
   json.primary_message engagement.messages.first.message
 end
 
-json.cache! engagement do |json|
+json.cache! [engagement, I18n.locale] do |json|
   json.user do
     json.partial! 'users/user', user: engagement.user
   end

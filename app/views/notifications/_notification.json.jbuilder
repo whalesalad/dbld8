@@ -1,4 +1,4 @@
-json.cache! ['short_notification', notification, notification.target, I18n.locale] do |json|
+json.cache! [:short_notification, notification, notification.target, I18n.locale] do |json|
   json.(notification, :id, :uuid)
   json.notification notification.to_s
   json.callback_url notification.callback_url

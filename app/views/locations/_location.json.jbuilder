@@ -1,4 +1,4 @@
-json.cache!([location, I18n.locale]) do |json|
+json.cache! [location, I18n.locale] do |json|
   json.id location.id
 
   json.(location, :type, :name, :latitude, :longitude)
