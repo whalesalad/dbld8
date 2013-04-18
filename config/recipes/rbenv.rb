@@ -30,6 +30,15 @@ GEMRC
   after "deploy:install", "rbenv:install"
 
   task :upgrade, roles: :app do
+    run "cd ~/.rbenv/plugins/ruby-build"
+    run "git pull"
+    run "rbenv install #{ruby_version}"
+    run "rbenv global #{ruby_version}"
+    run "gem install bundler"
+    run "rbenv rehash"
+  end
+
+  task :upgrade, roles: :app do
     run "cd ~/.rbenv/plugins/ruby-build && git pull"
     run "rbenv install #{ruby_version}"
     run "rbenv global #{ruby_version}"

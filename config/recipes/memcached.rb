@@ -1,3 +1,6 @@
+set_default(:memcached_memory, 128)
+set_default(:memcached_log) { "#{shared_path}/log/memcached.log" }
+
 namespace :memcached do
   desc "Install latest stable release of redis"
   task :install, roles: :app do
@@ -5,6 +8,13 @@ namespace :memcached do
     run "#{sudo} apt-get -y install memcached"
   end
   after "deploy:install", "memcached:install"
+
+  desc "Setup Memcached configuration"
+  task :setup, roles: :app do
+    template "memcached.conf.erb", "/tmp/memcached.conf"
+    run "#{sudo} mv /tmp/memcached.conf /etc/memcached.conf"
+  end
+  after "memcached:setup", "memcached:restart"
 
   %w[start stop restart].each do |command|
     desc "#{command} memcached"

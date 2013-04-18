@@ -1,0 +1,17 @@
+# Run memcached as a daemon.
+-d
+
+# Log memcached's output to /var/log/memcached
+logfile <%= memcached_log %>
+
+# Limit memory
+-m <%= memcached_memory %>
+
+# Default connection port is 11211
+-p 11211
+
+# Run the daemon as root. 
+-u memcache
+
+# Specify which IP address to listen on.
+-l 0.0.0.0

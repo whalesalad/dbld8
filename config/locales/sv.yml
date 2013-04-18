@@ -61,7 +61,7 @@ sv:
     purchase: "%{user_name} köpte %{identifier}"
     registration: "%{user_name} gick med i DoubleDate."
   notifications:
-    engagement_expired: "Din chatt med %{users} angående %{activity} har utgått."
+    engagement_expired: "Din chatt med %{users} angående: %{activity} har utgått."
     engagement_one_day_left: "Din chatt med %{users} angående: %{activity} har 24 timmar kvar."
     new_activity: "Du är %{activity_creator_name}'s kompis på %{his_or_her} DoubleDate: %{activity_title}"
     new_engagement:
