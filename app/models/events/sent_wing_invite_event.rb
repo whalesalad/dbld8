@@ -22,9 +22,9 @@ class SentWingInviteEvent < Event
 
   def notification_string_for(user)
     if friendship.approved?
-      "You accepted #{friendship.user}'s wing invite! Woohoo!"
+      nt(:approved, user_name: friendship.user.first_name)
     else
-      "#{friendship.user} invited you to be #{friendship.user.gender_posessive} wing"
+      nt(:invited, user_name: friendship.user.first_name, his_or_her: friendship.user.gender_posessive)
     end
   end
 
@@ -46,25 +46,27 @@ class SentWingInviteEvent < Event
   end
 
   def inform_dialog
+    coins = AcceptedWingInviteEvent.coin_value
     {
       slug: "inform",
       user_id: friendship.user.id,
-      coins: AcceptedWingInviteEvent.coin_value,
-      upper_text: "You Earned #{AcceptedWingInviteEvent.coin_value} Coins",
-      description: "You earned #{AcceptedWingInviteEvent.coin_value} coins for accepting #{friendship.user}'s wing invite!",
-      dismiss_text: "Close"
+      coins: coins,
+      upper_text: I18n.t('dialogs.accepted_wing_invite.upper_text', coins: coins),
+      description: I18n.t('dialogs.accepted_wing_invite.description', coins: coins, user_name: friendship.user),
+      dismiss_text: I18n.t('dialogs.close_text')
     }
   end
 
   def approve_dialog
+    coins = RecruitedWingEvent.coin_value
     {
       slug: "accept_invite",
-      coins: RecruitedWingEvent.coin_value,
-      upper_text: "Accept & Earn #{RecruitedWingEvent.coin_value} Coins",
-      description: "Would you like to accept #{friendship.user}'s invitation?",
-      confirm_text: "Approve",
+      coins: coins,
       confirm_url: "/me/friends/#{friendship.user.id}/approve",
-      dismiss_text: "Close"
+      upper_text: I18n.t('dialogs.accept_invite.upper_text', coins: coins),
+      description: I18n.t('dialogs.accept_invite.description', user_name: friendship.user),
+      confirm_text: I18n.t('dialogs.approve_text'),
+      dismiss_text: I18n.t('dialogs.close_text')
     }
   end
 

@@ -1,0 +1,27 @@
+- content_for :title, @title
+
+.page-header
+  %h1
+    = yield :title
+    %small #{pluralize(@feedback.count, 'Submission')} total
+
+- if @feedback.any?
+  %table.table.table-striped
+    %thead
+      %tr
+        %th{ :width => '33%' } ID
+        %th{ :width => '33%' } From
+        %th{ :width => '33%' } Received
+    
+    %tbody
+      - for feedback in @feedback
+        %tr
+          %td
+            %strong
+              = link_to "Feedback Submission ##{feedback.id}", admin_feedback_path(feedback)
+          %td= link_to feedback.user.full_name, admin_user_path(feedback.user)
+          %td= l(feedback.created_at, :format => :long)
+- else
+  %p There haven't been any feedback submissions.
+
+= paginate @feedback

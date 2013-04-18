@@ -4,7 +4,6 @@
 # Table name: locations
 #
 #  id               :integer         not null, primary key
-#  name             :string(255)     not null
 #  locality         :string(255)
 #  state            :string(255)
 #  country          :string(255)

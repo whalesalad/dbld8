@@ -1,14 +1,29 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id           :integer         not null, primary key
+#  user_id      :integer
+#  type         :string(255)
+#  coins        :integer
+#  related_id   :integer
+#  related_type :string(255)
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
+#  karma        :integer         default(0)
+#
+
 class NoDatesNearbyEvent < Event
   alias activity related
 
   earns 50
 
-  def detail_string
-    "#{user} posted a DoubleDate in an empty area"
+  def detail_string_params
+    { user_name: user.to_s }
   end
 
   def notification_string_for(user)
-    "You earned #{coins} coins for posting a DoubleDate in an empty area!"
+    nt(nil, coins: coins)
   end
 
   def notify
@@ -19,9 +34,9 @@ class NoDatesNearbyEvent < Event
     {
       slug: "inform",
       coins: coins,
-      upper_text: "You Earned #{coins} Coins",
+      upper_text: I18n.t('dialogs.earned_coins_text', coins: coins),
       description: notification_string_for(activity.user),
-      dismiss_text: "Dismiss"
+      dismiss_text: I18n.t('dialogs.dismiss_text')
     }
   end
 

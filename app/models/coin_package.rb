@@ -28,7 +28,7 @@ class CoinPackage < ActiveRecord::Base
   end
 
   def name
-    "#{coins} Coins"
+    I18n.t('coins', coins: coins)
   end
 
 end

@@ -16,8 +16,8 @@
 class PurchaseEvent < Event
   alias purchase related
 
-  def detail
-    "#{user} purchased #{purchase.coins} coins."
+  def detail_string_params
+    { user_name: user.to_s, identifier: purchase.identifier }
   end
 
   def human_name

@@ -3,7 +3,7 @@ class UserMailer < ActionMailer::Base
 
   def welcome_email(user)
     @user = user
-    @subject = "Welcome to DoubleDate!"
+    @subject = t('welcome_email.subject')
     mail(:to => @user.email, :subject => @subject)
   end
 

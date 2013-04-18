@@ -1,8 +1,113 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
-  hello: "Hello world"
+  yes: "Yes"
+  no: "No"
+  you: "You"
+  coins: "%{coins} Coins"
+
+  welcome_email:
+    subject: "Welcome to DoubleDate!"
+
+  home:
+    invite:
+      title: "Join %{user_name} on DoubleDate!"
+      alt_title: "Grab a friend and DoubleDate"
+      primary_text: "%{user_name} wants you to be %{his_or_her} wing on DoubleDate!"
+      secondary_text: "DoubleDate is an exciting new way to get out and meet new people. It's free, so grab a friend, go out, and have fun."
+      accept_invite: "Accept Wing Invite"
+      get_doubledate: "Get DoubleDate"
+      missing: "Missing Invite"
+      missing_detail: "DoubleDate couldn't find the user that sent you this invite."
+
+  misc:
+    no_user_photo: "This user does not have a photo."
+
+  api:
+    unauthorized: "The authenticated user does not have permission to do this."
+    not_found: "The requested %{model} with ID: %{id} could not be found."
+    missing_parameter: "The '%{param}' parameter is required."
+
+  engagements:
+    not_found: "You have not engaged in this activity yet, or the engagement was not found."
+    already_engaged: "You or your wing have already engaged in this activity."
+    no_message: "You must include a message with your engagement."
+    current_user_cannot_unlock: "The current user cannot unlock this engagement."
+    already_unlocked: "This engagement has already been unlocked."
+    unlock_error: "An error ocurred unlocking this engagement."
+    destroy_error: "Only an activity or engagement owner can delete/ignore an engagement."
+
+  messages:
+    engagement_not_unlocked: "This engagement must be unlocked before replying."
+    destroy_error: "The authenticated user does not have permission to delete this message."
+
+  friendships:
+    not_found: "A friendship doesn't exist between the authenticated user and <User ID:%{user_id}>"
+    approve_error: "You do not have permission to approve this friendship."
+    cannot_destroy: "You cannot remove %{name} from your wings until your dates and messages with %{him_or_her} are cancelled."
+    invalid_facebook_ids: "Please specify an valid array of facebook_ids of users to invite."
+    invalid_invite_slug_error: "A user could not be found for that invite_slug."
+
+  interests:
+    maximum_reached: "A user can only have a maximum of 10 interests."
+
+  locations:
+    invalid_lat_lng: "Please specify valid latitude and longitude parameters."
+
+  users:
+    facebook_auth_error: "There was an API error from Facebook: %{facebook_error}"
+    single: "Single"
+    taken: "Taken"
+    posessive_his: "his"
+    posessive_her: "her"
+    pronoun_him: "him"
+    pronoun_her: "her"
+    age_limit_message: "You must be 17 or older to join DoubleDate."
+
+  events:
+    accepted_wing_invite: "%{user_name} accepted %{friend_name}'s wing invite"
+    engagement_expired: "%{user_name}'s %{engagement} expired"
+    engagement_one_day_left: "%{user_name}'s %{engagement} has 24 hours remaining"
+    new_activity: "%{user_name} created %{activity}"
+    new_engagement: "%{participants} engaged in %{activity}"
+    no_dates_nearby: "%{user_name} posted a DoubleDate in an empty area"
+    purchase: "%{user_name} purchased %{identifier}"
+    registration: "%{user_name} joined DoubleDate"
+  
+  notifications:
+    engagement_expired: "Your chat with %{users} for %{activity} has expired."
+    engagement_one_day_left: "Your chat with %{users} for %{activity} has 24 hours remaining."
+    new_activity: "You're %{activity_creator_name}'s wing on %{his_or_her} DoubleDate %{activity_title}"
+    new_engagement:
+      for_wing: "%{engagement_creator} picked you to be %{his_or_her} wing on the DoubleDate %{activity}"
+      for_activity_users: "%{engagement_users} are interested in %{activity}"
+    no_dates_nearby: "You earned %{coins} coins for posting a DoubleDate in an empty area!"
+    recruited_wing: "%{friend} accepted your wing invitation!"
+    registration: "Your Facebook friend %{friend_name} just joined DoubleDate!"
+    sent_wing_invite:
+      invited: "%{user_name} invited you to be %{his_or_her} wing"
+      approved: "You accepted %{user_name}'s wing invite! Woohoo!"
+
+  dialogs:
+    dismiss_text: "Dismiss"
+    close_text: "Close"
+    approve_text: "Approve"
+    earned_coins_text: "You Earned %{coins} Coins"
+    recruited_wing_invite: "%{user_name} accepted your wing invite and you both earned %{coins} coins!"
+    invite_user:
+      upper_text: "Invite & Earn %{coins} Coins"
+      description: "Would you like to add %{friend_name} as your wing?"
+      confirm_text: "Yes, Send Invite"
+      dismiss_text: "No, Thanks"
+    accepted_wing_invite:
+      upper_text: "You Earned %{coins} Coins"
+      description: "You earned %{coins} coins for accepting %{user_name}'s wing invite!"
+    accept_invite:
+      upper_text: "Accept & Earn %{coins} Coins"
+      description: "Would you like to accept %{user_name}'s invitation?"
+  
+  default_bios:
+    - "My bio is empty. I should write one!"
+    - "Writing a bio is tough! I should change this."
+    - "250 characters was too much to handle. I should really change this."
 
   time:
     formats:

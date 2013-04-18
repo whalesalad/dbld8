@@ -5,7 +5,7 @@ class BaseActivitiesController < ApiController
     begin
       @activity = Activity.find(activity_id)
     rescue ActiveRecord::RecordNotFound
-      return json_not_found "The requested activity was not found."
+      return json_record_not_found(Activity, activity_id)
     end
 
     @activity.update_relationship_as(@authenticated_user)

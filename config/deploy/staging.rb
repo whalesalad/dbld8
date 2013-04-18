@@ -1,4 +1,3 @@
-# server "donner.dbld8.com", :web, :app, :search, :db, :primary => true
 server "staging.dbld8.com", :web, :app, :search, :db, :primary => true
 
 set :branch, "staging"

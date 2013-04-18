@@ -22,7 +22,7 @@ class NewEngagementEvent < Event
     if engagement.present?
       engagement.participant_names
     else
-      "Users"
+      User.model_name.pluralize
     end
   end
 
@@ -30,22 +30,32 @@ class NewEngagementEvent < Event
     if engagement.present?
       engagement.activity
     else
-      "an activity"
+      "an #{Activity.model_name.singular}"
     end
   end
 
   def notification_string_for(user)
     if user == engagement.wing
-      return "#{engagement.user} picked you to be #{engagement.user.gender_posessive} wing on the DoubleDate \"#{related.activity}\""
+      return nt(:for_wing,
+        engagement_creator: engagement.user,
+        his_or_her: engagement.user.gender_posessive,
+        activity: engagement.activity.to_s
+      )
     end
 
     if engagement.activity.participant_ids.include?(user.id)
-      return "#{engagement.participant_names} are interested in \"#{engagement.activity}\""
+      return nt(:for_activity_users, 
+        engagement_users: engagement.participant_names,
+        activity: engagement.activity.to_s
+      )
     end
   end
 
-  def detail_string
-    "#{participants} engaged in #{activity}"
+  def detail_string_params
+    {
+      participants: participants,
+      activity: activity
+    }
   end
 
   def notify

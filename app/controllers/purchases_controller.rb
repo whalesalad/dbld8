@@ -33,7 +33,7 @@ class PurchasesController < ApiController
     begin
       @purchase = base_query.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      return json_not_found "The requested purchase was not found."
+      return json_record_not_found(Purchase, params[:id])
     end
   end
 

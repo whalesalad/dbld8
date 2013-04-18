@@ -1,0 +1,96 @@
+sv:
+  yes: "Ja"
+  no: "Nej"
+  you: "Du"
+  coins: "%{coins} Mynt"
+  welcome_email:
+    subject: "Välkommen till DoubleDate!"
+  home:
+    invite:
+      title: "%{user_name} vill ha med dig på en DoubleDate!"
+      alt_title: "Ta med en kompis & gå på DoubleDate!"
+      primary_text: "%{user_name} vill att du blir %{his_or_her} kompis på en DoubleDate!"
+      secondary_text: "DoubleDate är ett nytt spännande sätt att träffa nya människor. Det är gratis, så ta tag i en kompis, gå ut & ha kul! "
+      accept_invite: "Acceptera vänförfrågan"
+      get_doubledate: "Skaffa DoubleDate"
+      missing: "Saknad inbjudan"
+      missing_detail: "DoubleDate kunde inte hitta personen som skickade dig denna inbjudan."
+  misc:
+    no_user_photo: "Den här personen har tyvärr inget foto."
+  api:
+    unauthorized: "Den här personen har inte tilgång till den här funktionen."
+    not_found: "Denna %{model} med ID: %{id} kunde tyvärr inte hittas."
+    missing_parameter: "'%{param}' måste ha denna parameter."
+  engagements:
+    not_found: "Du är inte aktiv i denna DoubleDate ännu, prova igen eller försök på nytt."
+    already_engaged: "Du och din kompis har redan svarat på denna DoubleDate."
+    no_message: "Du måste inkludera ett meddelande, gärna så utförligt du kan för mest respons. "
+    current_user_cannot_unlock: "Du kan inte öppna denna aktivtet."
+    already_unlocked: "Den här chatten är redan startad. Prova ladda om!"
+    unlock_error: "Oj, det blev något fel. Försök igen."
+    destroy_error: "Bara den som startat en DoubleDate kan ta bort/ignorera den."
+  messages:
+    engagement_not_unlocked: "Du måste acceptera innan du kan svara."
+    destroy_error: "Endast den som startat konversationen kan radera den."
+  friendships:
+    not_found: "Du och <User ID:%{user_id}> är inte vänner ännu. Skicka en inbjudan!"
+    approve_error: "Du kan tyvärr inte acceptera denna inbjudan."
+    cannot_destroy: "Du kan inte ta bort %{name} som din vän fören alla aktivteter och meddelanden med %{his_or_her} är borttagna."
+    invalid_facebook_ids: "Vänligen specificera giltligt facebook_ids på den/dom du vill bjuda in."
+    invalid_invite_slug_error: "En person kunde inte hittas för det invite_slug."
+  interests:
+    maximum_reached: "En person kan ha max 10 intressen."
+  locations:
+    invalid_lat_lng: "Vänligen fyll i rätt longitud och latitud."
+  users:
+    facebook_auth_error: "Whoops, det blev ett API fel från Facebook: %{facebook_error}"
+    single: "Singel"
+    taken: "Upptagen"
+    posessive_his: "hans"
+    posessive_her: "hennes"
+    pronoun_him: "honom"
+    pronoun_her: "henne"
+    age_limit_message: "Du måste vara 17 eller äldre för att använda DoubleDate!"
+  events:
+    accepted_wing_invite: "%{user_name} accepterade %{friend_name}'s vänförfrågan!"
+    engagement_expired: "%{user_name}'s %{engagement} utgått"
+    engagement_one_day_left: "%{user_name}'s %{engagement} har 24 timmar kvar"
+    new_activity: "%{user_name} skapade %{activity}"
+    new_engagement: "%{participants} är aktiva med %{activity}"
+    no_dates_nearby: "%{user_name} skapade den första DoubleDaten i detta område. Wihoo!"
+    purchase: "%{user_name} köpte %{identifier}"
+    registration: "%{user_name} gick med i DoubleDate."
+  notifications:
+    engagement_expired: "Din chatt med %{users} angående %{activity} har utgått."
+    engagement_one_day_left: "Din chatt med %{users} angående: %{activity} har 24 timmar kvar."
+    new_activity: "Du är %{activity_creator_name}'s kompis på %{his_or_her} DoubleDate: %{activity_title}"
+    new_engagement:
+      for_wing: "%{engagement_creator} valde dig att vara %{his_or_her} kompis på DoubleDate: %{activity}"
+      for_activity_users: "%{engagement_users} är intresserade utav: %{activity}"
+    no_dates_nearby: "Du tjänade %{coins} mynt för att du var först att skapa en DoubleDate i detta område!"
+    recruited_wing: "%{friend} accepterade din vänförfrågan!"
+    registration: "Din Facebook vän %{friend_name} finns nu också på DoubleDate!"
+    sent_wing_invite:
+      invited: "%{user_name} bjöd in dig att bli %{his_or_her} kompis"
+      approved: "Du har accepterat %{user_name}'s  vänförfrågan! Woohoo!"
+  dialogs:
+    dismiss_text: "Ok"
+    close_text: "Stäng"
+    approve_text: "Godkänn"
+    earned_coins_text: "Du tjänade %{coins} mynt"
+    recruited_wing_invite: "GRYMT!! %{user_name} accepterade din vänförfrågan och ni båda tjänade %{coins} mynt!"
+    invite_user:
+      upper_text: "Bjud in & tjäna %{coins} mynt"
+      description: "Vill du lägga till %{friend_name} som din vän?"
+      confirm_text: "Ja, Bjud in"
+      dismiss_text: "Nej, Tack"
+    accepted_wing_invite:
+      upper_text: "Du tjänade %{coins} mynt"
+      description: "HÄRLIGT!! Du tjänade %{coins} mynt när du accepterade %{user_name}'s vänförfrågan!"
+    accept_invite:
+      upper_text: "Acceptera & tjäna %{coins} mynt"
+      description: "Vill du acceptera %{user_name}'s förfrågan?"
+  default_bios:
+    - "Min beskrivning saknas, jag borde verkligen lägga till något för att få en schysst profil."
+    - "Varför är det så svårt att skriva en beskrivning? 250 tecken är för svårt för mig."
+    - "250 tecken som beskriver mig själv var tydligen för svårt. Du skulle se min CV."

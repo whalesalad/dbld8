@@ -25,7 +25,7 @@ class FriendsController < ApiController
       render json: { approved: true } and return
     end
     
-    json_error "You do not have permission to approve this friendship."
+    json_error t('friendships.approve_error')
   end
 
   def destroy
@@ -34,8 +34,8 @@ class FriendsController < ApiController
     has_engagements = Engagement.find_any_with_friendship(@friendship).any?
 
     if has_engagements || has_activities
-      friend = @friendship.not_you(@authenticated_user)
-      return json_error "You cannot remove #{friend} from your wings until your dates and messages with #{friend.pronoun} are cancelled."
+      friend = @friendship.not_you(@authenticated_user)      
+      return json_error t('friendships.cannot_destroy', name: friend, him_or_her: friend.pronoun)
     end
 
     respond_with(:nothing => true) if @friendship.destroy
@@ -65,7 +65,7 @@ class FriendsController < ApiController
     end
 
     unless facebook_ids.size > 0
-      return json_error "Please specify an valid array of facebook_ids of users to invite."
+      return json_error t('friendships.invalid_facebook_ids')
     end
 
     doubledate_users = FacebookUser.where(:facebook_id => facebook_ids)
@@ -90,14 +90,14 @@ class FriendsController < ApiController
   def invite_connect
     # will accept an invite
     if params[:invite_slug].blank?
-      return json_error "An invite_slug must be specified."
+      return json_missing_parameter('invite_slug')
     end
 
     invite_slug = params[:invite_slug].to_s
     friend = User.find_by_invite_slug(invite_slug)
 
     if friend.nil?
-      return json_error "A user could not be found for that invite_slug."
+      return json_error t('friendships.invalid_invite_slug_error')
     end
 
     # automatically create a friendship between these two users
@@ -116,7 +116,7 @@ class FriendsController < ApiController
   # Handles connecting incoming app requests from Facebook
   def request_connect
     if params[:request_ids].blank?
-      return json_error "A string of Facebook request_ids must be specified."
+      return json_missing_parameter('request_ids')
     end
 
     fb_requests = @authenticated_user.facebook_graph.get_objects(params[:request_ids])
@@ -148,13 +148,13 @@ class FriendsController < ApiController
     begin
       @friend = User.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      return json_not_found "A user doesn't exist with id #{params[:id]}."
+      return json_record_not_found(User, params[:id])
     end
 
     @friendship = @authenticated_user.find_any_friendship_with(@friend)
 
     if @friendship.nil?
-      return json_not_found "A friendship doesn't exist between the authenticated user and <User ID:#{params[:id]}>"
+      return json_not_found t('friendships.not_found', user_id: params[:id])
     end
   end
 

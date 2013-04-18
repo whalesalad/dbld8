@@ -47,7 +47,10 @@ DoubleDate::Application.routes.draw do
     # post 'ping' => 'me#ping'
 
     # User Photos
-    resource :photo, :controller => 'user_photo', :only => [:show, :create] do
+    resource :photo, :controller => 'user_photo', :only => [:show, :create, :update] do
+      # get the users current facebook photo
+      get 'facebook', :on => :collection
+
       post 'pull_facebook', :on => :collection
     end
 
@@ -57,6 +60,9 @@ DoubleDate::Application.routes.draw do
 
     # resource :device, :only => [:update, :destroy]
     put 'device' => 'me#update_device_token', :as => :update_device_token
+
+    # Endpoint to receive feedback for a user
+    post 'feedback' => 'me#receive_feedback', :as => :receive_feedback
 
     # get list of friends
     # GET /me/friends
@@ -127,9 +133,10 @@ DoubleDate::Application.routes.draw do
 
     resources :purchases
 
+    resources :feedback
+
     require 'sidekiq/web'
     mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'
-    # mount Resque::Server, :at => 'resque', :as => 'resque'
   end
 
   # Home

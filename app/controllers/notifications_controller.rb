@@ -24,7 +24,7 @@ class NotificationsController < ApiController
     begin
       @notification = base_query.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      return json_not_found "The requested notification was not found."
+      return json_record_not_found(Notification, params[:id])
     end
   end
 

@@ -1,6 +1,8 @@
 class MeController < ApiController
   before_filter :require_slug, :only => [:unlock, :check_unlock]
   before_filter :set_user
+
+  after_filter :set_locale, :only => [:update_device_token]
   
   def show
     respond_with @user, :template => 'users/show'
@@ -19,6 +21,20 @@ class MeController < ApiController
   def update_device_token
     @device = @user.devices.find_or_create_by_token(params[:device_token])
     respond_with @device
+  end
+
+  def receive_feedback
+    if params[:message].blank?
+      return json_error "The 'message' parameter is a required field."
+    end
+    
+    @feedback = @user.feedback_submissions.build(message: params[:message])
+
+    if @feedback.save
+      render json: { success: true }, :status => :created and return
+    else
+      render json: { success: false }, :status => :unprocessable_entity and return
+    end
   end
 
   # def ping
@@ -82,7 +98,7 @@ class MeController < ApiController
   end
 
   def require_slug
-    json_error "The 'slug' parameter is required." unless params[:slug].present?
+    return json_missing_parameter('slug') unless params[:slug].present?
   end
 
 end

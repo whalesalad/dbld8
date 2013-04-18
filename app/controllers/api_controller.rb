@@ -3,7 +3,7 @@ class ApiController < ActionController::Base
   
   before_filter :require_token_auth
   after_filter :add_who_am_i_header if Rails.env.development?
-
+  
   # rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   rescue_from ActiveRecord::RecordInvalid, :with => :record_invalid
 
@@ -15,8 +15,24 @@ class ApiController < ActionController::Base
     render json: { :error => error_message }, :status => 404 and return
   end
 
+  def json_record_not_found(m, id)
+    return json_not_found(t('api.not_found', model: m.model_name.humanize, id: id))
+  end
+
+  def json_missing_parameter(param)
+    return json_not_found(t('api.missing_parameter', param: param))
+  end
+
   def json_unauthorized(error_message)
     render json: { :error => error_message }, :status => 401 and return
+  end
+
+  def require_params(*args)
+    params = args.shift
+    missing = args.map { |a| a unless params.has_key?(a) }.compact
+    if missing.any?
+      return json_not_found("The [#{missing.join(', ')}] parameters are required.")
+    end
   end
 
   def authenticated_user
@@ -24,7 +40,7 @@ class ApiController < ActionController::Base
   end
 
   def unauthorized!
-    json_unauthorized "The authenticated user does not have permission to do this."
+    json_unauthorized t('api.unauthorized')
   end
 
   def set_point
@@ -34,6 +50,14 @@ class ApiController < ActionController::Base
       return json_error "Please specify valid latitude and longitude parameters. lat: #{params[:latitude]}, lng: #{params[:longitude]} are invalid."
     else
       @point = [params[:latitude], params[:longitude]].join ','
+    end
+  end
+
+  def set_locale
+    user = @user || @authenticated_user
+    if user.present?
+      Rails.logger.debug "[LOCALE] Setting locale for #{user} (#{user.id})."
+      user.update_attribute(:locale, I18n.locale)
     end
   end
 

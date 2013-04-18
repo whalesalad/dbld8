@@ -1,7 +1,9 @@
 class LocationsController < ApiController
   before_filter :set_point, :except => [:index, :show, :create]
   before_filter :get_location, :only => [:show]
-  after_filter  :set_empty_location, :only => [:current]
+  
+  after_filter :set_empty_location, :only => [:current]
+  after_filter :set_locale, :only => [:current]
   
   def index
     @locations = if params[:query]

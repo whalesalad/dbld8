@@ -9,24 +9,6 @@ DoubleDate::Application.configure do
   config.redis_port = 6379
   config.redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
 
-  # Metriks::Reporter::LibratoMetrics.new(
-  #   Rails.configuration.librato['user'], 
-  #   Rails.configuration.librato['token'], 
-  #   source: Rails.configuration.hostname,
-  #   on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
-  # ).start
-  # config.middleware.use Metriks::Middleware
-
-  # add this to the unicorn
-  # if defined?(Metriks::Reporter::LibratoMetrics)
-  #   Metriks::Reporter::LibratoMetrics.new(
-  #     Rails.configuration.librato['user'], 
-  #     Rails.configuration.librato['token'], 
-  #     source: Rails.configuration.hostname,
-  #     on_error: proc { |e| Rails.logger.info("LibratoMetrics: #{ e.message }") }
-  #   ).start
-  # end
-
   config.lograge.enabled = true
 
   # configure tire for remote connection
@@ -92,7 +74,7 @@ DoubleDate::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Enable threaded mode
-  # config.threadsafe!
+  config.threadsafe!
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)

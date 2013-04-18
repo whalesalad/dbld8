@@ -21,7 +21,7 @@ class UsersController < ApiController
     begin
       me = graph.get_object('me', { :fields => 'id' })
     rescue Koala::Facebook::APIError => exc
-      return json_error "There was an API error from Facebook: #{exc}"
+      return json_error t('users.facebook_auth_error', facebook_error: exc)
     else
       @user = User.find_by_facebook_id(me['id'])
 
@@ -48,6 +48,7 @@ class UsersController < ApiController
 
   def logout
     @authenticated_user.logout!
+    Analytics.track(user_id: @authenticated_user.uuid, event: 'User Logout')
     render json: { logged_out: true } and return
   end
 
@@ -62,17 +63,16 @@ class UsersController < ApiController
     begin
       @user = User.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      return json_not_found "The requested user was not found."
+      return json_record_not_found(User, params[:id])
     end
   end
 
   def ensure_facebook_access_token
-    return json_error "A facebook_access_token is required." unless params[:facebook_access_token].present?
+    return json_missing_parameter('facebook_access_token') unless params[:facebook_access_token].present?
   end
 
   def track_user_auth
     Rails.logger.info("[AUTH] Login failure.") and return if @user.blank?
-
     Rails.logger.info "[ANALYTICS] User #{@user.id} logged in. Idenfiying + tracking login."
 
     # Identify the user

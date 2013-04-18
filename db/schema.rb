@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130321135121) do
+ActiveRecord::Schema.define(:version => 20130412170117) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -111,6 +111,15 @@ ActiveRecord::Schema.define(:version => 20130321135121) do
 
   add_index "facebook_invites", ["facebook_id", "user_id"], :name => "index_facebook_invites_on_facebook_id_and_user_id", :unique => true
   add_index "facebook_invites", ["user_id", "facebook_id"], :name => "index_facebook_invites_on_user_id_and_facebook_id", :unique => true
+
+  create_table "feedback", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "message"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "feedback", ["user_id"], :name => "index_feedback_on_user_id"
 
   create_table "friendships", :force => true do |t|
     t.integer  "user_id",                       :null => false
@@ -242,11 +251,12 @@ ActiveRecord::Schema.define(:version => 20130321135121) do
     t.string   "invite_slug"
     t.string   "type"
     t.hstore   "features"
+    t.string   "locale"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id", :unique => true
-  add_index "users", ["features"], :name => "index_users_on_features", :index_type => :gist
+  add_index "users", ["features"], :name => "index_users_on_features", :using => :gist
   add_index "users", ["invite_slug"], :name => "index_users_on_invite_slug", :unique => true
   add_index "users", ["location_id"], :name => "index_users_on_location_id"
   add_index "users", ["uuid"], :name => "index_users_on_uuid", :unique => true

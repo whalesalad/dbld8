@@ -1,13 +1,7 @@
-- provide :title, (@user.present?) ? "Join #{@user.first_name} on DoubleDate!" : "Grab a friend and DoubleDate"
-
-- dd_url = (@user.present?) ? "#{Rails.configuration.ios_prefix}://invite/#{@user.invite_slug}" : "#{Rails.configuration.ios_prefix}://welcome"
-
-- content_for :head do
-  %meta{ :name => 'apple-itunes-app', :content => "app-id=#{Rails.configuration.app_id}, app-argument=#{dd_url}" }
+- provide :title, (@user.present?) ? t('.title', user_name: @user.first_name) : t('.alt_title')
 
 %header
-  %h1 
-    = link_to "DoubleDate", root_url
+  %h1= link_to "DoubleDate", root_url
 
 #content  
   .invite-landing
@@ -15,26 +9,20 @@
       .user-photo-wrapper
         .inset
         = image_tag @user.photo.medium.url, :class => 'user-photo'
-      %h3 #{@user.first_name} wants you to be #{@user.gender_posessive} wing on DoubleDate!
+      %h3= t('.primary_text', user_name: @user.first_name, his_or_her: @user.gender_posessive)
     - else
       .missing
-        %h3 Missing Invite :(
-        %p DoubleDate couldn't find the user that sent you this invite.
+        %h3 #{t('.missing')} :(
+        %p= t('.missing_detail')
 
     %hr/
     
-    %p DoubleDate is an exciting new way to get out and meet new people. It's free, so grab a friend, go out, and have fun.
-
-
+    %p= t('.secondary_text')
 
 .lower-glass-shadow
 #lower-glass
   .glass-sheet#sheet-step1
     - if @user.present?
-      = link_to "Accept Wing Invite", dd_url, :class => 'action-btn', :id => 'accept-invite-btn'
+      = link_to t('.accept_invite'), app_invite_url_for_user(@user), :class => 'action-btn', :id => 'accept-invite-btn'
     - else
-      = link_to "Get DoubleDate", appstore_path, :class => 'action-btn', :id => 'download-app'
-
-  / .lower-glass-sheet#sheet-step2
-  /   %p Looks like you need to get the app first
-  /   = link_to "Get DoubleDate on the App Store", appstore_path, :class => 'btn'
+      = link_to t('.get_doubledate'), appstore_path, :class => 'action-btn', :id => 'download-app'

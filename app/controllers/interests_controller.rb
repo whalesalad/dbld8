@@ -32,10 +32,10 @@ class InterestsController < ApiController
   protected
 
   def get_interest
-    @interest = Interest.find(params[:id])
-
-    if @interest.nil?
-      json_not_found("An interest with an ID of #{params[:id]} could not be found.")
+    begin
+      @interest = Interest.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      return json_record_not_found(Interest, params[:id])
     end
   end
 end

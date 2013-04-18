@@ -21,17 +21,14 @@
 #  invite_slug           :string(255)
 #  type                  :string(255)
 #  features              :hstore
+#  locale                :string(255)
 #
 
 class User < ActiveRecord::Base
   include Concerns::FriendConcerns
   include Concerns::UUIDConcerns
 
-  DEFAULT_BIOS = [
-    "I like to wear silly hats.",
-    "Writing a bio is tough! I should change this.",
-    "250 characters was too much to handle. I should really change this."
-  ]
+  DEFAULT_BIOS = I18n.t('default_bios')
 
   serialize :features, ActiveRecord::Coders::Hstore
 
@@ -132,6 +129,11 @@ class User < ActiveRecord::Base
     :source => 'message',
     :conditions => {'message_proxies.unread' => true}
 
+  # Feedback
+  has_many :feedback_submissions, 
+    :class_name => "Feedback",
+    :dependent => :destroy
+
   def before_init
     self.interested_in ||= interested_in_from_gender
     
@@ -149,7 +151,7 @@ class User < ActiveRecord::Base
   end
 
   def status
-    single? ? "Single" : "Taken"
+    I18n.t((single?) ? :single : :taken, :scope => :users)
   end
 
   def age
@@ -184,11 +186,11 @@ class User < ActiveRecord::Base
   end
 
   def gender_posessive
-    (gender == "male") ? "his" : "her"
+    I18n.t((gender == "male") ? :posessive_his : :posessive_her, :scope => :users)
   end
 
   def pronoun
-    (gender == "male") ? "him" : "her"
+    I18n.t((gender == "male") ? :pronoun_him : :pronoun_her, :scope => :users)
   end
 
   def activity_associations
@@ -297,13 +299,13 @@ class User < ActiveRecord::Base
 
   def max_interests
     if interests(:reload).count > 10
-      errors.add(:interests, 'A user can only have a maximum of 10 interests.')
+      errors.add(:interests, I18n.t('interests.maximum_reached'))
     end
   end
 
   def old_enough
     if age < 17
-      errors.add(:age, 'You must be 17 or older to join DoubleDate.')
+      errors.add(:age, I18n.t('age_limit_message', :scope => :users))
     end
   end
 

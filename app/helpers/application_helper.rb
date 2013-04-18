@@ -14,7 +14,7 @@ module ApplicationHelper
     if page_title.empty?
       base_title
     else
-      "#{base_title} &bull; #{page_title}".html_safe
+      "#{page_title} &mdash; #{base_title}".html_safe
     end
   end
 
@@ -23,16 +23,9 @@ module ApplicationHelper
     title.empty? ? base : "#{base} &mdash; #{title}".html_safe
   end
 
-  def facebook_app_id
-    DoubleDate::FACEBOOK_APP_ID
-  end
-
-  def unread_message_for
-
-  end
-
   def yesno(b)
-    b ? 'Yes' : 'No'
+    x = b ? :yes : :no
+    t(x)
   end
 
   def badge_for_event(event)
@@ -42,6 +35,23 @@ module ApplicationHelper
 
   def cluster_host
     Rails.configuration.hostname
+  end
+
+  def app_invite_url_for_user(user)
+    prefix = "#{Rails.configuration.ios_prefix}://"
+    if user.present?
+      prefix + "invite/#{@user.invite_slug}"
+    else
+      prefix + "welcome"
+    end
+  end
+
+  def smart_app_bar_content
+    content = [ "app-id=#{Rails.configuration.app_id}" ]
+    if @user.present?
+      content << "app-argument=#{app_invite_url_for_user(@user)}"
+    end
+    content.join ", "
   end
 
 end

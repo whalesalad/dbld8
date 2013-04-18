@@ -55,7 +55,7 @@ class Notification < ActiveRecord::Base
     if message?
       return "#{related.user.first_name}: #{related.to_s}"
     elsif target.is_a?(RegistrationEvent) || target.related.present?
-      return target.notification_string_for(user)  
+      return target.notification_string_for(user)
     end
 
     "Notification from #{target}"

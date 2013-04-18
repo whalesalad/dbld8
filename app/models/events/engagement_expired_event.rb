@@ -16,23 +16,26 @@
 class EngagementExpiredEvent < Event
   alias engagement related
 
-  def detail_string
-    if related.nil?
-      "#{user}'s deleted engagement expired"  
-    else
-      "#{user}'s engagement ID:#{engagement.id} has expired"
-    end
+  def detail_string_params
+    {
+      user_name: user,
+      engagement: related_to_s(Engagement)
+    }
   end
 
   def notification_string_for(user)
     # All four participants should receive a push notification saying the chat has expired
-    if engagement.activity.participant_ids.include?(user.id)
-      # Activity User + Wing
-      "Your chat with #{engagement.participant_names} for #{engagement.activity} has expired."
+    params = {
+      activity: engagement.activity.to_s
+    }
+    
+    params[:users] = if engagement.activity.participant_ids.include?(user.id)
+      engagement.participant_names
     else
-      # Engagement User + Wing
-      "Your chat with #{engagement.activity.participant_names} for #{engagement.activity} has expired."
+      engagement.activity.participant_names
     end
+
+    nt(nil, params)
   end
 
   def notify

@@ -1,4 +1,5 @@
 %section.user-detail
+  
   %h1
     #{@user.full_name}
     %small
@@ -7,13 +8,14 @@
   %hr/ 
 
   .row-fluid
-    .span6
+    .span7
       .row-fluid
         .span7
           %section.content-section
             %h4 Bio
             - if @user.bio.present?
-              %blockquote= @user.bio
+              %blockquote
+                = simple_format(@user.bio)
             - else
               %p The bio for #{@user} is blank.
 
@@ -36,11 +38,12 @@
 
         .span5
           %section.content-section
-            %h4 Photo
+            %h4 
+              Photo
             %p
-              =image_tag @user.photo.thumb, :class => 'img-rounded'
-            %p 
-              = link_to 'All Photos by Size', photos_admin_user_path(@user), :class => 'btn btn-primary'
+              =image_tag @user.photo.small, :class => 'img-rounded'
+
+            %p= link_to 'View All Photos', photos_admin_user_path(@user), :class => 'btn btn-small'
 
       %hr/
     
@@ -116,7 +119,7 @@
         = link_to "Delete", admin_user_path(@user), :method => :delete, :confirm => "Are you sure?", :class => 'btn btn-danger'
         = link_to "Send Push Notification", send_push_admin_user_path(@user), :class => 'btn send-push', :data => { :userid => @user.id }
 
-    .span6
+    .span5
       %ul.nav.nav-tabs
         %li= link_to "Events", '#user-events', :data => { :toggle => 'tab' }
         %li= link_to "Friends", '#user-friends', :data => { :toggle => 'tab' }
@@ -187,8 +190,9 @@
                   #{time_ago_in_words(notification.created_at)} ago
           
         .tab-panel#raw-object
-          %h4
-            Raw User Object
-          = debug @user
+          %h4 Raw User Object
+          %pre
+            = preserve do
+              = h @user.to_yaml
 
       

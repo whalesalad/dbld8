@@ -16,19 +16,26 @@
 class EngagementOneDayLeftEvent < Event
   alias engagement related
 
-  def detail_string
-    "#{user}'s engagement ID:#{(engagement.present?) ? engagement.id : 'nil'} has one day remaining"
+  def detail_string_params
+    {
+      user_name: user,
+      engagement: related_to_s(Engagement)
+    }
   end
 
   def notification_string_for(user)
     # All four participants should receive a push notification saying the chat has expired
-    if engagement.activity.participant_ids.include?(user.id)
-      # Activity User + Wing
-      "Your chat with #{engagement.participant_names} for #{engagement.activity} has 24 hours remaining."
+    params = {
+      activity: engagement.activity.to_s
+    }
+    
+    params[:users] = if engagement.activity.participant_ids.include?(user.id)
+      engagement.participant_names
     else
-      # Engagement User + Wing
-      "Your chat with #{engagement.activity.participant_names} for #{engagement.activity} has 24 hours remaining."
+      engagement.activity.participant_names
     end
+
+    nt(nil, params)
   end
 
   def notify

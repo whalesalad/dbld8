@@ -96,16 +96,16 @@ class Event < ActiveRecord::Base
     self.model_name.gsub('Event', '').underscore
   end
 
+  def slug
+    self.class.slug
+  end
+
   def to_s
     self.class.model_name.gsub('Event', '')
   end
 
   def human_name
     to_s.titleize
-  end
-
-  def slug
-    self.class.slug
   end
 
   def related?
@@ -137,8 +137,27 @@ class Event < ActiveRecord::Base
     "#{prefix}#{coins.abs}"
   end
 
+  def get_detail_string
+    if self.respond_to?(:detail_string_params)
+      I18n.t("events.#{slug}", detail_string_params)
+    elsif self.respond_to?(:detail_string)
+      detail_string
+    else
+      "Missing detail string for #{slug}.".upcase
+    end
+  end
+
+  def related_to_s(klass=nil)
+    class_name = klass.nil? ? "object" : klass.model_name.humanize
+    s = if related.nil?
+      "deleted #{class_name}"
+    else
+      "<#{class_name} ID:#{related.id}>"
+    end
+  end
+
   def detail
-    s = [detail_string]
+    s = [get_detail_string]
     s << "and #{cost_string}" unless free?
     "#{s.join(' ')}."
   end
@@ -158,6 +177,14 @@ class Event < ActiveRecord::Base
   def notification_url
     return related.notification_url if related?
     super
+  end
+
+  def nt(s, params=nil)
+    if s.nil?
+      I18n.t("notifications.#{slug}", params)
+    else
+      I18n.t(s, params.merge(scope: [:notifications, slug]))
+    end
   end
 
   def properties

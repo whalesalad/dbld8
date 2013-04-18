@@ -27,23 +27,7 @@ class DefaultUserPhoto
       :thumb => thumb,
       :small => small,
       :medium => medium,
-      :note => "This user does not have a photo."
+      :note => I18n.t('misc.no_user_photo')
     }
-  end
-end
-
-class DummyPhoto
-  attr_accessor :photo
-
-  def initialize(photo)
-    @photo = photo
-  end
-
-  def to_s
-    @photo
-  end
-
-  def url
-    @photo
   end
 end
