@@ -17,4 +17,9 @@ namespace :memcached do
   task :stats, roles: :app do
     run "echo stats | nc 127.0.0.1 11211"
   end
+
+  desc "Clear the memcached caches."
+  task :flush, roles: :app do
+    run "echo 'flush_all' | nc localhost 11211"
+  end
 end
