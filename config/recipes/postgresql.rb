@@ -41,3 +41,10 @@ namespace :postgresql do
   # end
   # after "deploy:finalize_update", "postgresql:symlink"
 end
+
+namespace :pg do
+  desc "Backup production database."
+  task :backup, roles: :db, only: {primary: true} do
+    run_rake "pg:backup"
+  end
+end
