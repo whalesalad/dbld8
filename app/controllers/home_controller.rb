@@ -15,6 +15,7 @@ class HomeController < ApplicationController
 
     if @user.nil?
       @user = User.find_by_id(params[:invite_slug])
+      redirect_to(user_invitation_path(@user.invite_slug)) if @user.present?
     end
   end
 
