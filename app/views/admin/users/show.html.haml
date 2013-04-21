@@ -58,7 +58,11 @@
             %code #{@user.uuid}
 
           %dt Email
-          %dd #{mail_to @user.email}
+          %dd 
+            - if @user.email.present?
+              #{mail_to @user.email}
+            - else
+              No email on file!
 
           %dt Facebook ID
           %dd 
