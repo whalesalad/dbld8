@@ -87,8 +87,8 @@ base.js: base-eccd09579f607112bc5617d12b5741df.js
 base/index.js: base-eccd09579f607112bc5617d12b5741df.js
 admin/admin.css: admin/admin-03fa14b8e6d5832916b26e7a7fa1b3a3.css
 admin/admin/index.css: admin/admin-03fa14b8e6d5832916b26e7a7fa1b3a3.css
-application.css: application-4a32e47f00fe54eb312fd2064456e42d.css
-application/index.css: application-4a32e47f00fe54eb312fd2064456e42d.css
+application.css: application-838b2758b541251b3ab0759c2e39dce6.css
+application/index.css: application-838b2758b541251b3ab0759c2e39dce6.css
 appstore/download.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 appstore/download/index.svg: appstore/download-9896e63c72c8cba67d0dee59eeee3fd7.svg
 FontAwesome.otf: FontAwesome-468f83b63df32064983141584a19ff17.otf
