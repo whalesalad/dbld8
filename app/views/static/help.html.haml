@@ -1,0 +1,30 @@
+- content_for :title, "Help Center"
+
+%h1= yield(:title)
+
+%p We've done our best to make DoubleDate as simple and fun to use as possible. However, if you ever encounter an error or difficult task, we'd like to hear about it. 
+
+%p Please use any of the following methods to contact us:
+
+%ul
+  %li <b>#{link_to('Via Twitter', twitter_url, :target => '_blank')}</b> – tweet or follow us #{link_to('@doubledateapp', twitter_url, :target => '_blank')}
+  %li <b>#{link_to('Via Facebook', facebook_url, :target => '_blank')}</b> — send us a message (and like us!)
+  %li <b>#{mail_to('help@dbld8.com', 'Via Email')}</b> – email us with questions or comments
+
+%br/
+
+.in-app-feedback
+  = image_tag 'help-feedback.png', :class => 'align-right'
+  
+  %h3 
+    In-app Feedback
+    %small
+      In Version 0.8.1
+  
+  %p We've also just introduced a new feature inside of our app that lets you send us feedback.
+
+  %p In <b>Version 0.8.1</b> of our app, simply expand the main navigation menu to reveal the blue feedback button.
+
+  %p Tapping on this button will allow you to send us your questions, comments, and ideas.
+  
+  .clear

@@ -13,4 +13,8 @@ class StaticController < ApplicationController
     
   end
 
+  def help
+    
+  end
+
 end 

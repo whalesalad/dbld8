@@ -7,11 +7,16 @@ DoubleDate::Application.routes.draw do
   get 'terms' => 'static#terms', :as => 'terms'
   get 'privacy' => 'static#privacy', :as => 'privacy'
 
+  get 'help' => 'static#help', :as => 'help'
+
   get 'invite(/:invite_slug)' => 'home#invite', :as => 'user_invitation'
 
   get 'appstore' => redirect(Rails.configuration.app_store_url), :as => 'appstore'
   get 'download' => redirect(Rails.configuration.app_store_url), :as => 'download'
   get 'itunes' => redirect(Rails.configuration.app_store_url), :as => 'itunes'
+
+  get 'facebook' => redirect("https://www.facebook.com/DoubleDateApp"), :as => 'facebook'
+  get 'twitter' => redirect("https://twitter.com/DoubleDateApp"), :as => 'twitter'
 
   # Authentication
   post 'authenticate' => 'users#authenticate'

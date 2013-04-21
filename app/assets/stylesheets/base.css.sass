@@ -290,7 +290,8 @@ body.static
       width: 44px
       height: 66px
       display: inline-block
-      background: image-url("static/logo.png") 0 0 no-repeat
+      background-image: image-url("email/upper-logo@2x.png")
+      background-size: 44px 66px
       margin: 30px auto
       text-indent: -9999em
 
@@ -302,13 +303,16 @@ body.static
     background: #FFF
     box-shadow: 0 2px 0 #b20c54
 
+    @include iphone
+      width: 90%
+      padding: 30px 20px
+
     a
       color: $ddblue
       text-decoration: none
-      background: lighten($ddblue, 50)
       &:hover
-        background: $ddblue
-        color: #FFF
+        color: darken($ddblue, 10)
+        text-decoration: underline
 
     h1
       color: #ff1178
@@ -316,6 +320,9 @@ body.static
       margin-bottom: 25px
       padding-bottom: 15px
       border-bottom: 1px dotted #EEE
+
+      @include iphone
+        font-size: 26px
 
     h3
       font-size: 22px
@@ -335,19 +342,65 @@ body.static
     ol li, ul li
       margin: 1em 3em
 
+    .in-app-feedback
+      @extend .clearfix
+      margin: 0 -30px
+      padding: 20px 30px
+      background: #EEE
+      border-radius: 5px
+
+      @include iphone
+        margin: 0
+
+      h3 small
+        color: #999
+        padding-left: 10px
+
+      img.align-right
+        float: right
+        margin-left: 40px
+
+        @include iphone
+          text-align: center
+          float: none
+          margin: 0
+
+.clearfix
+  zoom: 1
+  &:before, &:after
+    content: "\0020"
+    display: block
+    height: 0
+    overflow: hidden
+  &:after
+    clear: both
+
 
 footer
   width: 740px
-  background: image-url('email/text-logo.png') 100% 50% no-repeat
+  background: image-url('email/text-logo@2x.png') 100% 50% no-repeat
+  background-size: 111px 19px
   padding: 15px 0
   color: #FFF
   font-size: 13px
   margin: 0 auto 30px auto
+
+  @include iphone
+    margin: 30px auto
+    background-position: top left
+    padding-top: 30px
+    width: 90%
+    font-size: 11px
+
   p
     line-height: 20px
     color: #FFF
     a
+      opacity: 0.8
       color: #FFF
       text-decoration: none
+      border-bottom: 1px solid rgba(255,255,255,0.4)
       &:hover
-        opacity: 0.8
+        border-bottom: none
+        opacity: 1.0
+        

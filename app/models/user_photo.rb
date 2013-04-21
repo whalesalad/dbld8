@@ -42,7 +42,7 @@ class UserPhoto < ActiveRecord::Base
     end
 
     def url
-      return "http://static-test.dbld8.com/#{self.current_path}" if Rails.env.development?
+      # return "http://static-test.dbld8.com/#{self.current_path}" if Rails.env.development?
       "http://asset-#{rand(3)+1}.dbld8.com/#{self.current_path}"
     end
 
