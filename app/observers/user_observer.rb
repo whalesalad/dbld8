@@ -6,7 +6,6 @@ class UserObserver < ActiveRecord::Observer
       
       if user.is_a?(FacebookUser)
         FacebookPhotoWorker.perform_async(user.id)
-        FacebookInterestsWorker.perform_async(user.id)
         # FacebookFriendNotifierWorker.perform_async(user.id)
       end
 

@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
   def welcome_email(user)
     @user = user
     @subject = t('welcome_email.subject')
-    mail(:to => @user.email, :subject => @subject)
+    mail(:to => @user.email, :subject => @subject) if @user.email.present?
   end
 
 end

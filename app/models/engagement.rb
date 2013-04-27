@@ -49,7 +49,7 @@ class Engagement < ActiveRecord::Base
 
   scope :for_user, lambda {|user|
     select('distinct(engagements.id)')
-      .includes(:activity, :user => [:profile_photo, :location], :wing => [:profile_photo, :location])
+      .includes(:activity)
       .where('activities.user_id = ? OR activities.wing_id = ? OR engagements.user_id = ? OR engagements.wing_id = ?', user.id, user.id, user.id, user.id)
   }
 
