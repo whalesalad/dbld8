@@ -1,20 +1,11 @@
 DoubleDate::Application.routes.draw do
-  # post 'users/build' => 'users#build_facebook_user', :as => 'build_user'
-  # post 'users/create' => 'users#create_facebook_user', :as => 'create_user'
-
-  # get 'new' => 'home#new'
-  get 'about' => 'static#about', :as => 'about'
-  get 'terms' => 'static#terms', :as => 'terms'
-  get 'privacy' => 'static#privacy', :as => 'privacy'
-
-  get 'help' => 'static#help', :as => 'help'
-
+  # Invitation
   get 'invite(/:invite_slug)' => 'home#invite', :as => 'user_invitation'
-
-  get 'appstore' => redirect(Rails.configuration.app_store_url), :as => 'appstore'
-  get 'download' => redirect(Rails.configuration.app_store_url), :as => 'download'
-  get 'itunes' => redirect(Rails.configuration.app_store_url), :as => 'itunes'
-
+  
+  # Download
+  get 'download' => 'static#download', :as => 'download'
+  
+  # Ssocial
   get 'facebook' => redirect("https://www.facebook.com/DoubleDateApp"), :as => 'facebook'
   get 'twitter' => redirect("https://twitter.com/DoubleDateApp"), :as => 'twitter'
 
@@ -143,6 +134,8 @@ DoubleDate::Application.routes.draw do
     require 'sidekiq/web'
     mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'
   end
+
+  match "*slug" => 'static#show', :as => :static, :constraints => /\A[[\w\-]+[\/?]*]+\Z/, :via => :get
 
   # Home
   root :to => 'home#index'

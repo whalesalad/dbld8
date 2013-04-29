@@ -1,16 +1,16 @@
 %footer
   %p
-    <b>&copy; 2013 #{link_to('DoubleDate', root_url)}</b>
+    <b>&copy; 2013 DoubleDate</b>
     — 
-    = link_to 'Download from the App Store', itunes_url
+    = link_to 'Download from the App Store', download_url
     
     %br/
     
-    = link_to 'Terms', terms_url
+    = link_to 'Terms', static_url('terms')
     •
-    = link_to 'Privacy', privacy_url
+    = link_to 'Privacy', static_url('privacy')
     •
-    = link_to 'Help', help_url
+    = link_to 'Help', static_url('help')
     •
     = mail_to 'hello@dbld8.com', 'Contact Us'
 

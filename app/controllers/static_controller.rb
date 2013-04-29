@@ -1,20 +1,20 @@
 class StaticController < ApplicationController
-  skip_filter :require_token_auth, :all
+  PAGE_SLUGS = %W(about terms privacy help)
+  DOWNLOAD_SLUGS = %W(download itunes appstore app)
 
-  def about
-
+  def show
+    slug = params[:slug].downcase
+    if PAGE_SLUGS.include?(slug)
+      render "static/#{params[:slug]}" and return
+    elsif DOWNLOAD_SLUGS.include?(slug)
+      redirect_to download_url and return
+    end
+    redirect_to root_url
   end
 
-  def terms
-
-  end
-
-  def privacy
-    
-  end
-
-  def help
-    
+  def download
+    Analytics.track(user_id: '000', event: 'Download URL Visited')
+    redirect_to Rails.configuration.app_store_url
   end
 
 end 
