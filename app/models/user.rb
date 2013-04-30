@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
   INTEREST_CHOICES = %w(guys girls both)
 
   before_validation :before_init, :on => :create
+
+  after_update :trigger_update_bio_event
   after_create :after_init, :on => :create
   after_commit :send_welcome_email, :on => :create
 
@@ -307,6 +309,10 @@ class User < ActiveRecord::Base
     if age < 17
       errors.add(:age, I18n.t('age_limit_message', :scope => :users))
     end
+  end
+
+  def trigger_update_bio_event
+    Analytics.track(user_id: uuid, event: 'User Updated Bio') if bio_changed?
   end
 
 end
