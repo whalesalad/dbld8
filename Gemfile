@@ -8,6 +8,9 @@ gem 'rack-contrib'
 gem 'rails-i18n'
 gem 'unicorn'
 
+# New Relic
+gem 'newrelic_rpm'
+
 # JSON
 gem 'multi_json'
 gem 'jbuilder'
