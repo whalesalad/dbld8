@@ -12,6 +12,7 @@ set :whenever_command, "bundle exec whenever"
 set :stages, %w(production staging)
 set :default_stage, "staging"
 
+require "new_relic/recipes"
 require "bundler/capistrano"
 require "sidekiq/capistrano"
 require "whenever/capistrano"
