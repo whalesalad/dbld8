@@ -1,4 +1,6 @@
 class FeedController < ApplicationController
+  respond_to :atom
+
   def index
     allowed_feeds = %w(users activities events)
 
@@ -8,7 +10,8 @@ class FeedController < ApplicationController
 
     @slug = params[:slug]
     @model = params[:slug].classify.constantize
-    @items = @model.unscoped.order('created_at DESC').last(30)
+    
+    @items = @model.unscoped.includes(:user, :wing, :location).order('created_at DESC').last(30)
 
     render :atom => @items
   end
