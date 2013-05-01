@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130412170117) do
+ActiveRecord::Schema.define(:version => 20130501091018) do
 
   add_extension "hstore"
   add_extension "uuid-ossp"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20130412170117) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "auth_tokens", ["token"], :name => "index_auth_tokens_on_token", :unique => true
   add_index "auth_tokens", ["user_id"], :name => "index_auth_tokens_on_user_id"
 
   create_table "coin_packages", :force => true do |t|
@@ -99,6 +100,7 @@ ActiveRecord::Schema.define(:version => 20130412170117) do
     t.integer  "karma",        :default => 0
   end
 
+  add_index "events", ["id", "type"], :name => "index_events_on_id_and_type"
   add_index "events", ["related_id", "related_type"], :name => "index_user_actions_on_related_id_and_related_type"
   add_index "events", ["user_id"], :name => "index_user_actions_on_user_id"
 
@@ -210,6 +212,9 @@ ActiveRecord::Schema.define(:version => 20130412170117) do
     t.boolean  "feed_item",   :default => true
   end
 
+  add_index "notifications", ["target_id", "target_type"], :name => "index_notifications_on_target_id_and_target_type"
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
+
   create_table "purchases", :force => true do |t|
     t.integer  "user_id",    :null => false
     t.string   "identifier", :null => false
@@ -257,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20130412170117) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id", :unique => true
   add_index "users", ["features"], :name => "index_users_on_features", :using => :gist
+  add_index "users", ["id", "type"], :name => "index_users_on_id_and_type"
   add_index "users", ["invite_slug"], :name => "index_users_on_invite_slug", :unique => true
   add_index "users", ["location_id"], :name => "index_users_on_location_id"
   add_index "users", ["uuid"], :name => "index_users_on_uuid", :unique => true

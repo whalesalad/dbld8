@@ -77,6 +77,7 @@ group :production do
 end
 
 group :development, :test do
+  gem "lol_dba"
   gem "thin"
   gem "bullet"
   gem "quiet_assets"
