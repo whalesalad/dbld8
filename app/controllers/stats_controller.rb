@@ -1,4 +1,5 @@
 class StatsController < ApplicationController
+  before_filter :require_token_auth
   respond_to :json
 
   def users
@@ -64,6 +65,15 @@ class StatsController < ApplicationController
     @countries = Hash[@countries.sort_by { |country, count| -count }]
 
     render json: @countries
+  end
+
+  private
+
+  def require_token_auth
+    authenticate_or_request_with_http_token do |token, options|
+      return head :unauthorized unless token == "DOUBLEDATESTATS"
+      true
+    end
   end
 
 end
