@@ -1,5 +1,7 @@
 class StatsController < ApplicationController
   before_filter :require_token_auth
+  before_filter :force_ssl unless Rails.env.development?
+  
   respond_to :json
 
   def users
@@ -73,6 +75,12 @@ class StatsController < ApplicationController
     authenticate_or_request_with_http_token do |token, options|
       return head :unauthorized unless token == "DOUBLEDATESTATS"
       true
+    end
+  end
+
+  def force_ssl
+    unless request.ssl?
+      redirect_to :protocol => 'https'
     end
   end
 
