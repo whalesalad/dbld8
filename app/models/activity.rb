@@ -109,7 +109,7 @@ class Activity < ActiveRecord::Base
   end
 
   def to_s
-    title
+    title.strip
   end
 
   def preference

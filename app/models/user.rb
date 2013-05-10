@@ -52,6 +52,10 @@ class User < ActiveRecord::Base
   # Password // Bcrypt
   has_secure_password
 
+  scope :guys, where("gender = ?", :male)
+  scope :girls, where("gender = ?", :female)
+  scope :with_location, where('location_id is not null').includes(:location)
+
   has_many :events, :dependent => :destroy
 
   # Notifications

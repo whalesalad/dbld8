@@ -135,6 +135,12 @@ DoubleDate::Application.routes.draw do
     mount Sidekiq::Web, :at => 'sidekiq', :as => 'sidekiq'
   end
 
+  # resources :stats
+  get 'stats/users'
+  get 'stats/users_by_country'
+  get 'stats/activities'
+  get 'stats/events'
+
   match "*slug" => 'static#show', :as => :static, :constraints => /\A[[\w\-]+[\/?]*]+\Z/, :via => :get
 
   # Home
