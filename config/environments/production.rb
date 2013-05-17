@@ -53,7 +53,7 @@ DoubleDate::Application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
   # Use a different cache store in production
-  config.cache_store = :dalli_store, 'rudolph', 'comet'
+  config.cache_store = :dalli_store
   # config.cache_store = :redis_store, "#{config.redis_url}/0/cache"
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
